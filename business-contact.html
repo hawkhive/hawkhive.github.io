@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get a Custom Business Quote | HawkHive Logistics</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Get a custom business delivery quote from HawkHive Logistics. Save up to 40% with our volume-based pricing for businesses.">
+    <link rel="canonical" href="https://hawkhive.ca/business-quote">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Get a Custom Business Quote | HawkHive Logistics">
+    <meta property="og:description" content="Save up to 40% with our volume-based business delivery pricing">
+    <meta property="og:url" content="https://hawkhive.ca/business-quote">
+    <meta property="og:type" content="website">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: var(--text);
+            line-height: 1.6;
+            background-color: #f9f9f9;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #4a6491 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%232c3e50"/></svg>');
+            background-size: cover;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background: var(--primary);
+            margin-left: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background: #3c5a7a;
+        }
+        
+        /* Sections */
+        section {
+            padding: 5rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            margin: 10px auto;
+        }
+        
+        /* Quote Form */
+        .quote-form-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .form-sidebar {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+        
+        .form-main {
+            flex: 2;
+            min-width: 300px;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+        }
+        
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+        
+        .required:after {
+            content: " *";
+            color: var(--secondary);
+        }
+        
+        /* Benefits Sidebar */
+        .benefits-list {
+            list-style: none;
+        }
+        
+        .benefits-list li {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .benefit-icon {
+            background: var(--accent);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        /* Success Message */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: #27ae60;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Business Solutions */
+        .solutions {
+            background: var(--light);
+        }
+        
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .solution-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s;
+            box-shadow: var(--shadow);
+        }
+        
+        .solution-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .solution-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        /* FAQ Section */
+        .faq-item {
+            margin-bottom: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 1.5rem;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            padding: 1.5rem;
+            display: none;
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .quote-form-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="images/icon.png" alt="HawkHive Logo" />
+                    Hawk<span>Hive</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#process">How It Works</a></li>
+                    <li><a href="bcal.html">Business Pricing</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Get Your Custom Business Quote</h1>
+            <p>Tell us about your business delivery needs and we'll create a tailored solution with exclusive pricing just for you.</p>
+        </div>
+    </section>
+
+    <!-- Quote Form Section -->
+    <section id="quote-form">
+        <div class="container">
+            <h2 class="section-title">Request Your Custom Quote</h2>
+            
+            <div class="quote-form-container">
+                <!-- Form Sidebar with Benefits -->
+                <div class="form-sidebar">
+                    <h3>Why Get a Custom Quote?</h3>
+                    <ul class="benefits-list">
+                        <li>
+                            <div class="benefit-icon">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div>
+                                <h4>Volume Discounts</h4>
+                                <p>Save up to 40% with our tiered pricing based on your shipping volume.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="benefit-icon">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div>
+                                <h4>Dedicated Account Manager</h4>
+                                <p>Get personalized support and strategic guidance for your logistics.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="benefit-icon">
+                                <i class="fas fa-plug"></i>
+                            </div>
+                            <div>
+                                <h4>API Integration</h4>
+                                <p>Seamlessly connect with your e-commerce platform or ERP system.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="benefit-icon">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                            <div>
+                                <h4>Consolidated Billing</h4>
+                                <p>Simplify accounting with monthly invoices and detailed reporting.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Main Form -->
+                <div class="form-main">
+                    <form id="business-quote-form" action="https://formspree.io/f/xwproypg" method="POST">
+                        <!-- Formspree Hidden Fields -->
+                        <input type="hidden" name="_subject" value="New Business Quote Request - HawkHive Website">
+                        <input type="text" name="_gotcha" style="display:none">
+        
+                        <h3>Business Information</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="company-name" class="required">Company Name</label>
+                                <input type="text" id="company-name" name="company-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="industry">Industry</label>
+                                <select id="industry" name="industry">
+                                    <option value="">Select Industry</option>
+                                    <option value="ecommerce">E-commerce</option>
+                                    <option value="retail">Retail</option>
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact-name" class="required">Contact Name</label>
+                                <input type="text" id="contact-name" name="contact-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="job-title">Job Title</label>
+                                <input type="text" id="job-title" name="job-title">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email" class="required">Email Address</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone" class="required">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                        </div>
+                        
+                        <h3 style="margin-top: 2rem;">Delivery Needs</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="monthly-volume" class="required">Estimated Monthly Packages</label>
+                                <input type="number" id="monthly-volume" name="monthly-volume" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="avg-weight">Average Package Weight (kg)</label>
+                                <input type="number" id="avg-weight" name="avg-weight" min="0.1" step="0.1" value="2">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="package-types">Package Types</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="small-packages" name="package-types" value="small">
+                                <label for="small-packages">Small Packages (under 2kg)</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="medium-packages" name="package-types" value="medium">
+                                <label for="medium-packages">Medium Packages (2-10kg)</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="large-packages" name="package-types" value="large">
+                                <label for="large-packages">Large Packages (10-30kg)</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="service-types">Service Types Needed</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="standard-service" name="service-types" value="standard">
+                                <label for="standard-service">Standard (1-3 Days)</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="express-service" name="service-types" value="express">
+                                <label for="express-service">Express Next-Day</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="sameDay-service" name="service-types" value="sameDay">
+                                <label for="sameDay-service">ZEP Same-Day</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="primary-origin">Primary Origin City</label>
+                            <select id="primary-origin" name="primary-origin">
+                                <option value="">Select Origin City</option>
+                                <option value="sarnia">Sarnia</option>
+                                <option value="strathroy">Strathroy</option>
+                                <option value="london">London</option>
+                                <option value="woodstock">Woodstock</option>
+                                <option value="cambridge">Cambridge</option>
+                                <option value="kitchener">Kitchener</option>
+                                <option value="waterloo">Waterloo</option>
+                                <option value="brantford">Brantford</option>
+                                <option value="burlington">Burlington</option>
+                                <option value="hamilton">Hamilton</option>
+                                <option value="oakville">Oakville</option>
+                                <option value="mississauga">Mississauga</option>
+                                <option value="toronto">Toronto</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="destination-cities">Main Destination Cities</label>
+                            <textarea id="destination-cities" name="destination-cities" placeholder="List the main cities you ship to most frequently"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="special-requirements">Special Requirements</label>
+                            <textarea id="special-requirements" name="special-requirements" placeholder="Any special handling, delivery time windows, or other requirements"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="current-provider">Current Delivery Provider (if any)</label>
+                            <input type="text" id="current-provider" name="current-provider">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="additional-info">Additional Information</label>
+                            <textarea id="additional-info" name="additional-info" placeholder="Tell us anything else we should know about your delivery needs"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn" style="width: 100%;">Submit Quote Request</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Success Message (hidden by default) -->
+            <div id="success-message" class="success-message">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Thank You for Your Request!</h2>
+                <p>We've received your custom quote request and our business team will contact you within 24 hours with a tailored solution.</p>
+                <p>In the meantime, you can <a href="business-calculator.html">explore our business pricing calculator</a> or <a href="index.html">learn more about our services</a>.</p>
+                <a href="index.html" class="btn" style="margin-top: 1.5rem;">Return to Homepage</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Solutions -->
+    <section class="solutions">
+        <div class="container">
+            <h2 class="section-title">Business Solutions</h2>
+            <div class="solutions-grid">
+                <div class="solution-card">
+                    <div class="solution-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h3>Flexible Delivery Options</h3>
+                    <p>Choose from same-day, next-day, or standard delivery to meet your business needs and budget.</p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>Sarnia-Toronto Corridor</h3>
+                    <p>Specialized service along the Sarnia-Toronto corridor with optimized routes for faster delivery.</p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Volume-Based Pricing</h3>
+                    <p>The more you ship, the more you save with our transparent tiered pricing structure.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>How quickly will I receive my custom quote?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Our business team typically responds within 24 hours with a preliminary quote. For more complex requirements, we may need up to 48 hours to prepare a comprehensive proposal.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Is there a minimum volume requirement for business accounts?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>We work with businesses of all sizes. While we offer the best pricing for volumes of 50+ packages per month, we can create customized solutions for businesses with lower volumes as well.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Can I integrate HawkHive with my e-commerce platform?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! We offer API integration with popular e-commerce platforms including Shopify, WooCommerce, and Magento. Our technical team can assist with setup and integration.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>What kind of reporting do you provide for business accounts?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>We provide comprehensive monthly reports including delivery volume, costs, performance metrics, and carbon footprint analysis. You'll also have access to a dashboard with real-time analytics.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Are there any long-term contracts required?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>No long-term contracts are required. We offer flexible month-to-month agreements with no cancellation fees. Our goal is to earn your business through excellent service, not through contracts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Our Business Team</h2>
+            <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <p>Have questions before submitting a quote request? Our business team is here to help.</p>
+                <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <i class="fas fa-envelope" style="font-size: 2rem; color: var(--accent); margin-bottom: 1rem;"></i>
+                        <h3>Email Us</h3>
+                        <p>Info@Hawkhive.ca</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <i class="fas fa-phone" style="font-size: 2rem; color: var(--accent); margin-bottom: 1rem;"></i>
+                        <h3>Call Us</h3>
+                        <p>(226) 886-4291</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <i class="fas fa-clock" style="font-size: 2rem; color: var(--accent); margin-bottom: 1rem;"></i>
+                        <h3>Business Hours</h3>
+                        <p>Mon-Fri: 8:00 AM - 6:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>HawkHive Logistics Inc.</h3>
+                    <p>Smart Hybrid Delivery for Businesses</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Information</h3>
+                    <p>Email: Sahil@Hawkhive.ca</p>
+                    <p>Phone: (226) 886-4291</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Service Area</h3>
+                    <p>Sarnia–Toronto Corridor</p>
+                    <p>Including all major cities along the route</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 HawkHive Logistics Inc.</p>
+                <p>www.Hawkhive.ca</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Form submission
+        //document.getElementById('business-quote-form').addEventListener('submit', function(e) {
+           // e.preventDefault();
+            
+            // In a real application, you would send the form data to your server here
+            // For this demo, we'll just show the success message
+            
+            // Hide the form and show success message
+            //document.querySelector('.quote-form-container').style.display = 'none';
+            //document.getElementById('success-message').style.display = 'block';
+            
+            // Scroll to success message
+            //document.getElementById('success-message').scrollIntoView({ behavior: 'smooth' });
+        //});
+        
+        // FAQ functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                faqItem.classList.toggle('active');
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 60,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
