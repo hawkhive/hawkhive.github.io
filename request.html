@@ -602,7 +602,7 @@
                     <h3>Estimated Delivery Cost</h3>
                     <div class="price" id="calculated-price">$0.00</div>
                     <p id="delivery-time"></p>
-                    <p class="price-note">This is an estimate. Final price may vary based on exact package dimensions and special requirements.</p>
+                    <p class="price-note">This is the final price before taxes.</p>
                     
                     <div id="payment-section" class="payment-section">
                         <p>Ready to schedule your pickup?</p>
@@ -646,7 +646,7 @@
     <!-- Custom Alert Dialog -->
     <div id="custom-alert" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;">
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 5px; text-align: center;">
-            <p id="alert-message">We are really sorry, we cannot accept parcel more than <strong>7 kg</strong> for now because of our operational limitation, but we are trying our best to increase our operational limitation. Thank you for your understanding.</p>
+            <p id="alert-message">We are really sorry, we cannot accept parcel more than <strong>30 kg</strong> for now because of our operational limitation, but we are trying our best to increase our operational limitation. Thank you for your understanding.</p>
             <button id="alert-ok-btn" class="btn">OK</button>
         </div>
     </div>
@@ -715,7 +715,7 @@
             const origin = document.getElementById('origin').value.toLowerCase();
             const destination = document.getElementById('destination').value.toLowerCase();
 
-            if (weight > 7) {
+            if (weight > 30) {
                 // Show custom alert dialog
                 document.getElementById('alert-message')
                 document.getElementById('custom-alert').style.display = 'block';
@@ -730,9 +730,15 @@
 
             // Base price by weight
             let basePrice = 0;
-            if (weight <= 2) basePrice = 16;
-            else if (weight <= 5) basePrice = 18;
-            else if (weight <= 7) basePrice = 20;
+            if (weight <= 2) basePrice = 15;        //Earlier version:
+                                                    //let basePrice = 0;
+                                                    //if (weight <= 2) basePrice = 16;
+                                                    //else if (weight <= 5) basePrice = 18;
+                                                    //else if (weight <= 7) basePrice = 20;
+                                                    //else basePrice = 20 + (weight - 7) * 2;
+            else if (weight <= 7) basePrice = 17;
+            else if (weight <= 15) basePrice = 19;
+            else if (weight <= 30) basePrice = 20;
             else basePrice = 20 + (weight - 7) * 2;
 
             // Service adjustment
@@ -765,6 +771,12 @@
 
             document.getElementById('calculated-price').textContent = '$' + calculatedPrice.toFixed(2);
             document.getElementById('delivery-time').textContent = deliveryTime + ' — Distance: ' + d + ' km';
+
+            // Tax calculation here
+            const totalWithTax = calculatedPrice * 1.13; // Assuming 13% tax
+            document.querySelector('.price-note').textContent =
+                `Your final price with the taxes will be $${totalWithTax.toFixed(2)}.`;
+
             document.getElementById('calculator-result').style.display = 'block';
             
             // Show payment section

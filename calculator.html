@@ -220,6 +220,7 @@
             font-size: 0.9rem;
             color: #666;
             margin-top: 1rem;
+            margin-bottom: 1rem;
         }
         
         /* Services */
@@ -473,7 +474,8 @@
                     <h3>Estimated Delivery Cost</h3>
                     <div class="price" id="calculated-price">$0.00</div>
                     <p id="delivery-time"></p>
-                    <p class="price-note">This is an estimate. Final price may vary based on exact package dimensions and special requirements.</p>
+                    <p class="price-note">This is the Final price you will be charged for your selected service and route.</p>
+                    <button onclick="window.location.href='request.html'" class="btn">Request a Pickup Now</button>
                 </div>
             </div>
         </div>
@@ -625,6 +627,11 @@
 
             document.getElementById('calculated-price').textContent = '$' + finalPrice.toFixed(2);
             document.getElementById('delivery-time').textContent = deliveryTime + ' — Distance: ' + d + ' km';
+
+            // Tax calculation here
+            const totalWithTax = finalPrice * 1.13; // Assuming 13% tax
+            document.querySelector('.price-note').textContent =
+                `Your final price with the taxes will be $${totalWithTax.toFixed(2)}.`;
             document.getElementById('calculator-result').style.display = 'block';
         }
 
