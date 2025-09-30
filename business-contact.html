@@ -13,7 +13,7 @@
     <meta property="og:description" content="Save up to 40% with our volume-based business delivery pricing">
     <meta property="og:url" content="https://hawkhive.ca/business-quote">
     <meta property="og:type" content="website">
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -787,6 +787,20 @@
             // Scroll to success message
             //document.getElementById('success-message').scrollIntoView({ behavior: 'smooth' });
         //});
+
+        // Clean URL display without changing the actual file
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update browser URL without reloading
+            if (window.history && window.history.replaceState) {
+                const cleanUrl = window.location.origin + '/business-quote';
+                window.history.replaceState({}, document.title, cleanUrl);
+            }
+            
+            // Update navigation links to use clean URL
+            document.querySelectorAll('a[href="business-contact.html"]').forEach(link => {
+                link.href = '/business-quote';
+            });
+        });
         
         // FAQ functionality
         document.querySelectorAll('.faq-question').forEach(question => {
