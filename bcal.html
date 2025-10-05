@@ -478,7 +478,7 @@
                 <button id="calculate-b2b-btn" class="btn">Calculate Business Pricing</button>
                 
                 <div id="calculator-result" class="calculator-result">
-                    <h3>Your Business Delivery Savings</h3>
+                    <h3>Your Business Monthly Delivery Estimated cost</h3>
                     <div class="price" id="calculated-price">$0.00</div>
                     <p id="price-per-package"></p>
                     <p id="savings-percentage"></p>
@@ -603,10 +603,10 @@
         // Business pricing tiers
         const businessTiers = [
             { min: 1, max: 50, discount: 0.05, label: "1-50 packages" },
-            { min: 51, max: 200, discount: 0.15, label: "51-200 packages" },
-            { min: 201, max: 500, discount: 0.25, label: "201-500 packages" },
-            { min: 501, max: 1000, discount: 0.35, label: "501-1000 packages" },
-            { min: 1001, max: Infinity, discount: 0.40, label: "1000+ packages" }
+            { min: 51, max: 200, discount: 0.10, label: "51-200 packages" },
+            { min: 201, max: 500, discount: 0.20, label: "201-500 packages" },
+            { min: 501, max: 1000, discount: 0.30, label: "501-1000 packages" },
+            { min: 1001, max: Infinity, discount: 0.35, label: "1000+ packages" }
         ];
 
         // Base price for standard 2kg package
@@ -673,14 +673,14 @@
             // Calculate savings compared to standard price
             const standardPricePerPackage = adjustedBasePrice * serviceMultiplier;
             const savingsPercentage = (applicableTier.discount * 100).toFixed(0);
-            const totalSavings = (standardPricePerPackage - pricePerPackage) * volume;
+            const totalSavings = (18 - pricePerPackage) * volume;
             
             // Update results
             document.getElementById('calculated-price').textContent = '$' + monthlyCost.toFixed(2);
             document.getElementById('price-per-package').textContent = 
                 `Average Price per package: $${pricePerPackage.toFixed(2)} (${savingsPercentage}% discount)`;
             document.getElementById('savings-percentage').textContent = 
-                `You save $${totalSavings.toFixed(2)} per month compared to standard pricing`;
+                `You save $${totalSavings.toFixed(2)} per month compared to standard pricing*`;
             
             // Show results
             document.getElementById('calculator-result').style.display = 'block';
