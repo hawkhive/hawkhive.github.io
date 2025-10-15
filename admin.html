@@ -170,6 +170,7 @@
                 <a href="mailto:Drivers@hawkhive.ca?subject=Driver%20Application&body=Hello%20HawkHive%2C%0A%0AI%20am%20interested%20in%20becoming%20a%20driver.%20Please%20let%20me%20know%20the%20next%20steps.%0A%0AThank%20you.">
                     <strong>Drivers@hawkhive.ca</strong>
                 </a>
+            </div>
         </div>
 
         <!-- Admin Dashboard (Initially Hidden) -->
@@ -519,7 +520,7 @@
                 loadingIndicator.style.display = 'block';
                 ordersTable.style.display = 'none';
                 
-                const response = await fetch(googleScriptURL);
+                const response = await fetch(`${googleScriptURL}?type=orders`);
                 const data = await response.json();
                 
                 // Process the data into orders format
