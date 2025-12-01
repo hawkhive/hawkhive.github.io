@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Orders - HawkHive Business</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --section-bg: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: var(--text);
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #4a6491 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .user-profile {
+            position: relative;
+        }
+        
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .profile-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .profile-btn i {
+            margin-left: 0.5rem;
+        }
+        
+        .profile-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            width: 200px;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            padding: 0.5rem 0;
+            display: none;
+            z-index: 10;
+        }
+        
+        .profile-dropdown.active {
+            display: block;
+        }
+        
+        .profile-dropdown a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .profile-dropdown a:hover {
+            background: var(--light);
+        }
+        
+        /* Dashboard Layout */
+        .dashboard-container {
+            flex: 1;
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar-header h3 {
+            color: var(--accent);
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent);
+        }
+        
+        .sidebar-menu i {
+            margin-right: 0.8rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            padding: 2rem;
+            background: var(--light);
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-title {
+            color: var(--primary);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background: var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background: #3c5a7a;
+        }
+        
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Filters and Search */
+        .filters-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .filters-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .filter-group input, .filter-group select {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .search-group {
+            flex: 2;
+            min-width: 250px;
+        }
+        
+        .actions-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* Orders Table */
+        .orders-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .section-header h3 {
+            color: var(--primary);
+        }
+        
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .orders-table th, .orders-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .orders-table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .orders-table th:hover {
+            background: #3c5a7a;
+        }
+        
+        .orders-table th i {
+            margin-left: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .orders-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+            text-align: center;
+            min-width: 100px;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-picked {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-transit {
+            background: #cce7ff;
+            color: #004085;
+        }
+        
+        .status-out {
+            background: #ffeaa7;
+            color: #856404;
+        }
+        
+        .status-delivered {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.3rem;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+        }
+        
+        .pagination-info {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .pagination-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .page-btn {
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .page-btn:hover {
+            background: var(--light);
+        }
+        
+        .page-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Order Details Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .modal-header h3 {
+            color: var(--primary);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .order-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .detail-card {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 5px;
+        }
+        
+        .detail-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .filters-row {
+                flex-direction: column;
+            }
+            
+            .filter-group, .search-group {
+                min-width: 100%;
+            }
+            
+            .orders-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .pagination {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .nav-links li:not(:last-child) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="images/icon.png" alt="HawkHive Logo" />
+                    Hawk<span>Hive</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="business-dashboard.html">Dashboard</a></li>
+                    <li class="user-profile">
+                        <div class="profile-btn" id="profile-btn">
+                            <span id="profile-name">Business Name</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <a href="business-profile.html"><i class="fas fa-user-edit"></i> Update Profile</a>
+                            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>Business Dashboard</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="business-dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="business-request-pickup.html"><i class="fas fa-truck-loading"></i> Request Pickup</a></li>
+                <li><a href="business-track-shipment.html"><i class="fas fa-shipping-fast"></i> Track Shipment</a></li>
+                <li><a href="business-all-orders.html" class="active"><i class="fas fa-clipboard-list"></i> All Orders</a></li>
+                <li><a href="business-analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+            </ul>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title">All Orders</h2>
+                <a href="business-dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+
+            <!-- Filters and Search -->
+            <div class="filters-section">
+                <div class="filters-row">
+                    <div class="search-group">
+                        <label for="search-orders">Search Orders</label>
+                        <input type="text" id="search-orders" placeholder="Search by tracking number, recipient, or destination...">
+                    </div>
+                    <div class="filter-group">
+                        <label for="status-filter">Status</label>
+                        <select id="status-filter">
+                            <option value="">All Statuses</option>
+                            <option value="pending">Pending</option>
+                            <option value="picked">Picked Up</option>
+                            <option value="transit">In Transit</option>
+                            <option value="out">Out for Delivery</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="date-from">Date From</label>
+                        <input type="date" id="date-from">
+                    </div>
+                    <div class="filter-group">
+                        <label for="date-to">Date To</label>
+                        <input type="date" id="date-to">
+                    </div>
+                    <div class="actions-group">
+                        <button class="btn btn-small" id="apply-filters">Apply</button>
+                        <button class="btn btn-small btn-secondary" id="reset-filters">Reset</button>
+                        <button class="btn btn-small" id="export-orders">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Table -->
+            <div class="orders-section">
+                <div class="section-header">
+                    <h3>Order History</h3>
+                    <div class="pagination-info" id="pagination-info">Showing 1-10 of 45 orders</div>
+                </div>
+                
+                <table class="orders-table" id="orders-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="id">Order ID <i class="fas fa-sort"></i></th>
+                            <th data-sort="date">Date <i class="fas fa-sort"></i></th>
+                            <th data-sort="from">From <i class="fas fa-sort"></i></th>
+                            <th data-sort="to">To <i class="fas fa-sort"></i></th>
+                            <th data-sort="service">Service <i class="fas fa-sort"></i></th>
+                            <th data-sort="status">Status <i class="fas fa-sort"></i></th>
+                            <th data-sort="amount">Amount <i class="fas fa-sort"></i></th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-tbody">
+                        <!-- Orders will be populated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div class="pagination">
+                    <div class="pagination-info" id="pagination-info-bottom">Showing 1-10 of 45 orders</div>
+                    <div class="pagination-controls">
+                        <button class="page-btn" id="prev-page" disabled>
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">4</button>
+                        <button class="page-btn">5</button>
+                        <button class="page-btn" id="next-page">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div class="modal" id="order-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Order Details: <span id="modal-order-id">HH-2023-0012</span></h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="order-details-grid">
+                    <div class="detail-card">
+                        <h4>Sender Information</h4>
+                        <p id="modal-sender">ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6<br>Contact: John Doe - (555) 123-4567</p>
+                    </div>
+                    <div class="detail-card">
+                        <h4>Recipient Information</h4>
+                        <p id="modal-recipient">Jane Smith<br>789 Delivery St, Kitchener, ON N2G 1A1<br>Phone: (555) 987-6543</p>
+                    </div>
+                    <div class="detail-card">
+                        <h4>Package Details</h4>
+                        <p id="modal-package">Office Supplies<br>Weight: 5 kg<br>Dimensions: 12x8x6 in</p>
+                    </div>
+                    <div class="detail-card">
+                        <h4>Service & Payment</h4>
+                        <p id="modal-service">Standard Service<br>Amount: $24.50<br>Paid: PayPal</p>
+                    </div>
+                </div>
+                
+                <h4>Tracking Timeline</h4>
+                <div class="tracking-timeline" id="modal-timeline">
+                    <!-- Timeline will be populated by JavaScript -->
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn" id="print-order-btn">
+                        <i class="fas fa-print"></i> Print Order Details
+                    </button>
+                    <button class="btn btn-secondary" id="track-order-btn">
+                        <i class="fas fa-shipping-fast"></i> Track This Shipment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>HawkHive Logistics Inc.</h3>
+                    <p>Smart Hybrid Delivery for Businesses</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Information</h3>
+                    <p>Email: Sahil@hawkhive.ca</p>
+                    <p>Phone: (226) 886-4291</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Service Area</h3>
+                    <p>Sarnia–Toronto Corridor</p>
+                    <p>Including all major cities along the route</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 HawkHive Logistics Inc.</p>
+                <p>www.hawkhive.ca</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = 'business-login.html';
+                return;
+            }
+            
+            const user = JSON.parse(currentUser);
+            document.getElementById('profile-name').textContent = user.name;
+            
+            // Load initial orders data
+            loadOrdersData();
+        });
+        
+        // Profile dropdown
+        document.getElementById('profile-btn').addEventListener('click', function() {
+            document.getElementById('profile-dropdown').classList.toggle('active');
+        });
+        
+        // Close dropdown when clicking elsewhere
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.user-profile')) {
+                document.getElementById('profile-dropdown').classList.remove('active');
+            }
+        });
+        
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('currentUser');
+            window.location.href = 'business-login.html';
+        });
+        
+        // Sample orders data
+        const ordersData = [
+            {
+                id: 'HH-2023-0012',
+                date: '2023-10-15',
+                from: 'Toronto, ON',
+                to: 'Kitchener, ON',
+                service: 'Standard',
+                status: 'delivered',
+                amount: 24.50,
+                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6<br>Contact: John Doe - (555) 123-4567',
+                recipient: 'Jane Smith<br>789 Delivery St, Kitchener, ON N2G 1A1<br>Phone: (555) 987-6543',
+                package: 'Office Supplies<br>Weight: 5 kg<br>Dimensions: 12x8x6 in',
+                serviceDetails: 'Standard Service<br>Amount: $24.50<br>Paid: PayPal',
+                timeline: [
+                    { date: 'Oct 15, 2023 - 10:30 AM', location: 'Kitchener, ON', status: 'Delivered' },
+                    { date: 'Oct 15, 2023 - 8:15 AM', location: 'Kitchener, ON', status: 'Out for delivery' },
+                    { date: 'Oct 14, 2023 - 6:45 PM', location: 'Kitchener Distribution Center', status: 'Arrived at facility' },
+                    { date: 'Oct 14, 2023 - 2:30 PM', location: 'In Transit', status: 'Departured from Toronto Hub' },
+                    { date: 'Oct 14, 2023 - 11:00 AM', location: 'Toronto, ON', status: 'Picked up by driver' },
+                    { date: 'Oct 13, 2023 - 3:15 PM', location: 'Toronto, ON', status: 'Order received and processed' }
+                ]
+            },
+            {
+                id: 'HH-2023-0011',
+                date: '2023-10-12',
+                from: 'Toronto, ON',
+                to: 'London, ON',
+                service: 'Express',
+                status: 'transit',
+                amount: 38.75,
+                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6<br>Contact: John Doe - (555) 123-4567',
+                recipient: 'John Davis<br>456 Main St, London, ON N6A 1A1<br>Phone: (555) 456-7890',
+                package: 'Electronics<br>Weight: 3.5 kg<br>Dimensions: 10x6x4 in',
+                serviceDetails: 'Express Service<br>Amount: $38.75<br>Paid: Credit Card',
+                timeline: [
+                    { date: 'Oct 14, 2023 - 4:20 PM', location: 'London Distribution Center', status: 'Arrived at facility' },
+                    { date: 'Oct 14, 2023 - 1:45 PM', location: 'In Transit', status: 'Departured from Toronto Hub' },
+                    { date: 'Oct 14, 2023 - 10:30 AM', location: 'Toronto, ON', status: 'Picked up by driver' },
+                    { date: 'Oct 13, 2023 - 2:00 PM', location: 'Toronto, ON', status: 'Order received and processed' }
+                ]
+            },
+            {
+                id: 'HH-2023-0010',
+                date: '2023-10-10',
+                from: 'Toronto, ON',
+                to: 'Kitchener, ON',
+                service: 'Standard',
+                status: 'out',
+                amount: 16.50,
+                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6<br>Contact: John Doe - (555) 123-4567',
+                recipient: 'Robert Johnson<br>321 Oak Ave, Kitchener, ON N2H 1A1<br>Phone: (555) 111-2222',
+                package: 'Documents<br>Weight: 0.8 kg<br>Dimensions: 8x5x1 in',
+                serviceDetails: 'Standard Service<br>Amount: $16.50<br>Paid: PayPal',
+                timeline: [
+                    { date: 'Oct 16, 2023 - 7:30 AM', location: 'Kitchener, ON', status: 'Out for delivery' },
+                    { date: 'Oct 15, 2023 - 8:45 PM', location: 'Kitchener Distribution Center', status: 'Arrived at facility' },
+                    { date: 'Oct 15, 2023 - 3:15 PM', location: 'In Transit', status: 'Departured from Toronto Hub' },
+                    { date: 'Oct 15, 2023 - 11:30 AM', location: 'Toronto, ON', status: 'Picked up by driver' },
+                    { date: 'Oct 14, 2023 - 4:20 PM', location: 'Toronto, ON', status: 'Order received and processed' }
+                ]
+            },
+            {
+                id: 'HH-2023-0009',
+                date: '2023-10-08',
+                from: 'Mississauga, ON',
+                to: 'Hamilton, ON',
+                service: 'Standard',
+                status: 'picked',
+                amount: 19.80,
+                sender: 'ABC Wholesale Ltd.<br>456 Commerce St, Mississauga, ON L5B 3C7<br>Contact: Jane Smith - (555) 333-4444',
+                recipient: 'Sarah Wilson<br>654 Pine St, Hamilton, ON L8P 1A1<br>Phone: (555) 555-6666',
+                package: 'Clothing<br>Weight: 2.2 kg<br>Dimensions: 14x10x3 in',
+                serviceDetails: 'Standard Service<br>Amount: $19.80<br>Paid: Credit Card',
+                timeline: [
+                    { date: 'Oct 16, 2023 - 9:15 AM', location: 'Mississauga, ON', status: 'Picked up by driver' },
+                    { date: 'Oct 15, 2023 - 2:30 PM', location: 'Mississauga, ON', status: 'Order received and processed' }
+                ]
+            },
+            {
+                id: 'HH-2023-0008',
+                date: '2023-10-05',
+                from: 'Toronto, ON',
+                to: 'Waterloo, ON',
+                service: 'Standard',
+                status: 'delivered',
+                amount: 22.75,
+                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6<br>Contact: John Doe - (555) 123-4567',
+                recipient: 'Michael Brown<br>987 Elm St, Waterloo, ON N2L 1A1<br>Phone: (555) 777-8888',
+                package: 'Books<br>Weight: 4.5 kg<br>Dimensions: 11x7x5 in',
+                serviceDetails: 'Standard Service<br>Amount: $22.75<br>Paid: PayPal',
+                timeline: [
+                    { date: 'Oct 7, 2023 - 3:45 PM', location: 'Waterloo, ON', status: 'Delivered' },
+                    { date: 'Oct 7, 2023 - 11:20 AM', location: 'Waterloo, ON', status: 'Out for delivery' },
+                    { date: 'Oct 6, 2023 - 7:30 PM', location: 'Waterloo Distribution Center', status: 'Arrived at facility' },
+                    { date: 'Oct 6, 2023 - 2:15 PM', location: 'In Transit', status: 'Departured from Toronto Hub' },
+                    { date: 'Oct 6, 2023 - 10:45 AM', location: 'Toronto, ON', status: 'Picked up by driver' },
+                    { date: 'Oct 5, 2023 - 4:10 PM', location: 'Toronto, ON', status: 'Order received and processed' }
+                ]
+            }
+        ];
+        
+        // Load orders data into table
+        function loadOrdersData() {
+            const tbody = document.getElementById('orders-tbody');
+            tbody.innerHTML = '';
+            
+            ordersData.forEach(order => {
+                const statusClass = `status-${order.status}`;
+                const statusText = getStatusText(order.status);
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${formatDate(order.date)}</td>
+                    <td>${order.from}</td>
+                    <td>${order.to}</td>
+                    <td>${order.service}</td>
+                    <td><span class="status ${statusClass}">${statusText}</span></td>
+                    <td>$${order.amount.toFixed(2)}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-small view-order" data-id="${order.id}">View</button>
+                            <button class="btn btn-small btn-secondary track-order" data-id="${order.id}">Track</button>
+                        </div>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+            
+            // Add event listeners to view buttons
+            document.querySelectorAll('.view-order').forEach(button => {
+                button.addEventListener('click', function() {
+                    const orderId = this.getAttribute('data-id');
+                    showOrderDetails(orderId);
+                });
+            });
+            
+            // Add event listeners to track buttons
+            document.querySelectorAll('.track-order').forEach(button => {
+                button.addEventListener('click', function() {
+                    const orderId = this.getAttribute('data-id');
+                    window.location.href = `business-track-shipment.html?tracking=${orderId}`;
+                });
+            });
+        }
+        
+        // Get status text
+        function getStatusText(status) {
+            const statusMap = {
+                'pending': 'Pending',
+                'picked': 'Picked Up',
+                'transit': 'In Transit',
+                'out': 'Out for Delivery',
+                'delivered': 'Delivered',
+                'cancelled': 'Cancelled'
+            };
+            return statusMap[status] || status;
+        }
+        
+        // Format date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+        
+        // Show order details in modal
+        function showOrderDetails(orderId) {
+            const order = ordersData.find(o => o.id === orderId);
+            if (!order) return;
+            
+            // Update modal content
+            document.getElementById('modal-order-id').textContent = order.id;
+            document.getElementById('modal-sender').innerHTML = order.sender;
+            document.getElementById('modal-recipient').innerHTML = order.recipient;
+            document.getElementById('modal-package').innerHTML = order.package;
+            document.getElementById('modal-service').innerHTML = order.serviceDetails;
+            
+            // Build timeline
+            const timelineElement = document.getElementById('modal-timeline');
+            timelineElement.innerHTML = '';
+            
+            order.timeline.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'timeline-item completed';
+                
+                itemElement.innerHTML = `
+                    <div class="timeline-date">${item.date}</div>
+                    <div class="timeline-location">${item.location}</div>
+                    <div class="timeline-status">${item.status}</div>
+                `;
+                
+                timelineElement.appendChild(itemElement);
+            });
+            
+            // Show modal
+            document.getElementById('order-modal').classList.add('active');
+        }
+        
+        // Close modal
+        document.getElementById('close-modal').addEventListener('click', function() {
+            document.getElementById('order-modal').classList.remove('active');
+        });
+        
+        // Close modal when clicking outside
+        document.getElementById('order-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+        
+        // Print order details
+        document.getElementById('print-order-btn').addEventListener('click', function() {
+            window.print();
+        });
+        
+        // Track order from modal
+        document.getElementById('track-order-btn').addEventListener('click', function() {
+            const orderId = document.getElementById('modal-order-id').textContent;
+            window.location.href = `business-track-shipment.html?tracking=${orderId}`;
+        });
+        
+        // Apply filters
+        document.getElementById('apply-filters').addEventListener('click', function() {
+            // In a real app, this would filter the orders data
+            alert('Filters applied! In a real application, this would filter the orders based on your criteria.');
+        });
+        
+        // Reset filters
+        document.getElementById('reset-filters').addEventListener('click', function() {
+            document.getElementById('search-orders').value = '';
+            document.getElementById('status-filter').value = '';
+            document.getElementById('date-from').value = '';
+            document.getElementById('date-to').value = '';
+        });
+        
+        // Export orders
+        document.getElementById('export-orders').addEventListener('click', function() {
+            alert('Exporting orders data... In a real application, this would download a CSV or Excel file.');
+        });
+        
+        // Table sorting (basic implementation)
+        document.querySelectorAll('.orders-table th[data-sort]').forEach(header => {
+            header.addEventListener('click', function() {
+                const sortBy = this.getAttribute('data-sort');
+                alert(`Sorting by ${sortBy}... In a real application, this would sort the table data.`);
+            });
+        });
+    </script>
+</body>
+</html>

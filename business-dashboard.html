@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Dashboard - HawkHive Logistics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --section-bg: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: var(--text);
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #4a6491 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .user-profile {
+            position: relative;
+        }
+        
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .profile-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .profile-btn i {
+            margin-left: 0.5rem;
+        }
+        
+        .profile-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            width: 200px;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            padding: 0.5rem 0;
+            display: none;
+            z-index: 10;
+        }
+        
+        .profile-dropdown.active {
+            display: block;
+        }
+        
+        .profile-dropdown a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .profile-dropdown a:hover {
+            background: var(--light);
+        }
+        
+        /* Dashboard Layout */
+        .dashboard-container {
+            flex: 1;
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar-header h3 {
+            color: var(--accent);
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent);
+        }
+        
+        .sidebar-menu i {
+            margin-right: 0.8rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            padding: 2rem;
+            background: var(--light);
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-title {
+            color: var(--primary);
+        }
+        
+        .welcome-message {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .welcome-message h2 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .dashboard-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        /* Analytics */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+        
+        .stat-label {
+            color: #666;
+        }
+        
+        .stat-change {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        
+        .stat-change.positive {
+            color: #28a745;
+        }
+        
+        .stat-change.negative {
+            color: #dc3545;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background: var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background: #3c5a7a;
+        }
+        
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Recent Orders */
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .orders-table th, .orders-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .orders-table th {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .orders-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-assigned {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        .status-transit {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-delivered {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Loading */
+        .loading-spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                flex-direction: column;
+            }
+            
+            .nav-links li:not(:last-child) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="images/icon.png" alt="HawkHive Logo" />
+                    Hawk<span>Hive</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="business-dashboard.html" class="active">Dashboard</a></li>
+                    <li class="user-profile">
+                        <div class="profile-btn" id="profile-btn">
+                            <span id="profile-name">Business Name</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <a href="business-profile.html"><i class="fas fa-user-edit"></i> Update Profile</a>
+                            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>Business Dashboard</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="business-dashboard.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="business-request-pickup.html"><i class="fas fa-truck-loading"></i> Request Pickup</a></li>
+                <li><a href="business-track-shipment.html"><i class="fas fa-shipping-fast"></i> Track Shipment</a></li>
+                <li><a href="business-all-orders.html"><i class="fas fa-clipboard-list"></i> All Orders</a></li>
+                <li><a href="business-analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+            </ul>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title">Business Dashboard</h2>
+                <div class="quick-actions">
+                    <a href="business-request-pickup.html" class="btn">New Pickup Request</a>
+                    <a href="business-track-shipment.html" class="btn btn-secondary">Track Shipment</a>
+                </div>
+            </div>
+
+            <div class="welcome-message">
+                <h2>Welcome back, <span id="welcome-business-name">Business Name</span>!</h2>
+                <p>Here's an overview of your recent shipping activities and performance metrics.</p>
+            </div>
+
+            <!-- Analytics Summary -->
+            <div class="analytics-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: var(--primary);">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <div class="stat-value" id="total-orders">0</div>
+                    <div class="stat-label">Total Orders</div>
+                    <div class="stat-change positive" id="orders-change">+0% this month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: var(--accent);">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="stat-value" id="active-shipments">0</div>
+                    <div class="stat-label">Active Shipments</div>
+                    <div class="stat-change positive" id="shipments-change">+0% this month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #28a745;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-value" id="delivered-orders">0</div>
+                    <div class="stat-label">Delivered This Month</div>
+                    <div class="stat-change positive" id="delivered-change">+0% from last month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #17a2b8;">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-value" id="total-spent">$0</div>
+                    <div class="stat-label">Total Spent</div>
+                    <div class="stat-change negative" id="spent-change">-0% from last month</div>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="dashboard-card">
+                <h3>Recent Orders</h3>
+                <div class="table-responsive">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Destination</th>
+                                <th>Status</th>
+                                <th>Tracking</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-orders-body">
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <div class="loading-spinner me-2"></div> Loading orders...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="dashboard-card">
+                <h3>Quick Actions</h3>
+                <div class="quick-actions">
+                    <a href="business-request-pickup.html" class="btn btn-large">
+                        <i class="fas fa-truck-loading me-2"></i>Request New Pickup
+                    </a>
+                    <a href="business-track-shipment.html" class="btn btn-large btn-secondary">
+                        <i class="fas fa-shipping-fast me-2"></i>Track Shipment
+                    </a>
+                    <a href="business-all-orders.html" class="btn btn-large btn-secondary">
+                        <i class="fas fa-clipboard-list me-2"></i>View All Orders
+                    </a>
+                    <a href="business-profile.html" class="btn btn-large btn-secondary">
+                        <i class="fas fa-user-edit me-2"></i>Update Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>HawkHive Logistics Inc.</h3>
+                    <p>Smart Hybrid Delivery for Businesses</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Information</h3>
+                    <p>Email: Sahil@hawkhive.ca</p>
+                    <p>Phone: (226) 886-4291</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Service Area</h3>
+                    <p>Sarnia–Toronto Corridor</p>
+                    <p>Including all major cities along the route</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 HawkHive Logistics Inc.</p>
+                <p>www.hawkhive.ca</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Google Apps Script URL for Business Operations
+        const BUSINESS_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_BUSINESS_SCRIPT_ID/exec";
+        
+        // Check authentication and load dashboard data
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentBusiness = localStorage.getItem('currentBusiness');
+            
+            if (!currentBusiness) {
+                window.location.href = 'business-login.html';
+                return;
+            }
+            
+            const business = JSON.parse(currentBusiness);
+            document.getElementById('profile-name').textContent = business.name;
+            document.getElementById('welcome-business-name').textContent = business.name;
+            
+            // Load dashboard data
+            loadDashboardData(business.id);
+        });
+        
+        // Profile dropdown
+        document.getElementById('profile-btn').addEventListener('click', function() {
+            document.getElementById('profile-dropdown').classList.toggle('active');
+        });
+        
+        // Close dropdown when clicking elsewhere
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.user-profile')) {
+                document.getElementById('profile-dropdown').classList.remove('active');
+            }
+        });
+        
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('currentBusiness');
+            window.location.href = 'business-login.html';
+        });
+        
+        // Load dashboard data
+        async function loadDashboardData(businessId) {
+            try {
+                // In a real implementation, you would fetch business-specific data
+                // For now, we'll use mock data
+                
+                // Mock analytics data
+                document.getElementById('total-orders').textContent = '24';
+                document.getElementById('active-shipments').textContent = '8';
+                document.getElementById('delivered-orders').textContent = '16';
+                document.getElementById('total-spent').textContent = '$1,245';
+                
+                // Mock recent orders
+                const recentOrdersBody = document.getElementById('recent-orders-body');
+                recentOrdersBody.innerHTML = `
+                    <tr>
+                        <td>#HH-2024-0124</td>
+                        <td>${new Date().toLocaleDateString()}</td>
+                        <td>Toronto, ON</td>
+                        <td><span class="status status-delivered">Delivered</span></td>
+                        <td>TN250000124</td>
+                        <td>
+                            <a href="#" class="btn btn-small">View</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#HH-2024-0123</td>
+                        <td>${new Date().toLocaleDateString()}</td>
+                        <td>London, ON</td>
+                        <td><span class="status status-transit">In Transit</span></td>
+                        <td>TN250000123</td>
+                        <td>
+                            <a href="#" class="btn btn-small">Track</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#HH-2024-0122</td>
+                        <td>${new Date().toLocaleDateString()}</td>
+                        <td>Kitchener, ON</td>
+                        <td><span class="status status-assigned">Assigned</span></td>
+                        <td>TN250000122</td>
+                        <td>
+                            <a href="#" class="btn btn-small">View</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#HH-2024-0121</td>
+                        <td>${new Date(Date.now() - 86400000).toLocaleDateString()}</td>
+                        <td>Hamilton, ON</td>
+                        <td><span class="status status-pending">Pending</span></td>
+                        <td>-</td>
+                        <td>
+                            <a href="#" class="btn btn-small">View</a>
+                        </td>
+                    </tr>
+                `;
+                
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                document.getElementById('recent-orders-body').innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-danger">
+                            Failed to load orders. Please try again.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+        
+        // In a real implementation, you would add functions to:
+        // 1. Fetch business-specific orders from Google Sheets
+        // 2. Calculate analytics based on order history
+        // 3. Update the dashboard with real data
+    </script>
+</body>
+</html>

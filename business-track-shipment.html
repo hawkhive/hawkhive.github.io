@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Shipment - HawkHive Business</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --section-bg: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: var(--text);
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #4a6491 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .user-profile {
+            position: relative;
+        }
+        
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .profile-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .profile-btn i {
+            margin-left: 0.5rem;
+        }
+        
+        .profile-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            width: 200px;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            padding: 0.5rem 0;
+            display: none;
+            z-index: 10;
+        }
+        
+        .profile-dropdown.active {
+            display: block;
+        }
+        
+        .profile-dropdown a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .profile-dropdown a:hover {
+            background: var(--light);
+        }
+        
+        /* Dashboard Layout */
+        .dashboard-container {
+            flex: 1;
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar-header h3 {
+            color: var(--accent);
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent);
+        }
+        
+        .sidebar-menu i {
+            margin-right: 0.8rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            padding: 2rem;
+            background: var(--light);
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-title {
+            color: var(--primary);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background: var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background: #3c5a7a;
+        }
+        
+        /* Tracking Section */
+        .tracking-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .tracking-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .tracking-input-group {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        
+        .tracking-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--primary);
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+        
+        .tracking-btn {
+            border-radius: 0 5px 5px 0;
+            border: 2px solid var(--primary);
+            border-left: none;
+        }
+        
+        .recent-tracking {
+            margin-top: 2rem;
+        }
+        
+        .recent-tracking h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .tracking-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        
+        .tracking-item {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tracking-item:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+        
+        /* Tracking Results */
+        .tracking-results {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .tracking-results.active {
+            display: block;
+        }
+        
+        .shipment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .shipment-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-card {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 5px;
+        }
+        
+        .info-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Tracking Timeline */
+        .tracking-timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .tracking-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.3rem;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+        
+        .timeline-item.completed::before {
+            background: var(--accent);
+        }
+        
+        .timeline-item.current::before {
+            background: #28a745;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.3);
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+        }
+        
+        .timeline-location {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+        
+        .timeline-status {
+            color: #666;
+        }
+        
+        /* Recent Shipments */
+        .recent-shipments {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .recent-shipments h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .shipments-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .shipments-table th, .shipments-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .shipments-table th {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .shipments-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-picked {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-transit {
+            background: #cce7ff;
+            color: #004085;
+        }
+        
+        .status-out {
+            background: #ffeaa7;
+            color: #856404;
+        }
+        
+        .status-delivered {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .track-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .track-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .tracking-input-group {
+                flex-direction: column;
+            }
+            
+            .tracking-input {
+                border-radius: 5px;
+                margin-bottom: 0.5rem;
+            }
+            
+            .tracking-btn {
+                border-radius: 5px;
+                border: 2px solid var(--primary);
+            }
+            
+            .shipment-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .shipment-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links li:not(:last-child) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="images/icon.png" alt="HawkHive Logo" />
+                    Hawk<span>Hive</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="business-dashboard.html">Dashboard</a></li>
+                    <li class="user-profile">
+                        <div class="profile-btn" id="profile-btn">
+                            <span id="profile-name">Business Name</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <a href="business-profile.html"><i class="fas fa-user-edit"></i> Update Profile</a>
+                            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>Business Dashboard</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="business-dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="business-request-pickup.html"><i class="fas fa-truck-loading"></i> Request Pickup</a></li>
+                <li><a href="business-track-shipment.html" class="active"><i class="fas fa-shipping-fast"></i> Track Shipment</a></li>
+                <li><a href="business-all-orders.html"><i class="fas fa-clipboard-list"></i> All Orders</a></li>
+                <li><a href="business-analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+            </ul>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title">Track Shipment</h2>
+                <a href="business-dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+
+            <!-- Tracking Input Section -->
+            <div class="tracking-section">
+                <div class="tracking-header">
+                    <h3>Track Your Shipment</h3>
+                    <p>Enter your tracking number to check the status of your shipment</p>
+                </div>
+                
+                <div class="tracking-input-group">
+                    <input type="text" class="tracking-input" id="tracking-number" placeholder="Enter tracking number (e.g., HH-2023-0012)">
+                    <button class="btn tracking-btn" id="track-btn">
+                        <i class="fas fa-search"></i> Track
+                    </button>
+                </div>
+                
+                <div class="recent-tracking">
+                    <h3>Recent Shipments</h3>
+                    <div class="tracking-list">
+                        <div class="tracking-item" data-tracking="HH-2023-0012">
+                            <strong>HH-2023-0012</strong>
+                            <p>Toronto, ON → Delivered</p>
+                            <small>Oct 15, 2023</small>
+                        </div>
+                        <div class="tracking-item" data-tracking="HH-2023-0011">
+                            <strong>HH-2023-0011</strong>
+                            <p>London, ON → In Transit</p>
+                            <small>Oct 12, 2023</small>
+                        </div>
+                        <div class="tracking-item" data-tracking="HH-2023-0010">
+                            <strong>HH-2023-0010</strong>
+                            <p>Kitchener, ON → Out for Delivery</p>
+                            <small>Oct 10, 2023</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tracking Results -->
+            <div class="tracking-results" id="tracking-results">
+                <div class="shipment-header">
+                    <div>
+                        <h3>Shipment: <span id="result-tracking-number">HH-2023-0012</span></h3>
+                        <p id="result-status" class="status status-delivered">Delivered</p>
+                    </div>
+                    <div>
+                        <button class="btn" id="print-tracking-btn">
+                            <i class="fas fa-print"></i> Print Details
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="shipment-info">
+                    <div class="info-card">
+                        <h4>Sender Information</h4>
+                        <p id="sender-info">ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Recipient Information</h4>
+                        <p id="recipient-info">Jane Smith<br>789 Delivery St, Kitchener, ON</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Package Details</h4>
+                        <p id="package-info">Office Supplies<br>5 kg • 12x8x6 in</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Service & Payment</h4>
+                        <p id="service-info">Standard Service<br>$24.50</p>
+                    </div>
+                </div>
+                
+                <h4>Shipment Progress</h4>
+                <div class="tracking-timeline" id="tracking-timeline">
+                    <!-- Timeline will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Recent Shipments Table -->
+            <div class="recent-shipments">
+                <h3>Your Recent Shipments</h3>
+                <table class="shipments-table">
+                    <thead>
+                        <tr>
+                            <th>Tracking Number</th>
+                            <th>Date</th>
+                            <th>From → To</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>HH-2023-0012</td>
+                            <td>Oct 15, 2023</td>
+                            <td>Toronto → Kitchener</td>
+                            <td><span class="status status-delivered">Delivered</span></td>
+                            <td><a href="#" class="track-link" data-tracking="HH-2023-0012">Track</a></td>
+                        </tr>
+                        <tr>
+                            <td>HH-2023-0011</td>
+                            <td>Oct 12, 2023</td>
+                            <td>Toronto → London</td>
+                            <td><span class="status status-transit">In Transit</span></td>
+                            <td><a href="#" class="track-link" data-tracking="HH-2023-0011">Track</a></td>
+                        </tr>
+                        <tr>
+                            <td>HH-2023-0010</td>
+                            <td>Oct 10, 2023</td>
+                            <td>Toronto → Kitchener</td>
+                            <td><span class="status status-out">Out for Delivery</span></td>
+                            <td><a href="#" class="track-link" data-tracking="HH-2023-0010">Track</a></td>
+                        </tr>
+                        <tr>
+                            <td>HH-2023-0009</td>
+                            <td>Oct 8, 2023</td>
+                            <td>Mississauga → Hamilton</td>
+                            <td><span class="status status-picked">Picked Up</span></td>
+                            <td><a href="#" class="track-link" data-tracking="HH-2023-0009">Track</a></td>
+                        </tr>
+                        <tr>
+                            <td>HH-2023-0008</td>
+                            <td>Oct 5, 2023</td>
+                            <td>Toronto → Waterloo</td>
+                            <td><span class="status status-delivered">Delivered</span></td>
+                            <td><a href="#" class="track-link" data-tracking="HH-2023-0008">Track</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>HawkHive Logistics Inc.</h3>
+                    <p>Smart Hybrid Delivery for Businesses</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Information</h3>
+                    <p>Email: Sahil@hawkhive.ca</p>
+                    <p>Phone: (226) 886-4291</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Service Area</h3>
+                    <p>Sarnia–Toronto Corridor</p>
+                    <p>Including all major cities along the route</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 HawkHive Logistics Inc.</p>
+                <p>www.hawkhive.ca</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = 'business-login.html';
+                return;
+            }
+            
+            const user = JSON.parse(currentUser);
+            document.getElementById('profile-name').textContent = user.name;
+            
+            // Load initial tracking data for demo
+            loadTrackingData('HH-2023-0012');
+        });
+        
+        // Profile dropdown
+        document.getElementById('profile-btn').addEventListener('click', function() {
+            document.getElementById('profile-dropdown').classList.toggle('active');
+        });
+        
+        // Close dropdown when clicking elsewhere
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.user-profile')) {
+                document.getElementById('profile-dropdown').classList.remove('active');
+            }
+        });
+        
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('currentUser');
+            window.location.href = 'business-login.html';
+        });
+        
+        // Tracking data for demo
+        const trackingData = {
+            'HH-2023-0012': {
+                status: 'Delivered',
+                statusClass: 'status-delivered',
+                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6',
+                recipient: 'Jane Smith<br>789 Delivery St, Kitchener, ON N2G 1A1',
+                package: 'Office Supplies<br>5 kg • 12x8x6 in',
+                service: 'Standard Service<br>$24.50',
+                timeline: [
+                    { date: 'Oct 15, 2023 - 10:30 AM', location: 'Kitchener, ON', status: 'Delivered', completed: true, current: false },
+                    { date: 'Oct 15, 2023 - 8:15 AM', location: 'Kitchener, ON', status: 'Out for delivery', completed: true, current: false },
+                    { date: 'Oct 14, 2023 - 6:45 PM', location: 'Kitchener Distribution Center', status: 'Arrived at facility', completed: true, current: false },
+                    { date: 'Oct 14, 2023 - 2:30 PM', location: 'In Transit', status: 'Departured from Toronto Hub', completed: true, current: false },
+                    { date: 'Oct 14, 2023 - 11:00 AM', location: 'Toronto, ON', status: 'Picked up by driver', completed: true, current: false },
+                    { date: 'Oct 13, 2023 - 3:15 PM', location: 'Toronto, ON', status: 'Order received and processed', completed: true, current: false }
+                ]
+            },
+            'HH-2023-0011': {
+                status: 'In Transit',
+                statusClass: 'status-transit',
+                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6',
+                recipient: 'John Davis<br>456 Main St, London, ON N6A 1A1',
+                package: 'Electronics<br>3.5 kg • 10x6x4 in',
+                service: 'Express Service<br>$38.75',
+                timeline: [
+                    { date: 'Oct 14, 2023 - 4:20 PM', location: 'London Distribution Center', status: 'Arrived at facility', completed: true, current: false },
+                    { date: 'Oct 14, 2023 - 1:45 PM', location: 'In Transit', status: 'Departured from Toronto Hub', completed: true, current: false },
+                    { date: 'Oct 14, 2023 - 10:30 AM', location: 'Toronto, ON', status: 'Picked up by driver', completed: true, current: false },
+                    { date: 'Oct 13, 2023 - 2:00 PM', location: 'Toronto, ON', status: 'Order received and processed', completed: true, current: true }
+                ]
+            },
+            'HH-2023-0010': {
+                status: 'Out for Delivery',
+                statusClass: 'status-out',
+                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6',
+                recipient: 'Robert Johnson<br>321 Oak Ave, Kitchener, ON N2H 1A1',
+                package: 'Documents<br>0.8 kg • 8x5x1 in',
+                service: 'Standard Service<br>$16.50',
+                timeline: [
+                    { date: 'Oct 16, 2023 - 7:30 AM', location: 'Kitchener, ON', status: 'Out for delivery', completed: false, current: true },
+                    { date: 'Oct 15, 2023 - 8:45 PM', location: 'Kitchener Distribution Center', status: 'Arrived at facility', completed: true, current: false },
+                    { date: 'Oct 15, 2023 - 3:15 PM', location: 'In Transit', status: 'Departured from Toronto Hub', completed: true, current: false },
+                    { date: 'Oct 15, 2023 - 11:30 AM', location: 'Toronto, ON', status: 'Picked up by driver', completed: true, current: false },
+                    { date: 'Oct 14, 2023 - 4:20 PM', location: 'Toronto, ON', status: 'Order received and processed', completed: true, current: false }
+                ]
+            },
+            'HH-2023-0009': {
+                status: 'Picked Up',
+                statusClass: 'status-picked',
+                sender: 'ABC Wholesale Ltd.<br>456 Commerce St, Mississauga, ON L5B 3C7',
+                recipient: 'Sarah Wilson<br>654 Pine St, Hamilton, ON L8P 1A1',
+                package: 'Clothing<br>2.2 kg • 14x10x3 in',
+                service: 'Standard Service<br>$19.80',
+                timeline: [
+                    { date: 'Oct 16, 2023 - 9:15 AM', location: 'Mississauga, ON', status: 'Picked up by driver', completed: true, current: true },
+                    { date: 'Oct 15, 2023 - 2:30 PM', location: 'Mississauga, ON', status: 'Order received and processed', completed: true, current: false }
+                ]
+            },
+            'HH-2023-0008': {
+                status: 'Delivered',
+                statusClass: 'status-delivered',
+                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6',
+                recipient: 'Michael Brown<br>987 Elm St, Waterloo, ON N2L 1A1',
+                package: 'Books<br>4.5 kg • 11x7x5 in',
+                service: 'Standard Service<br>$22.75',
+                timeline: [
+                    { date: 'Oct 7, 2023 - 3:45 PM', location: 'Waterloo, ON', status: 'Delivered', completed: true, current: false },
+                    { date: 'Oct 7, 2023 - 11:20 AM', location: 'Waterloo, ON', status: 'Out for delivery', completed: true, current: false },
+                    { date: 'Oct 6, 2023 - 7:30 PM', location: 'Waterloo Distribution Center', status: 'Arrived at facility', completed: true, current: false },
+                    { date: 'Oct 6, 2023 - 2:15 PM', location: 'In Transit', status: 'Departured from Toronto Hub', completed: true, current: false },
+                    { date: 'Oct 6, 2023 - 10:45 AM', location: 'Toronto, ON', status: 'Picked up by driver', completed: true, current: false },
+                    { date: 'Oct 5, 2023 - 4:10 PM', location: 'Toronto, ON', status: 'Order received and processed', completed: true, current: false }
+                ]
+            }
+        };
+        
+        // Load tracking data
+        function loadTrackingData(trackingNumber) {
+            const data = trackingData[trackingNumber];
+            if (!data) {
+                alert('Tracking number not found. Please check and try again.');
+                return;
+            }
+            
+            // Update tracking results
+            document.getElementById('result-tracking-number').textContent = trackingNumber;
+            document.getElementById('result-status').textContent = data.status;
+            document.getElementById('result-status').className = `status ${data.statusClass}`;
+            document.getElementById('sender-info').innerHTML = data.sender;
+            document.getElementById('recipient-info').innerHTML = data.recipient;
+            document.getElementById('package-info').innerHTML = data.package;
+            document.getElementById('service-info').innerHTML = data.service;
+            
+            // Build timeline
+            const timelineElement = document.getElementById('tracking-timeline');
+            timelineElement.innerHTML = '';
+            
+            data.timeline.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = `timeline-item ${item.completed ? 'completed' : ''} ${item.current ? 'current' : ''}`;
+                
+                itemElement.innerHTML = `
+                    <div class="timeline-date">${item.date}</div>
+                    <div class="timeline-location">${item.location}</div>
+                    <div class="timeline-status">${item.status}</div>
+                `;
+                
+                timelineElement.appendChild(itemElement);
+            });
+            
+            // Show results
+            document.getElementById('tracking-results').classList.add('active');
+            
+            // Scroll to results
+            document.getElementById('tracking-results').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Track button event
+        document.getElementById('track-btn').addEventListener('click', function() {
+            const trackingNumber = document.getElementById('tracking-number').value.trim();
+            if (!trackingNumber) {
+                alert('Please enter a tracking number');
+                return;
+            }
+            
+            loadTrackingData(trackingNumber);
+        });
+        
+        // Enter key to track
+        document.getElementById('tracking-number').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('track-btn').click();
+            }
+        });
+        
+        // Recent tracking items
+        document.querySelectorAll('.tracking-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const trackingNumber = this.getAttribute('data-tracking');
+                document.getElementById('tracking-number').value = trackingNumber;
+                loadTrackingData(trackingNumber);
+            });
+        });
+        
+        // Track links in table
+        document.querySelectorAll('.track-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const trackingNumber = this.getAttribute('data-tracking');
+                document.getElementById('tracking-number').value = trackingNumber;
+                loadTrackingData(trackingNumber);
+            });
+        });
+        
+        // Print tracking details
+        document.getElementById('print-tracking-btn').addEventListener('click', function() {
+            const trackingResults = document.getElementById('tracking-results');
+            const originalDisplay = trackingResults.style.display;
+            
+            // Show only the tracking results for printing
+            trackingResults.style.display = 'block';
+            
+            const printContent = trackingResults.innerHTML;
+            const originalContent = document.body.innerHTML;
+            
+            document.body.innerHTML = printContent;
+            window.print();
+            document.body.innerHTML = originalContent;
+            
+            // Restore original display
+            trackingResults.style.display = originalDisplay;
+        });
+    </script>
+</body>
+</html>

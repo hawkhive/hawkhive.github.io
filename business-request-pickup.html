@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Pickup - HawkHive Business</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --section-bg: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: var(--text);
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #4a6491 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .user-profile {
+            position: relative;
+        }
+        
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .profile-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .profile-btn i {
+            margin-left: 0.5rem;
+        }
+        
+        .profile-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            width: 200px;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            padding: 0.5rem 0;
+            display: none;
+            z-index: 10;
+        }
+        
+        .profile-dropdown.active {
+            display: block;
+        }
+        
+        .profile-dropdown a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .profile-dropdown a:hover {
+            background: var(--light);
+        }
+        
+        /* Dashboard Layout */
+        .dashboard-container {
+            flex: 1;
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar-header h3 {
+            color: var(--accent);
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent);
+        }
+        
+        .sidebar-menu i {
+            margin-right: 0.8rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            padding: 2rem;
+            background: var(--light);
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-title {
+            color: var(--primary);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background: var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background: #3c5a7a;
+        }
+        
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Form Sections */
+        .form-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .section-icon {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .pickup-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(243, 156, 18, 0.2);
+        }
+        
+        .form-group-full {
+            grid-column: 1 / -1;
+        }
+        
+        .dimensions-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .dimension-input {
+            flex: 1;
+        }
+        
+        .dimension-input input {
+            width: 100%;
+        }
+        
+        /* Price Calculator */
+        .calculator-result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--light);
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+        
+        .calculator-result.active {
+            display: block;
+        }
+        
+        .price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+        
+        .price-note {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+        }
+        
+        /* Delivery Tag Preview */
+        .delivery-tag {
+            background: white;
+            border: 2px dashed #ccc;
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .delivery-tag.active {
+            display: block;
+        }
+        
+        .tag-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 1rem;
+        }
+        
+        .tag-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .tag-section {
+            margin-bottom: 1rem;
+        }
+        
+        .tag-section h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .tag-actions {
+            text-align: center;
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        /* Loading */
+        .loading-spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .alert {
+            padding: 0.8rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .pickup-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .tag-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .tag-actions {
+                flex-direction: column;
+            }
+            
+            .nav-links li:not(:last-child) {
+                display: none;
+            }
+        }
+
+        /* Add print specific styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .delivery-tag, .delivery-tag * {
+                visibility: visible;
+            }
+            .delivery-tag {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                border: solid 1px black;
+            }
+            .delivery-tag .tag-actions {
+                display: none;
+            } 
+            
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="images/icon.png" alt="HawkHive Logo" />
+                    Hawk<span>Hive</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="business-dashboard.html">Dashboard</a></li>
+                    <li class="user-profile">
+                        <div class="profile-btn" id="profile-btn">
+                            <span id="profile-name">Business Name</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <a href="business-profile.html"><i class="fas fa-user-edit"></i> Update Profile</a>
+                            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>Business Dashboard</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="business-dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="business-request-pickup.html" class="active"><i class="fas fa-truck-loading"></i> Request Pickup</a></li>
+                <li><a href="business-track-shipment.html"><i class="fas fa-shipping-fast"></i> Track Shipment</a></li>
+                <li><a href="business-all-orders.html"><i class="fas fa-clipboard-list"></i> All Orders</a></li>
+                <li><a href="business-analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+            </ul>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title">Request Pickup</h2>
+                <a href="business-dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+
+            <div id="alertMessage" class="alert"></div>
+
+            <!-- Pickup Information Section -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="section-title">Pickup Information</h3>
+                </div>
+                <div class="pickup-form">
+                    <div class="form-group">
+                        <label for="pickup-address-select">Pickup Address</label>
+                        <select id="pickup-address-select" class="form-control">
+                            <option value="">Select pickup address</option>
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pickup-contact">Contact Person *</label>
+                        <input type="text" id="pickup-contact" placeholder="Contact person for pickup" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pickup-phone">Contact Phone *</label>
+                        <input type="tel" id="pickup-phone" placeholder="Phone number for pickup" required>
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label for="pickup-instructions">Special Instructions</label>
+                        <textarea id="pickup-instructions" rows="3" placeholder="Any special instructions for pickup"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delivery Information Section -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3 class="section-title">Delivery Information</h3>
+                </div>
+                <div class="pickup-form">
+                    <div class="form-group">
+                        <label for="delivery-name">Recipient Name *</label>
+                        <input type="text" id="delivery-name" placeholder="Recipient's full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="delivery-company">Company Name</label>
+                        <input type="text" id="delivery-company" placeholder="Company name (if applicable)">
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label for="delivery-address">Delivery Address *</label>
+                        <textarea id="delivery-address" rows="3" placeholder="Full delivery address" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="delivery-city">City *</label>
+                        <select id="delivery-city" required>
+                            <option value="">Select destination city</option>
+                            <option value="sarnia">Sarnia</option>
+                            <option value="strathroy">Strathroy</option>
+                            <option value="london">London</option>
+                            <option value="woodstock">Woodstock</option>
+                            <option value="cambridge">Cambridge</option>
+                            <option value="kitchener">Kitchener</option>
+                            <option value="waterloo">Waterloo</option>
+                            <option value="brantford">Brantford</option>
+                            <option value="burlington">Burlington</option>
+                            <option value="hamilton">Hamilton</option>
+                            <option value="oakville">Oakville</option>
+                            <option value="mississauga">Mississauga</option>
+                            <option value="toronto">Toronto</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="delivery-postal">Postal Code *</label>
+                        <input type="text" id="delivery-postal" placeholder="Postal code" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="delivery-phone">Recipient Phone</label>
+                        <input type="tel" id="delivery-phone" placeholder="Recipient's phone number">
+                    </div>
+                    <div class="form-group">
+                        <label for="delivery-email">Recipient Email</label>
+                        <input type="email" id="delivery-email" placeholder="Recipient's email address">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Package Details Section -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <h3 class="section-title">Package Details</h3>
+                </div>
+                <div class="pickup-form">
+                    <div class="form-group">
+                        <label for="package-description">Package Description *</label>
+                        <input type="text" id="package-description" placeholder="Brief description of contents" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="package-weight">Weight (kg) *</label>
+                        <input type="number" id="package-weight" min="0.5" step="0.5" placeholder="Weight in kg" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Dimensions (inches) *</label>
+                        <div class="dimensions-container">
+                            <div class="dimension-input">
+                                <input type="number" id="package-length" min="1" step="1" placeholder="Length" required>
+                            </div>
+                            <div class="dimension-input">
+                                <input type="number" id="package-width" min="1" step="1" placeholder="Width" required>
+                            </div>
+                            <div class="dimension-input">
+                                <input type="number" id="package-height" min="1" step="1" placeholder="Height" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="service-type">Service Type *</label>
+                        <select id="service-type" required>
+                            <option value="">Select service type</option>
+                            <option value="standard">Standard (1-3 Days)</option>
+                            <option value="express">Express Next-Day</option>
+                            <option value="sameDay">ZEP Same-Day</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price Calculator and Submit -->
+            <div class="form-section">
+                <button class="btn btn-large" id="calculate-price-btn">
+                    <i class="fas fa-calculator"></i> Calculate Price & Continue
+                </button>
+                
+                <div id="calculator-result" class="calculator-result">
+                    <h3>Estimated Delivery Cost</h3>
+                    <div class="price" id="calculated-price">$0.00</div>
+                    <p id="delivery-time"></p>
+                    <p class="price-note">This is the final price before taxes.</p>
+                    
+                    <button class="btn btn-large" id="submit-order-btn">
+                        <i class="fas fa-check-circle"></i> Submit Pickup Request
+                    </button>
+                </div>
+            </div>
+
+            <!-- Order Confirmation -->
+            <div class="delivery-tag" id="delivery-tag">
+                <div class="tag-header">
+                    <h3>HAWK HIVE LOGISTICS</h3>
+                    <p>BUSINESS DELIVERY ORDER</p>
+                    <p>ORDER ID: <span id="tag-order-id">#BHH-2024-0001</span></p>
+                </div>
+                <div class="tag-info">
+                    <div class="tag-section">
+                        <h4>FROM:</h4>
+                        <p id="tag-pickup-address">Business Address</p>
+                        <p id="tag-pickup-contact">Contact: Name - Phone</p>
+                        <p id="tag-pickup-instructions">Instructions: None</p>
+                    </div>
+                    <div class="tag-section">
+                        <h4>TO:</h4>
+                        <p id="tag-delivery-name">Recipient Name</p>
+                        <p id="tag-delivery-company">Company Name</p>
+                        <p id="tag-delivery-address">Delivery Address</p>
+                        <p id="tag-delivery-contact">Phone: N/A</p>
+                    </div>
+                    <div class="tag-section">
+                        <h4>PACKAGE INFO:</h4>
+                        <p id="tag-package-desc">Package Description</p>
+                        <p id="tag-package-weight">Weight: 0 kg</p>
+                        <p id="tag-package-dimensions">Dimensions: 0x0x0 in</p>
+                        <p id="tag-service-type">Service: Standard</p>
+                    </div>
+                    <div class="tag-section">
+                        <h4>ORDER DETAILS:</h4>
+                        <p id="tag-order-date">Date: Today</p>
+                        <p id="tag-delivery-time">Est. Delivery: 1-3 business days</p>
+                        <p id="tag-price">Price: $0.00</p>
+                    </div>
+                </div>
+                <div class="tag-actions">
+                    <button class="btn" id="print-tag-btn"><i class="fas fa-print"></i> Print Label</button>
+                    <button class="btn btn-secondary" id="new-order-btn">New Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>HawkHive Logistics Inc.</h3>
+                    <p>Smart Hybrid Delivery for Businesses</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Information</h3>
+                    <p>Email: Sahil@hawkhive.ca</p>
+                    <p>Phone: (226) 886-4291</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Service Area</h3>
+                    <p>Sarnia–Toronto Corridor</p>
+                    <p>Including all major cities along the route</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 HawkHive Logistics Inc.</p>
+                <p>www.hawkhive.ca</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Google Apps Script URLs
+        const PROFILE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzqaEH_NV0dJsWm0MqeG9h25fXqWrvM6HIrRWAXlarazdtpgrx-pjqsmlFcfll9c-3pnQ/exec"; // script URL for business profile manager app
+        const ORDER_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxfJ_yUthqs8kuyRbjh_GzTpOgrMjKQsGyWdqxrN-rtNLCY6_9x8znDxPGe_5rGuJg/exec"; // script URL for order submission from business order manager app
+        
+        let currentBusiness = null;
+        let businessProfile = null;
+        let calculatedPrice = 0;
+
+        // Check authentication and load business data
+        document.addEventListener('DOMContentLoaded', function() {
+            currentBusiness = localStorage.getItem('currentBusiness');
+            
+            if (!currentBusiness) {
+                window.location.href = 'business-login.html';
+                return;
+            }
+            
+            currentBusiness = JSON.parse(currentBusiness);
+            document.getElementById('profile-name').textContent = currentBusiness.name;
+            
+            // Load business profile to get addresses
+            loadBusinessProfile(currentBusiness.id);
+        });
+        
+        // Profile dropdown
+        document.getElementById('profile-btn').addEventListener('click', function() {
+            document.getElementById('profile-dropdown').classList.toggle('active');
+        });
+        
+        // Close dropdown when clicking elsewhere
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.user-profile')) {
+                document.getElementById('profile-dropdown').classList.remove('active');
+            }
+        });
+        
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('currentBusiness');
+            window.location.href = 'business-login.html';
+        });
+        
+        // Load business profile data
+        async function loadBusinessProfile(businessId) {
+            try {
+                const response = await fetch(`${PROFILE_SCRIPT_URL}?action=getBusinessProfile&businessId=${encodeURIComponent(businessId)}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    businessProfile = result.profile;
+                    populatePickupAddresses();
+                } else {
+                    showAlert('Failed to load business profile: ' + result.message, 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                showAlert('Failed to load business profile. Please try again.', 'error');
+            }
+        }
+        
+        // Populate pickup addresses dropdown
+        function populatePickupAddresses() {
+            const addressSelect = document.getElementById('pickup-address-select');
+            addressSelect.innerHTML = '<option value="">Select pickup address</option>';
+            
+            for (let i = 1; i <= 3; i++) {
+                const name = businessProfile[`Address${i} Name`];
+                const street = businessProfile[`Address${i} Street`];
+                const city = businessProfile[`Address${i} City`];
+                
+                if (name && street) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = `${name} - ${street}, ${city}`;
+                    addressSelect.appendChild(option);
+                }
+            }
+            
+            // Auto-fill contact info when address is selected
+            addressSelect.addEventListener('change', function() {
+                const addressNum = this.value;
+                if (addressNum) {
+                    document.getElementById('pickup-contact').value = businessProfile[`Address${addressNum} Contact`] || '';
+                    document.getElementById('pickup-phone').value = businessProfile[`Address${addressNum} Phone`] || '';
+                }
+            });
+        }
+        
+        // Distance matrix (same as your consumer pricing)
+        const distances = {
+            "sarnia":     { "sarnia":0,"strathroy":68,"london":101,"woodstock":153,"cambridge":198,"kitchener":208,"waterloo":214,"brantford":193,"burlington":238,"hamilton":226,"oakville":254,"mississauga":269,"toronto":293 },
+            "strathroy":  { "sarnia":68,"strathroy":0,"london":37,"woodstock":89,"cambridge":134,"kitchener":144,"waterloo":150,"brantford":129,"burlington":175,"hamilton":163,"oakville":191,"mississauga":206,"toronto":230 },
+            "london":     { "sarnia":101,"strathroy":37,"london":0,"woodstock":43,"cambridge":89,"kitchener":99,"waterloo":105,"brantford":84,"burlington":130,"hamilton":118,"oakville":146,"mississauga":161,"toronto":185 },
+            "woodstock":  { "sarnia":153,"strathroy":89,"london":43,"woodstock":0,"cambridge":51,"kitchener":61,"waterloo":67,"brantford":46,"burlington":92,"hamilton":80,"oakville":108,"mississauga":123,"toronto":147 },
+            "cambridge":  { "sarnia":198,"strathroy":134,"london":89,"woodstock":51,"cambridge":0,"kitchener":14,"waterloo":20,"brantford":54,"burlington":48,"hamilton":44,"oakville":69,"mississauga":84,"toronto":108 },
+            "kitchener":  { "sarnia":208,"strathroy":144,"london":99,"woodstock":61,"cambridge":14,"kitchener":0,"waterloo":8,"brantford":54,"burlington":48,"hamilton":44,"oakville":69,"mississauga":84,"toronto":108 },
+            "waterloo":   { "sarnia":214,"strathroy":150,"london":105,"woodstock":67,"cambridge":20,"kitchener":8,"waterloo":0,"brantford":54,"burlington":48,"hamilton":44,"oakville":69,"mississauga":84,"toronto":108 },
+            "brantford":  { "sarnia":193,"strathroy":129,"london":84,"woodstock":46,"cambridge":54,"kitchener":54,"waterloo":54,"brantford":0,"burlington":48,"hamilton":27,"oakville":55,"mississauga":70,"toronto":94 },
+            "burlington": { "sarnia":238,"strathroy":175,"london":130,"woodstock":92,"cambridge":48,"kitchener":48,"waterloo":48,"brantford":48,"burlington":0,"hamilton":27,"oakville":32,"mississauga":47,"toronto":71 },
+            "hamilton":   { "sarnia":226,"strathroy":163,"london":118,"woodstock":80,"cambridge":44,"kitchener":44,"waterloo":44,"brantford":27,"burlington":27,"hamilton":0,"oakville":32,"mississauga":47,"toronto":71 },
+            "oakville":   { "sarnia":254,"strathroy":191,"london":146,"woodstock":108,"cambridge":69,"kitchener":69,"waterloo":69,"brantford":55,"burlington":32,"hamilton":32,"oakville":0,"mississauga":21,"toronto":45 },
+            "mississauga":{ "sarnia":269,"strathroy":206,"london":161,"woodstock":123,"cambridge":84,"kitchener":84,"waterloo":84,"brantford":70,"burlington":47,"hamilton":47,"oakville":21,"mississauga":0,"toronto":29 },
+            "toronto":    { "sarnia":293,"strathroy":230,"london":185,"woodstock":147,"cambridge":108,"kitchener":108,"waterloo":108,"brantford":94,"burlington":71,"hamilton":71,"oakville":45,"mississauga":29,"toronto":0 }
+        };
+
+        function getDistanceKm(a, b) {
+            a = a.toLowerCase(); b = b.toLowerCase();
+            if (distances[a] && distances[a][b] != null) return distances[a][b];
+            return null;
+        }
+
+        // Calculate price function
+        document.getElementById('calculate-price-btn').addEventListener('click', function() {
+            calculatePrice();
+        });
+
+        function calculatePrice() {
+            const weight = parseFloat(document.getElementById('package-weight').value);
+            const service = document.getElementById('service-type').value;
+            const pickupAddressNum = document.getElementById('pickup-address-select').value;
+            const destination = document.getElementById('delivery-city').value.toLowerCase();
+
+            // Validate all required fields
+            const requiredFields = [
+                'package-weight', 'service-type', 'delivery-city', 'delivery-name',
+                'delivery-address', 'delivery-postal', 'package-description',
+                'package-length', 'package-width', 'package-height', 'pickup-address-select',
+                'pickup-contact', 'pickup-phone'
+            ];
+            
+            let isValid = true;
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.borderColor = 'red';
+                } else {
+                    field.style.borderColor = '#ddd';
+                }
+            });
+            
+            if (!isValid) {
+                showAlert('Please fill in all required fields marked with *', 'error');
+                return;
+            }
+            
+            if (weight > 30) {
+                showAlert('We cannot accept parcels more than 30 kg due to operational limitations.', 'error');
+                return;
+            }
+            
+            // Get pickup city from selected address
+            const pickupCity = businessProfile[`Address${pickupAddressNum} City`];
+            
+            // Base price by weight (same as consumer pricing)
+            let basePrice = 0;
+            if (weight <= 2) basePrice = 15;
+            else if (weight <= 7) basePrice = 17;
+            else if (weight <= 15) basePrice = 19;
+            else if (weight <= 30) basePrice = 20;
+            else basePrice = 20 + (weight - 7) * 2;
+
+            // Service adjustment
+            let deliveryTime = '';
+            if (service === 'express') {
+                basePrice *= 1.5;
+                deliveryTime = 'Next business day delivery';
+            } else if (service === 'sameDay') {
+                basePrice *= 2;
+                deliveryTime = 'Same day delivery (if ordered before 12 PM)';
+            } else {
+                deliveryTime = '1-3 business days delivery';
+            }
+
+            calculatedPrice = basePrice;
+            let d = getDistanceKm(pickupCity.toLowerCase(), destination);
+
+            // Same city → discount
+            if (pickupCity.toLowerCase() === destination) {
+                calculatedPrice = basePrice * 0.8;  // 20% off
+                deliveryTime += ' — Local delivery';
+                d = 0;
+            } else {
+                if (d <= 120) calculatedPrice = basePrice;
+                else if (d <= 250) calculatedPrice = basePrice * 1.15;
+                else if (d <= 400) calculatedPrice = basePrice * 1.25;
+                else calculatedPrice = basePrice * 1.25;
+            }
+
+            document.getElementById('calculated-price').textContent = '$' + calculatedPrice.toFixed(2);
+            document.getElementById('delivery-time').textContent = deliveryTime + ' — Distance: ' + d + ' km';
+
+            // Tax calculation
+            const totalWithTax = calculatedPrice * 1.13;
+            document.querySelector('.price-note').textContent =
+                `Your final price with taxes will be $${totalWithTax.toFixed(2)}.`;
+
+            document.getElementById('calculator-result').classList.add('active');
+            
+            // Scroll to results
+            document.getElementById('calculator-result').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Submit order
+        document.getElementById('submit-order-btn').addEventListener('click', async function() {
+            await submitBusinessOrder();
+        });
+
+        async function submitBusinessOrder() {
+            try {
+                showLoading(true);
+                
+                const pickupAddressNum = document.getElementById('pickup-address-select').value;
+                const formData = new FormData();
+                
+                formData.append('action', 'submitBusinessOrder');
+                formData.append('businessId', currentBusiness.id);
+                formData.append('businessName', currentBusiness.name);
+                
+                // Pickup information
+                formData.append('pickupAddressName', businessProfile[`Address${pickupAddressNum} Name`]);
+                formData.append('pickupContact', document.getElementById('pickup-contact').value);
+                formData.append('pickupPhone', document.getElementById('pickup-phone').value);
+                formData.append('pickupStreet', businessProfile[`Address${pickupAddressNum} Street`]);
+                formData.append('pickupCity', businessProfile[`Address${pickupAddressNum} City`]);
+                formData.append('pickupProvince', businessProfile[`Address${pickupAddressNum} Province`]);
+                formData.append('pickupPostal', businessProfile[`Address${pickupAddressNum} Postal`]);
+                formData.append('specialInstructions', document.getElementById('pickup-instructions').value);
+                
+                // Delivery information
+                formData.append('deliveryName', document.getElementById('delivery-name').value);
+                formData.append('deliveryCompany', document.getElementById('delivery-company').value);
+                formData.append('deliveryStreet', document.getElementById('delivery-address').value);
+                formData.append('deliveryCity', document.getElementById('delivery-city').value);
+                formData.append('deliveryProvince', 'ON'); // Assuming Ontario for now
+                formData.append('deliveryPostal', document.getElementById('delivery-postal').value);
+                formData.append('deliveryPhone', document.getElementById('delivery-phone').value);
+                formData.append('deliveryEmail', document.getElementById('delivery-email').value);
+                
+                // Package details
+                formData.append('packageDescription', document.getElementById('package-description').value);
+                formData.append('weight', document.getElementById('package-weight').value);
+                formData.append('length', document.getElementById('package-length').value);
+                formData.append('width', document.getElementById('package-width').value);
+                formData.append('height', document.getElementById('package-height').value);
+                formData.append('serviceType', document.getElementById('service-type').value);
+                formData.append('calculatedPrice', calculatedPrice.toFixed(2));
+                
+                const response = await fetch(ORDER_SCRIPT_URL, {
+                    method: 'POST',
+                    body: new URLSearchParams(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showOrderConfirmation(result.orderId);
+                    showAlert('Order submitted successfully! Order ID: ' + result.orderId, 'success');
+                } else {
+                    showAlert('Failed to submit order: ' + result.message, 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error submitting order:', error);
+                showAlert('Failed to submit order. Please try again.', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function showOrderConfirmation(orderId) {
+            // Update delivery tag with order details
+            const pickupAddressNum = document.getElementById('pickup-address-select').value;
+            
+            document.getElementById('tag-order-id').textContent = orderId;
+            document.getElementById('tag-pickup-address').textContent = 
+                `${businessProfile[`Address${pickupAddressNum} Street`]}, ${businessProfile[`Address${pickupAddressNum} City`]}`;
+            document.getElementById('tag-pickup-contact').textContent = 
+                `Contact: ${document.getElementById('pickup-contact').value} - ${document.getElementById('pickup-phone').value}`;
+            document.getElementById('tag-pickup-instructions').textContent = 
+                `Instructions: ${document.getElementById('pickup-instructions').value || 'None'}`;
+            document.getElementById('tag-delivery-name').textContent = document.getElementById('delivery-name').value;
+            document.getElementById('tag-delivery-company').textContent = document.getElementById('delivery-company').value || 'N/A';
+            document.getElementById('tag-delivery-address').textContent = document.getElementById('delivery-address').value;
+            document.getElementById('tag-delivery-contact').textContent = `Phone: ${document.getElementById('delivery-phone').value || 'N/A'}`;
+            document.getElementById('tag-package-desc').textContent = document.getElementById('package-description').value;
+            document.getElementById('tag-package-weight').textContent = `Weight: ${document.getElementById('package-weight').value} kg`;
+            document.getElementById('tag-package-dimensions').textContent = 
+                `Dimensions: ${document.getElementById('package-length').value}x${document.getElementById('package-width').value}x${document.getElementById('package-height').value} in`;
+            document.getElementById('tag-service-type').textContent = 
+                `Service: ${document.getElementById('service-type').options[document.getElementById('service-type').selectedIndex].text}`;
+            document.getElementById('tag-delivery-time').textContent = 
+                `Est. Delivery: ${document.getElementById('delivery-time').textContent.split(' — ')[0]}`;
+            document.getElementById('tag-price').textContent = `Price: $${calculatedPrice.toFixed(2)}`;
+            document.getElementById('tag-order-date').textContent = `Date: ${new Date().toLocaleDateString()}`;
+            
+            // Show delivery tag and hide calculator
+            document.getElementById('calculator-result').classList.remove('active');
+            document.getElementById('delivery-tag').classList.add('active');
+            
+            // Scroll to confirmation
+            document.getElementById('delivery-tag').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Print tag
+        document.getElementById('print-tag-btn').addEventListener('click', function() {
+            
+            window.print();
+        });
+
+        // New order button
+        document.getElementById('new-order-btn').addEventListener('click', function() {
+            // Reset form
+            document.getElementById('delivery-tag').classList.remove('active');
+            document.querySelectorAll('input, textarea, select').forEach(field => {
+                if (field.id !== 'pickup-address-select') {
+                    field.value = '';
+                }
+            });
+            document.getElementById('alertMessage').style.display = 'none';
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        });
+
+        // Show/hide loading state
+        function showLoading(loading) {
+            const buttons = document.querySelectorAll('#calculate-price-btn, #submit-order-btn');
+            buttons.forEach(btn => {
+                if (loading) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<span class="loading-spinner"></span> Processing...';
+                } else {
+                    btn.disabled = false;
+                    if (btn.id === 'calculate-price-btn') {
+                        btn.innerHTML = '<i class="fas fa-calculator"></i> Calculate Price & Continue';
+                    } else {
+                        btn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Pickup Request';
+                    }
+                }
+            });
+        }
+
+        // Show alert message
+        function showAlert(message, type) {
+            const alert = document.getElementById('alertMessage');
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

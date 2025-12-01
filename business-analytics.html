@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - HawkHive Business</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --section-bg: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: var(--text);
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #4a6491 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .user-profile {
+            position: relative;
+        }
+        
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .profile-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .profile-btn i {
+            margin-left: 0.5rem;
+        }
+        
+        .profile-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            width: 200px;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            padding: 0.5rem 0;
+            display: none;
+            z-index: 10;
+        }
+        
+        .profile-dropdown.active {
+            display: block;
+        }
+        
+        .profile-dropdown a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .profile-dropdown a:hover {
+            background: var(--light);
+        }
+        
+        /* Dashboard Layout */
+        .dashboard-container {
+            flex: 1;
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar-header h3 {
+            color: var(--accent);
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent);
+        }
+        
+        .sidebar-menu i {
+            margin-right: 0.8rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            padding: 2rem;
+            background: var(--light);
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-title {
+            color: var(--primary);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background: var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background: #3c5a7a;
+        }
+        
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Date Range Filter */
+        .date-filter {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .filter-row {
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .filter-group input, .filter-group select {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .quick-dates {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .quick-date-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        
+        .quick-date-btn:hover {
+            background: var(--light);
+        }
+        
+        .quick-date-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Analytics Cards */
+        .analytics-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .stat-change {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        
+        .stat-change.positive {
+            color: #28a745;
+        }
+        
+        .stat-change.negative {
+            color: #dc3545;
+        }
+        
+        /* Charts Section */
+        .charts-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .section-header h3 {
+            color: var(--primary);
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .chart-container {
+            background: var(--light);
+            border-radius: 5px;
+            padding: 1rem;
+            height: 300px;
+            position: relative;
+        }
+        
+        .chart-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #666;
+            font-style: italic;
+        }
+        
+        /* Analytics Tables */
+        .analytics-tables {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .table-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+        }
+        
+        .table-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .analytics-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .analytics-table th, .analytics-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .analytics-table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .analytics-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .progress-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 10px;
+        }
+        
+        /* Insights Section */
+        .insights-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .insight-card {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 5px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .insight-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .insight-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .filter-row {
+                flex-direction: column;
+            }
+            
+            .filter-group {
+                min-width: 100%;
+            }
+            
+            .charts-grid, .analytics-tables, .insights-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links li:not(:last-child) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="images/icon.png" alt="HawkHive Logo" />
+                    Hawk<span>Hive</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="business-dashboard.html">Dashboard</a></li>
+                    <li class="user-profile">
+                        <div class="profile-btn" id="profile-btn">
+                            <span id="profile-name">Business Name</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <a href="business-profile.html"><i class="fas fa-user-edit"></i> Update Profile</a>
+                            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>Business Dashboard</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="business-dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="business-request-pickup.html"><i class="fas fa-truck-loading"></i> Request Pickup</a></li>
+                <li><a href="business-track-shipment.html"><i class="fas fa-shipping-fast"></i> Track Shipment</a></li>
+                <li><a href="business-all-orders.html"><i class="fas fa-clipboard-list"></i> All Orders</a></li>
+                <li><a href="business-analytics.html" class="active"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+            </ul>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title">Business Analytics</h2>
+                <a href="business-dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+
+            <!-- Date Range Filter -->
+            <div class="date-filter">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="date-range">Date Range</label>
+                        <select id="date-range">
+                            <option value="last7">Last 7 Days</option>
+                            <option value="last30" selected>Last 30 Days</option>
+                            <option value="last90">Last 90 Days</option>
+                            <option value="lastYear">Last Year</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                    <div class="filter-group" id="custom-date-range" style="display: none;">
+                        <label for="date-from">From Date</label>
+                        <input type="date" id="date-from">
+                    </div>
+                    <div class="filter-group" id="custom-date-to" style="display: none;">
+                        <label for="date-to">To Date</label>
+                        <input type="date" id="date-to">
+                    </div>
+                    <div class="filter-group">
+                        <label>&nbsp;</label>
+                        <button class="btn" id="apply-date-range">Apply</button>
+                    </div>
+                </div>
+                <div class="quick-dates">
+                    <button class="quick-date-btn" data-range="today">Today</button>
+                    <button class="quick-date-btn" data-range="yesterday">Yesterday</button>
+                    <button class="quick-date-btn active" data-range="last7">Last 7 Days</button>
+                    <button class="quick-date-btn" data-range="last30">Last 30 Days</button>
+                    <button class="quick-date-btn" data-range="thisMonth">This Month</button>
+                </div>
+            </div>
+
+            <!-- Analytics Cards -->
+            <div class="analytics-cards">
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: var(--primary);">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">Total Orders</div>
+                    <div class="stat-change positive">+12% from last month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: var(--accent);">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="stat-value">142</div>
+                    <div class="stat-label">Orders Shipped</div>
+                    <div class="stat-change positive">+8% from last month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #28a745;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-value">138</div>
+                    <div class="stat-label">Orders Delivered</div>
+                    <div class="stat-change positive">+15% from last month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #17a2b8;">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-value">$8,745</div>
+                    <div class="stat-label">Total Shipping Cost</div>
+                    <div class="stat-change negative">-5% from last month</div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-section">
+                <div class="section-header">
+                    <h3>Shipping Performance</h3>
+                    <div>
+                        <button class="btn btn-small" id="export-charts">
+                            <i class="fas fa-download"></i> Export Data
+                        </button>
+                    </div>
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-placeholder">
+                            <div>
+                                <i class="fas fa-chart-line fa-3x" style="color: #ddd; margin-bottom: 1rem;"></i>
+                                <p>Orders Over Time Chart</p>
+                                <small>Monthly order volume trends</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-placeholder">
+                            <div>
+                                <i class="fas fa-chart-pie fa-3x" style="color: #ddd; margin-bottom: 1rem;"></i>
+                                <p>Service Type Distribution</p>
+                                <small>Breakdown by service level</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-placeholder">
+                            <div>
+                                <i class="fas fa-chart-bar fa-3x" style="color: #ddd; margin-bottom: 1rem;"></i>
+                                <p>Destination Cities</p>
+                                <small>Top delivery locations</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-placeholder">
+                            <div>
+                                <i class="fas fa-map-marked-alt fa-3x" style="color: #ddd; margin-bottom: 1rem;"></i>
+                                <p>Delivery Performance</p>
+                                <small>On-time delivery rates</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Tables -->
+            <div class="analytics-tables">
+                <div class="table-card">
+                    <h3>Top Destination Cities</h3>
+                    <table class="analytics-table">
+                        <thead>
+                            <tr>
+                                <th>City</th>
+                                <th>Orders</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Toronto</td>
+                                <td>45</td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 45%;"></div>
+                                    </div>
+                                    <small>45%</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Kitchener</td>
+                                <td>32</td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 32%;"></div>
+                                    </div>
+                                    <small>32%</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>London</td>
+                                <td>18</td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 18%;"></div>
+                                    </div>
+                                    <small>18%</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Hamilton</td>
+                                <td>12</td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 12%;"></div>
+                                    </div>
+                                    <small>12%</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Other</td>
+                                <td>49</td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 49%;"></div>
+                                    </div>
+                                    <small>49%</small>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-card">
+                    <h3>Service Type Performance</h3>
+                    <table class="analytics-table">
+                        <thead>
+                            <tr>
+                                <th>Service Type</th>
+                                <th>Orders</th>
+                                <th>Avg. Delivery Time</th>
+                                <th>Satisfaction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Standard</td>
+                                <td>89</td>
+                                <td>2.1 days</td>
+                                <td>94%</td>
+                            </tr>
+                            <tr>
+                                <td>Express</td>
+                                <td>42</td>
+                                <td>1.2 days</td>
+                                <td>96%</td>
+                            </tr>
+                            <tr>
+                                <td>Same Day</td>
+                                <td>25</td>
+                                <td>0.5 days</td>
+                                <td>98%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Insights Section -->
+            <div class="insights-section">
+                <div class="section-header">
+                    <h3>Business Insights</h3>
+                </div>
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <h4>📈 Peak Shipping Days</h4>
+                        <p>Your busiest shipping days are Mondays and Thursdays. Consider scheduling additional pickups on these days.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>💰 Cost Optimization</h4>
+                        <p>You could save approximately 15% on shipping costs by consolidating smaller packages into fewer shipments.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>🚚 Delivery Performance</h4>
+                        <p>Your on-time delivery rate is 96%, which is 4% higher than the industry average. Great job!</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>🎯 Customer Preferences</h4>
+                        <p>65% of your customers prefer Standard shipping. Consider promoting Express options for time-sensitive deliveries.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>HawkHive Logistics Inc.</h3>
+                    <p>Smart Hybrid Delivery for Businesses</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Information</h3>
+                    <p>Email: Sahil@hawkhive.ca</p>
+                    <p>Phone: (226) 886-4291</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Service Area</h3>
+                    <p>Sarnia–Toronto Corridor</p>
+                    <p>Including all major cities along the route</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 HawkHive Logistics Inc.</p>
+                <p>www.hawkhive.ca</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = 'business-login.html';
+                return;
+            }
+            
+            const user = JSON.parse(currentUser);
+            document.getElementById('profile-name').textContent = user.name;
+            
+            // Initialize analytics data
+            initializeAnalytics();
+        });
+        
+        // Profile dropdown
+        document.getElementById('profile-btn').addEventListener('click', function() {
+            document.getElementById('profile-dropdown').classList.toggle('active');
+        });
+        
+        // Close dropdown when clicking elsewhere
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.user-profile')) {
+                document.getElementById('profile-dropdown').classList.remove('active');
+            }
+        });
+        
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('currentUser');
+            window.location.href = 'business-login.html';
+        });
+        
+        // Date range functionality
+        document.getElementById('date-range').addEventListener('change', function() {
+            const value = this.value;
+            const customFrom = document.getElementById('custom-date-range');
+            const customTo = document.getElementById('custom-date-to');
+            
+            if (value === 'custom') {
+                customFrom.style.display = 'block';
+                customTo.style.display = 'block';
+            } else {
+                customFrom.style.display = 'none';
+                customTo.style.display = 'none';
+            }
+        });
+        
+        // Quick date buttons
+        document.querySelectorAll('.quick-date-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.quick-date-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Update date range select
+                const range = this.getAttribute('data-range');
+                document.getElementById('date-range').value = range;
+                
+                // Apply the filter
+                applyDateFilter(range);
+            });
+        });
+        
+        // Apply date range
+        document.getElementById('apply-date-range').addEventListener('click', function() {
+            const range = document.getElementById('date-range').value;
+            applyDateFilter(range);
+        });
+        
+        // Export charts data
+        document.getElementById('export-charts').addEventListener('click', function() {
+            alert('Exporting analytics data... In a real application, this would download a CSV or PDF report.');
+        });
+        
+        // Initialize analytics data
+        function initializeAnalytics() {
+            // Set default dates
+            const today = new Date();
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(today.getDate() - 30);
+            
+            document.getElementById('date-from').valueAsDate = thirtyDaysAgo;
+            document.getElementById('date-to').valueAsDate = today;
+            
+            // Load initial data
+            applyDateFilter('last30');
+        }
+        
+        // Apply date filter (simulated)
+        function applyDateFilter(range) {
+            let message = '';
+            
+            switch(range) {
+                case 'today':
+                    message = 'Showing data for today';
+                    break;
+                case 'yesterday':
+                    message = 'Showing data for yesterday';
+                    break;
+                case 'last7':
+                    message = 'Showing data for last 7 days';
+                    break;
+                case 'last30':
+                    message = 'Showing data for last 30 days';
+                    break;
+                case 'last90':
+                    message = 'Showing data for last 90 days';
+                    break;
+                case 'lastYear':
+                    message = 'Showing data for last year';
+                    break;
+                case 'thisMonth':
+                    message = 'Showing data for this month';
+                    break;
+                case 'custom':
+                    const fromDate = document.getElementById('date-from').value;
+                    const toDate = document.getElementById('date-to').value;
+                    message = `Showing data from ${fromDate} to ${toDate}`;
+                    break;
+            }
+            
+            // In a real app, this would update the charts and data
+            console.log('Date filter applied:', range, message);
+            
+            // Show a subtle notification (in a real app, this would update the actual data)
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--primary);
+                color: white;
+                padding: 0.8rem 1.5rem;
+                border-radius: 5px;
+                box-shadow: var(--shadow);
+                z-index: 1000;
+                transition: all 0.3s;
+            `;
+            notification.textContent = `📊 ${message}`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Simulate chart interactions
+        document.querySelectorAll('.chart-container').forEach(container => {
+            container.addEventListener('click', function() {
+                const placeholder = this.querySelector('.chart-placeholder');
+                const currentText = placeholder.querySelector('p').textContent;
+                
+                placeholder.innerHTML = `
+                    <div style="text-align: center;">
+                        <i class="fas fa-chart-line fa-3x" style="color: var(--accent); margin-bottom: 1rem;"></i>
+                        <p>Interactive Chart View</p>
+                        <small>Click to view detailed analytics</small>
+                        <div style="margin-top: 1rem;">
+                            <button class="btn btn-small" onclick="viewDetailedChart('${currentText}')">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        });
+        
+        // View detailed chart (simulated)
+        function viewDetailedChart(chartName) {
+            alert(`Opening detailed view for: ${chartName}\n\nIn a real application, this would open an interactive chart with drill-down capabilities.`);
+        }
+        
+        // Add some sample data updates (simulated real-time updates)
+        setInterval(() => {
+            // Randomly update one of the stat cards to simulate real-time data
+            const cards = document.querySelectorAll('.stat-card');
+            const randomCard = cards[Math.floor(Math.random() * cards.length)];
+            const valueElement = randomCard.querySelector('.stat-value');
+            const changeElement = randomCard.querySelector('.stat-change');
+            
+            if (valueElement && changeElement) {
+                const currentValue = parseInt(valueElement.textContent.replace(/[^0-9]/g, ''));
+                const change = Math.floor(Math.random() * 10) - 2; // -2 to +7
+                const newValue = Math.max(0, currentValue + change);
+                
+                valueElement.textContent = formatStatValue(valueElement.textContent, newValue);
+                
+                if (change > 0) {
+                    changeElement.textContent = `+${change} from last update`;
+                    changeElement.className = 'stat-change positive';
+                } else if (change < 0) {
+                    changeElement.textContent = `${change} from last update`;
+                    changeElement.className = 'stat-change negative';
+                } else {
+                    changeElement.textContent = `No change from last update`;
+                    changeElement.className = 'stat-change';
+                }
+            }
+        }, 10000); // Update every 10 seconds
+        
+        // Helper function to format stat values
+        function formatStatValue(originalText, newValue) {
+            if (originalText.includes('$')) {
+                return `$${newValue.toLocaleString()}`;
+            } else {
+                return newValue.toLocaleString();
+            }
+        }
+    </script>
+</body>
+</html>

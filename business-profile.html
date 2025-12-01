@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Business Profile - HawkHive Logistics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --section-bg: #f8f9fa;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: var(--text);
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #4a6491 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .user-profile {
+            position: relative;
+        }
+        
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .profile-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .profile-btn i {
+            margin-left: 0.5rem;
+        }
+        
+        .profile-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            width: 200px;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            padding: 0.5rem 0;
+            display: none;
+            z-index: 10;
+        }
+        
+        .profile-dropdown.active {
+            display: block;
+        }
+        
+        .profile-dropdown a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .profile-dropdown a:hover {
+            background: var(--light);
+        }
+        
+        /* Dashboard Layout */
+        .dashboard-container {
+            flex: 1;
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar-header h3 {
+            color: var(--accent);
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent);
+        }
+        
+        .sidebar-menu i {
+            margin-right: 0.8rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            padding: 2rem;
+            background: var(--light);
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-title {
+            color: var(--primary);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background: var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background: #3c5a7a;
+        }
+        
+        .btn-success {
+            background: var(--success);
+        }
+        
+        .btn-success:hover {
+            background: #219653;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Profile Sections */
+        .profile-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .profile-section.editing {
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .section-title-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .section-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* Form Styles */
+        .profile-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(243, 156, 18, 0.2);
+        }
+        
+        .form-group-full {
+            grid-column: 1 / -1;
+        }
+        
+        .form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light);
+        }
+        
+        /* Display Styles */
+        .display-group {
+            margin-bottom: 1.5rem;
+            padding: 0.5rem 0;
+        }
+        
+        .display-label {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+        
+        .display-value {
+            color: var(--text);
+            font-size: 1.1rem;
+            padding: 0.5rem 0;
+        }
+        
+        .display-value.empty {
+            color: #95a5a6;
+            font-style: italic;
+        }
+        
+        .display-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        /* Contact Persons */
+        .contact-persons {
+            margin-top: 1rem;
+        }
+        
+        .contact-card {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .contact-header {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .contact-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .contact-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        /* Address Management */
+        .address-list {
+            margin-top: 1rem;
+        }
+        
+        .address-card {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .address-card.default-address {
+            border-left: 4px solid var(--accent);
+        }
+        
+        .address-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .address-title {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .address-default {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        
+        .address-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .address-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-check input {
+            width: auto;
+        }
+        
+        /* Loading */
+        .loading-spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .alert {
+            padding: 0.8rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Profile Action Bar */
+        .profile-action-bar {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .profile-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status-view {
+            background: #e8f4fd;
+            color: #2980b9;
+        }
+        
+        .status-edit {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .profile-form, .contact-form, .address-form, .display-grid, .contact-display, .address-display {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links li:not(:last-child) {
+                display: none;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .profile-action-bar {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Add this right after <body> -->
+    <div id="pageLoader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 9999; display: flex; justify-content: center; align-items: center;">
+        <div style="text-align: center; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div class="loading-spinner" style="width: 3rem; height: 3rem; margin: 0 auto 1rem;"></div>
+            <p>Loading profile...</p>
+        </div>
+    </div>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="images/icon.png" alt="HawkHive Logo" />
+                    Hawk<span>Hive</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="business-dashboard.html">Dashboard</a></li>
+                    <li class="user-profile">
+                        <div class="profile-btn" id="profile-btn">
+                            <span id="profile-name">Business Name</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <a href="business-profile.html" class="active"><i class="fas fa-user-edit"></i> Update Profile</a>
+                            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>Business Dashboard</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="business-dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="business-request-pickup.html"><i class="fas fa-truck-loading"></i> Request Pickup</a></li>
+                <li><a href="business-track-shipment.html"><i class="fas fa-shipping-fast"></i> Track Shipment</a></li>
+                <li><a href="business-all-orders.html"><i class="fas fa-clipboard-list"></i> All Orders</a></li>
+                <li><a href="business-analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+            </ul>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title">Business Profile</h2>
+                <a href="business-dashboard.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+
+            <div id="alertMessage" class="alert"></div>
+
+            <!-- Profile Action Bar -->
+            <div class="profile-action-bar">
+                <div class="profile-status">
+                    <span id="statusBadge" class="status-badge status-view">
+                        <i class="fas fa-eye"></i> View Mode
+                    </span>
+                    <span>You're currently viewing your business profile</span>
+                </div>
+                <div class="section-actions">
+                    <button type="button" class="btn btn-outline" id="editProfileBtn">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                    <button type="button" class="btn btn-success" id="saveProfileBtn" style="display: none;">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="cancelEditBtn" style="display: none;">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </div>
+
+            <!-- Business Information Section -->
+            <div class="profile-section" id="businessInfoSection">
+                <div class="section-header">
+                    <div class="section-title-container">
+                        <div class="section-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3 class="section-title">Business Information</h3>
+                    </div>
+                    <div class="section-actions">
+                        <button type="button" class="btn btn-outline edit-section-btn" data-section="business">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Display View -->
+                <div class="display-grid" id="businessInfoDisplay">
+                    <div class="display-group">
+                        <div class="display-label">Business Name</div>
+                        <div class="display-value" id="displayBusinessName">-</div>
+                    </div>
+                    <div class="display-group">
+                        <div class="display-label">Business Email</div>
+                        <div class="display-value" id="displayBusinessEmail">-</div>
+                    </div>
+                    <div class="display-group">
+                        <div class="display-label">Business Type</div>
+                        <div class="display-value" id="displayBusinessType">-</div>
+                    </div>
+                    <div class="display-group">
+                        <div class="display-label">Business Phone</div>
+                        <div class="display-value" id="displayBusinessPhone">-</div>
+                    </div>
+                    <div class="display-group">
+                        <div class="display-label">Website</div>
+                        <div class="display-value" id="displayWebsite">-</div>
+                    </div>
+                    <div class="display-group">
+                        <div class="display-label">Tax ID / HST Number</div>
+                        <div class="display-value" id="displayTaxId">-</div>
+                    </div>
+                </div>
+                
+                <!-- Edit Form -->
+                <form id="businessInfoForm" class="profile-form" style="display: none;">
+                    <input type="hidden" id="businessId">
+                    
+                    <div class="form-group">
+                        <label for="businessName">Business Name *</label>
+                        <input type="text" id="businessName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="businessEmail">Business Email *</label>
+                        <input type="email" id="businessEmail" readonly style="background-color: #f8f9fa;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="businessType">Business Type</label>
+                        <select id="businessType">
+                            <option value="">Select Business Type</option>
+                            <option value="Retail">Retail</option>
+                            <option value="Wholesale">Wholesale</option>
+                            <option value="E-commerce">E-commerce</option>
+                            <option value="Manufacturing">Manufacturing</option>
+                            <option value="Service">Service</option>
+                            <option value="Auto Parts">Auto Parts</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="businessPhone">Business Phone *</label>
+                        <input type="tel" id="businessPhone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="website">Website</label>
+                        <input type="text" id="website" placeholder="www.example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="taxId">Tax ID / HST Number</label>
+                        <input type="text" id="taxId" placeholder="12345-6789-RT0001">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary cancel-section-btn" data-section="business">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn btn-success save-section-btn" data-section="business">
+                            Save Business Info
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Contact Persons Section -->
+            <div class="profile-section" id="contactsSection">
+                <div class="section-header">
+                    <div class="section-title-container">
+                        <div class="section-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="section-title">Contact Persons</h3>
+                    </div>
+                    
+                </div>
+                
+                <!-- Display View -->
+                <div class="contact-persons" id="contactsDisplay">
+                    <!-- Contacts will be populated by JavaScript -->
+                </div>
+                
+                <!-- Edit Form -->
+                <div class="contact-persons" id="contactsForm" style="display: none;">
+                    <!-- Contact forms will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Pickup Addresses Section -->
+            <div class="profile-section" id="addressesSection">
+                <div class="section-header">
+                    <div class="section-title-container">
+                        <div class="section-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3 class="section-title">Pickup Addresses</h3>
+                    </div>
+                </div>
+                
+                <!-- Display View -->
+                <div class="address-list" id="addressesDisplay">
+                    <!-- Addresses will be populated by JavaScript -->
+                </div>
+                
+                <!-- Edit Form -->
+                <div class="address-list" id="addressesForm" style="display: none;">
+                    <!-- Address forms will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>HawkHive Logistics Inc.</h3>
+                    <p>Smart Hybrid Delivery for Businesses</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Information</h3>
+                    <p>Email: Sahil@hawkhive.ca</p>
+                    <p>Phone: (226) 886-4291</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Service Area</h3>
+                    <p>Sarnia–Toronto Corridor</p>
+                    <p>Including all major cities along the route</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 HawkHive Logistics Inc.</p>
+                <p>www.hawkhive.ca</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Google Apps Script URL for Business Profile Management
+        const PROFILE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzqaEH_NV0dJsWm0MqeG9h25fXqWrvM6HIrRWAXlarazdtpgrx-pjqsmlFcfll9c-3pnQ/exec";
+        
+        let currentBusiness = null;
+        let isEditing = false;
+        let originalData = {};
+
+        // Check authentication and load profile data
+        document.addEventListener('DOMContentLoaded', function() {
+            currentBusiness = localStorage.getItem('currentBusiness');
+            
+            if (!currentBusiness) {
+                window.location.href = 'business-login.html';
+                return;
+            }
+            
+            currentBusiness = JSON.parse(currentBusiness);
+            document.getElementById('profile-name').textContent = currentBusiness.name;
+            
+            // Load business profile data
+            loadBusinessProfile(currentBusiness.id);
+            
+            // Set up event listeners
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            // Profile dropdown
+            document.getElementById('profile-btn').addEventListener('click', function() {
+                document.getElementById('profile-dropdown').classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking elsewhere
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.user-profile')) {
+                    document.getElementById('profile-dropdown').classList.remove('active');
+                }
+            });
+            
+            // Logout functionality
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('currentBusiness');
+                window.location.href = 'business-login.html';
+            });
+            
+            // Edit profile button
+            document.getElementById('editProfileBtn').addEventListener('click', function() {
+                enableEditMode();
+            });
+            
+            // Save profile button
+            document.getElementById('saveProfileBtn').addEventListener('click', function() {
+                saveBusinessProfile();
+            });
+            
+            // Cancel edit button
+            document.getElementById('cancelEditBtn').addEventListener('click', function() {
+                disableEditMode();
+            });
+            
+            // Section edit buttons
+            document.querySelectorAll('.edit-section-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const section = this.dataset.section;
+                    enableSectionEdit(section);
+                });
+            });
+            
+            // Section cancel buttons
+            document.querySelectorAll('.cancel-section-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const section = this.dataset.section;
+                    disableSectionEdit(section);
+                });
+            });
+            
+            // Section save buttons
+            document.querySelectorAll('.save-section-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const section = this.dataset.section;
+                    saveSection(section);
+                });
+            });
+            
+            // Handle default address selection
+            document.addEventListener('change', function(e) {
+                if (e.target.type === 'checkbox' && e.target.id.includes('Default')) {
+                    if (e.target.checked) {
+                        // Uncheck all other default address checkboxes
+                        document.querySelectorAll('input[type="checkbox"][id*="Default"]').forEach(otherCheckbox => {
+                            if (otherCheckbox !== e.target) {
+                                otherCheckbox.checked = false;
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        
+        // Load business profile data
+        async function loadBusinessProfile(businessId) {
+            try {
+                // Show page loader
+                const pageLoader = document.getElementById('pageLoader');
+                if (pageLoader) pageLoader.style.display = 'flex';
+                
+                const response = await fetch(`${PROFILE_SCRIPT_URL}?action=getBusinessProfile&businessId=${encodeURIComponent(businessId)}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    originalData = result.profile;
+                    populateDisplay(result.profile);
+                } else {
+                    showAlert('Failed to load profile: ' + result.message, 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                showAlert('Failed to load profile. Please try again.', 'error');
+            } finally {
+                // Hide page loader
+                const pageLoader = document.getElementById('pageLoader');
+                if (pageLoader) pageLoader.style.display = 'none';
+            }
+        }
+        
+        // Populate display with profile data
+        function populateDisplay(profile) {
+            // Basic business info
+            document.getElementById('businessId').value = profile['Business ID'] || '';
+            document.getElementById('displayBusinessName').textContent = profile['Business Name'] || 'Not provided';
+            document.getElementById('displayBusinessEmail').textContent = profile['Business Email'] || 'Not provided';
+            document.getElementById('displayBusinessType').textContent = profile['Business Type'] || 'Not provided';
+            document.getElementById('displayBusinessPhone').textContent = profile['Business Phone'] || 'Not provided';
+            document.getElementById('displayWebsite').textContent = profile['Website'] || 'Not provided';
+            document.getElementById('displayTaxId').textContent = profile['Tax ID/HST'] || 'Not provided';
+            
+            // Add empty class for styling
+            document.querySelectorAll('.display-value').forEach(el => {
+                if (el.textContent === 'Not provided') {
+                    el.classList.add('empty');
+                }
+            });
+            
+            // Populate contacts display
+            populateContactsDisplay(profile);
+            
+            // Populate addresses display
+            populateAddressesDisplay(profile);
+        }
+        
+        // Populate contacts display
+        function populateContactsDisplay(profile) {
+            const contactsDisplay = document.getElementById('contactsDisplay');
+            contactsDisplay.innerHTML = '';
+            
+            for (let i = 1; i <= 3; i++) {
+                const contactName = profile[`Contact${i} Name`] || '';
+                const contactTitle = profile[`Contact${i} Title`] || '';
+                const contactPhone = profile[`Contact${i} Phone`] || '';
+                const contactEmail = profile[`Contact${i} Email`] || '';
+                
+                // Only show contact if at least name is provided
+                if (contactName || i === 1) {
+                    const contactTitleText = i === 1 ? 'Primary Contact' : 
+                                           i === 2 ? 'Secondary Contact' : 'Additional Contact';
+                    
+                    const contactCard = document.createElement('div');
+                    contactCard.className = 'contact-card';
+                    contactCard.innerHTML = `
+                        <div class="contact-header">${contactTitleText}</div>
+                        <div class="contact-display">
+                            <div class="display-group">
+                                <div class="display-label">Full Name</div>
+                                <div class="display-value ${!contactName ? 'empty' : ''}">${contactName || 'Not provided'}</div>
+                            </div>
+                            <div class="display-group">
+                                <div class="display-label">Job Title</div>
+                                <div class="display-value ${!contactTitle ? 'empty' : ''}">${contactTitle || 'Not provided'}</div>
+                            </div>
+                            <div class="display-group">
+                                <div class="display-label">Phone</div>
+                                <div class="display-value ${!contactPhone ? 'empty' : ''}">${contactPhone || 'Not provided'}</div>
+                            </div>
+                            <div class="display-group">
+                                <div class="display-label">Email</div>
+                                <div class="display-value ${!contactEmail ? 'empty' : ''}">${contactEmail || 'Not provided'}</div>
+                            </div>
+                        </div>
+                    `;
+                    contactsDisplay.appendChild(contactCard);
+                }
+            }
+        }
+        
+        // Populate addresses display
+        function populateAddressesDisplay(profile) {
+            const addressesDisplay = document.getElementById('addressesDisplay');
+            addressesDisplay.innerHTML = '';
+            
+            for (let i = 1; i <= 3; i++) {
+                const addressName = profile[`Address${i} Name`] || '';
+                const addressStreet = profile[`Address${i} Street`] || '';
+                const addressCity = profile[`Address${i} City`] || '';
+                const addressProvince = profile[`Address${i} Province`] || '';
+                const addressPostal = profile[`Address${i} Postal`] || '';
+                const addressContact = profile[`Address${i} Contact`] || '';
+                const addressPhone = profile[`Address${i} Phone`] || '';
+                const isDefault = profile[`Address${i} Default`] === 'TRUE';
+                
+                // Only show address if at least street is provided
+                if (addressStreet || i === 1) {
+                    const addressTitle = i === 1 ? 'Primary Address' : 
+                                       i === 2 ? 'Secondary Address' : 'Additional Address';
+                    
+                    const addressCard = document.createElement('div');
+                    addressCard.className = `address-card ${isDefault ? 'default-address' : ''}`;
+                    addressCard.innerHTML = `
+                        <div class="address-header">
+                            <div class="address-title">${addressTitle}</div>
+                            ${isDefault ? '<span class="address-default">Default</span>' : ''}
+                        </div>
+                        <div class="address-display">
+                            <div class="display-group">
+                                <div class="display-label">Address Name</div>
+                                <div class="display-value ${!addressName ? 'empty' : ''}">${addressName || 'Not provided'}</div>
+                            </div>
+                            <div class="display-group form-group-full">
+                                <div class="display-label">Street Address</div>
+                                <div class="display-value ${!addressStreet ? 'empty' : ''}">${addressStreet || 'Not provided'}</div>
+                            </div>
+                            <div class="display-group">
+                                <div class="display-label">City</div>
+                                <div class="display-value ${!addressCity ? 'empty' : ''}">${addressCity || 'Not provided'}</div>
+                            </div>
+                            <div class="display-group">
+                                <div class="display-label">Province</div>
+                                <div class="display-value ${!addressProvince ? 'empty' : ''}">${addressProvince || 'Not provided'}</div>
+                            </div>
+                            <div class="display-group">
+                                <div class="display-label">Postal Code</div>
+                                <div class="display-value ${!addressPostal ? 'empty' : ''}">${addressPostal || 'Not provided'}</div>
+                            </div>
+                            <div class="display-group">
+                                <div class="display-label">Contact Person</div>
+                                <div class="display-value ${!addressContact ? 'empty' : ''}">${addressContact || 'Not provided'}</div>
+                            </div>
+                            <div class="display-group">
+                                <div class="display-label">Contact Phone</div>
+                                <div class="display-value ${!addressPhone ? 'empty' : ''}">${addressPhone || 'Not provided'}</div>
+                            </div>
+                        </div>
+                    `;
+                    addressesDisplay.appendChild(addressCard);
+                }
+            }
+        }
+        
+        // Enable edit mode for entire profile
+        function enableEditMode() {
+            isEditing = true;
+            updateUIForEditMode();
+            
+            // Populate all forms with current data
+            populateAllForms(originalData);
+            
+            // Show all edit forms
+            document.querySelectorAll('.profile-form, #contactsForm, #addressesForm').forEach(form => {
+                form.style.display = 'block';
+            });
+            
+            // Hide all displays
+            document.querySelectorAll('#businessInfoDisplay, #contactsDisplay, #addressesDisplay').forEach(display => {
+                display.style.display = 'none';
+            });
+            
+            // Add editing class to sections
+            document.querySelectorAll('.profile-section').forEach(section => {
+                section.classList.add('editing');
+            });
+            
+            // Hide section edit buttons
+            document.querySelectorAll('.edit-section-btn').forEach(btn => {
+                btn.style.display = 'none';
+            });
+        }
+        
+        // Disable edit mode
+        function disableEditMode() {
+            isEditing = false;
+            updateUIForViewMode();
+            
+            // Hide all edit forms
+            document.querySelectorAll('.profile-form, #contactsForm, #addressesForm').forEach(form => {
+                form.style.display = 'none';
+            });
+            
+            // Show all displays
+            document.querySelectorAll('#businessInfoDisplay, #contactsDisplay, #addressesDisplay').forEach(display => {
+                display.style.display = 'block';
+            });
+            
+            // Remove editing class from sections
+            document.querySelectorAll('.profile-section').forEach(section => {
+                section.classList.remove('editing');
+            });
+            
+            // Show section edit buttons
+            document.querySelectorAll('.edit-section-btn').forEach(btn => {
+                btn.style.display = 'inline-flex';
+            });
+        }
+        
+        // Enable edit mode for a specific section
+        function enableSectionEdit(section) {
+            // Populate form for this section
+            populateSectionForm(section, originalData);
+            
+            // Hide display and show form for this section
+            document.getElementById(`${section}InfoDisplay`).style.display = 'none';
+            document.getElementById(`${section}InfoForm`).style.display = 'block';
+            
+            // Add editing class to this section
+            document.getElementById(`${section}InfoSection`).classList.add('editing');
+            
+            // Hide edit button for this section
+            document.querySelector(`.edit-section-btn[data-section="${section}"]`).style.display = 'none';
+        }
+        
+        // Disable edit mode for a specific section
+        function disableSectionEdit(section) {
+            // Hide form and show display for this section
+            document.getElementById(`${section}InfoForm`).style.display = 'none';
+            document.getElementById(`${section}InfoDisplay`).style.display = 'block';
+            
+            // Remove editing class from this section
+            document.getElementById(`${section}InfoSection`).classList.remove('editing');
+            
+            // Show edit button for this section
+            document.querySelector(`.edit-section-btn[data-section="${section}"]`).style.display = 'inline-flex';
+        }
+        
+        // Update UI for edit mode
+        function updateUIForEditMode() {
+            document.getElementById('statusBadge').className = 'status-badge status-edit';
+            document.getElementById('statusBadge').innerHTML = '<i class="fas fa-edit"></i> Edit Mode';
+            document.querySelector('.profile-status span:last-child').textContent = 'You\'re currently editing your business profile';
+            
+            document.getElementById('editProfileBtn').style.display = 'none';
+            document.getElementById('saveProfileBtn').style.display = 'inline-flex';
+            document.getElementById('cancelEditBtn').style.display = 'inline-flex';
+        }
+        
+        // Update UI for view mode
+        function updateUIForViewMode() {
+            document.getElementById('statusBadge').className = 'status-badge status-view';
+            document.getElementById('statusBadge').innerHTML = '<i class="fas fa-eye"></i> View Mode';
+            document.querySelector('.profile-status span:last-child').textContent = 'You\'re currently viewing your business profile';
+            
+            document.getElementById('editProfileBtn').style.display = 'inline-flex';
+            document.getElementById('saveProfileBtn').style.display = 'none';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+        }
+        
+        // Populate all forms with data
+        function populateAllForms(profile) {
+            // Basic business info
+            document.getElementById('businessName').value = profile['Business Name'] || '';
+            document.getElementById('businessEmail').value = profile['Business Email'] || '';
+            document.getElementById('businessType').value = profile['Business Type'] || '';
+            document.getElementById('businessPhone').value = profile['Business Phone'] || '';
+            document.getElementById('website').value = profile['Website'] || '';
+            document.getElementById('taxId').value = profile['Tax ID/HST'] || '';
+            
+            // Populate contacts form
+            populateContactsForm(profile);
+            
+            // Populate addresses form
+            populateAddressesForm(profile);
+        }
+        
+        // Populate contacts form
+        function populateContactsForm(profile) {
+            const contactsForm = document.getElementById('contactsForm');
+            contactsForm.innerHTML = '';
+            
+            for (let i = 1; i <= 3; i++) {
+                const contactTitleText = i === 1 ? 'Primary Contact' : 
+                                       i === 2 ? 'Secondary Contact' : 'Additional Contact';
+                
+                const contactCard = document.createElement('div');
+                contactCard.className = 'contact-card';
+                contactCard.innerHTML = `
+                    <div class="contact-header">${contactTitleText}</div>
+                    <div class="contact-form">
+                        <div class="form-group">
+                            <label for="contact${i}Name">Full Name ${i === 1 ? '*' : ''}</label>
+                            <input type="text" id="contact${i}Name" ${i === 1 ? 'required' : ''} value="${profile[`Contact${i} Name`] || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact${i}Title">Job Title</label>
+                            <input type="text" id="contact${i}Title" placeholder="e.g., Operations Manager" value="${profile[`Contact${i} Title`] || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact${i}Phone">Phone ${i === 1 ? '*' : ''}</label>
+                            <input type="tel" id="contact${i}Phone" ${i === 1 ? 'required' : ''} value="${profile[`Contact${i} Phone`] || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact${i}Email">Email ${i === 1 ? '*' : ''}</label>
+                            <input type="email" id="contact${i}Email" ${i === 1 ? 'required' : ''} value="${profile[`Contact${i} Email`] || ''}">
+                        </div>
+                    </div>
+                `;
+                contactsForm.appendChild(contactCard);
+            }
+        }
+        
+        // Populate addresses form
+        function populateAddressesForm(profile) {
+            const addressesForm = document.getElementById('addressesForm');
+            addressesForm.innerHTML = '';
+            
+            for (let i = 1; i <= 3; i++) {
+                const addressTitle = i === 1 ? 'Primary Address' : 
+                                   i === 2 ? 'Secondary Address' : 'Additional Address';
+                
+                const isDefault = profile[`Address${i} Default`] === 'TRUE';
+                
+                const addressCard = document.createElement('div');
+                addressCard.className = 'address-card';
+                addressCard.innerHTML = `
+                    <div class="address-header">
+                        <div class="address-title">${addressTitle}</div>
+                    </div>
+                    <div class="address-form">
+                        <div class="form-group">
+                            <label for="address${i}Name">Address Name ${i === 1 ? '*' : ''}</label>
+                            <input type="text" id="address${i}Name" ${i === 1 ? 'required' : ''} value="${profile[`Address${i} Name`] || (i === 1 ? 'Primary Office' : '')}">
+                        </div>
+                        <div class="form-group form-group-full">
+                            <label for="address${i}Street">Street Address ${i === 1 ? '*' : ''}</label>
+                            <input type="text" id="address${i}Street" ${i === 1 ? 'required' : ''} value="${profile[`Address${i} Street`] || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label for="address${i}City">City ${i === 1 ? '*' : ''}</label>
+                            <input type="text" id="address${i}City" ${i === 1 ? 'required' : ''} value="${profile[`Address${i} City`] || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label for="address${i}Province">Province ${i === 1 ? '*' : ''}</label>
+                            <select id="address${i}Province" ${i === 1 ? 'required' : ''}>
+                                <option value="">Select Province</option>
+                                <option value="ON" ${profile[`Address${i} Province`] === 'ON' ? 'selected' : ''}>Ontario</option>
+                                <option value="BC" ${profile[`Address${i} Province`] === 'BC' ? 'selected' : ''}>British Columbia</option>
+                                <option value="QC" ${profile[`Address${i} Province`] === 'QC' ? 'selected' : ''}>Quebec</option>
+                                <option value="AB" ${profile[`Address${i} Province`] === 'AB' ? 'selected' : ''}>Alberta</option>
+                                <option value="MB" ${profile[`Address${i} Province`] === 'MB' ? 'selected' : ''}>Manitoba</option>
+                                <option value="SK" ${profile[`Address${i} Province`] === 'SK' ? 'selected' : ''}>Saskatchewan</option>
+                                <option value="NS" ${profile[`Address${i} Province`] === 'NS' ? 'selected' : ''}>Nova Scotia</option>
+                                <option value="NB" ${profile[`Address${i} Province`] === 'NB' ? 'selected' : ''}>New Brunswick</option>
+                                <option value="NL" ${profile[`Address${i} Province`] === 'NL' ? 'selected' : ''}>Newfoundland and Labrador</option>
+                                <option value="PE" ${profile[`Address${i} Province`] === 'PE' ? 'selected' : ''}>Prince Edward Island</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="address${i}Postal">Postal Code ${i === 1 ? '*' : ''}</label>
+                            <input type="text" id="address${i}Postal" ${i === 1 ? 'required' : ''} value="${profile[`Address${i} Postal`] || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label for="address${i}Contact">Contact Person</label>
+                            <input type="text" id="address${i}Contact" value="${profile[`Address${i} Contact`] || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label for="address${i}Phone">Contact Phone</label>
+                            <input type="tel" id="address${i}Phone" value="${profile[`Address${i} Phone`] || ''}">
+                        </div>
+                        <div class="form-group form-group-full">
+                            <div class="form-check">
+                                <input type="checkbox" id="address${i}Default" ${isDefault ? 'checked' : ''}>
+                                <label for="address${i}Default">Set as default pickup address</label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                addressesForm.appendChild(addressCard);
+            }
+        }
+        
+        // Populate form for a specific section
+        function populateSectionForm(section, profile) {
+            if (section === 'business') {
+                document.getElementById('businessName').value = profile['Business Name'] || '';
+                document.getElementById('businessEmail').value = profile['Business Email'] || '';
+                document.getElementById('businessType').value = profile['Business Type'] || '';
+                document.getElementById('businessPhone').value = profile['Business Phone'] || '';
+                document.getElementById('website').value = profile['Website'] || '';
+                document.getElementById('taxId').value = profile['Tax ID/HST'] || '';
+            }
+            // Note: Section-based editing for contacts and addresses would require more complex implementation
+        }
+        
+        // Save entire profile
+        // Update the saveBusinessProfile function
+        async function saveBusinessProfile() {
+            try {
+                showLoading(true, 'save'); // Only show loading for save operation
+                
+                const businessId = document.getElementById('businessId').value;
+                const params = buildParamsObject();
+                
+                console.log('Saving profile with params:', params);
+                
+                const response = await fetch(PROFILE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams(params)
+                });
+                
+                const result = await response.json();
+                console.log('Server response:', result);
+                
+                if (result.success) {
+                    showAlert('Profile updated successfully!', 'success');
+                    // Reload the profile to get updated data
+                    await loadBusinessProfile(currentBusiness.id);
+                    // Switch back to view mode
+                    disableEditMode();
+                } else {
+                    showAlert('Failed to update profile: ' + result.message, 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                showAlert('Failed to update profile. Please try again.', 'error');
+            } finally {
+                showLoading(false, 'save');
+            }
+        }
+        
+        // Save a specific section
+        async function saveSection(section) {
+            // This would require a more targeted approach to only save specific section data
+            // For now, we'll just save the entire profile
+            saveBusinessProfile();
+        }
+        
+        // Build parameters object for saving
+        function buildParamsObject() {
+            const businessId = document.getElementById('businessId').value;
+            
+            const params = {
+                action: 'updateBusinessProfile',
+                businessId: businessId,
+                // Basic business info
+                'Business Name': document.getElementById('businessName').value || '',
+                'Business Type': document.getElementById('businessType').value || '',
+                'Business Phone': document.getElementById('businessPhone').value || '',
+                'Website': document.getElementById('website').value || '',
+                'Tax ID/HST': document.getElementById('taxId').value || '',
+            };
+            
+            // Contact persons
+            for (let i = 1; i <= 3; i++) {
+                params[`Contact${i} Name`] = document.getElementById(`contact${i}Name`).value || '';
+                params[`Contact${i} Title`] = document.getElementById(`contact${i}Title`).value || '';
+                params[`Contact${i} Phone`] = document.getElementById(`contact${i}Phone`).value || '';
+                params[`Contact${i} Email`] = document.getElementById(`contact${i}Email`).value || '';
+            }
+            
+            // Addresses
+            for (let i = 1; i <= 3; i++) {
+                params[`Address${i} Name`] = document.getElementById(`address${i}Name`).value || '';
+                params[`Address${i} Street`] = document.getElementById(`address${i}Street`).value || '';
+                params[`Address${i} City`] = document.getElementById(`address${i}City`).value || '';
+                params[`Address${i} Province`] = document.getElementById(`address${i}Province`).value || '';
+                params[`Address${i} Postal`] = document.getElementById(`address${i}Postal`).value || '';
+                params[`Address${i} Contact`] = document.getElementById(`address${i}Contact`).value || '';
+                params[`Address${i} Phone`] = document.getElementById(`address${i}Phone`).value || '';
+                params[`Address${i} Default`] = document.getElementById(`address${i}Default`).checked ? 'true' : 'false';
+            }
+            
+            return params;
+        }
+        
+        // Show/hide loading state
+        function showLoading(loading, context = 'save') {
+            if (context === 'save') {
+                const saveText = document.getElementById('saveText');
+                const saveLoading = document.getElementById('saveLoading');
+                const saveBtn = document.getElementById('saveProfileBtn');
+                
+                if (saveText && saveLoading && saveBtn) {
+                    if (loading) {
+                        saveText.style.display = 'none';
+                        saveLoading.style.display = 'inline';
+                        saveBtn.disabled = true;
+                    } else {
+                        saveText.style.display = 'inline';
+                        saveLoading.style.display = 'none';
+                        saveBtn.disabled = false;
+                    }
+                }
+            } else if (context === 'page') {
+                // For page loading, you could show a global loading indicator
+                const pageLoader = document.getElementById('pageLoader');
+                if (pageLoader) {
+                    pageLoader.style.display = loading ? 'block' : 'none';
+                }
+            }
+        }
+        
+        // Show alert message
+        function showAlert(message, type) {
+            const alert = document.getElementById('alertMessage');
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
