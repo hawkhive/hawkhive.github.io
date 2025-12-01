@@ -638,33 +638,33 @@
                     <div class="stat-icon" style="color: var(--primary);">
                         <i class="fas fa-box-open"></i>
                     </div>
-                    <div class="stat-value">156</div>
+                    <div class="stat-value" id="total-orders">0</div>
                     <div class="stat-label">Total Orders</div>
-                    <div class="stat-change positive">+12% from last month</div>
+                    <div class="stat-change positive" id="orders-change">+0% from previous period</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon" style="color: var(--accent);">
                         <i class="fas fa-truck"></i>
                     </div>
-                    <div class="stat-value">142</div>
+                    <div class="stat-value" id="orders-shipped">0</div>
                     <div class="stat-label">Orders Shipped</div>
-                    <div class="stat-change positive">+8% from last month</div>
+                    <div class="stat-change positive" id="shipped-change">+0% from previous period</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon" style="color: #28a745;">
                         <i class="fas fa-check-circle"></i>
                     </div>
-                    <div class="stat-value">138</div>
+                    <div class="stat-value" id="orders-delivered">0</div>
                     <div class="stat-label">Orders Delivered</div>
-                    <div class="stat-change positive">+15% from last month</div>
+                    <div class="stat-change positive" id="delivered-change">+0% from previous period</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon" style="color: #17a2b8;">
                         <i class="fas fa-dollar-sign"></i>
                     </div>
-                    <div class="stat-value">$8,745</div>
+                    <div class="stat-value" id="total-cost">$0</div>
                     <div class="stat-label">Total Shipping Cost</div>
-                    <div class="stat-change negative">-5% from last month</div>
+                    <div class="stat-change negative" id="cost-change">-0% from previous period</div>
                 </div>
             </div>
 
@@ -681,38 +681,22 @@
                 <div class="charts-grid">
                     <div class="chart-container">
                         <div class="chart-placeholder">
-                            <div>
-                                <i class="fas fa-chart-line fa-3x" style="color: #ddd; margin-bottom: 1rem;"></i>
-                                <p>Orders Over Time Chart</p>
-                                <small>Monthly order volume trends</small>
-                            </div>
+                            <!-- Orders Over Time Chart will be loaded here -->
                         </div>
                     </div>
                     <div class="chart-container">
                         <div class="chart-placeholder">
-                            <div>
-                                <i class="fas fa-chart-pie fa-3x" style="color: #ddd; margin-bottom: 1rem;"></i>
-                                <p>Service Type Distribution</p>
-                                <small>Breakdown by service level</small>
-                            </div>
+                            <!-- Service Type Distribution will be loaded here -->
                         </div>
                     </div>
                     <div class="chart-container">
                         <div class="chart-placeholder">
-                            <div>
-                                <i class="fas fa-chart-bar fa-3x" style="color: #ddd; margin-bottom: 1rem;"></i>
-                                <p>Destination Cities</p>
-                                <small>Top delivery locations</small>
-                            </div>
+                            <!-- Top Destinations will be loaded here -->
                         </div>
                     </div>
                     <div class="chart-container">
                         <div class="chart-placeholder">
-                            <div>
-                                <i class="fas fa-map-marked-alt fa-3x" style="color: #ddd; margin-bottom: 1rem;"></i>
-                                <p>Delivery Performance</p>
-                                <small>On-time delivery rates</small>
-                            </div>
+                            <!-- Delivery Performance will be loaded here -->
                         </div>
                     </div>
                 </div>
@@ -720,6 +704,7 @@
 
             <!-- Analytics Tables -->
             <div class="analytics-tables">
+                <!-- Top Destinations Table -->
                 <div class="table-card">
                     <h3>Top Destination Cities</h3>
                     <table class="analytics-table">
@@ -731,59 +716,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Toronto</td>
-                                <td>45</td>
-                                <td>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: 45%;"></div>
-                                    </div>
-                                    <small>45%</small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Kitchener</td>
-                                <td>32</td>
-                                <td>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: 32%;"></div>
-                                    </div>
-                                    <small>32%</small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>London</td>
-                                <td>18</td>
-                                <td>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: 18%;"></div>
-                                    </div>
-                                    <small>18%</small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Hamilton</td>
-                                <td>12</td>
-                                <td>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: 12%;"></div>
-                                    </div>
-                                    <small>12%</small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Other</td>
-                                <td>49</td>
-                                <td>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: 49%;"></div>
-                                    </div>
-                                    <small>49%</small>
-                                </td>
-                            </tr>
+                            <!-- Data will be loaded here -->
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Service Performance Table -->
                 <div class="table-card">
                     <h3>Service Type Performance</h3>
                     <table class="analytics-table">
@@ -796,24 +734,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Standard</td>
-                                <td>89</td>
-                                <td>2.1 days</td>
-                                <td>94%</td>
-                            </tr>
-                            <tr>
-                                <td>Express</td>
-                                <td>42</td>
-                                <td>1.2 days</td>
-                                <td>96%</td>
-                            </tr>
-                            <tr>
-                                <td>Same Day</td>
-                                <td>25</td>
-                                <td>0.5 days</td>
-                                <td>98%</td>
-                            </tr>
+                            <!-- Data will be loaded here -->
                         </tbody>
                     </table>
                 </div>
@@ -873,19 +794,30 @@
     </footer>
 
     <script>
+        // Configuration - Update this with your Analytics Web App URL
+        const ANALYTICS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwuwtiBhMLz04lHpVl8N0QRPCGXlBnEFjCTIoWMNrsdNsY8ZxJhAsyjDP1cH8LISTxMAQ/exec";
+        
+        // Global variables
+        let currentStartDate = null;
+        let currentEndDate = null;
+        let currentBusiness = null;
+        
         // Check if user is logged in
         document.addEventListener('DOMContentLoaded', function() {
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
+            const businessData = localStorage.getItem('currentBusiness');
+            if (!businessData) {
                 window.location.href = 'business-login.html';
                 return;
             }
             
-            const user = JSON.parse(currentUser);
-            document.getElementById('profile-name').textContent = user.name;
+            currentBusiness = JSON.parse(businessData);
+            document.getElementById('profile-name').textContent = currentBusiness.name;
             
-            // Initialize analytics data
-            initializeAnalytics();
+            // Initialize dates (last 30 days by default)
+            initializeDates();
+            
+            // Load initial analytics data
+            loadAnalyticsData();
         });
         
         // Profile dropdown
@@ -903,11 +835,27 @@
         // Logout functionality
         document.getElementById('logout-btn').addEventListener('click', function(e) {
             e.preventDefault();
-            localStorage.removeItem('currentUser');
+            localStorage.removeItem('currentBusiness');
             window.location.href = 'business-login.html';
         });
         
-        // Date range functionality
+        // Initialize dates
+        function initializeDates() {
+            const today = new Date();
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(today.getDate() - 30);
+            
+            currentStartDate = thirtyDaysAgo;
+            currentEndDate = today;
+            
+            document.getElementById('date-from').valueAsDate = thirtyDaysAgo;
+            document.getElementById('date-to').valueAsDate = today;
+            
+            // Set quick date button active state
+            document.querySelector('.quick-date-btn[data-range="last30"]').classList.add('active');
+        }
+        
+        // Date range select change
         document.getElementById('date-range').addEventListener('change', function() {
             const value = this.value;
             const customFrom = document.getElementById('custom-date-range');
@@ -919,177 +867,649 @@
             } else {
                 customFrom.style.display = 'none';
                 customTo.style.display = 'none';
+                
+                // Update quick date buttons
+                updateQuickDateButtons(value);
+                
+                // Calculate dates based on range
+                calculateDateRange(value);
             }
         });
         
         // Quick date buttons
         document.querySelectorAll('.quick-date-btn').forEach(button => {
             button.addEventListener('click', function() {
-                // Remove active class from all buttons
+                const range = this.getAttribute('data-range');
+                
+                // Update UI
                 document.querySelectorAll('.quick-date-btn').forEach(btn => {
                     btn.classList.remove('active');
                 });
-                
-                // Add active class to clicked button
                 this.classList.add('active');
                 
-                // Update date range select
-                const range = this.getAttribute('data-range');
                 document.getElementById('date-range').value = range;
                 
-                // Apply the filter
-                applyDateFilter(range);
+                // Hide custom date inputs if not custom
+                if (range !== 'custom') {
+                    document.getElementById('custom-date-range').style.display = 'none';
+                    document.getElementById('custom-date-to').style.display = 'none';
+                }
+                
+                // Calculate dates and load data
+                calculateDateRange(range);
+                loadAnalyticsData();
             });
         });
         
-        // Apply date range
+        // Apply date range button
         document.getElementById('apply-date-range').addEventListener('click', function() {
-            const range = document.getElementById('date-range').value;
-            applyDateFilter(range);
+            const startDate = document.getElementById('date-from').value;
+            const endDate = document.getElementById('date-to').value;
+            
+            if (!startDate || !endDate) {
+                alert('Please select both start and end dates');
+                return;
+            }
+            
+            currentStartDate = new Date(startDate);
+            currentEndDate = new Date(endDate);
+            
+            // Update quick date buttons
+            document.querySelectorAll('.quick-date-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            loadAnalyticsData();
         });
         
         // Export charts data
         document.getElementById('export-charts').addEventListener('click', function() {
-            alert('Exporting analytics data... In a real application, this would download a CSV or PDF report.');
+            exportAnalyticsData();
         });
         
-        // Initialize analytics data
-        function initializeAnalytics() {
-            // Set default dates
+        // Calculate date range based on selection
+        function calculateDateRange(range) {
             const today = new Date();
-            const thirtyDaysAgo = new Date();
-            thirtyDaysAgo.setDate(today.getDate() - 30);
-            
-            document.getElementById('date-from').valueAsDate = thirtyDaysAgo;
-            document.getElementById('date-to').valueAsDate = today;
-            
-            // Load initial data
-            applyDateFilter('last30');
-        }
-        
-        // Apply date filter (simulated)
-        function applyDateFilter(range) {
-            let message = '';
             
             switch(range) {
                 case 'today':
-                    message = 'Showing data for today';
+                    currentStartDate = today;
+                    currentEndDate = today;
                     break;
                 case 'yesterday':
-                    message = 'Showing data for yesterday';
+                    const yesterday = new Date(today);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    currentStartDate = yesterday;
+                    currentEndDate = yesterday;
                     break;
                 case 'last7':
-                    message = 'Showing data for last 7 days';
+                    currentStartDate = new Date(today);
+                    currentStartDate.setDate(currentStartDate.getDate() - 7);
+                    currentEndDate = today;
                     break;
                 case 'last30':
-                    message = 'Showing data for last 30 days';
+                    currentStartDate = new Date(today);
+                    currentStartDate.setDate(currentStartDate.getDate() - 30);
+                    currentEndDate = today;
                     break;
                 case 'last90':
-                    message = 'Showing data for last 90 days';
+                    currentStartDate = new Date(today);
+                    currentStartDate.setDate(currentStartDate.getDate() - 90);
+                    currentEndDate = today;
                     break;
                 case 'lastYear':
-                    message = 'Showing data for last year';
+                    currentStartDate = new Date(today);
+                    currentStartDate.setFullYear(currentStartDate.getFullYear() - 1);
+                    currentEndDate = today;
                     break;
                 case 'thisMonth':
-                    message = 'Showing data for this month';
+                    currentStartDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                    currentEndDate = today;
                     break;
                 case 'custom':
-                    const fromDate = document.getElementById('date-from').value;
-                    const toDate = document.getElementById('date-to').value;
-                    message = `Showing data from ${fromDate} to ${toDate}`;
-                    break;
+                    // Dates already set from inputs
+                    return;
             }
             
-            // In a real app, this would update the charts and data
-            console.log('Date filter applied:', range, message);
+            // Update date inputs
+            document.getElementById('date-from').valueAsDate = currentStartDate;
+            document.getElementById('date-to').valueAsDate = currentEndDate;
+        }
+        
+        // Update quick date buttons UI
+        function updateQuickDateButtons(selectedRange) {
+            document.querySelectorAll('.quick-date-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-range') === selectedRange) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+        
+        // Load analytics data
+        async function loadAnalyticsData() {
+            try {
+                showLoadingState();
+                
+                // Format dates for API
+                const startDateStr = currentStartDate.toISOString().split('T')[0];
+                const endDateStr = currentEndDate.toISOString().split('T')[0];
+                
+                // Load summary data
+                await loadAnalyticsSummary(startDateStr, endDateStr);
+                
+                // Load trends data
+                await loadTrendsData();
+                
+                // Load top destinations
+                await loadTopDestinations();
+                
+                // Load service performance
+                await loadServicePerformance();
+                
+                // Load business insights
+                await loadBusinessInsights();
+                
+                hideLoadingState();
+                
+            } catch (error) {
+                console.error('Error loading analytics data:', error);
+                showErrorState('Failed to load analytics data. Please try again.');
+                hideLoadingState();
+            }
+        }
+        
+        // Load analytics summary
+        async function loadAnalyticsSummary(startDate, endDate) {
+            const params = new URLSearchParams({
+                action: 'getAnalyticsSummary',
+                businessId: currentBusiness.id,
+                startDate: startDate,
+                endDate: endDate
+            });
             
-            // Show a subtle notification (in a real app, this would update the actual data)
+            const response = await fetch(`${ANALYTICS_SCRIPT_URL}?${params}`);
+            const result = await response.json();
+            
+            if (result.success) {
+                updateSummaryCards(result.data);
+            } else {
+                throw new Error(result.message);
+            }
+        }
+        
+        // Load trends data
+        async function loadTrendsData() {
+            const params = new URLSearchParams({
+                action: 'getTrendsData',
+                businessId: currentBusiness.id,
+                period: 'monthly'
+            });
+            
+            const response = await fetch(`${ANALYTICS_SCRIPT_URL}?${params}`);
+            const result = await response.json();
+            
+            if (result.success) {
+                updateTrendsChart(result.data);
+            }
+        }
+        
+        // Load top destinations
+        async function loadTopDestinations() {
+            const params = new URLSearchParams({
+                action: 'getTopDestinations',
+                businessId: currentBusiness.id,
+                limit: 10
+            });
+            
+            const response = await fetch(`${ANALYTICS_SCRIPT_URL}?${params}`);
+            const result = await response.json();
+            
+            if (result.success) {
+                updateTopDestinationsTable(result.data);
+                updateDestinationsChart(result.data);
+            }
+        }
+        
+        // Load service performance
+        async function loadServicePerformance() {
+            const params = new URLSearchParams({
+                action: 'getServicePerformance',
+                businessId: currentBusiness.id
+            });
+            
+            const response = await fetch(`${ANALYTICS_SCRIPT_URL}?${params}`);
+            const result = await response.json();
+            
+            if (result.success) {
+                updateServicePerformanceTable(result.data);
+                updateServiceDistributionChart(result.data);
+            }
+        }
+        
+        // Load business insights
+        async function loadBusinessInsights() {
+            const params = new URLSearchParams({
+                action: 'getBusinessInsights',
+                businessId: currentBusiness.id
+            });
+            
+            const response = await fetch(`${ANALYTICS_SCRIPT_URL}?${params}`);
+            const result = await response.json();
+            
+            if (result.success) {
+                updateBusinessInsights(result.data);
+            }
+        }
+        
+        // Update summary cards
+        function updateSummaryCards(data) {
+            // Format numbers with commas
+            const formatNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            
+            // Update card values
+            document.getElementById('total-orders').textContent = formatNumber(data.totalOrders);
+            document.getElementById('orders-shipped').textContent = formatNumber(data.ordersShipped);
+            document.getElementById('orders-delivered').textContent = formatNumber(data.ordersDelivered);
+            document.getElementById('total-cost').textContent = `$${parseFloat(data.totalShippingCost).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            
+            // Update change indicators
+            updateChangeIndicator('orders-change', data.ordersChange, 'from previous period');
+            updateChangeIndicator('shipped-change', data.shippedChange, 'from previous period');
+            updateChangeIndicator('delivered-change', data.deliveredChange, 'from previous period');
+            updateChangeIndicator('cost-change', data.costChange, 'from previous period');
+        }
+        
+        // Update change indicators
+        function updateChangeIndicator(elementId, change, suffix) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            const changeValue = parseFloat(change);
+            const absChange = Math.abs(changeValue);
+            
+            if (changeValue > 0) {
+                element.className = 'stat-change positive';
+                element.textContent = `+${absChange.toFixed(1)}% ${suffix}`;
+            } else if (changeValue < 0) {
+                element.className = 'stat-change negative';
+                element.textContent = `-${absChange.toFixed(1)}% ${suffix}`;
+            } else {
+                element.className = 'stat-change';
+                element.textContent = `0% ${suffix}`;
+            }
+        }
+        
+        // Update trends chart (simple bar chart)
+        function updateTrendsChart(data) {
+            const container = document.querySelector('.chart-container:nth-child(1) .chart-placeholder');
+            if (!container) return;
+            
+            container.innerHTML = '<div id="trends-chart-content"></div>';
+            const chartContent = document.getElementById('trends-chart-content');
+            
+            if (!data || !data.labels || data.labels.length === 0) {
+                chartContent.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No trend data available</p>';
+                return;
+            }
+            
+            // Create simple bar chart
+            const maxValue = Math.max(...data.orders);
+            
+            let chartHTML = '<div style="display: flex; height: 200px; align-items: flex-end; gap: 10px; padding: 10px;">';
+            
+            data.orders.forEach((value, index) => {
+                const height = maxValue > 0 ? (value / maxValue * 100) : 0;
+                chartHTML += `
+                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                        <div style="width: 80%; background: linear-gradient(to top, var(--accent), #f7b731); height: ${height}%; border-radius: 3px 3px 0 0;"></div>
+                        <div style="font-size: 10px; margin-top: 5px; text-align: center; transform: rotate(-45deg); transform-origin: left top; white-space: nowrap;">
+                            ${data.labels[index]}
+                        </div>
+                        <div style="font-size: 11px; margin-top: 5px; font-weight: bold;">${value}</div>
+                    </div>
+                `;
+            });
+            
+            chartHTML += '</div>';
+            chartContent.innerHTML = chartHTML;
+        }
+        
+        // Update service distribution chart (simple pie chart)
+        function updateServiceDistributionChart(data) {
+            const container = document.querySelector('.chart-container:nth-child(2) .chart-placeholder');
+            if (!container) return;
+            
+            container.innerHTML = '<div id="service-chart-content"></div>';
+            const chartContent = document.getElementById('service-chart-content');
+            
+            if (!data || data.length === 0) {
+                chartContent.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No service data available</p>';
+                return;
+            }
+            
+            // Calculate total
+            const totalOrders = data.reduce((sum, service) => sum + service.orders, 0);
+            
+            // Create pie chart using CSS conic-gradient
+            let gradientStops = [];
+            let currentAngle = 0;
+            const colors = ['#2c3e50', '#e74c3c', '#f39c12', '#3498db', '#2ecc71'];
+            
+            data.forEach((service, index) => {
+                const percentage = (service.orders / totalOrders) * 100;
+                const angle = (percentage / 100) * 360;
+                const color = colors[index % colors.length];
+                
+                gradientStops.push(`${color} ${currentAngle}deg ${currentAngle + angle}deg`);
+                currentAngle += angle;
+            });
+            
+            chartContent.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <div style="width: 150px; height: 150px; border-radius: 50%; background: conic-gradient(${gradientStops.join(', ')});"></div>
+                    <div style="flex: 1;">
+                        ${data.map((service, index) => `
+                            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                <div style="width: 12px; height: 12px; background: ${colors[index % colors.length]}; margin-right: 8px; border-radius: 2px;"></div>
+                                <div style="font-size: 12px;">${service.serviceType}: ${service.orders} orders (${Math.round((service.orders / totalOrders) * 100)}%)</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Update destinations chart
+        function updateDestinationsChart(data) {
+            const container = document.querySelector('.chart-container:nth-child(3) .chart-placeholder');
+            if (!container) return;
+            
+            container.innerHTML = '<div id="destinations-chart-content"></div>';
+            const chartContent = document.getElementById('destinations-chart-content');
+            
+            if (!data || !data.destinations || data.destinations.length === 0) {
+                chartContent.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No destination data available</p>';
+                return;
+            }
+            
+            // Create horizontal bar chart
+            const maxOrders = Math.max(...data.destinations.map(d => d.orders));
+            
+            let chartHTML = '<div style="padding: 10px;">';
+            
+            data.destinations.forEach(destination => {
+                const width = maxOrders > 0 ? (destination.orders / maxOrders * 100) : 0;
+                chartHTML += `
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 12px;">
+                            <span>${destination.destination}</span>
+                            <span>${destination.orders} orders (${destination.percentage}%)</span>
+                        </div>
+                        <div style="height: 10px; background: #e0e0e0; border-radius: 5px; overflow: hidden;">
+                            <div style="height: 100%; width: ${width}%; background: linear-gradient(to right, var(--primary), #4a6491); border-radius: 5px;"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            chartHTML += '</div>';
+            chartContent.innerHTML = chartHTML;
+        }
+        
+        // Update delivery performance chart (fourth chart)
+        function updateDeliveryPerformanceChart() {
+            const container = document.querySelector('.chart-container:nth-child(4) .chart-placeholder');
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <div style="width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(#2ecc71 0% 85%, #f39c12 85% 95%, #e74c3c 95% 100%); margin: 0 auto 20px; position: relative;">
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary);">
+                            92%
+                        </div>
+                    </div>
+                    <div style="font-size: 14px; color: var(--primary); font-weight: bold;">Delivery Performance</div>
+                    <div style="font-size: 12px; color: #666;">On-time delivery rate</div>
+                    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px;">
+                        <div style="font-size: 11px;"><span style="display: inline-block; width: 10px; height: 10px; background: #2ecc71; border-radius: 2px; margin-right: 5px;"></span> On Time</div>
+                        <div style="font-size: 11px;"><span style="display: inline-block; width: 10px; height: 10px; background: #f39c12; border-radius: 2px; margin-right: 5px;"></span> Delayed</div>
+                        <div style="font-size: 11px;"><span style="display: inline-block; width: 10px; height: 10px; background: #e74c3c; border-radius: 2px; margin-right: 5px;"></span> Issues</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Update top destinations table
+        function updateTopDestinationsTable(data) {
+            const tbody = document.querySelector('.analytics-table:first-of-type tbody');
+            if (!tbody) return;
+            
+            if (!data || !data.destinations || data.destinations.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 20px; color: #666;">No destination data available</td></tr>';
+                return;
+            }
+            
+            let tableHTML = '';
+            data.destinations.forEach(destination => {
+                tableHTML += `
+                    <tr>
+                        <td>${destination.destination}</td>
+                        <td>${destination.orders}</td>
+                        <td>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${destination.percentage}%;"></div>
+                            </div>
+                            <small>${destination.percentage}%</small>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = tableHTML;
+        }
+        
+        // Update service performance table
+        function updateServicePerformanceTable(data) {
+            const tbody = document.querySelector('.analytics-table:nth-of-type(2) tbody');
+            if (!tbody) return;
+            
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #666;">No service data available</td></tr>';
+                return;
+            }
+            
+            let tableHTML = '';
+            data.forEach(service => {
+                // Calculate share percentage
+                const totalOrders = data.reduce((sum, s) => sum + s.orders, 0);
+                const share = totalOrders > 0 ? Math.round((service.orders / totalOrders) * 100) : 0;
+                
+                tableHTML += `
+                    <tr>
+                        <td>${service.serviceType}</td>
+                        <td>${service.orders}</td>
+                        <td>${service.avgDeliveryTime}</td>
+                        <td>${service.satisfaction}</td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = tableHTML;
+        }
+        
+        // Update business insights
+        function updateBusinessInsights(insights) {
+            const insightsGrid = document.querySelector('.insights-grid');
+            if (!insightsGrid) return;
+            
+            if (!insights || insights.length === 0) {
+                insightsGrid.innerHTML = '<div class="insight-card"><p>No insights available for the selected period.</p></div>';
+                return;
+            }
+            
+            let insightsHTML = '';
+            insights.forEach(insight => {
+                insightsHTML += `
+                    <div class="insight-card">
+                        <h4>${insight.icon} ${insight.title}</h4>
+                        <p>${insight.message}</p>
+                    </div>
+                `;
+            });
+            
+            insightsGrid.innerHTML = insightsHTML;
+        }
+        
+        // Export analytics data
+        async function exportAnalyticsData() {
+            try {
+                const params = new URLSearchParams({
+                    action: 'exportAnalytics',
+                    businessId: currentBusiness.id,
+                    format: 'csv'
+                });
+                
+                const response = await fetch(`${ANALYTICS_SCRIPT_URL}?${params}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Create download link
+                    const blob = new Blob([result.data.content], { type: 'text/csv' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    
+                    link.href = url;
+                    link.download = result.data.filename || `analytics-export-${new Date().toISOString().split('T')[0]}.csv`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    showNotification('Analytics data exported successfully!', 'success');
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                console.error('Error exporting data:', error);
+                showNotification('Failed to export data. Please try again.', 'error');
+            }
+        }
+        
+        // Show loading state
+        function showLoadingState() {
+            // Add loading overlay to analytics cards
+            const cards = document.querySelectorAll('.stat-card');
+            cards.forEach(card => {
+                const valueElement = card.querySelector('.stat-value');
+                if (valueElement) {
+                    valueElement.innerHTML = '<div class="loading-spinner" style="display: inline-block; width: 20px; height: 20px; margin: 10px auto;"></div>';
+                }
+            });
+            
+            // Show loading in charts
+            const chartPlaceholders = document.querySelectorAll('.chart-placeholder');
+            chartPlaceholders.forEach(placeholder => {
+                placeholder.innerHTML = '<div style="text-align: center; padding: 40px;"><div class="loading-spinner" style="display: inline-block; width: 30px; height: 30px; margin-bottom: 10px;"></div><p style="color: #666;">Loading chart data...</p></div>';
+            });
+            
+            // Show loading in tables
+            const tables = document.querySelectorAll('.analytics-table tbody');
+            tables.forEach(table => {
+                table.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;"><div class="loading-spinner" style="display: inline-block; margin-right: 10px;"></div>Loading data...</td></tr>';
+            });
+        }
+        
+        // Hide loading state
+        function hideLoadingState() {
+            // Loading is removed when data is populated
+        }
+        
+        // Show error state
+        function showErrorState(message) {
+            const cards = document.querySelectorAll('.stat-card');
+            cards.forEach(card => {
+                const valueElement = card.querySelector('.stat-value');
+                if (valueElement && valueElement.textContent.includes('Loading')) {
+                    valueElement.textContent = '0';
+                }
+            });
+            
+            // Show error in insights
+            const insightsGrid = document.querySelector('.insights-grid');
+            if (insightsGrid) {
+                insightsGrid.innerHTML = `<div class="insight-card" style="border-left-color: #e74c3c;">
+                    <h4>⚠️ Error Loading Data</h4>
+                    <p>${message || 'Please try refreshing the page or selecting a different date range.'}</p>
+                </div>`;
+            }
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
                 top: 100px;
                 right: 20px;
-                background: var(--primary);
+                background: ${type === 'success' ? '#2ecc71' : type === 'error' ? '#e74c3c' : '#3498db'};
                 color: white;
-                padding: 0.8rem 1.5rem;
+                padding: 12px 20px;
                 border-radius: 5px;
-                box-shadow: var(--shadow);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
                 z-index: 1000;
-                transition: all 0.3s;
+                animation: slideIn 0.3s ease;
+                max-width: 300px;
             `;
-            notification.textContent = `📊 ${message}`;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
             document.body.appendChild(notification);
             
+            // Remove after 3 seconds
             setTimeout(() => {
-                notification.style.opacity = '0';
+                notification.style.animation = 'slideOut 0.3s ease';
                 setTimeout(() => {
-                    document.body.removeChild(notification);
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
                 }, 300);
             }, 3000);
         }
         
-        // Simulate chart interactions
-        document.querySelectorAll('.chart-container').forEach(container => {
-            container.addEventListener('click', function() {
-                const placeholder = this.querySelector('.chart-placeholder');
-                const currentText = placeholder.querySelector('p').textContent;
-                
-                placeholder.innerHTML = `
-                    <div style="text-align: center;">
-                        <i class="fas fa-chart-line fa-3x" style="color: var(--accent); margin-bottom: 1rem;"></i>
-                        <p>Interactive Chart View</p>
-                        <small>Click to view detailed analytics</small>
-                        <div style="margin-top: 1rem;">
-                            <button class="btn btn-small" onclick="viewDetailedChart('${currentText}')">
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                `;
-            });
-        });
-        
-        // View detailed chart (simulated)
-        function viewDetailedChart(chartName) {
-            alert(`Opening detailed view for: ${chartName}\n\nIn a real application, this would open an interactive chart with drill-down capabilities.`);
-        }
-        
-        // Add some sample data updates (simulated real-time updates)
-        setInterval(() => {
-            // Randomly update one of the stat cards to simulate real-time data
-            const cards = document.querySelectorAll('.stat-card');
-            const randomCard = cards[Math.floor(Math.random() * cards.length)];
-            const valueElement = randomCard.querySelector('.stat-value');
-            const changeElement = randomCard.querySelector('.stat-change');
-            
-            if (valueElement && changeElement) {
-                const currentValue = parseInt(valueElement.textContent.replace(/[^0-9]/g, ''));
-                const change = Math.floor(Math.random() * 10) - 2; // -2 to +7
-                const newValue = Math.max(0, currentValue + change);
-                
-                valueElement.textContent = formatStatValue(valueElement.textContent, newValue);
-                
-                if (change > 0) {
-                    changeElement.textContent = `+${change} from last update`;
-                    changeElement.className = 'stat-change positive';
-                } else if (change < 0) {
-                    changeElement.textContent = `${change} from last update`;
-                    changeElement.className = 'stat-change negative';
-                } else {
-                    changeElement.textContent = `No change from last update`;
-                    changeElement.className = 'stat-change';
-                }
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
             }
-        }, 10000); // Update every 10 seconds
-        
-        // Helper function to format stat values
-        function formatStatValue(originalText, newValue) {
-            if (originalText.includes('$')) {
-                return `$${newValue.toLocaleString()}`;
-            } else {
-                return newValue.toLocaleString();
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
             }
-        }
+            .loading-spinner {
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                border: 2px solid #f3f3f3;
+                border-top: 2px solid #f39c12;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Initialize delivery performance chart
+        updateDeliveryPerformanceChart();
     </script>
 </body>
 </html>

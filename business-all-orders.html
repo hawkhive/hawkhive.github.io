@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Orders - HawkHive Business</title>
+    
+    <!-- AUTH CHECK - RUNS IMMEDIATELY, BLOCKS PAGE RENDERING -->
+    <script>
+        (function() {
+            const currentUser = localStorage.getItem('currentBusiness');
+            if (!currentUser) {
+                // Replace current page immediately - user never sees this page
+                window.location.replace('business-login.html');
+                // Stop all other scripts from running
+                throw new Error('Unauthorized access blocked');
+            }
+        })();
+    </script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -530,6 +544,54 @@
             padding-top: 1rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
+
+        /* Timeline styles for modal */
+        .tracking-timeline {
+            margin: 20px 0;
+            border-left: 3px solid var(--accent);
+            padding-left: 20px;
+        }
+
+        .timeline-item {
+            margin-bottom: 15px;
+            padding-left: 10px;
+            position: relative;
+        }
+
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .timeline-item.completed:before {
+            background: #27ae60;
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .timeline-location {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .timeline-status {
+            display: inline-block;
+            padding: 2px 8px;
+            background: var(--light);
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
         
         /* Responsive */
         @media (max-width: 768px) {
@@ -665,6 +727,7 @@
                     <thead>
                         <tr>
                             <th data-sort="id">Order ID <i class="fas fa-sort"></i></th>
+                            <th data-sort="deliveryname">Recipient <i class="fas fa-sort"></i></th>
                             <th data-sort="date">Date <i class="fas fa-sort"></i></th>
                             <th data-sort="from">From <i class="fas fa-sort"></i></th>
                             <th data-sort="to">To <i class="fas fa-sort"></i></th>
@@ -770,18 +833,21 @@
     </footer>
 
     <script>
+        // Configuration - Update this with your Web App URL
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz1j2NaVoN8HWCIBcoMkUMnoH6UVp93VkmE-fvnHuNJW0lQygrlob61OOO3CI0l_GQ5/exec"; // Replace with your deployed web app URL
+        
         // Check if user is logged in
         document.addEventListener('DOMContentLoaded', function() {
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
+            const currentBusiness = localStorage.getItem('currentBusiness');
+            if (!currentBusiness) {
                 window.location.href = 'business-login.html';
                 return;
             }
             
-            const user = JSON.parse(currentUser);
-            document.getElementById('profile-name').textContent = user.name;
+            const business = JSON.parse(currentBusiness);
+            document.getElementById('profile-name').textContent = business.name;
             
-            // Load initial orders data
+            // Load orders data from Google Sheets
             loadOrdersData();
         });
         
@@ -800,124 +866,94 @@
         // Logout functionality
         document.getElementById('logout-btn').addEventListener('click', function(e) {
             e.preventDefault();
-            localStorage.removeItem('currentUser');
+            localStorage.removeItem('currentBusiness');
             window.location.href = 'business-login.html';
         });
         
-        // Sample orders data
-        const ordersData = [
-            {
-                id: 'HH-2023-0012',
-                date: '2023-10-15',
-                from: 'Toronto, ON',
-                to: 'Kitchener, ON',
-                service: 'Standard',
-                status: 'delivered',
-                amount: 24.50,
-                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6<br>Contact: John Doe - (555) 123-4567',
-                recipient: 'Jane Smith<br>789 Delivery St, Kitchener, ON N2G 1A1<br>Phone: (555) 987-6543',
-                package: 'Office Supplies<br>Weight: 5 kg<br>Dimensions: 12x8x6 in',
-                serviceDetails: 'Standard Service<br>Amount: $24.50<br>Paid: PayPal',
-                timeline: [
-                    { date: 'Oct 15, 2023 - 10:30 AM', location: 'Kitchener, ON', status: 'Delivered' },
-                    { date: 'Oct 15, 2023 - 8:15 AM', location: 'Kitchener, ON', status: 'Out for delivery' },
-                    { date: 'Oct 14, 2023 - 6:45 PM', location: 'Kitchener Distribution Center', status: 'Arrived at facility' },
-                    { date: 'Oct 14, 2023 - 2:30 PM', location: 'In Transit', status: 'Departured from Toronto Hub' },
-                    { date: 'Oct 14, 2023 - 11:00 AM', location: 'Toronto, ON', status: 'Picked up by driver' },
-                    { date: 'Oct 13, 2023 - 3:15 PM', location: 'Toronto, ON', status: 'Order received and processed' }
-                ]
-            },
-            {
-                id: 'HH-2023-0011',
-                date: '2023-10-12',
-                from: 'Toronto, ON',
-                to: 'London, ON',
-                service: 'Express',
-                status: 'transit',
-                amount: 38.75,
-                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6<br>Contact: John Doe - (555) 123-4567',
-                recipient: 'John Davis<br>456 Main St, London, ON N6A 1A1<br>Phone: (555) 456-7890',
-                package: 'Electronics<br>Weight: 3.5 kg<br>Dimensions: 10x6x4 in',
-                serviceDetails: 'Express Service<br>Amount: $38.75<br>Paid: Credit Card',
-                timeline: [
-                    { date: 'Oct 14, 2023 - 4:20 PM', location: 'London Distribution Center', status: 'Arrived at facility' },
-                    { date: 'Oct 14, 2023 - 1:45 PM', location: 'In Transit', status: 'Departured from Toronto Hub' },
-                    { date: 'Oct 14, 2023 - 10:30 AM', location: 'Toronto, ON', status: 'Picked up by driver' },
-                    { date: 'Oct 13, 2023 - 2:00 PM', location: 'Toronto, ON', status: 'Order received and processed' }
-                ]
-            },
-            {
-                id: 'HH-2023-0010',
-                date: '2023-10-10',
-                from: 'Toronto, ON',
-                to: 'Kitchener, ON',
-                service: 'Standard',
-                status: 'out',
-                amount: 16.50,
-                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6<br>Contact: John Doe - (555) 123-4567',
-                recipient: 'Robert Johnson<br>321 Oak Ave, Kitchener, ON N2H 1A1<br>Phone: (555) 111-2222',
-                package: 'Documents<br>Weight: 0.8 kg<br>Dimensions: 8x5x1 in',
-                serviceDetails: 'Standard Service<br>Amount: $16.50<br>Paid: PayPal',
-                timeline: [
-                    { date: 'Oct 16, 2023 - 7:30 AM', location: 'Kitchener, ON', status: 'Out for delivery' },
-                    { date: 'Oct 15, 2023 - 8:45 PM', location: 'Kitchener Distribution Center', status: 'Arrived at facility' },
-                    { date: 'Oct 15, 2023 - 3:15 PM', location: 'In Transit', status: 'Departured from Toronto Hub' },
-                    { date: 'Oct 15, 2023 - 11:30 AM', location: 'Toronto, ON', status: 'Picked up by driver' },
-                    { date: 'Oct 14, 2023 - 4:20 PM', location: 'Toronto, ON', status: 'Order received and processed' }
-                ]
-            },
-            {
-                id: 'HH-2023-0009',
-                date: '2023-10-08',
-                from: 'Mississauga, ON',
-                to: 'Hamilton, ON',
-                service: 'Standard',
-                status: 'picked',
-                amount: 19.80,
-                sender: 'ABC Wholesale Ltd.<br>456 Commerce St, Mississauga, ON L5B 3C7<br>Contact: Jane Smith - (555) 333-4444',
-                recipient: 'Sarah Wilson<br>654 Pine St, Hamilton, ON L8P 1A1<br>Phone: (555) 555-6666',
-                package: 'Clothing<br>Weight: 2.2 kg<br>Dimensions: 14x10x3 in',
-                serviceDetails: 'Standard Service<br>Amount: $19.80<br>Paid: Credit Card',
-                timeline: [
-                    { date: 'Oct 16, 2023 - 9:15 AM', location: 'Mississauga, ON', status: 'Picked up by driver' },
-                    { date: 'Oct 15, 2023 - 2:30 PM', location: 'Mississauga, ON', status: 'Order received and processed' }
-                ]
-            },
-            {
-                id: 'HH-2023-0008',
-                date: '2023-10-05',
-                from: 'Toronto, ON',
-                to: 'Waterloo, ON',
-                service: 'Standard',
-                status: 'delivered',
-                amount: 22.75,
-                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6<br>Contact: John Doe - (555) 123-4567',
-                recipient: 'Michael Brown<br>987 Elm St, Waterloo, ON N2L 1A1<br>Phone: (555) 777-8888',
-                package: 'Books<br>Weight: 4.5 kg<br>Dimensions: 11x7x5 in',
-                serviceDetails: 'Standard Service<br>Amount: $22.75<br>Paid: PayPal',
-                timeline: [
-                    { date: 'Oct 7, 2023 - 3:45 PM', location: 'Waterloo, ON', status: 'Delivered' },
-                    { date: 'Oct 7, 2023 - 11:20 AM', location: 'Waterloo, ON', status: 'Out for delivery' },
-                    { date: 'Oct 6, 2023 - 7:30 PM', location: 'Waterloo Distribution Center', status: 'Arrived at facility' },
-                    { date: 'Oct 6, 2023 - 2:15 PM', location: 'In Transit', status: 'Departured from Toronto Hub' },
-                    { date: 'Oct 6, 2023 - 10:45 AM', location: 'Toronto, ON', status: 'Picked up by driver' },
-                    { date: 'Oct 5, 2023 - 4:10 PM', location: 'Toronto, ON', status: 'Order received and processed' }
-                ]
-            }
-        ];
+        // Global variable to store orders
+        let allOrders = [];
+        let currentPage = 1;
+        const ordersPerPage = 10;
         
-        // Load orders data into table
-        function loadOrdersData() {
+        // Load orders data from Google Sheets
+        async function loadOrdersData() {
+            try {
+                const currentBusiness = JSON.parse(localStorage.getItem('currentBusiness'));
+                const businessId = currentBusiness.id;
+                const businessName = currentBusiness.name;
+                
+                // Show loading state
+                const tbody = document.getElementById('orders-tbody');
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px;">Loading orders...</td></tr>';
+                
+                // Fetch orders from Google Sheets - filter by business ID
+                const params = new URLSearchParams({
+                    action: 'getOrders',
+                    businessId: businessId,
+                    businessName: businessName
+                });
+                
+                const response = await fetch(`${APPS_SCRIPT_URL}?${params}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    allOrders = result.data;
+                    // Filter by business ID on client side for extra security
+                    allOrders = allOrders.filter(order => {
+                        // Check if order belongs to this business
+                        // This is a fallback in case server-side filtering didn't work properly
+                        const orderBusinessId = getBusinessIdFromOrder(order);
+                        return orderBusinessId === businessId;
+                    });
+                    
+                    displayOrdersPage(1);
+                    updatePagination();
+                } else {
+                    throw new Error(result.message || 'Failed to load orders');
+                }
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                const tbody = document.getElementById('orders-tbody');
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: #e74c3c;">Error loading orders. Please try again later.</td></tr>';
+            }
+        }
+        
+        // Helper function to extract business ID from order
+        function getBusinessIdFromOrder(order) {
+            // Try to get business ID from various possible fields
+            if (order.businessId) return order.businessId;
+            if (order['Business ID']) return order['Business ID'];
+            if (order.sender && order.sender.includes(currentBusiness.name)) {
+                // Extract from sender info if needed
+                const business = JSON.parse(localStorage.getItem('currentBusiness'));
+                return business.id;
+            }
+            return null;
+        }
+        
+        // Display orders for a specific page
+        function displayOrdersPage(page) {
+            currentPage = page;
+            const startIndex = (page - 1) * ordersPerPage;
+            const endIndex = startIndex + ordersPerPage;
+            const pageOrders = allOrders.slice(startIndex, endIndex);
+            
             const tbody = document.getElementById('orders-tbody');
             tbody.innerHTML = '';
             
-            ordersData.forEach(order => {
+            if (pageOrders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px;">No orders found for your business.</td></tr>';
+                return;
+            }
+            
+            pageOrders.forEach(order => {
                 const statusClass = `status-${order.status}`;
                 const statusText = getStatusText(order.status);
                 
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${order.id}</td>
+                    <td>${order.deliveryname}</td>
                     <td>${formatDate(order.date)}</td>
                     <td>${order.from}</td>
                     <td>${order.to}</td>
@@ -950,6 +986,61 @@
                     window.location.href = `business-track-shipment.html?tracking=${orderId}`;
                 });
             });
+            
+            // Update pagination info
+            updatePaginationInfo();
+        }
+        
+        // Update pagination controls
+        function updatePagination() {
+            const totalPages = Math.ceil(allOrders.length / ordersPerPage);
+            const paginationControls = document.querySelector('.pagination-controls');
+            
+            // Clear existing page buttons (keep prev/next)
+            const prevBtn = document.getElementById('prev-page');
+            const nextBtn = document.getElementById('next-page');
+            paginationControls.innerHTML = '';
+            paginationControls.appendChild(prevBtn);
+            
+            // Create page buttons
+            const maxPagesToShow = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+            let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+            
+            if (endPage - startPage + 1 < maxPagesToShow) {
+                startPage = Math.max(1, endPage - maxPagesToShow + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    displayOrdersPage(i);
+                    updatePagination();
+                });
+                paginationControls.appendChild(pageBtn);
+            }
+            
+            paginationControls.appendChild(nextBtn);
+            
+            // Update prev/next button states
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+        }
+        
+        // Update pagination information
+        function updatePaginationInfo() {
+            const totalOrders = allOrders.length;
+            const startIndex = (currentPage - 1) * ordersPerPage + 1;
+            const endIndex = Math.min(currentPage * ordersPerPage, totalOrders);
+            
+            const infoText = totalOrders > 0 
+                ? `Showing ${startIndex}-${endIndex} of ${totalOrders} orders for your business`
+                : 'No orders found for your business';
+            
+            document.getElementById('pagination-info').textContent = infoText;
+            document.getElementById('pagination-info-bottom').textContent = infoText;
         }
         
         // Get status text
@@ -967,41 +1058,97 @@
         
         // Format date
         function formatDate(dateString) {
-            const options = { year: 'numeric', month: 'short', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString('en-US', options);
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) {
+                    return dateString || 'N/A';
+                }
+                const options = { year: 'numeric', month: 'short', day: 'numeric' };
+                return date.toLocaleDateString('en-US', options);
+            } catch (e) {
+                return dateString || 'N/A';
+            }
         }
         
         // Show order details in modal
-        function showOrderDetails(orderId) {
-            const order = ordersData.find(o => o.id === orderId);
-            if (!order) return;
-            
-            // Update modal content
-            document.getElementById('modal-order-id').textContent = order.id;
-            document.getElementById('modal-sender').innerHTML = order.sender;
-            document.getElementById('modal-recipient').innerHTML = order.recipient;
-            document.getElementById('modal-package').innerHTML = order.package;
-            document.getElementById('modal-service').innerHTML = order.serviceDetails;
-            
-            // Build timeline
-            const timelineElement = document.getElementById('modal-timeline');
-            timelineElement.innerHTML = '';
-            
-            order.timeline.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'timeline-item completed';
+        async function showOrderDetails(orderId) {
+            try {
+                const currentBusiness = JSON.parse(localStorage.getItem('currentBusiness'));
                 
-                itemElement.innerHTML = `
-                    <div class="timeline-date">${item.date}</div>
-                    <div class="timeline-location">${item.location}</div>
-                    <div class="timeline-status">${item.status}</div>
-                `;
+                // Show loading
+                document.getElementById('modal-sender').innerHTML = 'Loading...';
+                document.getElementById('modal-recipient').innerHTML = 'Loading...';
+                document.getElementById('modal-package').innerHTML = 'Loading...';
+                document.getElementById('modal-service').innerHTML = 'Loading...';
                 
-                timelineElement.appendChild(itemElement);
-            });
-            
-            // Show modal
-            document.getElementById('order-modal').classList.add('active');
+                // Fetch order details
+                const params = new URLSearchParams({
+                    action: 'getOrderById',
+                    orderId: orderId
+                });
+                
+                const response = await fetch(`${APPS_SCRIPT_URL}?${params}`);
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    const order = result.data;
+                    
+                    // Check if this order belongs to the current business
+                    const orderBusinessId = getBusinessIdFromOrder(order);
+                    if (orderBusinessId !== currentBusiness.id) {
+                        alert('You do not have permission to view this order.');
+                        return;
+                    }
+                    
+                    // Update modal content
+                    document.getElementById('modal-order-id').textContent = order.id;
+                    document.getElementById('modal-sender').innerHTML = order.sender;
+                    document.getElementById('modal-recipient').innerHTML = order.recipient;
+                    document.getElementById('modal-package').innerHTML = order.package;
+                    document.getElementById('modal-service').innerHTML = order.serviceDetails;
+                    
+                    // Build timeline
+                    const timelineElement = document.getElementById('modal-timeline');
+                    timelineElement.innerHTML = '';
+                    
+                    if (order.timeline && order.timeline.length > 0) {
+                        order.timeline.forEach(item => {
+                            const itemElement = document.createElement('div');
+                            itemElement.className = 'timeline-item completed';
+                            itemElement.style.cssText = 'display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee;';
+                            
+                            itemElement.innerHTML = `
+                                <div style="flex: 1;"><strong>${item.date}</strong></div>
+                                <div style="flex: 1;">${item.location}</div>
+                                <div style="flex: 1;"><span class="status status-${mapToStatusClass(item.status)}">${item.status}</span></div>
+                            `;
+                            
+                            timelineElement.appendChild(itemElement);
+                        });
+                    } else {
+                        timelineElement.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No tracking information available</div>';
+                    }
+                } else {
+                    throw new Error(result.message || 'Order not found');
+                }
+                
+                // Show modal
+                document.getElementById('order-modal').classList.add('active');
+            } catch (error) {
+                console.error('Error loading order details:', error);
+                alert('Error loading order details. Please try again.');
+            }
+        }
+        
+        function mapToStatusClass(statusText) {
+            const text = statusText.toLowerCase();
+            if (text.includes('pending')) return 'pending';
+            if (text.includes('picked')) return 'picked';
+            if (text.includes('transit')) return 'transit';
+            if (text.includes('out')) return 'out';
+            if (text.includes('delivered')) return 'delivered';
+            if (text.includes('cancelled')) return 'cancelled';
+            return 'pending';
         }
         
         // Close modal
@@ -1028,31 +1175,141 @@
         });
         
         // Apply filters
-        document.getElementById('apply-filters').addEventListener('click', function() {
-            // In a real app, this would filter the orders data
-            alert('Filters applied! In a real application, this would filter the orders based on your criteria.');
+        document.getElementById('apply-filters').addEventListener('click', async function() {
+            try {
+                const currentBusiness = JSON.parse(localStorage.getItem('currentBusiness'));
+                const businessId = currentBusiness.id;
+                const businessName = currentBusiness.name;
+                
+                const search = document.getElementById('search-orders').value;
+                const status = document.getElementById('status-filter').value;
+                const dateFrom = document.getElementById('date-from').value;
+                const dateTo = document.getElementById('date-to').value;
+                
+                // Build params
+                const params = new URLSearchParams({
+                    action: 'getOrders',
+                    businessId: businessId,
+                    businessName: businessName
+                });
+                
+                if (search) params.append('search', search);
+                if (status) params.append('status', status);
+                if (dateFrom) params.append('dateFrom', dateFrom);
+                if (dateTo) params.append('dateTo', dateTo);
+                
+                const response = await fetch(`${APPS_SCRIPT_URL}?${params}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    allOrders = result.data;
+                    // Filter by business ID on client side for extra security
+                    allOrders = allOrders.filter(order => {
+                        const orderBusinessId = getBusinessIdFromOrder(order);
+                        return orderBusinessId === businessId;
+                    });
+                    
+                    displayOrdersPage(1);
+                    updatePagination();
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                console.error('Error applying filters:', error);
+                alert('Error applying filters. Please try again.');
+            }
         });
         
-        // Reset filters
+        // Reset filters and reload all orders
         document.getElementById('reset-filters').addEventListener('click', function() {
             document.getElementById('search-orders').value = '';
             document.getElementById('status-filter').value = '';
             document.getElementById('date-from').value = '';
             document.getElementById('date-to').value = '';
+            loadOrdersData();
         });
         
         // Export orders
         document.getElementById('export-orders').addEventListener('click', function() {
-            alert('Exporting orders data... In a real application, this would download a CSV or Excel file.');
+            exportToCSV();
         });
         
-        // Table sorting (basic implementation)
-        document.querySelectorAll('.orders-table th[data-sort]').forEach(header => {
-            header.addEventListener('click', function() {
-                const sortBy = this.getAttribute('data-sort');
-                alert(`Sorting by ${sortBy}... In a real application, this would sort the table data.`);
-            });
+        // Export to CSV function
+        function exportToCSV() {
+            if (allOrders.length === 0) {
+                alert('No orders to export');
+                return;
+            }
+            
+            const headers = ['Order ID', 'Customer Name', 'Date', 'From', 'To', 'Service', 'Status', 'Amount'];
+            const csvContent = [
+                headers.join(','),
+                ...allOrders.map(order => [
+                    `"${order.id}"`,
+                    `"${order.deliveryname}"`,
+                    `"${formatDate(order.date)}"`,
+                    `"${order.from}"`,
+                    `"${order.to}"`,
+                    `"${order.service}"`,
+                    `"${getStatusText(order.status)}"`,
+                    `"$${order.amount.toFixed(2)}"`
+                ].join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `hawkhive-orders-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Pagination controls
+        document.getElementById('prev-page').addEventListener('click', function() {
+            if (currentPage > 1) {
+                displayOrdersPage(currentPage - 1);
+                updatePagination();
+            }
         });
+        
+        document.getElementById('next-page').addEventListener('click', function() {
+            const totalPages = Math.ceil(allOrders.length / ordersPerPage);
+            if (currentPage < totalPages) {
+                displayOrdersPage(currentPage + 1);
+                updatePagination();
+            }
+        });
+        
+        // Add some CSS for timeline in modal
+        const style = document.createElement('style');
+        style.textContent = `
+            .timeline-item {
+                padding: 10px;
+                border-bottom: 1px solid #eee;
+            }
+            .timeline-item:last-child {
+                border-bottom: none;
+            }
+            .timeline-date {
+                font-weight: bold;
+                color: #2c3e50;
+            }
+            .timeline-location {
+                color: #666;
+            }
+            .status-info {
+                padding: 15px;
+                background: #f8f9fa;
+                border-radius: 5px;
+                margin: 15px 0;
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>

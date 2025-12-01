@@ -752,19 +752,30 @@
     </footer>
 
     <script>
+        // Configuration - Update this with your Web App URL
+        const TRACKING_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzv1phyXZpAzh-FiFPMhRIqTwmhzFNP5kgay8Pw4KVX3M0zZM2v6y-haXwxUgqtZ_8Q/exec"; // Replace with your deployed tracking web app URL
+        
         // Check if user is logged in
         document.addEventListener('DOMContentLoaded', function() {
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
+            const currentBusiness = localStorage.getItem('currentBusiness');
+            if (!currentBusiness) {
                 window.location.href = 'business-login.html';
                 return;
             }
             
-            const user = JSON.parse(currentUser);
-            document.getElementById('profile-name').textContent = user.name;
+            const business = JSON.parse(currentBusiness);
+            document.getElementById('profile-name').textContent = business.name;
             
-            // Load initial tracking data for demo
-            loadTrackingData('HH-2023-0012');
+            // Load recent shipments on page load
+            loadRecentShipments();
+            
+            // Check if there's a tracking number in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const trackingNumber = urlParams.get('tracking');
+            if (trackingNumber) {
+                document.getElementById('tracking-number').value = trackingNumber;
+                trackShipment(trackingNumber);
+            }
         });
         
         // Profile dropdown
@@ -782,137 +793,297 @@
         // Logout functionality
         document.getElementById('logout-btn').addEventListener('click', function(e) {
             e.preventDefault();
-            localStorage.removeItem('currentUser');
+            localStorage.removeItem('currentBusiness');
             window.location.href = 'business-login.html';
         });
         
-        // Tracking data for demo
-        const trackingData = {
-            'HH-2023-0012': {
-                status: 'Delivered',
-                statusClass: 'status-delivered',
-                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6',
-                recipient: 'Jane Smith<br>789 Delivery St, Kitchener, ON N2G 1A1',
-                package: 'Office Supplies<br>5 kg • 12x8x6 in',
-                service: 'Standard Service<br>$24.50',
-                timeline: [
-                    { date: 'Oct 15, 2023 - 10:30 AM', location: 'Kitchener, ON', status: 'Delivered', completed: true, current: false },
-                    { date: 'Oct 15, 2023 - 8:15 AM', location: 'Kitchener, ON', status: 'Out for delivery', completed: true, current: false },
-                    { date: 'Oct 14, 2023 - 6:45 PM', location: 'Kitchener Distribution Center', status: 'Arrived at facility', completed: true, current: false },
-                    { date: 'Oct 14, 2023 - 2:30 PM', location: 'In Transit', status: 'Departured from Toronto Hub', completed: true, current: false },
-                    { date: 'Oct 14, 2023 - 11:00 AM', location: 'Toronto, ON', status: 'Picked up by driver', completed: true, current: false },
-                    { date: 'Oct 13, 2023 - 3:15 PM', location: 'Toronto, ON', status: 'Order received and processed', completed: true, current: false }
-                ]
-            },
-            'HH-2023-0011': {
-                status: 'In Transit',
-                statusClass: 'status-transit',
-                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6',
-                recipient: 'John Davis<br>456 Main St, London, ON N6A 1A1',
-                package: 'Electronics<br>3.5 kg • 10x6x4 in',
-                service: 'Express Service<br>$38.75',
-                timeline: [
-                    { date: 'Oct 14, 2023 - 4:20 PM', location: 'London Distribution Center', status: 'Arrived at facility', completed: true, current: false },
-                    { date: 'Oct 14, 2023 - 1:45 PM', location: 'In Transit', status: 'Departured from Toronto Hub', completed: true, current: false },
-                    { date: 'Oct 14, 2023 - 10:30 AM', location: 'Toronto, ON', status: 'Picked up by driver', completed: true, current: false },
-                    { date: 'Oct 13, 2023 - 2:00 PM', location: 'Toronto, ON', status: 'Order received and processed', completed: true, current: true }
-                ]
-            },
-            'HH-2023-0010': {
-                status: 'Out for Delivery',
-                statusClass: 'status-out',
-                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6',
-                recipient: 'Robert Johnson<br>321 Oak Ave, Kitchener, ON N2H 1A1',
-                package: 'Documents<br>0.8 kg • 8x5x1 in',
-                service: 'Standard Service<br>$16.50',
-                timeline: [
-                    { date: 'Oct 16, 2023 - 7:30 AM', location: 'Kitchener, ON', status: 'Out for delivery', completed: false, current: true },
-                    { date: 'Oct 15, 2023 - 8:45 PM', location: 'Kitchener Distribution Center', status: 'Arrived at facility', completed: true, current: false },
-                    { date: 'Oct 15, 2023 - 3:15 PM', location: 'In Transit', status: 'Departured from Toronto Hub', completed: true, current: false },
-                    { date: 'Oct 15, 2023 - 11:30 AM', location: 'Toronto, ON', status: 'Picked up by driver', completed: true, current: false },
-                    { date: 'Oct 14, 2023 - 4:20 PM', location: 'Toronto, ON', status: 'Order received and processed', completed: true, current: false }
-                ]
-            },
-            'HH-2023-0009': {
-                status: 'Picked Up',
-                statusClass: 'status-picked',
-                sender: 'ABC Wholesale Ltd.<br>456 Commerce St, Mississauga, ON L5B 3C7',
-                recipient: 'Sarah Wilson<br>654 Pine St, Hamilton, ON L8P 1A1',
-                package: 'Clothing<br>2.2 kg • 14x10x3 in',
-                service: 'Standard Service<br>$19.80',
-                timeline: [
-                    { date: 'Oct 16, 2023 - 9:15 AM', location: 'Mississauga, ON', status: 'Picked up by driver', completed: true, current: true },
-                    { date: 'Oct 15, 2023 - 2:30 PM', location: 'Mississauga, ON', status: 'Order received and processed', completed: true, current: false }
-                ]
-            },
-            'HH-2023-0008': {
-                status: 'Delivered',
-                statusClass: 'status-delivered',
-                sender: 'ABC Wholesale Ltd.<br>123 Business Ave, Toronto, ON M5V 2T6',
-                recipient: 'Michael Brown<br>987 Elm St, Waterloo, ON N2L 1A1',
-                package: 'Books<br>4.5 kg • 11x7x5 in',
-                service: 'Standard Service<br>$22.75',
-                timeline: [
-                    { date: 'Oct 7, 2023 - 3:45 PM', location: 'Waterloo, ON', status: 'Delivered', completed: true, current: false },
-                    { date: 'Oct 7, 2023 - 11:20 AM', location: 'Waterloo, ON', status: 'Out for delivery', completed: true, current: false },
-                    { date: 'Oct 6, 2023 - 7:30 PM', location: 'Waterloo Distribution Center', status: 'Arrived at facility', completed: true, current: false },
-                    { date: 'Oct 6, 2023 - 2:15 PM', location: 'In Transit', status: 'Departured from Toronto Hub', completed: true, current: false },
-                    { date: 'Oct 6, 2023 - 10:45 AM', location: 'Toronto, ON', status: 'Picked up by driver', completed: true, current: false },
-                    { date: 'Oct 5, 2023 - 4:10 PM', location: 'Toronto, ON', status: 'Order received and processed', completed: true, current: false }
-                ]
+        // Load recent shipments
+        async function loadRecentShipments() {
+            try {
+                const currentBusiness = JSON.parse(localStorage.getItem('currentBusiness'));
+                const businessId = currentBusiness.id;
+                
+                // Fetch recent shipments
+                const params = new URLSearchParams({
+                    action: 'getRecentShipments',
+                    businessId: businessId,
+                    limit: 10
+                });
+                
+                const response = await fetch(`${TRACKING_SCRIPT_URL}?${params}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    updateRecentShipmentsList(result.data);
+                    updateRecentShipmentsTable(result.data);
+                } else {
+                    console.error('Failed to load recent shipments:', result.message);
+                }
+            } catch (error) {
+                console.error('Error loading recent shipments:', error);
             }
-        };
+        }
         
-        // Load tracking data
-        function loadTrackingData(trackingNumber) {
-            const data = trackingData[trackingNumber];
-            if (!data) {
-                alert('Tracking number not found. Please check and try again.');
+        // Update recent shipments list (top section)
+        function updateRecentShipmentsList(shipments) {
+            const trackingList = document.querySelector('.tracking-list');
+            if (!trackingList) return;
+            
+            trackingList.innerHTML = '';
+            
+            if (shipments.length === 0) {
+                trackingList.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No recent shipments found</div>';
                 return;
             }
             
-            // Update tracking results
-            document.getElementById('result-tracking-number').textContent = trackingNumber;
-            document.getElementById('result-status').textContent = data.status;
-            document.getElementById('result-status').className = `status ${data.statusClass}`;
-            document.getElementById('sender-info').innerHTML = data.sender;
-            document.getElementById('recipient-info').innerHTML = data.recipient;
-            document.getElementById('package-info').innerHTML = data.package;
-            document.getElementById('service-info').innerHTML = data.service;
+            shipments.slice(0, 3).forEach(shipment => {
+                const item = document.createElement('div');
+                item.className = 'tracking-item';
+                item.setAttribute('data-tracking', shipment.trackingNumber);
+                
+                item.innerHTML = `
+                    <strong>${shipment.trackingNumber}</strong>
+                    <p>${shipment.fromTo} → ${shipment.status}</p>
+                    <small>${shipment.date}</small>
+                `;
+                
+                item.addEventListener('click', function() {
+                    const trackingNumber = this.getAttribute('data-tracking');
+                    document.getElementById('tracking-number').value = trackingNumber;
+                    trackShipment(trackingNumber);
+                });
+                
+                trackingList.appendChild(item);
+            });
+        }
+        
+        // Update recent shipments table
+        function updateRecentShipmentsTable(shipments) {
+            const tbody = document.querySelector('.shipments-table tbody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            shipments.forEach(shipment => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${shipment.trackingNumber}</td>
+                    <td>${shipment.date}</td>
+                    <td>${shipment.fromTo}</td>
+                    <td><span class="status ${shipment.statusClass}">${shipment.status}</span></td>
+                    <td><a href="#" class="track-link" data-tracking="${shipment.trackingNumber}">Track</a></td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+            
+            // Add event listeners to track links
+            document.querySelectorAll('.track-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const trackingNumber = this.getAttribute('data-tracking');
+                    document.getElementById('tracking-number').value = trackingNumber;
+                    trackShipment(trackingNumber);
+                });
+            });
+        }
+        
+        // Track shipment
+        async function trackShipment(trackingNumber) {
+            try {
+                const currentBusiness = JSON.parse(localStorage.getItem('currentBusiness'));
+                const businessId = currentBusiness.id;
+                
+                if (!trackingNumber.trim()) {
+                    alert('Please enter a tracking number');
+                    return;
+                }
+                
+                // Show loading state
+                showLoadingState();
+                
+                // Fetch order by tracking number
+                const params = new URLSearchParams({
+                    action: 'getOrderByTracking',
+                    trackingId: trackingNumber,
+                    businessId: businessId
+                });
+                
+                const response = await fetch(`${TRACKING_SCRIPT_URL}?${params}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Get tracking history
+                    const historyParams = new URLSearchParams({
+                        action: 'getTrackingHistory',
+                        trackingId: trackingNumber,
+                        businessId: businessId
+                    });
+                    
+                    const historyResponse = await fetch(`${TRACKING_SCRIPT_URL}?${historyParams}`);
+                    const historyResult = await historyResponse.json();
+                    
+                    // Hide loading state first
+                    hideLoadingState();
+                    
+                    // Then display results
+                    displayTrackingResult(result.data, historyResult.success ? historyResult.data : null);
+                } else {
+                    hideLoadingState();
+                    throw new Error(result.message || 'Tracking number not found');
+                }
+            } catch (error) {
+                console.error('Error tracking shipment:', error);
+                hideLoadingState();
+                alert(error.message || 'Error tracking shipment. Please try again.');
+            }
+        }
+        
+        // Show loading state - FIXED VERSION
+        function showLoadingState() {
+            const results = document.getElementById('tracking-results');
+            
+            // Create loading overlay that doesn't replace the content
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.id = 'tracking-loading-overlay';
+            loadingOverlay.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.9);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 100;
+                border-radius: 8px;
+            `;
+            
+            loadingOverlay.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #f39c12; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                    <p style="margin-top: 20px; color: #666; font-weight: bold;">Tracking shipment...</p>
+                </div>
+            `;
+            
+            // Add CSS for spinner animation if not exists
+            if (!document.querySelector('#spinner-style')) {
+                const style = document.createElement('style');
+                style.id = 'spinner-style';
+                style.textContent = `
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Make sure results is visible and positioned relative
+            results.classList.add('active');
+            results.style.position = 'relative';
+            
+            // Remove existing overlay if any
+            const existingOverlay = document.getElementById('tracking-loading-overlay');
+            if (existingOverlay) {
+                existingOverlay.remove();
+            }
+            
+            // Add the loading overlay
+            results.appendChild(loadingOverlay);
+            
+            // Temporarily hide the content
+            const contentElements = results.querySelectorAll('.shipment-header, .shipment-info, h4, .tracking-timeline');
+            contentElements.forEach(el => {
+                el.style.visibility = 'hidden';
+            });
+        }
+        
+        // Hide loading state
+        function hideLoadingState() {
+            const results = document.getElementById('tracking-results');
+            const loadingOverlay = document.getElementById('tracking-loading-overlay');
+            
+            // Remove loading overlay
+            if (loadingOverlay) {
+                loadingOverlay.remove();
+            }
+            
+            // Show the content again
+            const contentElements = results.querySelectorAll('.shipment-header, .shipment-info, h4, .tracking-timeline');
+            contentElements.forEach(el => {
+                el.style.visibility = 'visible';
+            });
+        }
+        
+        // Display tracking result - FIXED VERSION
+        function displayTrackingResult(orderData, trackingHistory) {
+            const results = document.getElementById('tracking-results');
+            
+            // Ensure results are visible
+            results.classList.add('active');
+            
+            // Update tracking results - these elements should exist in the original HTML
+            const trackingNumberElement = document.getElementById('result-tracking-number');
+            const statusElement = document.getElementById('result-status');
+            const senderInfoElement = document.getElementById('sender-info');
+            const recipientInfoElement = document.getElementById('recipient-info');
+            const packageInfoElement = document.getElementById('package-info');
+            const serviceInfoElement = document.getElementById('service-info');
+            
+            if (trackingNumberElement) trackingNumberElement.textContent = orderData.trackingNumber;
+            if (statusElement) {
+                statusElement.textContent = orderData.status;
+                statusElement.className = `status ${orderData.statusClass}`;
+            }
+            if (senderInfoElement) senderInfoElement.innerHTML = orderData.sender;
+            if (recipientInfoElement) recipientInfoElement.innerHTML = orderData.recipient;
+            if (packageInfoElement) packageInfoElement.innerHTML = orderData.package;
+            if (serviceInfoElement) serviceInfoElement.innerHTML = orderData.service;
             
             // Build timeline
             const timelineElement = document.getElementById('tracking-timeline');
-            timelineElement.innerHTML = '';
-            
-            data.timeline.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = `timeline-item ${item.completed ? 'completed' : ''} ${item.current ? 'current' : ''}`;
+            if (timelineElement) {
+                timelineElement.innerHTML = '';
                 
-                itemElement.innerHTML = `
-                    <div class="timeline-date">${item.date}</div>
-                    <div class="timeline-location">${item.location}</div>
-                    <div class="timeline-status">${item.status}</div>
-                `;
+                const timeline = trackingHistory ? trackingHistory.timeline : [];
                 
-                timelineElement.appendChild(itemElement);
-            });
-            
-            // Show results
-            document.getElementById('tracking-results').classList.add('active');
+                if (timeline.length > 0) {
+                    timeline.forEach(item => {
+                        const itemElement = document.createElement('div');
+                        itemElement.className = `timeline-item ${item.completed ? 'completed' : ''} ${item.current ? 'current' : ''}`;
+                        
+                        itemElement.innerHTML = `
+                            <div class="timeline-date">${item.date}</div>
+                            <div class="timeline-location">${item.location}</div>
+                            <div class="timeline-status">${item.status}</div>
+                        `;
+                        
+                        timelineElement.appendChild(itemElement);
+                    });
+                    
+                    // Add estimated delivery if available
+                    if (trackingHistory && trackingHistory.estimatedDelivery) {
+                        const estimateElement = document.createElement('div');
+                        estimateElement.style.cssText = 'margin-top: 20px; padding: 15px; background: #e8f4fd; border-radius: 5px; border-left: 4px solid #3498db;';
+                        estimateElement.innerHTML = `<strong>Estimated Delivery:</strong> ${trackingHistory.estimatedDelivery}`;
+                        timelineElement.parentNode.insertBefore(estimateElement, timelineElement.nextSibling);
+                    }
+                } else {
+                    timelineElement.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No tracking information available yet</div>';
+                }
+            }
             
             // Scroll to results
-            document.getElementById('tracking-results').scrollIntoView({ behavior: 'smooth' });
+            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
         
         // Track button event
         document.getElementById('track-btn').addEventListener('click', function() {
             const trackingNumber = document.getElementById('tracking-number').value.trim();
-            if (!trackingNumber) {
-                alert('Please enter a tracking number');
-                return;
-            }
-            
-            loadTrackingData(trackingNumber);
+            trackShipment(trackingNumber);
         });
         
         // Enter key to track
@@ -922,42 +1093,12 @@
             }
         });
         
-        // Recent tracking items
-        document.querySelectorAll('.tracking-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const trackingNumber = this.getAttribute('data-tracking');
-                document.getElementById('tracking-number').value = trackingNumber;
-                loadTrackingData(trackingNumber);
-            });
-        });
-        
-        // Track links in table
-        document.querySelectorAll('.track-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const trackingNumber = this.getAttribute('data-tracking');
-                document.getElementById('tracking-number').value = trackingNumber;
-                loadTrackingData(trackingNumber);
-            });
-        });
-        
-        // Print tracking details
-        document.getElementById('print-tracking-btn').addEventListener('click', function() {
-            const trackingResults = document.getElementById('tracking-results');
-            const originalDisplay = trackingResults.style.display;
-            
-            // Show only the tracking results for printing
-            trackingResults.style.display = 'block';
-            
-            const printContent = trackingResults.innerHTML;
-            const originalContent = document.body.innerHTML;
-            
-            document.body.innerHTML = printContent;
-            window.print();
-            document.body.innerHTML = originalContent;
-            
-            // Restore original display
-            trackingResults.style.display = originalDisplay;
+        // Remove print button from DOM if it exists
+        document.addEventListener('DOMContentLoaded', function() {
+            const printBtn = document.getElementById('print-tracking-btn');
+            if (printBtn) {
+                printBtn.style.display = 'none';
+            }
         });
     </script>
 </body>

@@ -404,6 +404,57 @@
             padding-top: 1rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
+
+        /* Action buttons in table */
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-small {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.8rem;
+        }
+
+        /* Status colors */
+        .status-out {
+            background: #ffeaa7;
+            color: #856404;
+        }
+
+        .status-assigned {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        /* Loading states */
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #f39c12;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Text utilities */
+        .text-center {
+            text-align: center;
+        }
+
+        .text-danger {
+            color: #e74c3c;
+        }
+
+        .text-primary {
+            color: #3498db;
+        }
         
         /* Loading */
         .loading-spinner {
@@ -614,8 +665,12 @@
     </footer>
 
     <script>
-        // Google Apps Script URL for Business Operations
-        const BUSINESS_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_BUSINESS_SCRIPT_ID/exec";
+        // Configuration - Update this with your Dashboard Web App URL
+        const DASHBOARD_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKadrS-IS_-OXcgtH5p06hXWXavcb312YG123U68eSnf7e3YpMx1UYhsnqcHtGomdP0A/exec";
+        
+        // Global variables
+        let dashboardData = null;
+        let recentOrders = [];
         
         // Check authentication and load dashboard data
         document.addEventListener('DOMContentLoaded', function() {
@@ -656,76 +711,266 @@
         // Load dashboard data
         async function loadDashboardData(businessId) {
             try {
-                // In a real implementation, you would fetch business-specific data
-                // For now, we'll use mock data
+                showLoadingState();
                 
-                // Mock analytics data
-                document.getElementById('total-orders').textContent = '24';
-                document.getElementById('active-shipments').textContent = '8';
-                document.getElementById('delivered-orders').textContent = '16';
-                document.getElementById('total-spent').textContent = '$1,245';
+                // Fetch dashboard summary
+                const summaryParams = new URLSearchParams({
+                    action: 'getDashboardSummary',
+                    businessId: businessId
+                });
                 
-                // Mock recent orders
-                const recentOrdersBody = document.getElementById('recent-orders-body');
-                recentOrdersBody.innerHTML = `
-                    <tr>
-                        <td>#HH-2024-0124</td>
-                        <td>${new Date().toLocaleDateString()}</td>
-                        <td>Toronto, ON</td>
-                        <td><span class="status status-delivered">Delivered</span></td>
-                        <td>TN250000124</td>
-                        <td>
-                            <a href="#" class="btn btn-small">View</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>#HH-2024-0123</td>
-                        <td>${new Date().toLocaleDateString()}</td>
-                        <td>London, ON</td>
-                        <td><span class="status status-transit">In Transit</span></td>
-                        <td>TN250000123</td>
-                        <td>
-                            <a href="#" class="btn btn-small">Track</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>#HH-2024-0122</td>
-                        <td>${new Date().toLocaleDateString()}</td>
-                        <td>Kitchener, ON</td>
-                        <td><span class="status status-assigned">Assigned</span></td>
-                        <td>TN250000122</td>
-                        <td>
-                            <a href="#" class="btn btn-small">View</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>#HH-2024-0121</td>
-                        <td>${new Date(Date.now() - 86400000).toLocaleDateString()}</td>
-                        <td>Hamilton, ON</td>
-                        <td><span class="status status-pending">Pending</span></td>
-                        <td>-</td>
-                        <td>
-                            <a href="#" class="btn btn-small">View</a>
-                        </td>
-                    </tr>
-                `;
+                const summaryResponse = await fetch(`${DASHBOARD_SCRIPT_URL}?${summaryParams}`);
+                const summaryResult = await summaryResponse.json();
+                
+                if (summaryResult.success) {
+                    dashboardData = summaryResult.data;
+                    updateDashboardSummary(dashboardData);
+                } else {
+                    throw new Error(summaryResult.message || 'Failed to load dashboard summary');
+                }
+                
+                // Fetch recent orders
+                const ordersParams = new URLSearchParams({
+                    action: 'getRecentOrders',
+                    businessId: businessId,
+                    limit: 5
+                });
+                
+                const ordersResponse = await fetch(`${DASHBOARD_SCRIPT_URL}?${ordersParams}`);
+                const ordersResult = await ordersResponse.json();
+                
+                if (ordersResult.success) {
+                    recentOrders = ordersResult.data;
+                    updateRecentOrders(recentOrders);
+                } else {
+                    throw new Error(ordersResult.message || 'Failed to load recent orders');
+                }
+                
+                hideLoadingState();
                 
             } catch (error) {
                 console.error('Error loading dashboard data:', error);
-                document.getElementById('recent-orders-body').innerHTML = `
+                showErrorState(error.message);
+            }
+        }
+        
+        // Update dashboard summary cards
+        function updateDashboardSummary(data) {
+            // Update total orders
+            document.getElementById('total-orders').textContent = data.totalOrders;
+            updateChangeIndicator('orders-change', data.ordersChange, 'orders');
+            
+            // Update active shipments
+            document.getElementById('active-shipments').textContent = data.activeShipments;
+            updateChangeIndicator('shipments-change', data.shipmentsChange, 'shipments');
+            
+            // Update delivered this month
+            document.getElementById('delivered-orders').textContent = data.deliveredThisMonth;
+            updateChangeIndicator('delivered-change', data.deliveredChange, 'delivered');
+            
+            // Update total spent
+            document.getElementById('total-spent').textContent = `$${data.totalSpent}`;
+            updateChangeIndicator('spent-change', data.spentChange, 'spent');
+        }
+        
+        // Update change indicators
+        function updateChangeIndicator(elementId, changePercentage, type) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            const absChange = Math.abs(changePercentage);
+            let changeText = '';
+            
+            if (changePercentage > 0) {
+                element.className = 'stat-change positive';
+                changeText = `+${absChange}% `;
+            } else if (changePercentage < 0) {
+                element.className = 'stat-change negative';
+                changeText = `-${absChange}% `;
+            } else {
+                element.className = 'stat-change';
+                changeText = `0% `;
+            }
+            
+            // Add text based on type
+            switch(type) {
+                case 'orders':
+                    changeText += 'from last month';
+                    break;
+                case 'shipments':
+                    changeText += 'this month';
+                    break;
+                case 'delivered':
+                    changeText += 'from last month';
+                    break;
+                case 'spent':
+                    changeText += 'from last month';
+                    break;
+            }
+            
+            element.textContent = changeText;
+        }
+        
+        // Update recent orders table
+        function updateRecentOrders(orders) {
+            const tbody = document.getElementById('recent-orders-body');
+            
+            if (!tbody) return;
+            
+            if (orders.length === 0) {
+                tbody.innerHTML = `
                     <tr>
-                        <td colspan="6" class="text-center py-4 text-danger">
-                            Failed to load orders. Please try again.
+                        <td colspan="6" class="text-center py-4">
+                            No recent orders found. <a href="business-request-pickup.html" class="text-primary">Create your first order!</a>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${order.orderId}</td>
+                    <td>${order.date}</td>
+                    <td>${order.destination}</td>
+                    <td><span class="status ${order.statusClass}">${order.status}</span></td>
+                    <td>${order.tracking}</td>
+                    <td>
+                        <div class="action-buttons" style="display: flex; gap: 5px;">
+                            <button class="btn btn-small view-order-btn" data-order="${order.orderId}">View</button>
+                            ${order.tracking !== 'Not assigned' ? 
+                            `<button class="btn btn-small btn-secondary track-order-btn" data-tracking="${order.tracking}">Track</button>` : 
+                            ''}
+                        </div>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+            
+            // Add event listeners
+            document.querySelectorAll('.view-order-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const orderId = this.getAttribute('data-order');
+                    viewOrderDetails(orderId);
+                });
+            });
+            
+            document.querySelectorAll('.track-order-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const trackingId = this.getAttribute('data-tracking');
+                    trackOrder(trackingId);
+                });
+            });
+        }
+        
+        // View order details
+        function viewOrderDetails(orderId) {
+            window.location.href = `business-all-orders.html?view=${orderId}`;
+        }
+        
+        // Track order
+        function trackOrder(trackingId) {
+            window.location.href = `business-track-shipment.html?tracking=${trackingId}`;
+        }
+        
+        // Show loading state
+        function showLoadingState() {
+            const tbody = document.getElementById('recent-orders-body');
+            if (tbody) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4">
+                            <div class="loading-spinner" style="display: inline-block; margin-right: 10px;"></div>
+                            Loading dashboard data...
                         </td>
                     </tr>
                 `;
             }
+            
+            // Show loading on stats cards
+            const statCards = document.querySelectorAll('.stat-value');
+            statCards.forEach(card => {
+                if (card.textContent === '0' || card.textContent === '$0') {
+                    card.innerHTML = '<div class="loading-spinner" style="display: inline-block; width: 20px; height: 20px;"></div>';
+                }
+            });
         }
         
-        // In a real implementation, you would add functions to:
-        // 1. Fetch business-specific orders from Google Sheets
-        // 2. Calculate analytics based on order history
-        // 3. Update the dashboard with real data
+        // Hide loading state
+        function hideLoadingState() {
+            // Loading is removed when data is populated
+        }
+        
+        // Show error state
+        function showErrorState(errorMessage) {
+            const tbody = document.getElementById('recent-orders-body');
+            if (tbody) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-danger">
+                            <i class="fas fa-exclamation-circle" style="margin-right: 10px;"></i>
+                            ${errorMessage || 'Failed to load dashboard data'}
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            // Reset stats to zero
+            document.getElementById('total-orders').textContent = '0';
+            document.getElementById('active-shipments').textContent = '0';
+            document.getElementById('delivered-orders').textContent = '0';
+            document.getElementById('total-spent').textContent = '$0';
+            
+            document.getElementById('orders-change').textContent = '--';
+            document.getElementById('shipments-change').textContent = '--';
+            document.getElementById('delivered-change').textContent = '--';
+            document.getElementById('spent-change').textContent = '--';
+        }
+        
+        // Auto-refresh dashboard every 5 minutes
+        setInterval(() => {
+            const currentBusiness = localStorage.getItem('currentBusiness');
+            if (currentBusiness) {
+                const business = JSON.parse(currentBusiness);
+                loadDashboardData(business.id);
+            }
+        }, 300000); // 5 minutes
+        
+        // Add CSS for action buttons in table
+        const style = document.createElement('style');
+        style.textContent = `
+            .btn-small {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+            }
+            .action-buttons {
+                display: flex;
+                gap: 0.3rem;
+            }
+            .status-out {
+                background: #ffeaa7;
+                color: #856404;
+            }
+            .text-center {
+                text-align: center;
+            }
+            .text-danger {
+                color: #e74c3c;
+            }
+            .text-primary {
+                color: #3498db;
+                text-decoration: none;
+            }
+            .text-primary:hover {
+                text-decoration: underline;
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
