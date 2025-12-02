@@ -118,6 +118,11 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        .order-count-badge {
+            font-size: 0.7rem;
+            margin-left: 5px;
+        }
     </style>
 </head>
 <body>
@@ -168,15 +173,40 @@
             <div class="text-center mt-3">
                 <a>Want to be a driver with us? <br>Email us at </a>
                 <a href="mailto:Drivers@hawkhive.ca?subject=Driver%20Application&body=Hi%2C%20my%20name%20is%20_____%0A%0AI%20am%20interested%20in%20becoming%20a%20driver%20to%20deliver%20packages%20intercity.%0A%0AI%20am%20currently%20residing%20in%20_____%20(City).%0A%0AI%20am%20available%20on%20_____days%20per%20week.%0A%0AMy%20contact%20number%20is%20_____.%0A%0AMy%20email%20is%20_____.%0A%0ALet%20me%20know%20what%20is%20the%20next%20process%20to%20get%20onboarded.%0A%0AThank%20you.">
-                      <strong>Drivers@hawkhive.ca</strong>
+                    <strong>Drivers@hawkhive.ca</strong>
                 </a>
             </div>
         </div>
 
         <!-- Admin Dashboard (Initially Hidden) -->
         <div id="adminDashboard" style="display: none;">
-            <h2 class="mb-4">Admin Dashboard</h2>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">Admin Dashboard</h2>
+                <div>
+                    <button class="btn btn-sm btn-outline-primary me-2" id="refreshRegularOrdersBtn">
+                        <i class="fas fa-sync-alt me-1"></i>Refresh Regular Orders
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" id="refreshBusinessOrdersBtn">
+                        <i class="fas fa-sync-alt me-1"></i>Refresh Business Orders
+                    </button>
+                </div>
+            </div>
             
+            <!-- Order Type Tabs -->
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <button class="nav-link active" id="regularTabBtn" onclick="switchToRegularOrders()">
+                        Regular Orders <span class="badge bg-primary order-count-badge" id="regularOrderCount">0</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="businessTabBtn" onclick="switchToBusinessOrders()">
+                        Business Orders <span class="badge bg-secondary order-count-badge" id="businessOrderCount">0</span>
+                    </button>
+                </li>
+            </ul>
+            
+            <!-- Stats Section -->
             <div class="row mb-4">
                 <div class="col-md-3">
                     <div class="dashboard-card text-center">
@@ -204,149 +234,11 @@
                 </div>
             </div>
             
-            <div class="dashboard-card mb-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4>Order Management</h4>
-                    <button class="btn btn-sm btn-outline-primary" id="refreshOrdersBtn">
-                        <i class="fas fa-sync-alt me-1"></i>Refresh Orders
-                    </button>
-                </div>
-                
-                <div id="loadingIndicator" class="text-center py-4">
-                    <div class="loading-spinner me-2"></div> Loading orders...
-                </div>
-                
-                <div class="table-responsive" id="ordersTable" style="display: none;">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <input type="checkbox" id="selectAllOrders">
-                                </th>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Pickup Location</th>
-                                <th>Delivery Location</th>
-                                <th>Status</th>
-                                <th>Driver</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ordersTableBody">
-                            <!-- Orders will be populated here -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="d-flex justify-content-between align-items-center mt-3 driver-assign p-3 rounded" id="assignSection" style="display: none !important;">
-                    <div>
-                        <span id="selectedOrdersCount">0</span> orders selected
-                    </div>
-                    <div class="d-flex">
-                        <select class="form-select me-2" id="driversList">
-                            <option selected>Select Driver</option>
-                            <!-- Drivers will be populated here -->
-                        </select>
-                        <button class="btn btn-primary" id="assignDriverBtn">Assign</button>
-                    </div>
-                </div>
-                
-                <div id="ordersSections" style="display:none;">
-                    <div class="dashboard-card mb-4">
-                        <h5><span class="status-badge status-pending">Pending Orders</span></h5>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <input type="checkbox" id="selectAllPending">
-                                        </th>
-                                        <th>Order ID</th>
-                                        <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Delivery</th>
-                                        <th>Status</th>
-                                        <th>Driver</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="pendingOrdersTableBody">
-                                    <!-- Pending orders will be populated here -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center mt-3 driver-assign p-3 rounded" id="assignSectionPending" style="display: none;">
-                            <div>
-                                <span id="selectedPendingOrdersCount">0</span> orders selected
-                            </div>
-                            <div class="d-flex">
-                                <select class="form-select me-2" id="driversListPending">
-                                    <option selected>Select Driver</option>
-                                    <!-- Drivers will be populated here -->
-                                </select>
-                                <button class="btn btn-primary" id="assignDriverBtnPending">Assign</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dashboard-card mb-4">
-                        <h5><span class="status-badge status-assigned">Assigned Orders</span></h5>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Delivery</th>
-                                        <th>Status</th>
-                                        <th>Driver</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="assignedOrdersTableBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="dashboard-card mb-4">
-                        <h5><span class="status-badge status-intransit">In Transit Orders</span></h5>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Delivery</th>
-                                        <th>Status</th>
-                                        <th>Driver</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="inTransitOrdersTableBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="dashboard-card mb-4">
-                        <h5><span class="status-badge status-delivered">Delivered Orders</span></h5>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Delivery</th>
-                                        <th>Status</th>
-                                        <th>Driver</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="deliveredOrdersTableBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+            <!-- Orders Container -->
+            <div id="ordersContainer">
+                <!-- Orders will be loaded here -->
             </div>
+            
             <!-- Driver Management Section -->
             <div class="dashboard-card">
                 <h4 class="mb-3">Driver Management</h4>
@@ -357,62 +249,53 @@
                     <!-- Drivers will be listed here -->
                 </div>
             </div>
-        </div>   
-    </div>
-        <div id="loadingOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(255,255,255,0.7); z-index:9999; align-items:center; justify-content:center;">
-            <div>
-                <div class="loading-spinner" style="width:3rem; height:3rem; border-width:6px;"></div>
-                <div class="mt-3 text-primary fw-bold text-center">Processing...</div>
-            </div>
         </div>
+    </div>
+    
+    <div id="loadingOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(255,255,255,0.7); z-index:9999; align-items:center; justify-content:center;">
+        <div>
+            <div class="loading-spinner" style="width:3rem; height:3rem; border-width:6px;"></div>
+            <div class="mt-3 text-primary fw-bold text-center">Processing...</div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Google Apps Script URL - REPLACE THIS WITH YOUR OWN SCRIPT URL
-        const googleScriptURL = "https://script.google.com/macros/s/AKfycbzEEu9yTAEsuStYZjnJGzGGcDjQe4fpE5FxvV5pT5k1aG21IhutvYorsOirfVJWMvly/exec";
+        // Google Apps Script URL
+        const googleScriptURL = "https://script.google.com/macros/s/AKfycbx5uEadIf6ncrn6wMj_o8AI2u6K1OWzqzJkgVXT8wtx7flZlOtkDKeHL8PJybZreMtX/exec";
         
+        // Global variables
+        let regularOrders = [];
+        let businessOrders = [];
+        let currentOrders = [];
+        let currentSheetName = 'regular'; // 'regular' or 'businessorders'
+        let drivers = [];
+        let admins = [];
         
-
         // DOM Elements
         const loginSection = document.getElementById('loginSection');
         const adminDashboard = document.getElementById('adminDashboard');
         const loginForm = document.getElementById('loginForm');
-        const adminLoginLink = document.getElementById('adminLoginLink');
         const logoutBtn = document.getElementById('logoutBtn');
-        const ordersTableBody = document.getElementById('ordersTableBody');
-        const selectAllOrders = document.getElementById('selectAllOrders');
-        const assignSection = document.getElementById('assignSection');
-        const selectedOrdersCount = document.getElementById('selectedOrdersCount');
-        const assignDriverBtn = document.getElementById('assignDriverBtn');
-        const refreshOrdersBtn = document.getElementById('refreshOrdersBtn');
-        const loadingIndicator = document.getElementById('loadingIndicator');
-        const ordersTable = document.getElementById('ordersTable');
-        const driversList = document.getElementById('driversList');
+        const ordersContainer = document.getElementById('ordersContainer');
         const driversLoading = document.getElementById('driversLoading');
         const driversListContainer = document.getElementById('driversListContainer');
-
-        // Global orders array
-        let orders = [];
-        let drivers = [];
-        let admins = [];
-
+        
         // Initialize the application
         async function initApp() {
-            // Check if user is already logged in
             const savedUser = localStorage.getItem('currentUser');
             if (savedUser) {
                 const user = JSON.parse(savedUser);
                 if (user.role === 'admin') {
                     await fetchAdminsFromGoogleSheets();
                     showAdminDashboard();
-                    fetchOrdersFromGoogleSheets();
-                    fetchDriversFromGoogleSheets();
-                } 
+                    await fetchDriversFromGoogleSheets();
+                    await loadRegularOrders(); // Load regular orders by default
+                }
             }
         }
-
+        
         // Fetch drivers from Google Sheets
-        // Replace the simulated fetch with a real fetch
         async function fetchDriversFromGoogleSheets() {
             showLoading();
             try {
@@ -422,7 +305,6 @@
                 const response = await fetch(`${googleScriptURL}?type=drivers`);
                 const data = await response.json();
                 
-                // Process the data into drivers format
                 drivers = data.map(row => ({
                     id: row['Driver ID'] || '',
                     name: row['Name'] || '',
@@ -432,20 +314,17 @@
                 }));
                 
                 renderDrivers();
-                populateDriversDropdown();
-                
                 driversLoading.style.display = 'none';
                 driversListContainer.style.display = 'block';
             } catch (error) {
                 console.error('Error fetching drivers:', error);
                 alert('Failed to load drivers. Please try again.');
                 driversLoading.style.display = 'none';
-            }
-            finally {
+            } finally {
                 hideLoading();
             }
         }
-
+        
         // Fetch admins from Google Sheets
         async function fetchAdminsFromGoogleSheets() {
             showLoading();
@@ -453,7 +332,6 @@
                 const response = await fetch(`${googleScriptURL}?type=admins`);
                 const data = await response.json();
                 
-                // Process the data into admins format
                 admins = data.map(row => ({
                     id: row['Admin ID'] || '',
                     email: row['Email'] || '',
@@ -465,12 +343,522 @@
             } catch (error) {
                 console.error('Error fetching admins:', error);
                 return [];
-            }
-            finally {
+            } finally {
                 hideLoading();
             }
         }
+        
+        // Fetch regular orders
+        async function fetchRegularOrders() {
+            showLoading();
+            try {
+                const response = await fetch(`${googleScriptURL}?type=orders`);
+                const data = await response.json();
+                
+                regularOrders = data.map(row => ({
+                    id: row['Order ID'] || '',
+                    timestamp: row['Timestamp'] || '',
+                    name: row['Name'] || '',
+                    email: row['Email'] || '',
+                    phone: row['Phone'] || '',
+                    pickupAddress: row['Pickup Address'] || '',
+                    origin: row['Origin City'] || '',
+                    pickupPostalCode: row['Pickup Postal Code'] || '',
+                    deliveryAddress: row['Delivery Address'] || '',
+                    destination: row['Destination City'] || '',
+                    deliveryPostalCode: row['Delivery Postal Code'] || '',
+                    weight: row['Weight'] || '',
+                    length: row['Length'] || '',
+                    width: row['Width'] || '',
+                    height: row['Height'] || '',
+                    service: row['Service'] || '',
+                    calculatedPrice: row['Calculated Price'] || '',
+                    status: row['Status'] || '',
+                    driver: row['Driver'] || '',
+                    sheetName: row['sheetName'] || 'regular'
+                }));
+                
+                // Update count badge
+                document.getElementById('regularOrderCount').textContent = regularOrders.length;
+                return regularOrders;
+            } catch (error) {
+                console.error('Error fetching regular orders:', error);
+                alert('Failed to load regular orders. Please try again.');
+                return [];
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        // Fetch business orders
+        async function fetchBusinessOrders() {
+            showLoading();
+            try {
+                const response = await fetch(`${googleScriptURL}?type=businessorders`);
+                const data = await response.json();
+                
+                businessOrders = data.map(row => ({
+                    id: row['Order ID'] || '',
+                    timestamp: row['Timestamp'] || '',
+                    name: row['Delivery Name'] || '',
+                    email: row['Email'] || '',
+                    phone: row['Phone'] || '',
+                    pickupAddress: row['Pickup Street'] || '',
+                    origin: row['Pickup City'] || '',
+                    pickupPostalCode: row['Pickup Postal Code'] || '',
+                    deliveryAddress: row['Delivery Street'] || '',
+                    destination: row['Delivery City'] || '',
+                    deliveryPostalCode: row['Delivery Postal Code'] || '',
+                    weight: row['Weight'] || '',
+                    length: row['Length'] || '',
+                    width: row['Width'] || '',
+                    height: row['Height'] || '',
+                    service: row['Service'] || '',
+                    calculatedPrice: row['Calculated Price'] || '',
+                    status: row['Status'] || '',
+                    driver: row['Driver'] || '',
+                    sheetName: row['sheetName'] || 'businessorders'
+                }));
+                
+                // Update count badge
+                document.getElementById('businessOrderCount').textContent = businessOrders.length;
+                return businessOrders;
+            } catch (error) {
+                console.error('Error fetching business orders:', error);
+                alert('Failed to load business orders. Please try again.');
+                return [];
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        // Load regular orders
+        async function loadRegularOrders() {
+            showLoading();
+            try {
+                // Set active tab
+                document.getElementById('regularTabBtn').classList.add('active');
+                document.getElementById('businessTabBtn').classList.remove('active');
+                
+                // Set current sheet name
+                currentSheetName = 'regular';
+                
+                // Fetch if not already loaded
+                if (regularOrders.length === 0) {
+                    currentOrders = await fetchRegularOrders();
+                } else {
+                    currentOrders = regularOrders;
+                }
+                
+                renderOrders();
+                updateOrderStats();
+            } catch (error) {
+                console.error('Error loading regular orders:', error);
+                alert('Failed to load regular orders.');
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        // Load business orders
+        async function loadBusinessOrders() {
+            showLoading();
+            try {
+                // Set active tab
+                document.getElementById('regularTabBtn').classList.remove('active');
+                document.getElementById('businessTabBtn').classList.add('active');
+                
+                // Set current sheet name
+                currentSheetName = 'businessorders';
+                
+                // Fetch if not already loaded
+                if (businessOrders.length === 0) {
+                    currentOrders = await fetchBusinessOrders();
+                } else {
+                    currentOrders = businessOrders;
+                }
+                
+                renderOrders();
+                updateOrderStats();
+            } catch (error) {
+                console.error('Error loading business orders:', error);
+                alert('Failed to load business orders.');
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        // Switch to regular orders
+        function switchToRegularOrders() {
+            if (currentSheetName !== 'regular') {
+                loadRegularOrders();
+            }
+        }
+        
+        // Switch to business orders
+        function switchToBusinessOrders() {
+            if (currentSheetName !== 'businessorders') {
+                loadBusinessOrders();
+            }
+        }
+        
+        // Render orders in the container
+        function renderOrders() {
+            const ordersContainer = document.getElementById('ordersContainer');
+            
+            ordersContainer.innerHTML = `
+                <div class="dashboard-card mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4>Order Management - ${currentSheetName === 'regular' ? 'Regular Orders' : 'Business Orders'}</h4>
+                        <button class="btn btn-sm btn-outline-primary" id="refreshCurrentOrdersBtn">
+                            <i class="fas fa-sync-alt me-1"></i>Refresh Current Orders
+                        </button>
+                    </div>
+                    
+                    <div id="loadingIndicator" class="text-center py-4" style="display: none;">
+                        <div class="loading-spinner me-2"></div> Loading orders...
+                    </div>
+                    
+                    <div id="ordersSections">
+                        <div class="dashboard-card mb-4">
+                            <h5><span class="status-badge status-pending">Pending Orders</span></h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" id="selectAllPending"></th>
+                                            <th>Order ID</th>
+                                            <th>Customer</th>
+                                            <th>Pickup</th>
+                                            <th>Delivery</th>
+                                            <th>Status</th>
+                                            <th>Driver</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pendingOrdersTableBody"></tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-3 driver-assign p-3 rounded" id="assignSectionPending" style="display: none;">
+                                <div><span id="selectedPendingOrdersCount">0</span> orders selected</div>
+                                <div class="d-flex">
+                                    <select class="form-select me-2" id="driversListPending">
+                                        <option selected>Select Driver</option>
+                                    </select>
+                                    <button class="btn btn-primary" id="assignDriverBtnPending">Assign</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dashboard-card mb-4">
+                            <h5><span class="status-badge status-assigned">Assigned Orders</span></h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer</th>
+                                            <th>Pickup</th>
+                                            <th>Delivery</th>
+                                            <th>Status</th>
+                                            <th>Driver</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="assignedOrdersTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="dashboard-card mb-4">
+                            <h5><span class="status-badge status-intransit">In Transit Orders</span></h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer</th>
+                                            <th>Pickup</th>
+                                            <th>Delivery</th>
+                                            <th>Status</th>
+                                            <th>Driver</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="inTransitOrdersTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="dashboard-card mb-4">
+                            <h5><span class="status-badge status-delivered">Delivered Orders</span></h5>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer</th>
+                                            <th>Pickup</th>
+                                            <th>Delivery</th>
+                                            <th>Status</th>
+                                            <th>Driver</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="deliveredOrdersTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Clear tables
+            document.getElementById('pendingOrdersTableBody').innerHTML = '';
+            document.getElementById('assignedOrdersTableBody').innerHTML = '';
+            document.getElementById('inTransitOrdersTableBody').innerHTML = '';
+            document.getElementById('deliveredOrdersTableBody').innerHTML = '';
+            
+            // Helper to render a row
+            function renderRow(order, type) {
+                let statusKey = (order.status || 'pending').toLowerCase().replace(/\s/g, '');
+                let statusLabel = (order.status || 'Pending');
+                if (statusLabel.toLowerCase() === 'in transit') statusKey = 'intransit';
+                
+                let checkbox = '';
+                if (type === 'pending') {
+                    checkbox = `<td><input type="checkbox" class="pending-order-checkbox" data-id="${order.id}"></td>`;
+                } else {
+                    checkbox = '<td></td>';
+                }
+                
+                return `
+                    <tr>
+                        ${checkbox}
+                        <td>${order.id}</td>
+                        <td>${order.name }</td>
+                        <td>${order.pickupAddress}, ${order.origin}, ${order.pickupPostalCode}</td>
+                        <td>${order.deliveryAddress}, ${order.destination}, ${order.deliveryPostalCode}</td>
+                        <td>
+                            <span class="status-badge status-${statusKey}">
+                                ${statusLabel.charAt(0).toUpperCase() + statusLabel.slice(1)}
+                            </span>
+                        </td>
+                        <td>${order.driver || 'Not assigned'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary view-order" data-id="${order.id}">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-info ms-1 edit-order" data-id="${order.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            // Populate each section
+            currentOrders.forEach(order => {
+                let status = (order.status || 'pending').toLowerCase();
+                if (status === 'pending') {
+                    document.getElementById('pendingOrdersTableBody').innerHTML += renderRow(order, 'pending');
+                } else if (status === 'assigned') {
+                    document.getElementById('assignedOrdersTableBody').innerHTML += renderRow(order);
+                } else if (status === 'in transit' || status === 'intransit') {
+                    document.getElementById('inTransitOrdersTableBody').innerHTML += renderRow(order);
+                } else if (status === 'delivered' || status === 'completed') {
+                    document.getElementById('deliveredOrdersTableBody').innerHTML += renderRow(order);
+                }
+            });
+            
+            // Populate drivers dropdown
+            populateDriversDropdown();
+            
+            // Add event listeners
+            setupEventListeners();
+        }
+        
+        // Populate drivers dropdown
+        function populateDriversDropdown() {
+            const driversListPending = document.getElementById('driversListPending');
+            if (driversListPending) {
+                driversListPending.innerHTML = '<option selected>Select Driver</option>';
+                drivers.forEach(driver => {
+                    const option = document.createElement('option');
+                    option.value = driver.id;
+                    option.textContent = `${driver.name} (${driver.id})`;
+                    driversListPending.appendChild(option);
+                });
+            }
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            // Select all pending orders checkbox
+            const selectAllPending = document.getElementById('selectAllPending');
+            if (selectAllPending) {
+                selectAllPending.addEventListener('change', function() {
+                    const checkboxes = document.querySelectorAll('.pending-order-checkbox');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                    updateSelectedPendingOrders();
+                });
+            }
+            
+            // Pending order checkboxes
+            document.querySelectorAll('.pending-order-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', updateSelectedPendingOrders);
+            });
+            
+            // Assign driver button
+            const assignDriverBtnPending = document.getElementById('assignDriverBtnPending');
+            if (assignDriverBtnPending) {
+                assignDriverBtnPending.addEventListener('click', assignDriverToPendingOrders);
+            }
+            
+            // Refresh current orders button
+            const refreshCurrentOrdersBtn = document.getElementById('refreshCurrentOrdersBtn');
+            if (refreshCurrentOrdersBtn) {
+                refreshCurrentOrdersBtn.addEventListener('click', async function() {
+                    showLoading();
+                    if (currentSheetName === 'regular') {
+                        await fetchRegularOrders();
+                        currentOrders = regularOrders;
+                    } else {
+                        await fetchBusinessOrders();
+                        currentOrders = businessOrders;
+                    }
+                    renderOrders();
+                    updateOrderStats();
+                    hideLoading();
+                });
+            }
+        }
+        
+        // Update selected pending orders count
+        function updateSelectedPendingOrders() {
+            const selectedOrders = document.querySelectorAll('.pending-order-checkbox:checked');
+            const selectedCount = document.getElementById('selectedPendingOrdersCount');
+            const assignSectionPending = document.getElementById('assignSectionPending');
+            
+            if (selectedCount) {
+                selectedCount.textContent = selectedOrders.length;
+            }
+            
+            if (assignSectionPending) {
+                assignSectionPending.style.display = selectedOrders.length > 0 ? 'flex' : 'none';
+            }
+        }
+        
+        // Assign driver to selected pending orders
+        async function assignDriverToPendingOrders() {
+            showLoading();
+            try {
+                const driversListPending = document.getElementById('driversListPending');
+                const selectedDriver = driversListPending.options[driversListPending.selectedIndex].text;
+                const selectedOrderIds = [];
+                
+                document.querySelectorAll('.pending-order-checkbox:checked').forEach(checkbox => {
+                    selectedOrderIds.push(checkbox.dataset.id);
+                });
+                
+                if (selectedDriver === 'Select Driver') {
+                    alert('Please select a driver first.');
+                    hideLoading();
+                    return;
+                }
+                
+                if (selectedOrderIds.length === 0) {
+                    alert('Please select at least one order.');
+                    hideLoading();
+                    return;
+                }
+                
+                // Update orders locally
+                currentOrders.forEach(order => {
+                    if (selectedOrderIds.includes(order.id)) {
+                        order.driver = selectedDriver;
+                        order.status = 'assigned';
+                    }
+                });
+                
+                // Update the corresponding source array
+                if (currentSheetName === 'regular') {
+                    regularOrders = [...currentOrders];
+                } else {
+                    businessOrders = [...currentOrders];
+                }
+                
+                // Save to Google Sheets
+                for (const orderId of selectedOrderIds) {
+                    await updateDriverAssignment(orderId, selectedDriver, currentSheetName);
+                    await updateOrderStatus(orderId, 'Assigned', currentSheetName);
+                }
+                
+                renderOrders();
+                updateOrderStats();
+                
+                alert(`Successfully assigned ${selectedOrderIds.length} orders to ${selectedDriver}`);
+            } catch (error) {
+                console.error('Error assigning driver:', error);
+                alert('Failed to assign driver. Please try again.');
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        // Update driver assignment in Google Sheets
+        async function updateDriverAssignment(orderId, driverName, sheetName) {
+            try {
+                await fetch(googleScriptURL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        action: 'assignDriver',
+                        orderId: orderId,
+                        driver: driverName,
+                        sheetName: sheetName
+                    })
+                });
+            } catch (error) {
+                console.error('Failed to update driver assignment:', error);
+                throw error;
+            }
+        }
+        
+        // Update order status in Google Sheets
+        async function updateOrderStatus(orderId, status, sheetName) {
+            try {
+                await fetch(googleScriptURL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        action: 'updateStatus',
+                        orderId: orderId,
+                        status: status,
+                        sheetName: sheetName
+                    })
+                });
+            } catch (error) {
+                console.error('Failed to update order status:', error);
+                throw error;
+            }
+        }
+        
+        // Update order statistics
+        function updateOrderStats() {
+            const totalOrders = currentOrders.length;
+            const pendingOrders = currentOrders.filter(order => !order.status || order.status.toLowerCase() === 'pending').length;
+            const assignedOrders = currentOrders.filter(order => order.status && order.status.toLowerCase() === 'assigned').length;
+            const deliveredOrders = currentOrders.filter(order => {
+                const status = (order.status || '').toLowerCase();
+                return status === 'delivered' || status === 'completed';
+            }).length;
 
+            document.getElementById('totalOrders').textContent = totalOrders;
+            document.getElementById('pendingOrders').textContent = pendingOrders;
+            document.getElementById('assignedOrders').textContent = assignedOrders;
+            document.getElementById('deliveredOrders').textContent = deliveredOrders;
+        }
+        
         // Render drivers in the admin panel
         function renderDrivers() {
             driversListContainer.innerHTML = '';
@@ -500,388 +888,118 @@
                 driversListContainer.appendChild(driverElement);
             });
         }
-
-        // Populate drivers dropdown
-        function populateDriversDropdown() {
-            driversList.innerHTML = '<option selected>Select Driver</option>';
-            
-            drivers.forEach(driver => {
-                const option = document.createElement('option');
-                option.value = driver.id;
-                option.textContent = `${driver.name} (${driver.id})`;
-                driversList.appendChild(option);
-            });
-        }
-
-        // Fetch orders from Google Sheets
-        // Replace the simulated fetch with a real fetch
-        async function fetchOrdersFromGoogleSheets() {
-            try {
-                loadingIndicator.style.display = 'block';
-                ordersTable.style.display = 'none';
-                
-                const response = await fetch(`${googleScriptURL}?type=orders`);
-                const data = await response.json();
-                
-                // Process the data into orders format
-                orders = data.map(row => ({
-                    id: row['Order ID'] || '',
-                    timestamp: row['Timestamp'] || '',
-                    name: row['Name'] || '',
-                    email: row['Email'] || '',
-                    phone: row['Phone'] || '',
-                    pickupAddress: row['Pickup Address'] || '',
-                    origin: row['Origin City'] || '',
-                    pickupPostalCode: row['Pickup Postal Code'] || '',
-                    deliveryAddress: row['Delivery Address'] || '',
-                    destination: row['Destination City'] || '',
-                    deliveryPostalCode: row['Delivery Postal Code'] || '',
-                    weight: row['Weight'] || '',
-                    length: row['Length'] || '',
-                    width: row['Width'] || '',
-                    height: row['Height'] || '',
-                    service: row['Service'] || '',
-                    calculatedPrice: row['Calculated Price'] || '',
-                    status: row['Status'] || '',
-                    driver: row['Driver'] || ''
-                }));
-                
-                renderOrders();
-                updateOrderStats();
-                loadingIndicator.style.display = 'none';
-                document.getElementById('ordersSections').style.display = 'block';
-            } catch (error) {
-                console.error('Error fetching orders:', error);
-                alert('Failed to load orders. Please try again.');
-                loadingIndicator.style.display = 'none';
-            }
-        }
-
-        // Render orders in the admin table
-        function renderOrders() {
-            // Hide old table, show new sections
-            ordersTable.style.display = 'none';
-            document.getElementById('ordersSections').style.display = 'block';
-
-            // Clear all tables
-            document.getElementById('pendingOrdersTableBody').innerHTML = '';
-            document.getElementById('assignedOrdersTableBody').innerHTML = '';
-            document.getElementById('inTransitOrdersTableBody').innerHTML = '';
-            document.getElementById('deliveredOrdersTableBody').innerHTML = '';
-
-            // Helper to render a row
-            function renderRow(order, type) {
-                let statusKey = (order.status || 'pending').toLowerCase().replace(/\s/g, '');
-                let statusLabel = (order.status || 'Pending');
-                if (statusLabel.toLowerCase() === 'in transit') statusKey = 'intransit';
-                let checkbox = '';
-                if (type === 'pending') {
-                    checkbox = `<td><input type="checkbox" class="pending-order-checkbox" data-id="${order.id}"></td>`;
-                }
-                return `
-                    <tr>
-                        ${checkbox}
-                        <td>${order.id}</td>
-                        <td>${order.name}</td>
-                        <td>${order.pickupAddress}, ${order.origin}, ${order.pickupPostalCode}</td>
-                        <td>${order.deliveryAddress}, ${order.destination}, ${order.deliveryPostalCode}</td>
-                        <td>
-                            <span class="status-badge status-${statusKey}">
-                                ${statusLabel.charAt(0).toUpperCase() + statusLabel.slice(1)}
-                            </span>
-                        </td>
-                        <td>${order.driver || 'Not assigned'}</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-secondary view-order" data-id="${order.id}">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-info ms-1 edit-order" data-id="${order.id}">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            }
-
-            // Populate each section
-            orders.forEach(order => {
-                let status = (order.status || 'pending').toLowerCase();
-                if (status === 'pending') {
-                    document.getElementById('pendingOrdersTableBody').innerHTML += renderRow(order, 'pending');
-                } else if (status === 'assigned') {
-                    document.getElementById('assignedOrdersTableBody').innerHTML += renderRow(order);
-                } else if (status === 'in transit' || status === 'intransit') {
-                    document.getElementById('inTransitOrdersTableBody').innerHTML += renderRow(order);
-                } else if (status === 'delivered' || status === 'completed') {
-                    document.getElementById('deliveredOrdersTableBody').innerHTML += renderRow(order);
-                }
-            });
-
-            // Add event listeners for pending order checkboxes
-            document.querySelectorAll('.pending-order-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', updateSelectedPendingOrders);
-            });
-
-            // Populate drivers dropdown for pending section
-            populateDriversDropdownPending();
-        }
-
-        // Update order statistics
-        function updateOrderStats() {
-            const totalOrders = orders.length;
-            const pendingOrders = orders.filter(order => !order.status || order.status.toLowerCase() === 'pending').length;
-            const assignedOrders = orders.filter(order => order.status && order.status.toLowerCase() === 'assigned').length;
-            const deliveredOrders = orders.filter(order => {
-                const status = (order.status || '').toLowerCase();
-                return status === 'delivered' || status === 'completed';
-            }).length;
-
-            document.getElementById('totalOrders').textContent = totalOrders;
-            document.getElementById('pendingOrders').textContent = pendingOrders;
-            document.getElementById('assignedOrders').textContent = assignedOrders;
-            document.getElementById('deliveredOrders').textContent = deliveredOrders;
-        }
-
-        // Update selected orders count and show/hide assign section
-        function updateSelectedOrders() {
-            const selectedOrders = document.querySelectorAll('.order-checkbox:checked');
-            selectedOrdersCount.textContent = selectedOrders.length;
-            
-            if (selectedOrders.length > 0) {
-                assignSection.style.display = 'flex';
-            } else {
-                assignSection.style.display = 'none';
-            }
-        }
-
+        
         // Show admin dashboard
         function showAdminDashboard() {
             loginSection.style.display = 'none';
             adminDashboard.style.display = 'block';
         }
-
-        // Update driver assignment in Google Sheets
-        async function updateDriverAssignment(orderId, driverName) {
-            try {
-                // Send a POST request to your Google Apps Script with orderId and driverName
-                await fetch(googleScriptURL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams({
-                        action: 'assignDriver',
-                        orderId: orderId,
-                        driver: driverName
-                    })
-                });
-            } catch (error) {
-                console.error('Failed to update driver assignment:', error);
-            }
+        
+        // Helper functions to show/hide loading overlay
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
         }
-
-        // Update order status in Google Sheets
-        async function updateOrderStatus(orderId, status) {
-            try {
-                await fetch(googleScriptURL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams({
-                        action: 'updateStatus',
-                        orderId: orderId,
-                        status: status
-                    })
-                });
-            } catch (error) {
-                console.error('Failed to update order status:', error);
-            }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
         }
-
+        
         // Event Listeners
         loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-
-            // Wait for drivers to load if not loaded yet
-            if (drivers.length === 0) {
-                await fetchDriversFromGoogleSheets();
-            }
-            if (admins.length === 0) {
-                await fetchAdminsFromGoogleSheets();
-            }
+            showLoading();
             
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            // Check if it's an admin login
-            // Check if it's an admin login
-            const admin = admins.find(a => a.email === email && a.password === password);
-            if (admin) {
-                localStorage.setItem('currentUser', JSON.stringify({
-                    id: admin.id,
-                    name: admin.name,
-                    email: admin.email,
-                    role: 'admin'
-                }));
-                showAdminDashboard();
-                fetchOrdersFromGoogleSheets();
-                fetchDriversFromGoogleSheets();
-                return;
-            }
-            
-            // Check if it's a driver login
-            const driver = drivers.find(d => d.email === email && d.password === password);
-            if (driver) {
-                localStorage.setItem('currentUser', JSON.stringify({
-                    id: driver.id,
-                    name: driver.name,
-                    email: driver.email,
-                    role: 'driver'
-                }));
-                // Redirect to driver.html
-                window.location.href = 'driver.html';
-                // Optionally, you can remove the following line:
-                // showDriverDashboard(driver);
-                // fetchOrdersFromGoogleSheets();
-            } else {
-                alert('Invalid email or password. Please try again.');
+            try {
+                // Wait for drivers and admins to load if not loaded yet
+                if (drivers.length === 0) {
+                    await fetchDriversFromGoogleSheets();
+                }
+                if (admins.length === 0) {
+                    await fetchAdminsFromGoogleSheets();
+                }
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Check if it's an admin login
+                const admin = admins.find(a => a.email === email && a.password === password);
+                if (admin) {
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        id: admin.id,
+                        name: admin.name,
+                        email: admin.email,
+                        role: 'admin'
+                    }));
+                    showAdminDashboard();
+                    await fetchDriversFromGoogleSheets();
+                    await loadRegularOrders();
+                    hideLoading();
+                    return;
+                }
+                
+                // Check if it's a driver login
+                const driver = drivers.find(d => d.email === email && d.password === password);
+                if (driver) {
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        id: driver.id,
+                        name: driver.name,
+                        email: driver.email,
+                        role: 'driver'
+                    }));
+                    // Redirect to driver.html
+                    window.location.href = 'driver.html';
+                } else {
+                    alert('Invalid email or password. Please try again.');
+                    hideLoading();
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Login failed. Please try again.');
+                hideLoading();
             }
         });
-
-        adminLoginLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('email').value = ''; // add placeholder email
-            document.getElementById('password').value = '';
-        });
-
+        
         logoutBtn.addEventListener('click', function() {
             localStorage.removeItem('currentUser');
             loginSection.style.display = 'block';
             adminDashboard.style.display = 'none';
         });
-
-        selectAllOrders.addEventListener('change', function() {
-            const checkboxes = document.querySelectorAll('.order-checkbox');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAllOrders.checked;
-            });
-            updateSelectedOrders();
-        });
-
-        assignDriverBtn.addEventListener('click', async function() {
-            const driverSelect = document.getElementById('driversList');
-            const selectedDriver = driverSelect.options[driverSelect.selectedIndex].text;
-            const selectedOrderIds = [];
-            
-            document.querySelectorAll('.order-checkbox:checked').forEach(checkbox => {
-                selectedOrderIds.push(checkbox.dataset.id);
-            });
-            
-            if (selectedDriver === 'Select Driver') {
-                alert('Please select a driver first.');
-                return;
-            }
-            
-            // Update orders with the assigned driver
-            orders.forEach(order => {
-                if (selectedOrderIds.includes(order.id)) {
-                    order.driver = selectedDriver;
-                    order.status = 'assigned';
-                }
-            });
-            
-            // Save assignments to Google Sheets
-            for (const orderId of selectedOrderIds) {
-                await updateDriverAssignment(orderId, selectedDriver);
-                await updateOrderStatus(orderId, 'Assigned');
-            }
-
-            
-            renderOrders();
-            updateOrderStats();
-            
-            // Hide the assign section and reset checkboxes
-            assignSection.style.display = 'none';
-            selectAllOrders.checked = false;
-            
-            alert(`Successfully assigned ${selectedOrderIds.length} orders to ${selectedDriver}`);
-        });
-
-        refreshOrdersBtn.addEventListener('click', function() {
-            fetchOrdersFromGoogleSheets();
-        });
-
-        // Populate drivers dropdown for pending section
-        function populateDriversDropdownPending() {
-            const driversListPending = document.getElementById('driversListPending');
-            driversListPending.innerHTML = '<option selected>Select Driver</option>';
-            drivers.forEach(driver => {
-                const option = document.createElement('option');
-                option.value = driver.id;
-                option.textContent = `${driver.name} (${driver.id})`;
-                driversListPending.appendChild(option);
-            });
-        }
-
-        // Update selected pending orders count and show/hide assign section
-        function updateSelectedPendingOrders() {
-            const selectedOrders = document.querySelectorAll('.pending-order-checkbox:checked');
-            document.getElementById('selectedPendingOrdersCount').textContent = selectedOrders.length;
-            const assignSectionPending = document.getElementById('assignSectionPending');
-            if (selectedOrders.length > 0) {
-                assignSectionPending.style.display = 'flex';
-            } else {
-                assignSectionPending.style.display = 'none';
-            }
-        }
-
-        // Assign driver to selected pending orders
-        document.getElementById('assignDriverBtnPending').addEventListener('click', async function() {
+        
+        // Refresh buttons event listeners
+        document.getElementById('refreshRegularOrdersBtn').addEventListener('click', async function() {
             showLoading();
-            const driversListPending = document.getElementById('driversListPending');
-            const selectedDriver = driversListPending.options[driversListPending.selectedIndex].text;
-            const selectedOrderIds = [];
-            document.querySelectorAll('.pending-order-checkbox:checked').forEach(checkbox => {
-                selectedOrderIds.push(checkbox.dataset.id);
-            });
-            if (selectedDriver === 'Select Driver') {
-                alert('Please select a driver first.');
-                return;
-            }
-            // Update orders with the assigned driver
-            orders.forEach(order => {
-                if (selectedOrderIds.includes(order.id)) {
-                    order.driver = selectedDriver;
-                    order.status = 'assigned';
+            try {
+                await fetchRegularOrders();
+                if (currentSheetName === 'regular') {
+                    currentOrders = regularOrders;
+                    renderOrders();
+                    updateOrderStats();
                 }
-            });
-            // Save assignments to Google Sheets
-            for (const orderId of selectedOrderIds) {
-                await updateDriverAssignment(orderId, selectedDriver);
-                await updateOrderStatus(orderId, 'Assigned');
+            } catch (error) {
+                console.error('Error refreshing regular orders:', error);
+                alert('Failed to refresh regular orders.');
+            } finally {
+                hideLoading();
             }
-            renderOrders();
-            updateOrderStats();
-            document.getElementById('assignSectionPending').style.display = 'none';
-            document.getElementById('selectAllPending').checked = false;
-            hideLoading();
-            alert(`Successfully assigned ${selectedOrderIds.length} orders to ${selectedDriver}`);
         });
-
-        // Select all pending orders checkbox
-        document.getElementById('selectAllPending').addEventListener('change', function() {
-            const checkboxes = document.querySelectorAll('.pending-order-checkbox');
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = this.checked;
-            });
-            updateSelectedPendingOrders();
+        
+        document.getElementById('refreshBusinessOrdersBtn').addEventListener('click', async function() {
+            showLoading();
+            try {
+                await fetchBusinessOrders();
+                if (currentSheetName === 'businessorders') {
+                    currentOrders = businessOrders;
+                    renderOrders();
+                    updateOrderStats();
+                }
+            } catch (error) {
+                console.error('Error refreshing business orders:', error);
+                alert('Failed to refresh business orders.');
+            } finally {
+                hideLoading();
+            }
         });
-
-        // Helper functions to show/hide loading overlay
-        function showLoading() {
-            document.getElementById('loadingOverlay').style.display = 'flex';
-        }
-        function hideLoading() {
-            document.getElementById('loadingOverlay').style.display = 'none';
-        }
-
+        
         // Initialize the application
         initApp();
     </script>
