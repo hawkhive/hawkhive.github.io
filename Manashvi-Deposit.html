@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <!-- Add to home screen icon (standard apple + android) -->
+  <link rel="apple-touch-icon" href="images/manashvi-icon.png">
+  <link rel="icon" type="image/png" href="images/manashvi-icon.png">
+  <!-- For Chrome PWA / add to homescreen -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#004aad">
+  <title>Manashvi — UPI Deposit</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #f2f5f9;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 16px 12px;
+    }
+
+    .card {
+      background: white;
+      width: 100%;
+      max-width: 400px;
+      border-radius: 32px 32px 28px 28px;
+      box-shadow: 0 20px 35px -8px rgba(0, 30, 60, 0.15);
+      overflow: hidden;
+      padding: 24px 22px 32px;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(0, 74, 173, 0.08);
+    }
+
+    /* Logo / icon row */
+    .app-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .icon-wrapper {
+      width: 56px;
+      height: 56px;
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 6px 12px rgba(0,74,173,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #eef3fc;
+    }
+
+    .icon-wrapper img {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      object-fit: contain;
+    }
+
+    .title-text {
+      flex: 1;
+    }
+
+    .title-text h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.2;
+      color: #0b1c33;
+      letter-spacing: -0.02em;
+      margin: 0 0 4px;
+    }
+
+    .title-text .subhead {
+      font-size: 0.85rem;
+      color: #4e5b71;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .title-text .subhead span {
+      background: #e9effa;
+      padding: 2px 8px;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.7rem;
+      color: #004aad;
+    }
+
+    .info-note {
+      background: #f0f5ff;
+      padding: 16px 18px;
+      border-radius: 22px;
+      margin: 18px 0 24px;
+      border-left: 4px solid #004aad;
+      font-size: 0.95rem;
+      color: #10345e;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .info-note:before {
+      content: "ⓘ";
+      font-weight: 600;
+      font-size: 1.4rem;
+      color: #004aad;
+      opacity: 0.9;
+    }
+
+    .field-group {
+      margin-bottom: 20px;
+    }
+
+    .field-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #1e2a44;
+      font-size: 0.95rem;
+    }
+
+    .field-label small {
+      font-weight: 400;
+      color: #6b7a93;
+      font-size: 0.75rem;
+    }
+
+    .input-icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon input {
+      width: 100%;
+      padding: 18px 16px 18px 48px;
+      border: 1.5px solid #dde3ec;
+      border-radius: 22px;
+      font-size: 1rem;
+      background: white;
+      transition: 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .input-icon input:focus {
+      outline: none;
+      border-color: #004aad;
+      box-shadow: 0 4px 10px rgba(0,74,173,0.1);
+    }
+
+    .input-icon .prefix-icon {
+      position: absolute;
+      left: 16px;
+      font-size: 1.2rem;
+      color: #004aad;
+      font-weight: 500;
+    }
+
+    #clientCode {
+      padding: 18px 16px;
+      border: 1.5px solid #dde3ec;
+      border-radius: 22px;
+      width: 100%;
+      font-size: 1rem;
+      background: white;
+    }
+
+    #clientCode:focus {
+      border-color: #004aad;
+      outline: none;
+      box-shadow: 0 4px 10px rgba(0,74,173,0.1);
+    }
+
+    .reminder-tag {
+      background: #fef8e7;
+      border-radius: 30px;
+      padding: 12px 18px;
+      margin: 20px 0 18px;
+      font-size: 0.9rem;
+      color: #7d6132;
+      border: 1px dashed #f5b83e;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .reminder-tag strong {
+      color: #ad6400;
+    }
+
+    .action-btn {
+      background: #004aad;
+      width: 100%;
+      border: none;
+      border-radius: 40px;
+      padding: 20px 16px;
+      color: white;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 12px 20px -10px #004aad80;
+      transition: 0.15s;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+
+    .action-btn:active {
+      background: #00327a;
+      transform: scale(0.98);
+      box-shadow: 0 6px 10px -5px #004aadcc;
+    }
+
+    .upi-link-box {
+      margin-top: 28px;
+      padding: 14px 16px;
+      background: #f2f5fc;
+      border-radius: 30px;
+      font-size: 1rem;
+      word-break: break-word;
+      border: 1px dashed #9bb6da;
+      transition: 0.1s;
+    }
+
+    .upi-link-box a {
+      color: #004aad;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: white;
+      padding: 12px 8px;
+      border-radius: 40px;
+      border: 1px solid #cddcf2;
+    }
+
+    .upi-link-box a:active {
+      background: #e5eeff;
+    }
+
+    .secured-note {
+      margin-top: 18px;
+      font-size: 0.75rem;
+      color: #778aa8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .secured-note:before, .secured-note:after {
+      content: "—";
+      color: #b3c2d9;
+      letter-spacing: -1px;
+    }
+
+    /* hide broken image fallback */
+    img {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <!-- Header with logo & app name (exactly as requested) -->
+  <div class="app-header">
+    <div class="icon-wrapper">
+      <!-- uses local image from image folder: make sure path is correct -->
+      <img src="images/manashvi-icon.png" alt="Manashvi" onerror="this.parentElement.innerHTML='📈'; this.parentElement.style.fontSize='32px'; this.parentElement.style.background='#e9effa'; this.parentElement.style.color='#004aad';">
+    </div>
+    <div class="title-text">
+      <h1>Manashvi Securities Ltd.</h1>
+      <div class="subhead">
+        <span>Deposit to your ledger</span> • UPI
+      </div>
+    </div>
+  </div>
+
+  <!-- Important instruction: bank registered with Manashvi -->
+  <div class="info-note">
+    Please select the UPI / bank account that is registered with Manashvi
+  </div>
+
+  <!-- Client code field (mandatory, will appear in transaction comment) -->
+  <div class="field-group">
+    <div class="field-label">
+      <label for="clientCode">Client code <span style="color:#c00;">*</span></label>
+      <small>will appear in remark</small>
+    </div>
+    <input type="text" id="clientCode" placeholder="e.g., MAN12345" autocomplete="off" value="">
+  </div>
+
+  <!-- Amount field with rupee symbol -->
+  <div class="field-group">
+    <div class="field-label">
+      <label for="amount">Amount (₹)</label>
+      <small>min ₹500</small>
+    </div>
+    <div class="input-icon">
+      <span class="prefix-icon">₹</span>
+      <input type="number" id="amount" placeholder="0.00" min="500" step="500">
+    </div>
+  </div>
+
+  <!-- Extra reminder tap-able note -->
+  <div class="reminder-tag">
+    <span>🔔</span> Make sure the UPI app you choose is linked to your registered bank a/c with Manashvi
+  </div>
+
+  <!-- CTA Button -->
+  <button class="action-btn" onclick="generateUPILink()">
+    <span>💸</span> Proceed to UPI
+  </button>
+
+  <!-- Dynamic UPI link area (visible after tap) -->
+  <div id="upiAnchor" class="upi-link-box">
+    <!-- will be filled by script -->
+  </div>
+
+  <!-- subtle trust element -->
+  <div class="secured-note">
+    <span>🔒</span> UPI intent via BHIM / any UPI app
+  </div>
+</div>
+
+<script>
+  function generateUPILink() {
+    // Get client code and amount
+    const clientCodeInput = document.getElementById("clientCode");
+    const amountInput = document.getElementById("amount");
+
+    let clientCode = clientCodeInput.value.trim();
+    let amount = amountInput.value.trim();
+
+    // Validate client code (must not be empty)
+    if (!clientCode) {
+      alert("Please enter your Client Code (it will be included in transaction remark).");
+      clientCodeInput.focus();
+      return;
+    }
+
+    // Validate amount
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
+      alert("Please enter a valid amount (minimum ₹1).");
+      amountInput.focus();
+      return;
+    }
+
+    // Optional: sanitise client code to avoid special chars? but we encode later.
+    // Fixed UPI details — REPLACE WITH YOUR ACTUAL DETAILS
+    let upiID = "manashvi.brk@validhdfc";     // <-- CHANGE to actual Manashvi UPI ID
+    let payee = "Manashvi Securities Pvt. Ltd.";
+    
+    // Important: include client code in the transaction note (remark)
+    // The note will be visible in the UPI app and bank statement
+    let note = `Deposit to Client: ${clientCode} - Manashvi Ledger`;
+
+    // Trim note length if necessary (UPI spec max ~ 40-50 chars, but we keep moderate)
+    if (note.length > 45) {
+      note = note.substring(0, 42) + "...";
+    }
+
+    // Construct UPI deep link (intent) — compliant with official BHIM spec
+    let deepLink = 
+      `upi://pay?pa=${encodeURIComponent(upiID)}` +
+      `&pn=${encodeURIComponent(payee)}` +
+      `&am=${encodeURIComponent(amount)}` +
+      `&cu=INR` +
+      `&tn=${encodeURIComponent(note)}`;
+
+    // Display a nice tap‑friendly link
+    let anchorDiv = document.getElementById("upiAnchor");
+    anchorDiv.innerHTML = `<a href="${deepLink}"><span style="font-size:1.2rem;">⬆️</span> Open in UPI app</a>`;
+
+    // Also auto‑redirect after tiny delay (but ensures DOM updates)
+    setTimeout(() => {
+      window.location.href = deepLink;
+    }, 180);
+  }
+
+  // Optional: allow enter key on fields to trigger
+  document.getElementById('amount').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') generateUPILink();
+  });
+  document.getElementById('clientCode').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') generateUPILink();
+  });
+
+  // Prefill for demo / testing: you can remove in production
+  window.addEventListener('load', function() {
+    // just a helper for demo: comment out if needed
+    // document.getElementById('clientCode').value = 'CLI123';
+  });
+</script>
+
+<!-- Ensure that images folder with manashvi-icon.png exists or fallback works -->
+</body>
+</html>
