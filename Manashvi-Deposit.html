@@ -352,16 +352,16 @@
 
   <div class="field-group">
     <div class="field-label">
-      <label for="clientCode">Client code <span style="color:#c00;">*</span></label>
+      <label for="clientCode">Client code (UCC)<span style="color:#c00;">*</span></label>
       <small>will appear in remark</small>
     </div>
-    <input type="text" id="clientCode" placeholder="e.g., Your 4 or 5 digit Client Code(UCC)" autocomplete="off">
+    <input type="text" id="clientCode" placeholder="Your 4 or 5 digit Client Code(UCC)" autocomplete="off">
   </div>
 
   <div class="field-group">
     <div class="field-label">
       <label for="amount">Amount (₹)</label>
-      <small>min ₹1</small>
+      <small>min ₹500</small>
     </div>
     <div class="input-icon">
       <span class="prefix-icon">₹</span>
@@ -444,7 +444,7 @@
 
   // UPI details (UPDATE THESE)
   const UPI_ID = "manashvi.brk@validhdfc";
-  const PAYEE_NAME = "Manashvi Securities Pvt. Ltd.";
+  const PAYEE_NAME = "Manashvi Securities";
 
   function validateAndShowApps() {
     const clientCodeInput = document.getElementById("clientCode");
