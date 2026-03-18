@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <!-- ANDROID + iOS Home Screen Icon Support - IMPROVED -->
+  
+  <!-- ANDROID + iOS Home Screen Icon Support - IMPROVED -->
   <!-- Standard favicon -->
   <link rel="icon" type="image/png" href="images/manashvi-icon.png" sizes="196x196">
   
@@ -18,16 +19,19 @@
   
   <!-- Android specific meta -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="application-name" content="Manashvi">
+  <meta name="application-name" content="Manashvi Deposit">
+  <meta name="application-icon" content="images/manashvi-icon.png">
   
   <!-- iOS specific -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Manashvi">
+  <meta name="apple-mobile-web-app-title" content="Manashvi Deposit">
   
   <!-- Theme color for browser UI -->
   <meta name="theme-color" content="#004aad">
+  
   <title>Manashvi — UPI Deposit</title>
+  
   <style>
     * {
       box-sizing: border-box;
@@ -52,11 +56,8 @@
       box-shadow: 0 20px 35px -8px rgba(0, 30, 60, 0.15);
       overflow: hidden;
       padding: 24px 22px 32px;
-      transition: all 0.2s ease;
-      border: 1px solid rgba(0, 74, 173, 0.08);
     }
 
-    /* Logo / icon row */
     .app-header {
       display: flex;
       align-items: center;
@@ -83,16 +84,11 @@
       object-fit: contain;
     }
 
-    .title-text {
-      flex: 1;
-    }
-
     .title-text h1 {
       font-size: 1.5rem;
       font-weight: 600;
       line-height: 1.2;
       color: #0b1c33;
-      letter-spacing: -0.02em;
       margin: 0 0 4px;
     }
 
@@ -131,7 +127,6 @@
       font-weight: 600;
       font-size: 1.4rem;
       color: #004aad;
-      opacity: 0.9;
     }
 
     .field-group {
@@ -148,12 +143,6 @@
       font-size: 0.95rem;
     }
 
-    .field-label small {
-      font-weight: 400;
-      color: #6b7a93;
-      font-size: 0.75rem;
-    }
-
     .input-icon {
       position: relative;
       display: flex;
@@ -167,7 +156,6 @@
       border-radius: 22px;
       font-size: 1rem;
       background: white;
-      transition: 0.2s;
       -webkit-appearance: none;
       appearance: none;
     }
@@ -192,13 +180,11 @@
       border-radius: 22px;
       width: 100%;
       font-size: 1rem;
-      background: white;
     }
 
     #clientCode:focus {
       border-color: #004aad;
       outline: none;
-      box-shadow: 0 4px 10px rgba(0,74,173,0.1);
     }
 
     .reminder-tag {
@@ -214,10 +200,6 @@
       gap: 10px;
     }
 
-    .reminder-tag strong {
-      color: #ad6400;
-    }
-
     .action-btn {
       background: #004aad;
       width: 100%;
@@ -227,13 +209,11 @@
       color: white;
       font-size: 1.4rem;
       font-weight: 600;
-      letter-spacing: 0.3px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
       box-shadow: 0 12px 20px -10px #004aad80;
-      transition: 0.15s;
       margin-top: 8px;
       cursor: pointer;
     }
@@ -241,18 +221,83 @@
     .action-btn:active {
       background: #00327a;
       transform: scale(0.98);
-      box-shadow: 0 6px 10px -5px #004aadcc;
+    }
+
+    /* UPI App Grid - NEW */
+    .app-grid-section {
+      margin-top: 24px;
+    }
+
+    .app-grid-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1e2a44;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .app-grid-title:after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, #dde3ec, transparent);
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .app-item {
+      background: #f8fafd;
+      border: 1px solid #e9eef4;
+      border-radius: 16px;
+      padding: 12px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .app-item:active {
+      background: #e9effa;
+      border-color: #004aad;
+      transform: scale(0.96);
+    }
+
+    .app-item span:first-child {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .app-item .app-name {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #2c3e5c;
+    }
+
+    .other-apps-item {
+      background: #edf2f9;
+      border: 1px dashed #9bb6da;
+    }
+
+    .other-apps-item span:first-child {
+      font-size: 1.6rem;
     }
 
     .upi-link-box {
-      margin-top: 28px;
+      margin-top: 20px;
       padding: 14px 16px;
       background: #f2f5fc;
       border-radius: 30px;
-      font-size: 1rem;
-      word-break: break-word;
       border: 1px dashed #9bb6da;
-      transition: 0.1s;
+      display: none; /* Hidden by default, shown when needed */
     }
 
     .upi-link-box a {
@@ -269,10 +314,6 @@
       border: 1px solid #cddcf2;
     }
 
-    .upi-link-box a:active {
-      background: #e5eeff;
-    }
-
     .secured-note {
       margin-top: 18px;
       font-size: 0.75rem;
@@ -286,23 +327,16 @@
     .secured-note:before, .secured-note:after {
       content: "—";
       color: #b3c2d9;
-      letter-spacing: -1px;
-    }
-
-    /* hide broken image fallback */
-    img {
-      display: block;
     }
   </style>
 </head>
 <body>
 
 <div class="card">
-  <!-- Header with logo & app name (exactly as requested) -->
   <div class="app-header">
     <div class="icon-wrapper">
-      <!-- uses local image from image folder: make sure path is correct -->
-      <img src="images/manashvi-icon.png" alt="Manashvi" onerror="this.parentElement.innerHTML='📈'; this.parentElement.style.fontSize='32px'; this.parentElement.style.background='#e9effa'; this.parentElement.style.color='#004aad';">
+      <img src="images/manashvi-icon.png" alt="Manashvi" 
+           onerror="this.parentElement.innerHTML='📈'; this.parentElement.style.fontSize='32px'; this.parentElement.style.background='#e9effa'; this.parentElement.style.color='#004aad';">
     </div>
     <div class="title-text">
       <h1>Manashvi Securities Ltd.</h1>
@@ -312,25 +346,22 @@
     </div>
   </div>
 
-  <!-- Important instruction: bank registered with Manashvi -->
   <div class="info-note">
     Please select the UPI / bank account that is registered with Manashvi
   </div>
 
-  <!-- Client code field (mandatory, will appear in transaction comment) -->
   <div class="field-group">
     <div class="field-label">
       <label for="clientCode">Client code <span style="color:#c00;">*</span></label>
       <small>will appear in remark</small>
     </div>
-    <input type="text" id="clientCode" placeholder="e.g., MAN12345" autocomplete="off" value="">
+    <input type="text" id="clientCode" placeholder="e.g., Your 4 or 5 digit Client Code(UCC)" autocomplete="off">
   </div>
 
-  <!-- Amount field with rupee symbol -->
   <div class="field-group">
     <div class="field-label">
       <label for="amount">Amount (₹)</label>
-      <small>min ₹500</small>
+      <small>min ₹1</small>
     </div>
     <div class="input-icon">
       <span class="prefix-icon">₹</span>
@@ -338,97 +369,211 @@
     </div>
   </div>
 
-  <!-- Extra reminder tap-able note -->
   <div class="reminder-tag">
     <span>🔔</span> Make sure the UPI app you choose is linked to your registered bank a/c with Manashvi
   </div>
 
-  <!-- CTA Button -->
-  <button class="action-btn" onclick="generateUPILink()">
-    <span>💸</span> Proceed to UPI
+  <button class="action-btn" onclick="validateAndShowApps()">
+    <span>💸</span> Continue to Payment
   </button>
 
-  <!-- Dynamic UPI link area (visible after tap) -->
-  <div id="upiAnchor" class="upi-link-box">
-    <!-- will be filled by script -->
+  <!-- UPI App Grid - appears after validation -->
+  <div id="appGridSection" class="app-grid-section" style="display: none;">
+    <div class="app-grid-title">
+      <span>📱</span> Choose your UPI app
+    </div>
+    <div class="app-grid">
+      <!-- Google Pay -->
+      <div class="app-item" onclick="openWithApp('gpay')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/1280px-Google_Pay_Logo.svg.png?_=20221017164555" alt="Google Pay" style="width: 32px; height: 32px; object-fit: contain;">
+        <span class="app-name">Google Pay</span>
+      </div>
+      <!-- PhonePe -->
+      <div class="app-item" onclick="openWithApp('phonepe')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe" style="width: 32px; height: 32px; object-fit: contain;">
+        <span class="app-name">PhonePe</span>
+      </div>
+      <!-- Paytm -->
+      <div class="app-item" onclick="openWithApp('paytm')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Paytm_logo.png?_=20170729032638" alt="Paytm" style="width: 32px; height: 32px; object-fit: contain;">
+        <span class="app-name">Paytm</span>
+      </div>
+      <!-- BHIM -->
+      <div class="app-item" onclick="openWithApp('bhim')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/960px-UPI-Logo-vector.svg.png?_=20200901100648" alt="BHIM" style="width: 32px; height: 32px; object-fit: contain;">
+        <span class="app-name">BHIM</span>
+      </div>
+      <!-- Amazon Pay -->
+      <div class="app-item" onclick="openWithApp('amazonpay')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Amazon_Pay_logo.svg/330px-Amazon_Pay_logo.svg.png?_=20180630162337" alt="Amazon Pay" style="width: 32px; height: 32px; object-fit: contain;">
+        <span class="app-name">Amazon Pay</span>
+      </div>
+      <!-- WhatsApp Pay -->
+      <div class="app-item" onclick="openWithApp('whatsapp')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/WhatsApp_logo.svg/330px-WhatsApp_logo.svg.png?_=20170606174648" alt="WhatsApp" style="width: 32px; height: 32px; object-fit: contain;">
+        <span class="app-name">WhatsApp</span>
+      </div>
+      <!-- Other Apps (uses upi://) -->
+      <div class="app-item other-apps-item" onclick="openWithApp('other')">
+        <span>📲</span>
+        <span class="app-name">Other Apps</span>
+      </div>
+      <!-- Copy UPI (manual) -->
+      <div class="app-item" onclick="copyUPIId()">
+        <span>📋</span>
+        <span class="app-name">Copy UPI ID</span>
+      </div>
+    </div>
+    <div style="font-size: 0.75rem; color: #6b7a93; text-align: center; margin-top: 8px;">
+      Tap any app to open directly
+    </div>
   </div>
 
-  <!-- subtle trust element -->
+  <!-- Hidden UPI link fallback -->
+  <div id="upiAnchor" class="upi-link-box"></div>
+
   <div class="secured-note">
-    <span>🔒</span> UPI intent via BHIM / any UPI app
+    <span>🔒</span> UPI intent via your preferred app
   </div>
 </div>
 
 <script>
-  function generateUPILink() {
-    // Get client code and amount
+  // Store validated data
+  let validatedClientCode = '';
+  let validatedAmount = '';
+
+  // UPI details (UPDATE THESE)
+  const UPI_ID = "manashvi.brk@validhdfc";
+  const PAYEE_NAME = "Manashvi Securities Pvt. Ltd.";
+
+  function validateAndShowApps() {
     const clientCodeInput = document.getElementById("clientCode");
     const amountInput = document.getElementById("amount");
 
     let clientCode = clientCodeInput.value.trim();
     let amount = amountInput.value.trim();
 
-    // Validate client code (must not be empty)
     if (!clientCode) {
-      alert("Please enter your Client Code (it will be included in transaction remark).");
+      alert("Please enter your Client Code");
       clientCodeInput.focus();
-      return;
+      return false;
     }
 
-    // Validate amount
-    if (!amount || isNaN(amount) || Number(amount) <= 0) {
-      alert("Please enter a valid amount (minimum ₹1).");
+    if (!amount || isNaN(amount) || Number(amount) < 500) {
+      alert("Please enter a valid amount (minimum ₹500)");
       amountInput.focus();
-      return;
+      return false;
     }
 
-    // Optional: sanitise client code to avoid special chars? but we encode later.
-    // Fixed UPI details — REPLACE WITH YOUR ACTUAL DETAILS
-    let upiID = "manashvi.brk@validhdfc";     // <-- CHANGE to actual Manashvi UPI ID
-    let payee = "Manashvi Securities Pvt. Ltd.";
-    
-    // Important: include client code in the transaction note (remark)
-    // The note will be visible in the UPI app and bank statement
-    let note = `Deposit to Client: ${clientCode} - Manashvi Ledger`;
+    // Store validated data
+    validatedClientCode = clientCode;
+    validatedAmount = amount;
 
-    // Trim note length if necessary (UPI spec max ~ 40-50 chars, but we keep moderate)
+    // Hide any previous UPI link
+    document.getElementById("upiAnchor").style.display = "none";
+    
+    // Show app grid
+    document.getElementById("appGridSection").style.display = "block";
+    
+    // Scroll to app grid smoothly
+    document.getElementById("appGridSection").scrollIntoView({ behavior: 'smooth', block: 'center' });
+    
+    return true;
+  }
+
+  function getUPILink() {
+    let note = `Deposit to Client: ${validatedClientCode} - Manashvi Ledger`;
     if (note.length > 45) {
       note = note.substring(0, 42) + "...";
     }
 
-    // Construct UPI deep link (intent) — compliant with official BHIM spec
-    let deepLink = 
-      `upi://pay?pa=${encodeURIComponent(upiID)}` +
-      `&pn=${encodeURIComponent(payee)}` +
-      `&am=${encodeURIComponent(amount)}` +
-      `&cu=INR` +
-      `&tn=${encodeURIComponent(note)}`;
-
-    // Display a nice tap‑friendly link
-    let anchorDiv = document.getElementById("upiAnchor");
-    anchorDiv.innerHTML = `<a href="${deepLink}"><span style="font-size:1.2rem;">⬆️</span> Open in UPI app</a>`;
-
-    // Also auto‑redirect after tiny delay (but ensures DOM updates)
-    setTimeout(() => {
-      window.location.href = deepLink;
-    }, 180);
+    return `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${encodeURIComponent(validatedAmount)}&cu=INR&tn=${encodeURIComponent(note)}`;
   }
 
-  // Optional: allow enter key on fields to trigger
+  function openWithApp(app) {
+    if (!validatedClientCode || !validatedAmount) {
+      alert("Please enter client code and amount first");
+      return;
+    }
+
+    let link = '';
+    const baseParams = `?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${encodeURIComponent(validatedAmount)}&cu=INR&tn=${encodeURIComponent(`Deposit to Client: ${validatedClientCode}`)}`;
+
+    switch(app) {
+      case 'gpay':
+        link = `gpay://upi/pay${baseParams}`;
+        break;
+      case 'phonepe':
+        link = `phonepe://pay${baseParams}`;
+        break;
+      case 'paytm':
+        link = `paytmmp://pay${baseParams}`;
+        break;
+      case 'bhim':
+        link = `bhim://upi/pay${baseParams}`;
+        break;
+      case 'amazonpay':
+        link = `amazonpay://upi/pay${baseParams}`;
+        break;
+      case 'whatsapp':
+        link = `whatsapp://upi/pay${baseParams}`;
+        break;
+      case 'other':
+        // Use standard upi:// which shows app chooser on Android, but may open WhatsApp on iOS
+        link = getUPILink();
+        break;
+      default:
+        return;
+    }
+
+    // For 'other' or if scheme fails, also show the manual link
+    if (app === 'other') {
+      let anchorDiv = document.getElementById("upiAnchor");
+      anchorDiv.style.display = "block";
+      anchorDiv.innerHTML = `<a href="${link}"><span>⬆️</span> Tap if app doesn't open automatically</a>`;
+    }
+
+    // Attempt to open the app
+    window.location.href = link;
+
+    // For iOS, if WhatsApp scheme is used and fails, show fallback
+    if (app === 'whatsapp' && /iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      setTimeout(() => {
+        if (confirm("WhatsApp didn't open? Would you like to copy UPI ID instead?")) {
+          copyUPIId();
+        }
+      }, 500);
+    }
+  }
+
+  function copyUPIId() {
+    // Create temporary input
+    const tempInput = document.createElement('input');
+    tempInput.value = UPI_ID;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    
+    alert(`UPI ID copied: ${UPI_ID}\n\nPlease open your UPI app and pay manually to this ID.`);
+  }
+
+  // Enter key support
   document.getElementById('amount').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') generateUPILink();
+    if (e.key === 'Enter') validateAndShowApps();
   });
   document.getElementById('clientCode').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') generateUPILink();
+    if (e.key === 'Enter') validateAndShowApps();
   });
 
-  // Prefill for demo / testing: you can remove in production
-  window.addEventListener('load', function() {
-    // just a helper for demo: comment out if needed
-    // document.getElementById('clientCode').value = 'CLI123';
+  // Reset app grid if inputs change (optional)
+  document.getElementById('clientCode').addEventListener('input', () => {
+    document.getElementById("appGridSection").style.display = "none";
+  });
+  document.getElementById('amount').addEventListener('input', () => {
+    document.getElementById("appGridSection").style.display = "none";
   });
 </script>
 
-<!-- Ensure that images folder with manashvi-icon.png exists or fallback works -->
 </body>
 </html>
