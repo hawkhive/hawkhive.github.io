@@ -3,13 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <!-- Add to home screen icon (standard apple + android) -->
+    <!-- ANDROID + iOS Home Screen Icon Support - IMPROVED -->
+  <!-- Standard favicon -->
+  <link rel="icon" type="image/png" href="images/manashvi-icon.png" sizes="196x196">
+  
+  <!-- iOS specific (already had) -->
   <link rel="apple-touch-icon" href="images/manashvi-icon.png">
-  <link rel="icon" type="image/png" href="images/manashvi-icon.png">
-  <!-- For Chrome PWA / add to homescreen -->
+  <link rel="apple-touch-icon" sizes="152x152" href="images/manashvi-icon.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="images/manashvi-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/manashvi-icon.png">
+  
+  <!-- CRITICAL FOR ANDROID - Web App Manifest -->
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Manashvi%20Deposit%22%2C%22short_name%22%3A%22Manashvi%22%2C%22description%22%3A%22Deposit%20to%20Manashvi%20Ledger%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23004aad%22%2C%22theme_color%22%3A%22%23004aad%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22images%2Fmanashvi-icon.png%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fpng%22%7D%2C%7B%22src%22%3A%22images%2Fmanashvi-icon.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
+  
+  <!-- Android specific meta -->
   <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="Manashvi">
+  
+  <!-- iOS specific -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Manashvi">
+  
+  <!-- Theme color for browser UI -->
   <meta name="theme-color" content="#004aad">
   <title>Manashvi — UPI Deposit</title>
   <style>
