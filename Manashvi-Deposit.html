@@ -438,141 +438,144 @@
 </div>
 
 <script>
-  // Store validated data
-  let validatedClientCode = '';
-  let validatedAmount = '';
+        // Store validated data
+        let validatedClientCode = '';
+        let validatedAmount = '';
 
-  // UPI details (UPDATE THESE)
-  const UPI_ID = "manashvi.brk@validhdfc";
-  const PAYEE_NAME = "Manashvi Securities Limited";
+        // UPI details (UPDATE THESE)
+        const UPI_ID = "manashvi.brk@validhdfc";
+        const PAYEE_NAME = "Manashvi Securities Limited";
 
-  function validateAndShowApps() {
-    const clientCodeInput = document.getElementById("clientCode");
-    const amountInput = document.getElementById("amount");
+        function validateAndShowApps() {
+            const clientCodeInput = document.getElementById("clientCode");
+            const amountInput = document.getElementById("amount");
 
-    let clientCode = clientCodeInput.value.trim();
-    let amount = amountInput.value.trim();
+            let clientCode = clientCodeInput.value.trim();
+            let amount = amountInput.value.trim();
 
-    if (!clientCode) {
-      alert("Please enter your Client Code");
-      clientCodeInput.focus();
-      return false;
-    }
+            if (!clientCode) {
+            alert("Please enter your Client Code");
+            clientCodeInput.focus();
+            return false;
+            }
 
-    if (!amount || isNaN(amount) || Number(amount) < 500) {
-      alert("Please enter a valid amount (minimum ₹500)");
-      amountInput.focus();
-      return false;
-    }
+            if (!amount || isNaN(amount) || Number(amount) < 500) {
+            alert("Please enter a valid amount (minimum ₹500)");
+            amountInput.focus();
+            return false;
+            }
 
-    // Store validated data
-    validatedClientCode = clientCode;
-    validatedAmount = amount;
+            validatedClientCode = clientCode;
+            validatedAmount = amount;
 
-    // Hide any previous UPI link
-    document.getElementById("upiAnchor").style.display = "none";
-    
-    // Show app grid
-    document.getElementById("appGridSection").style.display = "block";
-    
-    // Scroll to app grid smoothly
-    document.getElementById("appGridSection").scrollIntoView({ behavior: 'smooth', block: 'center' });
-    
-    return true;
-  }
-
-  function getUPILink() {
-    let note = `Deposit to Client: ${validatedClientCode} - Manashvi Ledger`;
-    if (note.length > 45) {
-      note = note.substring(0, 42) + "...";
-    }
-
-    return `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${encodeURIComponent(validatedAmount)}&cu=INR&tn=${encodeURIComponent(note)}`;
-  }
-
-  function openWithApp(app) {
-    if (!validatedClientCode || !validatedAmount) {
-      alert("Please enter client code and amount first");
-      return;
-    }
-
-    let link = '';
-    const baseParams = `?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${encodeURIComponent(validatedAmount)}&cu=INR&tn=${encodeURIComponent(`Deposit to Client: ${validatedClientCode}`)}`;
-
-    switch(app) {
-      case 'gpay':
-        link = `gpay://upi/pay${baseParams}`;
-        break;
-      case 'phonepe':
-        link = `phonepe://pay${baseParams}`;
-        break;
-      case 'paytm':
-        link = `paytmmp://pay${baseParams}`;
-        break;
-      case 'bhim':
-        link = `bhim://upi/pay${baseParams}`;
-        break;
-      case 'amazonpay':
-        link = `amazonpay://upi/pay${baseParams}`;
-        break;
-      case 'whatsapp':
-        link = `whatsapp://upi/pay${baseParams}`;
-        break;
-      case 'other':
-        // Use standard upi:// which shows app chooser on Android, but may open WhatsApp on iOS
-        link = getUPILink();
-        break;
-      default:
-        return;
-    }
-
-    // For 'other' or if scheme fails, also show the manual link
-    if (app === 'other') {
-      let anchorDiv = document.getElementById("upiAnchor");
-      anchorDiv.style.display = "block";
-      anchorDiv.innerHTML = `<a href="${link}"><span>⬆️</span> Tap if app doesn't open automatically</a>`;
-    }
-
-    // Attempt to open the app
-    window.location.href = link;
-
-    // For iOS, if WhatsApp scheme is used and fails, show fallback
-    if (app === 'whatsapp' && /iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-      setTimeout(() => {
-        if (confirm("WhatsApp didn't open? Would you like to copy UPI ID instead?")) {
-          copyUPIId();
+            document.getElementById("upiAnchor").style.display = "none";
+            document.getElementById("appGridSection").style.display = "block";
+            document.getElementById("appGridSection").scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            return true;
         }
-      }, 500);
-    }
-  }
 
-  function copyUPIId() {
-    // Create temporary input
-    const tempInput = document.createElement('input');
-    tempInput.value = UPI_ID;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand('copy');
-    document.body.removeChild(tempInput);
-    
-    alert(`UPI ID copied: ${UPI_ID}\n\nPlease open your UPI app and pay manually to this ID.`);
-  }
+        function getUPILink(forApp = 'other') {
+            let note = `Deposit to Client: ${validatedClientCode} - Manashvi Ledger`;
+            if (note.length > 45) {
+            note = note.substring(0, 42) + "...";
+            }
 
-  // Enter key support
-  document.getElementById('amount').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') validateAndShowApps();
-  });
-  document.getElementById('clientCode').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') validateAndShowApps();
-  });
+            // DON'T encode the UPI ID - keep @ symbol as is
+            const pa = UPI_ID; // manashvi.brk@validhdfc
+            
+            // Create app-specific links
+            switch(forApp) {
+            case 'gpay':
+                // Google Pay - encode name only
+                return `gpay://upi/pay?pa=${pa}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${validatedAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
+                
+            case 'phonepe':
+                // PhonePe - minimal encoding, sometimes works better with NO encoding
+                return `phonepe://pay?pa=${pa}&pn=${PAYEE_NAME}&am=${validatedAmount}&cu=INR&tn=${note}`;
+                
+            case 'paytm':
+                // Paytm - needs proper encoding
+                return `paytmmp://pay?pa=${encodeURIComponent(pa)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${validatedAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
+                
+            case 'bhim':
+                // BHIM - standard
+                return `bhim://upi/pay?pa=${pa}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${validatedAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
+                
+            case 'amazonpay':
+                // Amazon Pay - test without encoding first
+                return `amazonpay://upi/pay?pa=${pa}&pn=${PAYEE_NAME}&am=${validatedAmount}&cu=INR&tn=${note}`;
+                
+            case 'whatsapp':
+                // WhatsApp - skip payee name, it causes issues
+                return `whatsapp://upi/pay?pa=${pa}&am=${validatedAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
+                
+            case 'other':
+            default:
+                // Standard upi:// with minimal encoding
+                return `upi://pay?pa=${pa}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${validatedAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
+            }
+        }
 
-  // Reset app grid if inputs change (optional)
-  document.getElementById('clientCode').addEventListener('input', () => {
-    document.getElementById("appGridSection").style.display = "none";
-  });
-  document.getElementById('amount').addEventListener('input', () => {
-    document.getElementById("appGridSection").style.display = "none";
-  });
+        function openWithApp(app) {
+            if (!validatedClientCode || !validatedAmount) {
+            alert("Please enter client code and amount first");
+            return;
+            }
+
+            // Get app-specific link
+            let link = getUPILink(app);
+            
+            // Debug - REMOVE THIS AFTER TESTING
+            alert(`Debug - Opening ${app} with link:\n\n${link}`);
+            console.log(`Opening ${app}:`, link);
+
+            // For 'other' option, show the manual link
+            if (app === 'other') {
+            let anchorDiv = document.getElementById("upiAnchor");
+            anchorDiv.style.display = "block";
+            anchorDiv.innerHTML = `<a href="${link}"><span>⬆️</span> Tap if app doesn't open automatically</a>`;
+            }
+
+            // Attempt to open the app
+            window.location.href = link;
+
+            // iOS fallback for WhatsApp
+            if (app === 'whatsapp' && /iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            setTimeout(() => {
+                if (confirm("WhatsApp didn't open? Would you like to copy UPI ID instead?")) {
+                copyUPIId();
+                }
+            }, 500);
+            }
+        }
+
+        function copyUPIId() {
+            const tempInput = document.createElement('input');
+            tempInput.value = UPI_ID;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            
+            alert(`UPI ID copied: ${UPI_ID}\n\nPlease open your UPI app and pay manually to this ID.`);
+        }
+
+        // Enter key support
+        document.getElementById('amount').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') validateAndShowApps();
+        });
+        document.getElementById('clientCode').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') validateAndShowApps();
+        });
+
+        // Reset app grid if inputs change
+        document.getElementById('clientCode').addEventListener('input', () => {
+            document.getElementById("appGridSection").style.display = "none";
+        });
+        document.getElementById('amount').addEventListener('input', () => {
+            document.getElementById("appGridSection").style.display = "none";
+        });
 </script>
 
 </body>
