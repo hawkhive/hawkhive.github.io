@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIRE Full Mock Exam — 110 Questions · 120 Minutes</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f1a;--surface:#121928;--card:#1a2235;--border:#1e2d45;--border2:#263550;
+  --ink:#e8eef8;--ink2:#a0b4d0;--ink3:#607090;
+  --blue:#3b82f6;--blue2:#1d4ed8;--blue-bg:rgba(59,130,246,0.1);--blue-bd:rgba(59,130,246,0.3);
+  --green:#22c55e;--green-bg:rgba(34,197,94,0.1);--green-bd:rgba(34,197,94,0.3);
+  --red:#ef4444;--red-bg:rgba(239,68,68,0.1);--red-bd:rgba(239,68,68,0.3);
+  --amber:#f59e0b;--amber-bg:rgba(245,158,11,0.1);--amber-bd:rgba(245,158,11,0.3);
+  --teal:#14b8a6;--purple:#a855f7;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);font-family:'Sora',sans-serif;color:var(--ink);min-height:100vh;}
+
+/* ── SCREENS ── */
+.screen{display:none;min-height:100vh;}
+.screen.active{display:flex;}
+
+/* ══════════════════════════════════════
+   LAUNCH SCREEN
+══════════════════════════════════════ */
+#launch{flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;background:var(--bg);position:relative;overflow:hidden;}
+.launch-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(59,130,246,0.07),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(168,85,247,0.06),transparent 55%);pointer-events:none;}
+.launch-inner{max-width:720px;width:100%;position:relative;z-index:1;}
+.launch-badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--blue);text-transform:uppercase;background:var(--blue-bg);border:1px solid var(--blue-bd);padding:4px 14px;border-radius:20px;display:inline-block;margin-bottom:20px;}
+.launch-title{font-size:clamp(32px,5vw,58px);font-weight:800;line-height:1.1;margin-bottom:12px;}
+.launch-title span{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.launch-sub{font-size:16px;color:var(--ink2);line-height:1.7;margin-bottom:36px;}
+.launch-params{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:36px;}
+.lp{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;}
+.lp-n{font-size:28px;font-weight:800;color:var(--blue);font-family:'JetBrains Mono',monospace;}
+.lp-l{font-size:11px;color:var(--ink3);margin-top:4px;letter-spacing:1px;}
+.wt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:36px;}
+.wt-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.wt-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.wt-label{font-size:12px;color:var(--ink2);flex:1;}
+.wt-count{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--ink);}
+.launch-note{background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:8px;padding:14px 18px;font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:32px;}
+.launch-note strong{color:var(--amber);}
+.start-btn{background:linear-gradient(135deg,var(--blue2),var(--blue));color:#fff;border:none;padding:18px 56px;border-radius:12px;font-family:'Sora',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s;letter-spacing:0.5px;display:block;width:100%;}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(59,130,246,0.35);}
+
+/* ══════════════════════════════════════
+   EXAM SCREEN
+══════════════════════════════════════ */
+#exam{flex-direction:row;align-items:stretch;}
+.exam-sidebar{width:280px;min-width:280px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:hidden;}
+.sidebar-top{padding:20px 16px;border-bottom:1px solid var(--border);}
+.timer-box{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;margin-bottom:14px;}
+.timer-label{font-size:10px;letter-spacing:2px;color:var(--ink3);text-transform:uppercase;font-family:'JetBrains Mono',monospace;margin-bottom:6px;}
+.timer-val{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;color:var(--green);line-height:1;transition:color 0.3s;}
+.timer-val.warn{color:var(--amber);}
+.timer-val.danger{color:var(--red);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.6;}}
+.progress-bar-wrap{background:var(--bg);border-radius:4px;height:6px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:4px;transition:width 0.4s;}
+.progress-txt{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-top:6px;}
+.sidebar-nav{flex:1;overflow-y:auto;padding:12px;}
+.sidebar-nav::-webkit-scrollbar{width:2px;}
+.sidebar-nav::-webkit-scrollbar-thumb{background:var(--border);}
+.nav-element-label{font-size:9px;letter-spacing:2px;color:var(--ink3);text-transform:uppercase;font-family:'JetBrains Mono',monospace;padding:8px 4px 4px;display:flex;align-items:center;justify-content:space-between;}
+.nav-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:10px;}
+.nav-btn{aspect-ratio:1;border-radius:5px;border:1px solid var(--border);background:var(--bg);font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--ink3);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;}
+.nav-btn:hover{border-color:var(--blue-bd);color:var(--blue);}
+.nav-btn.current{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700;}
+.nav-btn.answered{background:var(--green-bg);border-color:var(--green-bd);color:var(--green);}
+.nav-btn.flagged{background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber);}
+.sidebar-footer{padding:12px 16px;border-top:1px solid var(--border);}
+.submit-btn{background:linear-gradient(135deg,var(--green),#16a34a);color:#fff;border:none;padding:12px;border-radius:8px;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;cursor:pointer;width:100%;transition:all 0.2s;}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(34,197,94,0.3);}
+.exam-main{flex:1;overflow-y:auto;padding:32px;}
+.exam-main::-webkit-scrollbar{width:4px;}
+.exam-main::-webkit-scrollbar-thumb{background:var(--border);}
+.qcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:32px;max-width:760px;margin:0 auto;}
+.mobile-sidebar-toggle{position:fixed;top:18px;left:18px;z-index:1200;width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,0.18);background:rgba(15,23,42,0.6);color:#fff;font-size:22px;display:none;align-items:center;justify-content:center;cursor:pointer;opacity:0.3;transition:opacity 0.2s,transform 0.2s;}
+.mobile-sidebar-toggle:hover{opacity:0.9;transform:translateY(-1px);}
+.qcard-top{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.qnum{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--blue);font-weight:700;}
+.qelement{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--ink3);background:var(--bg);border:1px solid var(--border);padding:3px 9px;border-radius:10px;text-transform:uppercase;}
+.qflag{margin-left:auto;background:transparent;border:1px solid var(--border);color:var(--ink3);padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Sora',sans-serif;transition:all 0.15s;}
+.qflag:hover,.qflag.on{background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber);}
+.qtext{font-size:15.5px;line-height:1.75;color:var(--ink);margin-bottom:24px;font-weight:400;}
+.opts{display:flex;flex-direction:column;gap:8px;}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:9px;border:1px solid var(--border);background:var(--bg);cursor:pointer;transition:all 0.15s;text-align:left;}
+.opt:hover{border-color:var(--blue-bd);background:var(--blue-bg);}
+.opt.selected{border-color:var(--blue);background:var(--blue-bg);}
+.opt-letter{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--blue);background:rgba(59,130,246,0.15);border-radius:4px;padding:3px 6px;flex-shrink:0;margin-top:1px;min-width:26px;text-align:center;}
+.opt.selected .opt-letter{background:var(--blue);color:#fff;}
+.opt-text{font-size:13.5px;color:var(--ink2);line-height:1.55;}
+.opt.selected .opt-text{color:var(--ink);}
+.qnav{display:flex;justify-content:space-between;align-items:center;margin-top:28px;}
+.qnav-btn{background:var(--bg);border:1px solid var(--border);color:var(--ink2);padding:10px 24px;border-radius:8px;font-family:'Sora',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.qnav-btn:hover{border-color:var(--blue-bd);color:var(--blue);}
+.qnav-btn:disabled{opacity:0.3;cursor:not-allowed;}
+.qnav-center{font-size:12px;color:var(--ink3);}
+
+/* ══════════════════════════════════════
+   SUBMIT MODAL
+══════════════════════════════════════ */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;max-width:480px;width:100%;}
+.modal h2{font-size:22px;font-weight:700;margin-bottom:8px;}
+.modal p{font-size:14px;color:var(--ink2);line-height:1.6;margin-bottom:20px;}
+.modal-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:24px;}
+.ms{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;}
+.ms-n{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;}
+.ms-n.good{color:var(--green);}
+.ms-n.warn{color:var(--amber);}
+.ms-n.bad{color:var(--red);}
+.ms-l{font-size:10px;color:var(--ink3);margin-top:3px;}
+.modal-btns{display:flex;gap:10px;}
+.mbtn{flex:1;padding:12px;border-radius:8px;font-family:'Sora',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all 0.15s;}
+.mbtn.cancel{background:var(--bg);border:1px solid var(--border);color:var(--ink2);}
+.mbtn.confirm{background:linear-gradient(135deg,var(--green),#16a34a);color:#fff;}
+
+/* ══════════════════════════════════════
+   RESULTS SCREEN
+══════════════════════════════════════ */
+#results{flex-direction:column;align-items:center;padding:40px 20px;min-height:100vh;}
+.results-inner{max-width:900px;width:100%;}
+.results-header{text-align:center;margin-bottom:36px;}
+.results-badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--green);text-transform:uppercase;background:var(--green-bg);border:1px solid var(--green-bd);padding:4px 14px;border-radius:20px;display:inline-block;margin-bottom:16px;}
+.results-badge.fail{color:var(--red);background:var(--red-bg);border-color:var(--red-bd);}
+.results-title{font-size:clamp(28px,4vw,46px);font-weight:800;margin-bottom:8px;}
+.results-score-ring{margin:20px auto 8px;width:160px;height:160px;position:relative;}
+.ring-svg{width:160px;height:160px;transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:var(--border);stroke-width:12;}
+.ring-fill{fill:none;stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset 1.5s ease;}
+.ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ring-pct{font-size:36px;font-weight:800;font-family:'JetBrains Mono',monospace;}
+.ring-label{font-size:11px;color:var(--ink3);letter-spacing:1px;}
+.results-meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:36px;}
+.rmeta{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 20px;text-align:center;}
+.rmeta-n{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;}
+.rmeta-l{font-size:11px;color:var(--ink3);margin-top:3px;}
+
+/* Element breakdown */
+.breakdown-title{font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.breakdown-title::before{content:'';width:4px;height:20px;background:var(--blue);border-radius:2px;}
+.el-rows{display:flex;flex-direction:column;gap:8px;margin-bottom:40px;}
+.el-row{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;}
+.el-row-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.el-name{font-weight:600;font-size:14px;flex:1;}
+.el-score{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;}
+.el-score.pass{color:var(--green);}
+.el-score.fail{color:var(--red);}
+.el-bar-bg{background:var(--bg);border-radius:4px;height:6px;overflow:hidden;}
+.el-bar-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+.el-detail{font-size:12px;color:var(--ink3);margin-top:6px;}
+
+/* Review section */
+.review-title{font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.review-title::before{content:'';width:4px;height:20px;background:var(--purple);border-radius:2px;}
+.review-filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.rf{padding:7px 16px;border-radius:6px;border:1px solid var(--border);background:var(--bg);font-family:'Sora',sans-serif;font-size:12px;font-weight:600;cursor:pointer;color:var(--ink2);transition:all 0.15s;}
+.rf.active{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue);}
+.review-items{display:flex;flex-direction:column;gap:10px;}
+.ritem{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.ritem-head{padding:14px 18px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;}
+.ritem-icon{font-size:14px;flex-shrink:0;margin-top:2px;}
+.ritem-q{font-size:13.5px;color:var(--ink);line-height:1.5;flex:1;}
+.ritem-elem{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--ink3);background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:8px;flex-shrink:0;text-transform:uppercase;}
+.ritem-body{padding:0 18px 16px;display:none;}
+.ritem-body.open{display:block;}
+.ritem-ans{padding:10px 14px;border-radius:7px;font-size:13px;line-height:1.5;margin-bottom:6px;}
+.ritem-ans.correct-ans{background:var(--green-bg);border:1px solid var(--green-bd);color:#86efac;}
+.ritem-ans.wrong-ans{background:var(--red-bg);border:1px solid var(--red-bd);color:#fca5a5;}
+.ritem-ans.your-ans{background:var(--blue-bg);border:1px solid var(--blue-bd);color:#93c5fd;}
+.ritem-exp{background:rgba(255,255,255,0.03);border-radius:6px;padding:10px 14px;font-size:12.5px;color:var(--ink3);line-height:1.7;margin-top:8px;}
+.ritem-exp strong{color:var(--ink2);}
+
+.retake-btn{display:block;background:linear-gradient(135deg,var(--blue2),var(--blue));color:#fff;border:none;padding:16px 48px;border-radius:10px;font-family:'Sora',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin:32px auto 0;transition:all 0.2s;}
+.retake-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(59,130,246,0.35);}
+
+/* ── dots decoration ── */
+.dot-e1{color:#3b82f6;}.dot-e2{color:#8b5cf6;}.dot-e3{color:#ec4899;}.dot-e4{color:#f59e0b;}
+.dot-e5{color:#10b981;}.dot-e6{color:#06b6d4;}.dot-e7{color:#a855f7;}.dot-e8{color:#f97316;}.dot-e9{color:#84cc16;}
+
+@media(max-width:760px){
+  .mobile-sidebar-toggle{display:flex;}
+  .exam-sidebar{display:flex;position:fixed;top:0;left:0;width:280px;max-width:320px;height:100vh;transform:translateX(-100%);transition:transform 0.25s ease;box-shadow:12px 0 40px rgba(0,0,0,0.35);}
+  #exam.sidebar-open .exam-sidebar{transform:translateX(0);}
+  .exam-main{padding:16px;}
+  .qcard{padding:20px;}
+  .launch-params{grid-template-columns:repeat(2,1fr);}
+  .wt-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ LAUNCH SCREEN ══════ -->
+<section id="launch" class="screen active">
+  <div class="launch-bg"></div>
+  <div class="launch-inner">
+    <div class="launch-badge">Official CIRE Simulation</div>
+    <h1 class="launch-title">CIRE Full <span>Mock Exam</span></h1>
+    <p class="launch-sub">A complete simulation of the Canadian Investment Regulatory Exam — 110 multiple-choice questions across all 9 elements, weighted exactly as per the official CIRO exam blueprint.</p>
+    <div class="launch-params">
+      <div class="lp"><div class="lp-n">110</div><div class="lp-l">Questions</div></div>
+      <div class="lp"><div class="lp-n">120</div><div class="lp-l">Minutes</div></div>
+      <div class="lp"><div class="lp-n">60%</div><div class="lp-l">Pass Mark</div></div>
+      <div class="lp"><div class="lp-n">MCQ</div><div class="lp-l">Format</div></div>
+    </div>
+    <div class="wt-grid" id="wtGrid"></div>
+    <div class="launch-note">
+      <strong>⏱ Important:</strong> The timer starts the moment you click Start. You can navigate between questions freely, flag questions for review, and submit early. If the 120-minute timer expires, your exam is automatically submitted and graded.
+    </div>
+    <button class="start-btn" onclick="startExam()">▶ Start Exam</button>
+  </div>
+</section>
+<button class="mobile-sidebar-toggle" id="mobileSidebarToggle" onclick="toggleMobileSidebar()" aria-label="Toggle sidebar">☰</button>
+
+<!-- ══════ EXAM SCREEN ══════ -->
+<section id="exam" class="screen">
+  <div class="exam-sidebar">
+    <div class="sidebar-top">
+      <div class="timer-box">
+        <div class="timer-label">Time Remaining</div>
+        <div class="timer-val" id="timerVal">2:00:00</div>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="progress-txt"><span id="progressTxt">0 / 110 answered</span><span id="progressPct">0%</span></div>
+    </div>
+    <div class="sidebar-nav" id="sidebarNav"></div>
+    <div class="sidebar-footer">
+      <button class="submit-btn" onclick="openSubmitModal()">Submit Exam</button>
+    </div>
+  </div>
+  <div class="exam-main">
+    <div class="qcard" id="qcard">
+      <!-- question rendered here -->
+    </div>
+  </div>
+</section>
+
+<!-- ══════ SUBMIT MODAL ══════ -->
+<div class="modal-overlay" id="submitModal">
+  <div class="modal">
+    <h2>Submit Exam?</h2>
+    <p id="modalMsg">Are you sure you want to submit? Review your progress below before confirming.</p>
+    <div class="modal-stats">
+      <div class="ms"><div class="ms-n good" id="mAnswered">0</div><div class="ms-l">Answered</div></div>
+      <div class="ms"><div class="ms-n warn" id="mUnanswered">110</div><div class="ms-l">Unanswered</div></div>
+      <div class="ms"><div class="ms-n" style="color:var(--amber)" id="mFlagged">0</div><div class="ms-l">Flagged</div></div>
+    </div>
+    <div class="modal-btns">
+      <button class="mbtn cancel" onclick="closeSubmitModal()">← Back to Exam</button>
+      <button class="mbtn confirm" onclick="submitExam()">Confirm Submit ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ RESULTS SCREEN ══════ -->
+<section id="results" class="screen">
+  <div class="results-inner">
+    <div class="results-header">
+      <div class="results-badge" id="resultsBadge">PASS</div>
+      <h1 class="results-title" id="resultsTitle">Exam Complete</h1>
+      <div class="results-score-ring" id="scoreRing">
+        <svg class="ring-svg" viewBox="0 0 160 160">
+          <circle class="ring-bg" cx="80" cy="80" r="64"/>
+          <circle class="ring-fill" id="ringFill" cx="80" cy="80" r="64" stroke-dasharray="402" stroke-dashoffset="402"/>
+        </svg>
+        <div class="ring-text">
+          <div class="ring-pct" id="ringPct">0%</div>
+          <div class="ring-label">SCORE</div>
+        </div>
+      </div>
+      <div class="results-meta" id="resultsMeta"></div>
+    </div>
+
+    <div class="breakdown-title">Performance by Element</div>
+    <div class="el-rows" id="elRows"></div>
+
+    <div class="review-title">Question Review</div>
+    <div class="review-filters">
+      <button class="rf active" onclick="filterReview('all',this)">All (110)</button>
+      <button class="rf" onclick="filterReview('wrong',this)">Incorrect</button>
+      <button class="rf" onclick="filterReview('correct',this)">Correct</button>
+      <button class="rf" onclick="filterReview('unanswered',this)">Unanswered</button>
+    </div>
+    <div class="review-items" id="reviewItems"></div>
+    <button class="retake-btn" onclick="retake()">↺ Retake Exam</button>
+  </div>
+</section>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+//  ELEMENT CONFIG
+// ══════════════════════════════════════════════════════════════════
+const ELEMENTS = [
+  {id:1, label:'E1', name:'Regulatory Framework',       count:11, color:'#3b82f6'},
+  {id:2, label:'E2', name:'Prospective Client',         count:11, color:'#8b5cf6'},
+  {id:3, label:'E3', name:'Scope of Client',            count:17, color:'#ec4899'},
+  {id:4, label:'E4', name:'Complaint Handling',         count:6,  color:'#f59e0b'},
+  {id:5, label:'E5', name:'Market & Company Analysis',  count:9,  color:'#10b981'},
+  {id:6, label:'E6', name:'Market Integrity & Trade',   count:13, color:'#06b6d4'},
+  {id:7, label:'E7', name:'Securities & Investments',   count:21, color:'#a855f7'},
+  {id:8, label:'E8', name:'Derivatives',                count:6,  color:'#f97316'},
+  {id:9, label:'E9', name:'Conflicts & Ethics',         count:16, color:'#84cc16'},
+];
+
+// ══════════════════════════════════════════════════════════════════
+//  QUESTION BANK (110 questions weighted by element)
+// ══════════════════════════════════════════════════════════════════
+const QUESTIONS = [
+// ─── ELEMENT 1 (11 questions) ───────────────────────────────────
+{e:1,q:"Which body is responsible for coordinating and harmonizing securities regulation across all Canadian provinces and territories?",o:["The Bank of Canada, which sets national financial standards","The Canadian Securities Administrators (CSA), an umbrella organization of provincial and territorial securities regulators","The Office of the Superintendent of Financial Institutions (OSFI), the federal prudential regulator","CIRO, which was formed in 2023 as Canada's single national securities regulator"],a:1,ex:"The <strong>CSA</strong> is the umbrella body of all 13 provincial/territorial regulators. It coordinates and harmonizes rules but has no independent enforcement power. CIRO is a self-regulatory organization, not a government body."},
+{e:1,q:"A National Instrument (NI) differs from a CSA Staff Notice in that:",o:["National Instruments are issued by CIRO; Staff Notices are issued by provincial regulators","National Instruments have the force of law; Staff Notices reflect staff views only and are not legally binding","National Instruments apply only to investment dealers; Staff Notices apply to all market participants","National Instruments are reviewed annually; Staff Notices are permanent policy documents"],a:1,ex:"<strong>National Instruments</strong> are adopted through provincial legislative processes and have the force of law. <strong>Staff Notices</strong> reflect regulatory staff interpretations and expectations but are not legally binding, though they are influential in compliance assessments."},
+{e:1,q:"A client holds $950,000 in a general non-registered account and $600,000 in an RRSP at the same CIRO member dealer, which becomes insolvent. What is the CIPF coverage outcome?",o:["The client receives a maximum of $1,000,000 covering both accounts combined","Both accounts are fully covered — $950,000 for the general account and $600,000 for the RRSP, under separate $1M per category limits","The client receives $500,000 per account since the $1M limit is split equally between two accounts","Only the RRSP is covered since registered accounts have priority in dealer insolvency proceedings"],a:1,ex:"CIPF provides up to <strong>$1,000,000 per account category</strong>. General accounts and registered retirement accounts (RRSP/RRIF) are separate categories — each covered independently. Both accounts are fully covered in this scenario."},
+{e:1,q:"CIRO was formed on January 1, 2023 through the amalgamation of which two organizations?",o:["The OSC and AMF — Canada's two largest provincial securities regulators","IIROC (Investment Industry Regulatory Organization of Canada) and the MFDA (Mutual Fund Dealers Association of Canada)","The Bank of Canada and OSFI — Canada's two federal financial regulators","The CSA and the Canadian Depository for Securities (CDS)"],a:1,ex:"<strong>CIRO</strong> was formed by merging <strong>IIROC</strong> (regulated investment dealers and market integrity) and the <strong>MFDA</strong> (regulated mutual fund dealers), creating a single SRO for all dealer types in Canada."},
+{e:1,q:"OBSI (Ombudsman for Banking Services and Investments) can recommend compensation of up to what maximum amount per complaint?",o:["$100,000 per complaint, which is legally binding on member firms","$350,000 per complaint through non-binding recommendations","$1,000,000 per complaint, equal to the CIPF single category limit","There is no monetary cap — OBSI can recommend full compensation for any proven loss"],a:1,ex:"OBSI can recommend up to <strong>$350,000</strong> per complaint. Recommendations are <strong>non-binding</strong> — firms can refuse, but OBSI can publicly name non-compliant firms. The service is free to complainants, available in both official languages."},
+{e:1,q:"Canada's equity markets moved to T+1 settlement on which date?",o:["January 1, 2023 — coinciding with the formation of CIRO","May 27, 2024 — aligned with the simultaneous US market change","March 1, 2025 — following a CSA policy review","June 1, 2022 — as part of the DSC ban regulatory package"],a:1,ex:"Canada moved to <strong>T+1 equity settlement on May 27, 2024</strong>, aligned with the simultaneous US change. This means trades settle within one business day of the trade date, down from the previous T+2 standard."},
+{e:1,q:"Which FINTRAC reporting threshold triggers a mandatory Large Cash Transaction Report (LCTR)?",o:["Any suspicious transaction regardless of dollar amount","$5,000 or more in a single cash transaction or related transactions","$10,000 or more in cash, or multiple related cash transactions totalling $10,000 within 24 hours","$25,000 or more in any form of payment including wire transfers"],a:2,ex:"An <strong>LCTR</strong> is required for cash transactions of <strong>$10,000 or more</strong>, or multiple related cash transactions totalling $10,000+ within 24 hours (anti-structuring provision). Filed within 15 business days. Note: this applies to cash, not wire transfers."},
+{e:1,q:"What is the CDCC's role in the Canadian derivatives market?",o:["The CDCC regulates options and futures pricing on the Montréal Exchange","The CDCC becomes the central clearing counterparty for exchange-traded derivatives — eliminating counterparty risk through novation","The CDCC provides insurance for derivative losses similar to CIPF for equities","The CDCC sets margin requirements for all OTC derivative contracts in Canada"],a:1,ex:"The <strong>CDCC (Canadian Derivatives Clearing Corporation)</strong> becomes the legal counterparty to every exchange-traded derivative trade through novation — if one party defaults, CDCC covers the obligation. It requires daily margin deposits and runs a rigorous risk management framework."},
+{e:1,q:"A compliance officer learns that a client deposits $9,500 in cash every week — just below the $10,000 LCTR threshold. What must the dealer do?",o:["No action required since each individual transaction is below the reporting threshold","File an LCTR since the monthly total exceeds $10,000","File a Suspicious Transaction Report (STR) — this pattern of structuring to avoid reporting thresholds is itself suspicious activity","Wait 6 months and assess whether a pattern is established before taking any action"],a:2,ex:"<strong>Structuring</strong> — intentionally breaking transactions to stay below reporting thresholds — is itself a criminal offence and an AML red flag. An <strong>STR</strong> (which has no minimum dollar threshold) must be filed based on reasonable grounds to suspect money laundering."},
+{e:1,q:"Which regulatory body is responsible for the prudential oversight (solvency, capital adequacy) of Canadian chartered banks?",o:["CIRO, which oversees all financial market participants through its mandate","The OSC, as Canada's largest and most significant securities regulator","OSFI (Office of the Superintendent of Financial Institutions), the federal prudential regulator","The Bank of Canada, as Canada's central bank and lender of last resort"],a:2,ex:"<strong>OSFI</strong> regulates banks and federally regulated financial institutions for solvency and prudential purposes. CIRO regulates a bank's investment dealer subsidiary for securities activities. The bank itself is under OSFI; its dealer subsidiary is under CIRO."},
+{e:1,q:"A formal takeover bid under NI 62-104 is triggered when a purchaser acquires what percentage of a public company's voting shares?",o:["5% — requiring a disclosure filing on SEDAR+","10% — triggering enhanced reporting requirements","20% — triggering mandatory bid rules requiring equal treatment of all shareholders","50% — triggering a change of control requiring full board approval"],a:2,ex:"Under <strong>NI 62-104</strong>, a formal takeover bid is triggered at <strong>20% or more</strong> of voting shares. The bid must be open for at least 105 days, offer equal treatment to all shareholders, and have a minimum 50% tender condition before the bidder can take up shares."},
+
+// ─── ELEMENT 2 (11 questions) ───────────────────────────────────
+{e:2,q:"Under the Client Focused Reforms (CFR), which document must be provided to every client at account opening to disclose the nature of the relationship, fees, and conflicts of interest?",o:["The Know Your Client (KYC) form, which is updated annually with client information","The Relationship Disclosure Information (RDI) document, provided at account opening and updated on material changes","The Fund Facts document, which is required for all investment products sold to retail clients","The Management Information Circular, which outlines all dealer-client obligations"],a:1,ex:"The <strong>RDI (Relationship Disclosure Information)</strong> document is the mandatory disclosure provided at account opening. It must describe: the nature and terms of the relationship, types of products offered, fee structure, and all material conflicts of interest with how they are managed."},
+{e:2,q:"Who qualifies as an institutional client who can automatically opt out of certain retail investor protections?",o:["Any client with more than $100,000 in investable assets","A non-individual entity (corporation, institution) with more than $10M in net assets, OR an individual with more than $10M in financial assets who has provided consent","A client who has passed a financial literacy test administered by the dealer","Any client who has been investing for more than 10 years and holds a professional designation"],a:1,ex:"Under CIRO's rules, an <strong>institutional client</strong> can be: (1) a non-individual entity (corporation, trust, pension fund) with more than $10M in net assets — automatic qualification; OR (2) an individual with more than $10M in financial assets who has <strong>provided consent</strong> in writing."},
+{e:2,q:"What is a Trusted Contact Person (TCP) and what is their specific role?",o:["A person authorized to make investment decisions on the client's behalf when the client is unavailable","A person the dealer can contact to notify of concerns about the client's wellbeing or potential financial exploitation — they cannot give instructions or make trading decisions","The emergency contact listed on the account application who receives all account statements","A co-applicant who is jointly responsible for the account in the event of the primary client's death"],a:1,ex:"The <strong>TCP (Trusted Contact Person)</strong> is NOT authorized to give instructions or make decisions. The dealer can contact the TCP to: address concerns about the client's mental capacity, potential financial exploitation, or difficulty reaching the client. The TCP cannot direct trades or access account information."},
+{e:2,q:"Under NI 45-106, an accredited investor individual must meet which financial threshold?",o:["Net assets exceeding $500,000 or annual income exceeding $100,000","Financial assets exceeding $1,000,000 (or $5M in net assets), OR annual income exceeding $200,000 ($300,000 with spouse)","Net worth exceeding $2,000,000 including their primary residence","Annual income exceeding $150,000 for two consecutive years with reasonable expectation of continuation"],a:1,ex:"Under <strong>NI 45-106</strong>, an accredited investor individual must have: financial assets (cash, securities) exceeding <strong>$1,000,000</strong>, OR net assets exceeding $5,000,000, OR annual income exceeding <strong>$200,000</strong> (or $300,000 combined with spouse) in each of the two most recent years with reasonable expectation of continuation."},
+{e:2,q:"Under CRM2 and the CFR, which information must now be disclosed in dollar amounts (not percentages) on client account statements?",o:["Only the management expense ratios of mutual funds held in the account","All fees charged directly to the client, and beginning January 2026 (TCR Enhancement), all embedded fund costs such as MERs","Only the advisor's commission on equity trades","Only the deferred sales charges on any DSC mutual funds still held"],a:1,ex:"Under <strong>CRM2</strong> (Client Relationship Model phase 2), all fees charged directly to the client must be disclosed in dollar amounts. The <strong>TCR Enhancement effective January 2026</strong> extends this to ALL fund costs including embedded MERs — making the full cost of owning investment funds transparent in dollar terms."},
+{e:2,q:"The 'suitability' obligation under the Client Focused Reforms requires that a recommendation:",o:["Is based solely on the client's stated investment objectives without considering their financial situation","Considers whether the investment puts the client's interests first, including their investment objectives, risk tolerance, time horizon, and financial situation","Requires that only government-issued securities be recommended to conservative investors","Only applies to new account openings — existing accounts are exempt from the suitability requirements"],a:1,ex:"Under CFR, suitability now incorporates a <strong>best-interest standard</strong> — the recommendation must put the client's interests first and consider: investment objectives, risk tolerance, time horizon, financial situation, and whether the cost (including fees) is reasonable given the benefit to the client."},
+{e:2,q:"A client who qualifies as a 'permitted client' can waive which specific obligation that normally applies to registered dealers?",o:["The best execution obligation — permitted clients can direct trades to specific venues without best execution analysis","The KYC and suitability obligation — permitted clients can waive the requirement for the dealer to assess suitability","The confidentiality obligation — permitted clients can share their own data freely with the dealer","The annual account review requirement — permitted clients only need reviews every 5 years"],a:1,ex:"<strong>Permitted clients</strong> (a subset of institutional clients) can waive the <strong>KYC/suitability obligation</strong> — acknowledging that they do not need the dealer to assess whether investments are suitable for them. This makes commercial sense for sophisticated institutional investors who have their own investment teams."},
+{e:2,q:"A dealer's representative notices that an elderly client has recently given power of attorney to someone who is now making all investment decisions. The client seems confused when called. What is the most appropriate immediate action?",o:["Process all instructions from the POA without question since the POA is legally authorized","Contact the Trusted Contact Person on file to share concerns without disclosing account information, and flag the situation to compliance for potential financial exploitation review","Close the account immediately to protect the client","Ask the POA to provide proof of the original account holder's mental incapacity assessment"],a:1,ex:"When financial exploitation or mental incapacity is suspected: (1) <strong>Contact the TCP</strong> — the dealer can reach out to the Trusted Contact Person without disclosing full account details. (2) <strong>Escalate to compliance</strong>. The dealer can also place a temporary restriction on the account if exploitation is strongly suspected, pending review."},
+{e:2,q:"Under the Know Your Product (KYP) obligation, what must a registered representative demonstrate before recommending a product?",o:["Only that the product is approved for sale in the relevant province where the client resides","That they understand the product's structure, risks, costs, and how it performs in different market conditions — with sufficient depth to assess whether it serves the client's interests","That they have personally invested in the product to demonstrate genuine belief in its value","That the product has achieved a minimum 3-year performance track record before recommendation"],a:1,ex:"The <strong>KYP obligation</strong> requires registered persons to understand: the product's structure and features, all associated risks, all costs (including embedded fees), how it compares to alternatives, and how it performs in different market scenarios. Without this understanding, a suitability assessment cannot be meaningfully conducted."},
+{e:2,q:"When must the Know Your Client (KYC) information for an existing client account be updated?",o:["Only when the client requests an update or when there is a change in their mailing address","At minimum annually AND whenever the dealer becomes aware of a material change in the client's circumstances that would affect their investment objectives or suitability","Every five years as part of the long-form review process mandated by CIRO","Only before a new product is purchased — existing holdings are not affected by KYC updates"],a:1,ex:"KYC must be kept current and updated: (1) At minimum <strong>annually</strong> through account reviews. (2) <strong>Whenever a material change</strong> occurs — retirement, job loss, divorce, inheritance, significant change in risk tolerance. An outdated KYC profile is itself a compliance deficiency regardless of whether trades were made."},
+{e:2,q:"How many categories of institutional clients are defined under CIRO rules?",o:["3 categories — financial institutions, pension funds, and government entities","5 categories — covering regulated entities, large non-individuals, and qualifying individuals","7 categories — including financial institutions, governments, pension funds, regulated entities, large corporations, foreign dealers, and qualifying individuals","10 categories based on asset size thresholds ranging from $1M to $50M"],a:2,ex:"CIRO defines <strong>7 categories</strong> of institutional clients, including: regulated financial institutions (banks, insurance companies), governments and government agencies, pension funds, other registrants, corporations with over $10M in net assets, foreign dealer equivalents, and individuals with $10M+ in financial assets who have provided consent."},
+
+// ─── ELEMENT 3 (17 questions) ───────────────────────────────────
+{e:3,q:"What is the fundamental distinction between a Registered Representative (RR) and an Investment Representative (IR)?",o:["RRs work at full-service dealers; IRs work only at discount brokers with no product restrictions","RRs can give investment advice and accept orders; IRs can only accept and process orders but cannot give investment advice or recommendations","RRs must be supervised for 2 years; IRs operate independently from their first day","RRs are permitted to trade equities; IRs are restricted to fixed income only"],a:1,ex:"<strong>RR</strong>: Can give investment advice AND accept client orders. Has KYC, KYP, and suitability obligations. <strong>IR</strong>: Can accept and process orders only — cannot give investment advice or recommendations. Works typically in OEO (order execution only) accounts. This distinction is fundamental to understanding the scope of service obligations."},
+{e:3,q:"A client places an order to buy 500 shares of a company. The RR accidentally enters an order for 5,000 shares. The full 5,000 shares execute. What is the correct procedure?",o:["Transfer the extra 4,500 shares to the RR's personal account as a compensating mechanism","Place the 4,500 excess shares in the firm's error account immediately, advise the supervisor, and take corrective action — the client receives only the 500 shares they authorized at a fair price","Offer the client the 5,000 shares at a discounted price to compensate for the error","Cancel the entire transaction and ask the client to re-enter their 500-share order the following day"],a:1,ex:"Error handling: (1) <strong>Place excess shares in the error account</strong> — separate from client accounts. (2) <strong>Advise the supervisor immediately</strong>. (3) <strong>Correct the error</strong> — the client receives the 500 shares at the trade price. Any profit or loss from the error is the dealer's, not the client's. Errors must be corrected on a fair basis to the client."},
+{e:3,q:"In which account type does the advisor have complete authority to make investment decisions without obtaining the client's approval for each trade?",o:["Advisory account — the advisor recommends trades and the client approves each one","Order Execution Only (OEO) account — the client makes all decisions independently","Managed (discretionary) account — the Portfolio Manager has full discretion within the investment mandate","Wrap account — the client selects a model portfolio that the dealer manages automatically"],a:2,ex:"A <strong>managed/discretionary account</strong> grants the Portfolio Manager complete authority to trade within the pre-agreed Investment Policy Statement (IPS) without obtaining client approval for individual trades. This requires specific discretionary account authorization and carries the highest duty of care — a formal fiduciary obligation."},
+{e:3,q:"When a dealer acts as 'principal' in a trade (rather than 'agent'), what specific disclosure must be made?",o:["No additional disclosure is required since principal trading is a normal and permitted business activity","The dealer must disclose in the RDI and on the trade confirmation that it acted as dealer/principal (counterparty), as this is a direct conflict of interest requiring specific disclosure","Principal trading is prohibited for retail clients and can only occur with institutional accounts","The dealer must obtain regulatory pre-approval before any principal trade with a retail client"],a:1,ex:"When acting as <strong>principal</strong>, the dealer is the counterparty to the client's trade — its profit (markup/markdown) comes directly at the client's expense. This conflict must be: disclosed upfront in the RDI, disclosed on every trade confirmation for each specific transaction, and the price offered must still be competitive with market prices."},
+{e:3,q:"What triggers the requirement for a solicited vs unsolicited trade designation, and why does it matter?",o:["It only matters for regulatory reporting — the designation has no effect on supervision requirements","Whether the trade was solicited by the advisor or initiated by the client. Solicited trades are subject to suitability review by the advisor; unsolicited trades are the client's own decision (RR still records it but suitability obligation is different for OEO)","Unsolicited trades always require compliance pre-approval regardless of account type","The designation only applies to options and derivatives — not equity or bond trades"],a:1,ex:"<strong>Solicited</strong> = the advisor recommended or suggested the trade. <strong>Unsolicited</strong> = the client initiated it independently. For <strong>advisory accounts</strong>: solicited trades require full suitability analysis. For <strong>OEO accounts</strong>: all trades are unsolicited by definition — the IR processes but does not recommend. This distinction affects supervision requirements and liability."},
+{e:3,q:"Under Rule 15a-6 of the US Securities Exchange Act, what restriction applies to Canadian registered persons dealing with US clients?",o:["Canadian RRs can freely solicit US retail clients as long as they hold both CIRO and FINRA registration","Canadian RRs generally cannot solicit US retail clients without complying with US registration requirements; limited exemptive relief exists for dealing with major US institutional investors","There are no restrictions — Canadian dealers can serve US clients under the Canada-US Free Trade Agreement","Canadian RRs must pass the Series 7 exam before contacting any US resident about securities matters"],a:1,ex:"<strong>Rule 15a-6</strong> restricts unregistered foreign dealers from soliciting US investors. Canadian RRs generally cannot solicit US retail clients. Limited exemptive relief applies for dealing with US <strong>major institutional investors</strong> (hedge funds, banks, large pension funds with $100M+ in assets) through chaperoning arrangements with registered US brokers."},
+{e:3,q:"What is the scope of the 'Know Your Product' (KYP) obligation in relation to the suitability determination under CFR?",o:["KYP only applies to mutual funds and ETFs — not to individual equity and bond recommendations","Before recommending any investment product, the RR must understand its structure, features, risks, costs, and how it performs under different market conditions — without this understanding, a meaningful suitability assessment cannot be made","KYP only requires understanding the product's historical return track record for the prior 3 years","KYP applies at the firm level only — individual RRs rely on the firm's approved product list without conducting independent analysis"],a:1,ex:"The <strong>KYP obligation</strong> applies to ALL products recommended, including equities, bonds, funds, and structured products. The depth of understanding must include: structure, all risks (market, credit, liquidity, complexity), all costs (including embedded MERs), and how the product compares to alternatives. KYP is a precondition for a meaningful suitability assessment."},
+{e:3,q:"A portfolio manager operates a discretionary account for a client. The client calls and demands specific trades be made immediately. What is the correct response?",o:["Execute the trades immediately since the client is the account owner and has ultimate authority","Explain that the discretionary mandate is governed by the Investment Policy Statement — if the client wishes to override the mandate, they must submit written instructions and the PM may need to reassess whether discretionary management is still appropriate","The PM should execute the trades and document them as client-directed to avoid liability","Refuse all client-directed instructions permanently since discretionary accounts preclude all client input"],a:1,ex:"In a <strong>discretionary account</strong>, the PM manages under the agreed IPS without needing client approval. If the client wants to override the mandate: they can submit written instructions (which the PM must document and follow). However, if this happens repeatedly, the PM should reassess whether discretionary management still suits the client's approach — it may be more appropriate to convert to an advisory account."},
+{e:3,q:"What is 'appropriateness' in the context of CIRO's account suitability framework, and how does it differ from 'suitability'?",o:["They are synonyms — appropriateness and suitability refer to the same obligation under CIRO rules","Appropriateness is assessed at the account opening stage — is this account type suitable for this client? Suitability is assessed at the point of each transaction or recommendation — is this specific investment right for this specific client?","Appropriateness applies only to institutional clients; suitability applies only to retail clients","Appropriateness refers to regulatory compliance; suitability refers to ethical standards"],a:1,ex:"<strong>Account appropriateness</strong> is evaluated when opening an account — is this account type (OEO, advisory, managed, margin) right for this client given their knowledge, experience, and financial situation? <strong>Suitability</strong> is evaluated at each recommendation or transaction — does this specific investment align with this client's objectives, risk tolerance, and circumstances?"},
+{e:3,q:"Under the Client Focused Reforms, a client's investment objectives include 'income' with a 'low' risk tolerance. The advisor recommends a high-yield bond fund with a 'medium-high' risk rating. Which CFR obligation is most directly at issue?",o:["The KYP obligation — the advisor does not understand the product's risk characteristics","The best execution obligation — the advisor is not finding the most suitable venue for this trade","The suitability obligation — the recommendation does not align with the client's stated objectives and risk tolerance, failing the best-interest standard","The conflict of interest obligation — the advisor must be earning a trailer commission from this fund"],a:2,ex:"The <strong>suitability obligation</strong> under CFR requires that recommendations align with the client's best interests — specifically their investment objectives (income) and risk tolerance (low). Recommending a medium-high risk product to a low-risk income-seeking client directly violates this obligation. The suitability analysis must consider all KYC factors holistically."},
+{e:3,q:"A dealer executes a principal trade with a retail client — selling a bond from its own inventory. The dealer earns a markup. What best execution obligation applies?",o:["Best execution does not apply to principal trades — it only applies to agency trades","The dealer must still achieve competitive pricing — best execution applies to ALL client accounts. Even in principal capacity, the price offered must be at least as good as what is available in the market","Best execution only applies to equity trades — fixed income principal trades are exempt","The dealer can set any markup it chooses since the client agreed to trade with the dealer as principal"],a:1,ex:"<strong>Best execution under UMIR 5.1 applies to ALL client orders</strong> including OEO accounts and principal trades. Even when the dealer is the counterparty (principal), it must offer competitive pricing. The markup/markdown must be reasonable, and the client must not be getting a worse price than what is broadly available in the market."},
+{e:3,q:"A client submits a sell order on Tuesday for 1,000 shares through an OEO account. The IR enters the order, but the stock is in a trading halt. What must the IR do?",o:["Execute the trade anyway at the last available price since the client's order was properly received","Hold the order in queue, notify the client of the halt, and execute once trading resumes unless the client cancels — the IR cannot modify the order without the client's explicit instruction","Cancel the order automatically since halted securities cannot be held in queue under CIRO rules","Exercise judgment and convert the order to a limit order to protect the client"],a:1,ex:"For OEO accounts, the IR: (1) <strong>Holds the order in the queue</strong> pending the halt's lifting. (2) <strong>Notifies the client</strong> of the trading halt. (3) Cannot modify the order without client instruction. The client retains full authority over their order and can choose to cancel if the halt extends."},
+{e:3,q:"Under CIRO rules, a dealer that provides services to US clients must generally ensure that any client based in the US is dealt with under which principle?",o:["US clients must be served under Canadian regulatory standards only since the dealer is registered in Canada","The dealer must ensure compliance with applicable US securities laws when dealing with US clients — including Rule 15a-6 restrictions and appropriate registration","US clients are exempt from all dealer suitability obligations since they are foreign nationals","Dealer registration in any Canadian province automatically permits dealing with clients worldwide"],a:1,ex:"Canadian dealers dealing with US clients must comply with <strong>applicable US securities laws</strong>, including SEC Rule 15a-6. Generally, Canadian dealers cannot solicit US retail clients without US registration. Limited exemptions exist for dealing with major US institutional investors through chaperoned arrangements."},
+{e:3,q:"What is the purpose of maintaining a 'supervisor's review' of an RR's trades and accounts?",o:["To micromanage every decision the RR makes and override recommendations when the supervisor disagrees","To detect unusual patterns, potential rule violations, and conflicts — and to provide mentoring. Supervisors bear regulatory responsibility for the conduct of those they supervise","To maximize the dealer's revenue by ensuring the highest-fee products are recommended","Supervisory review is optional and only conducted when a client complaint is received"],a:1,ex:"<strong>Supervisory review</strong> serves multiple purposes: detecting unusual trading patterns, potential violations (churning, unsuitable recommendations), conflicts of interest, and errors. Supervisors have <strong>regulatory responsibility</strong> for the conduct of those they supervise — a supervisor who fails to detect obvious violations faces personal regulatory consequences."},
+{e:3,q:"An RR receives a verbal order over the phone from a client. The client says 'buy 200 TD shares at market.' What practice is required before submitting?",o:["Submit the order immediately since verbal orders do not require confirmation","Read back all order details to the client before entering — quantity, security, order type, and account — to confirm accuracy. Document the conversation","Ask the client to email the order within 24 hours to create a paper trail before execution","Require the client to call back on a recorded line since verbal orders must be audio-recorded to be valid"],a:1,ex:"For verbal orders: the RR must <strong>read back all key details</strong> to the client before submitting — security name, quantity, order type (market/limit), side (buy/sell), and account designation. This prevents entry errors and creates a documented process. Many dealers record phone lines; recording is strongly recommended for compliance."},
+{e:3,q:"What are 'passive' versus 'active' investment management approaches, and how does the distinction affect product recommendations?",o:["Passive management uses derivatives to hedge risk; active management avoids derivatives for conservative clients","Passive management replicates an index (lower cost, no attempt to beat the market); active management attempts to outperform through security selection (higher cost). The choice affects which products (index ETFs vs active mutual funds) are suitable given the client's cost sensitivity and return expectations","Passive management is only suitable for institutional clients; active management is the default for retail","Passive management guarantees returns that match the index; active management guarantees higher returns"],a:1,ex:"<strong>Passive</strong>: replicates an index, low MER (0.05–0.30% for ETFs), no active stock-picking. <strong>Active</strong>: attempts to outperform the benchmark through research and security selection, higher MER (1.5–2.5% for mutual funds). The KYP and suitability assessment must consider whether the higher cost of active management is justified given the client's investment objectives and the evidence that most active managers underperform after fees."},
+{e:3,q:"In a full-service dealer, what is the role of the 'carrying broker' vs the 'introducing broker'?",o:["Carrying brokers hold client assets; introducing brokers only introduce clients and receive referral fees — they do not execute trades","The carrying broker clears, settles, and holds assets; the introducing broker has the direct client relationship and sends orders to the carrying broker for execution. The carrying broker takes on the regulatory capital and settlement obligations","Introducing brokers are regulated by provincial regulators; carrying brokers are regulated by CIRO","The distinction only applies to institutional accounts — retail accounts are handled exclusively by full-service dealers"],a:1,ex:"<strong>Introducing broker (IB)</strong>: has the client relationship, conducts KYC/suitability, takes orders. <strong>Carrying broker (CB)</strong>: executes, clears, settles, and holds client assets. The CB assumes the capital and settlement obligations. This arrangement allows smaller IBs to offer full brokerage services without the infrastructure of a full clearing dealer."},
+
+// ─── ELEMENT 4 (6 questions) ───────────────────────────────────
+{e:4,q:"Under CIRO's IDPC Rules, what is the maximum timeframe to provide a substantive written response to a retail client complaint?",o:["30 calendar days from receipt of the complaint","90 calendar days from receipt of the complaint (60 days in Quebec effective July 2025)","5 business days from receipt of the complaint","180 days — the same period as the OBSI filing window"],a:1,ex:"Dealers must provide a <strong>substantive written response within 90 calendar days</strong> of receiving a retail client complaint. Exception: <strong>Quebec effective July 1, 2025</strong> — the deadline is 60 calendar days. An acknowledgment must still be sent within 5 business days of receiving the complaint."},
+{e:4,q:"An acknowledgment of a client complaint must be sent within what timeframe under CIRO rules?",o:["24 hours of receiving the complaint","5 business days of receiving the complaint","15 calendar days of receiving the complaint","30 calendar days — same as the substantive response deadline"],a:1,ex:"A written <strong>acknowledgment</strong> must be sent within <strong>5 business days</strong> of receiving the complaint. This is a separate, earlier obligation from the substantive response (90 days). The acknowledgment confirms receipt and typically provides an estimated timeline for the investigation."},
+{e:4,q:"What is the role of OBSI in the complaint handling process, and at what stage can a client access OBSI?",o:["OBSI reviews complaints simultaneously with the dealer — clients can access OBSI at any time","OBSI is accessed only after the client has received the dealer's final written response and remains unsatisfied — it is the external dispute resolution service for unresolved complaints","OBSI only handles complaints escalated by CIRO enforcement — clients cannot access it directly","OBSI is available only for complaints involving amounts exceeding $50,000"],a:1,ex:"OBSI is the <strong>external dispute resolution service of last resort</strong> — clients can only access it after receiving the dealer's final written response. The client must file within 180 days of the final response. OBSI is free, independent, and can recommend up to $350,000 in compensation. There is no minimum dollar threshold to access OBSI."},
+{e:4,q:"A dealer settles a client complaint by paying compensation from the firm's own funds. What condition is attached to this settlement under CIRO rules?",o:["No conditions — dealers can settle complaints informally at any time without restriction","The settlement must be processed through the firm's formal complaint management process with the dealer's prior written consent — RRs cannot enter settlement agreements with clients from personal funds without firm approval","The dealer must notify CIRO within 5 business days of any settlement exceeding $10,000","All settlements require OBSI review before payment can be made to the client"],a:1,ex:"<strong>Settlement agreements</strong> must go through the dealer's formal complaint management process. Approved persons cannot make settlements from personal funds or enter settlement agreements with clients without the <strong>dealer's prior written consent</strong>. This ensures proper documentation, regulatory reporting, and prevents concealment of misconduct."},
+{e:4,q:"What records must a dealer maintain regarding client complaints, and for how long?",o:["A summary log of all complaints filed with CIRO — dealers need not keep detailed records","Complete records of all complaints received, the investigation, the response, and any resolution — retained for 7 years","Only complaints that resulted in compensation payments — minor complaints need not be documented","Complaint records are kept until the client closes their account, regardless of when the complaint was filed"],a:1,ex:"Dealers must maintain <strong>complete records</strong> of: the complaint as received, the investigation conducted, the response provided, and any resolution reached. Records must be retained for <strong>7 years</strong>. CIRO can request and inspect these records during compliance examinations."},
+{e:4,q:"Under CIRO rules, which party has primary responsibility for ensuring client complaints are handled fairly and in accordance with regulatory requirements?",o:["The individual RR who is the subject of the complaint — they must personally manage the resolution","The dealer (investment dealer or mutual fund dealer) has primary responsibility — and must have written policies and procedures for complaint handling that comply with CIRO's IDPC Rules","OBSI takes primary responsibility since it is the designated complaint resolution authority","The provincial securities regulator takes primary responsibility since complaint handling is governed by provincial securities legislation"],a:1,ex:"The <strong>Investment Dealer</strong> bears primary responsibility for complaint handling under CIRO's IDPC Rules (specifically Rule 3700 on Dealer Complaint Handling). The firm must: have written policies and procedures, investigate complaints fairly, provide timely acknowledgments and substantive responses, and maintain complete records. Individual RRs have compliance obligations but the firm is ultimately responsible."},
+
+// ─── ELEMENT 5 (9 questions) ───────────────────────────────────
+{e:5,q:"The Bank of Canada's primary tool for implementing monetary policy is:",o:["Setting the overnight lending rate, which anchors short-term interest rates throughout the Canadian financial system","Printing money and injecting it directly into the banking system through quantitative easing","Adjusting the prime rate charged by chartered banks to their best customers","Setting the minimum capital ratio that all federally regulated financial institutions must maintain"],a:0,ex:"The Bank of Canada uses the <strong>overnight rate</strong> as its primary policy tool — changes to this rate ripple through the entire Canadian interest rate structure. The prime rate (set by banks) typically follows changes in the overnight rate. QE (quantitative easing) is a supplementary tool used in extreme circumstances."},
+{e:5,q:"The Phillips Curve describes the relationship between:",o:["Interest rates and bond prices — when rates rise, bond prices fall","Unemployment and inflation — a trade-off where lower unemployment historically corresponds with higher inflation","Corporate earnings growth and equity market returns","GDP growth and fiscal deficit as a percentage of national income"],a:1,ex:"The <strong>Phillips Curve</strong> illustrates the historical inverse relationship between unemployment and inflation — as unemployment falls (labour market tightens), wages rise, consumers spend more, and inflation rises. Central banks use this relationship to calibrate monetary policy, though the relationship has been less predictable in recent decades."},
+{e:5,q:"In the context of business cycle analysis, which sector typically OUTPERFORMS during the LATE cycle (slowing growth, rising inflation)?",o:["Technology and consumer discretionary — benefiting from strong consumer spending","Energy and materials — commodity prices tend to peak as production capacity is strained during late expansion","Utilities and consumer staples — defensive sectors that hold value as growth slows","Healthcare and financials — both benefit from the combination of slowing growth and high rates"],a:1,ex:"During the <strong>late cycle</strong> (expansion slowing, inflation peaking): <strong>Energy and materials</strong> tend to outperform because commodity prices peak as demand remains strong but growth is starting to cool. Cyclical sectors already reflect high expectations; defensive sectors haven't yet benefited from the recessionary rotation."},
+{e:5,q:"Price-to-Earnings (P/E) ratio is calculated as:",o:["Annual earnings per share divided by the current share price","Current share price divided by annual earnings per share (EPS)","Market capitalization divided by total annual revenue","Annual dividends per share divided by the current share price (dividend yield)"],a:1,ex:"<strong>P/E = Share Price ÷ Earnings Per Share (EPS)</strong>. A P/E of 20× means investors are paying $20 for every $1 of annual earnings. Higher P/E implies higher growth expectations or overvaluation relative to earnings. The P/E ratio is the most widely used equity valuation metric."},
+{e:5,q:"An analyst uses Discounted Cash Flow (DCF) analysis to value a company. The key inputs include:",o:["Historical price performance, trading volume, and moving average crossovers","Projected future free cash flows and a discount rate that reflects the cost of capital and risk of those cash flows","Current book value of assets minus total liabilities divided by shares outstanding","Dividend history and the payout ratio compared to industry peers"],a:1,ex:"<strong>DCF valuation</strong> requires: (1) <strong>Projected future free cash flows</strong> (revenues minus operating costs, taxes, and capital expenditure). (2) A <strong>discount rate</strong> (typically WACC — Weighted Average Cost of Capital) reflecting the time value of money and risk. The sum of present values of all future cash flows equals the intrinsic value of the business."},
+{e:5,q:"A company's current ratio is 0.8. What does this indicate about the company's financial health?",o:["The company is highly profitable with a return on equity exceeding 80%","The company has more current liabilities than current assets — indicating potential short-term liquidity risk","The company's debt-to-equity ratio is 0.8:1, suggesting moderate leverage","The company's price is 80% of its book value, suggesting it may be undervalued"],a:1,ex:"<strong>Current Ratio = Current Assets ÷ Current Liabilities</strong>. A ratio below 1.0 (like 0.8) means the company has <strong>more current liabilities than current assets</strong> — it may struggle to meet short-term obligations without additional financing. A ratio above 1.0 (typically 1.5–2.0) is considered healthy for most industries."},
+{e:5,q:"What does an 'inverted yield curve' (short-term rates above long-term rates) typically signal?",o:["Strong economic growth expectations — investors are demanding higher short-term returns during expansion","A potential recession — investors expect interest rates to fall in the future as the economy slows, and accept lower long-term yields as a safe haven","Deflationary pressures only — the inverted yield curve has no reliable relationship with growth","Currency depreciation — foreign investors are withdrawing from long-term Canadian bonds"],a:1,ex:"An <strong>inverted yield curve</strong> has historically been one of the most reliable leading indicators of recession. When short-term rates are higher than long-term rates, it signals that: investors expect rates to fall in the future (economic slowdown), and demand for safe long-term bonds is high. An inversion has preceded every US and Canadian recession in the past 50 years."},
+{e:5,q:"Porter's Five Forces framework is used in equity analysis to:",o:["Calculate the five key financial ratios needed to assess a company's intrinsic value","Analyze the competitive dynamics of an industry — assessing supplier power, buyer power, threat of new entrants, substitutes, and competitive rivalry","Identify the five stages of the business cycle that affect sector rotation decisions","Measure a company's performance across five dimensions: growth, profitability, efficiency, leverage, and liquidity"],a:1,ex:"<strong>Porter's Five Forces</strong> analyzes industry competitive structure: (1) Threat of new entrants. (2) Bargaining power of suppliers. (3) Bargaining power of buyers. (4) Threat of substitute products. (5) Competitive rivalry. A company in an industry with favorable forces (high barriers to entry, weak buyers, weak suppliers) can sustain higher margins and returns."},
+{e:5,q:"An RR is analyzing a company that has announced a significant earnings miss. Under NI 51-102 continuous disclosure requirements, what should the company have done?",o:["Filed an annual report with the earnings miss details within 90 days of fiscal year-end","Filed a Material Change Report within 10 days of the event becoming known — a significant earnings miss constitutes a material change requiring prompt disclosure","Issued a press release no more than 2 years after the event became known to management","Nothing — earnings announcements are voluntary disclosures not covered by regulatory requirements"],a:1,ex:"Under <strong>NI 51-102</strong>, a public company must file a <strong>Material Change Report</strong> promptly — within 10 days — when a material change occurs. A significant earnings miss that would reasonably be expected to have a significant effect on the market price of securities qualifies as a material change requiring immediate public disclosure."},
+
+// ─── ELEMENT 6 (13 questions) ───────────────────────────────────
+{e:6,q:"UMIR Rule 5.1 (best execution) requires dealers to:",o:["Always execute client orders on the TSX before routing to any other marketplace","Diligently pursue execution of each client order on the most advantageous terms reasonably available — including price, speed, certainty, market impact, and total cost","Execute orders only during peak liquidity hours to minimize spread costs","Obtain pre-trade approval from compliance before executing any order above $50,000"],a:1,ex:"UMIR 5.1 requires dealers to <strong>'diligently pursue execution on the most advantageous terms reasonably available.'</strong> Five dimensions: price, speed, certainty of execution, market impact, and total transaction cost. This applies to ALL client accounts including OEO accounts."},
+{e:6,q:"A trader enters a series of orders to create artificial buy-side interest in a stock, then sells into the artificially elevated price, then cancels the remaining buy orders. Which UMIR violation is this?",o:["Front running (UMIR 4.1) — trading ahead of a known client order","Spoofing/layering (UMIR 2.1) — creating a false appearance of trading activity or artificial price through orders entered without genuine intent to trade","A best execution violation (UMIR 5.1) — the trader failed to obtain the best price for the sell orders","A DEA violation (UMIR 7.13) — the orders were entered through unauthorized electronic access"],a:1,ex:"This describes <strong>spoofing and layering (UMIR 2.1)</strong> — placing orders without genuine intent to execute in order to create a false appearance of supply/demand, then trading against the artificial price movement and cancelling the original orders. This is market manipulation, a serious violation under both UMIR and the Criminal Code."},
+{e:6,q:"What happens to an order's time priority when a client changes the order price on an existing limit order?",o:["Time priority is retained since only the quantity changed, not the direction of the order","Time priority is lost — changing the price is treated as a new order, which goes to the back of the queue at the new price level","Time priority is retained if the price change is within 5% of the original price","Time priority is maintained for 10 minutes after the price change before resetting"],a:1,ex:"Changing an order's <strong>price results in loss of time priority</strong> — the order is treated as a new submission and goes to the back of the queue. <strong>Reducing quantity retains time priority</strong> — the order keeps its place. Increasing quantity loses time priority. This rule encourages price stability by not rewarding constant order modification."},
+{e:6,q:"What was the key amendment to UMIR 3.3 that took effect in November 2024?",o:["Adding a new prohibition on payment for order flow from intermediaries","Adding a positive requirement that dealers have a reasonable expectation to settle any short sale before entering the order — targeting naked short selling","Reducing the settlement period for short sales from T+2 to T+1","Adding mandatory pre-borrow requirements for all short sales above 10,000 shares"],a:1,ex:"The November 2024 UMIR 3.3 amendment added a <strong>new positive requirement</strong>: dealers must have a <strong>reasonable expectation to settle</strong> any short sale on settlement date before entering the order. This closes the gap that allowed naked short selling — where securities were sold short without locating the shares for borrowing."},
+{e:6,q:"Under the 2025 evolved gatekeeping standard (IDPC Rule 1400), what is the key shift from prior practice?",o:["Gatekeeping obligations have been reduced — dealers now only need to respond to confirmed violations","The standard has shifted from reactive (respond to confirmed violations) to proactive — registrants must actively investigate and document red flags even absent confirmed proof of a violation","Gatekeeping obligations now only apply to institutional accounts — retail accounts are supervised separately","CIRO has transferred all gatekeeping responsibilities to provincial securities regulators"],a:1,ex:"Recent CIRO enforcement (2024–2025) has established a <strong>proactive gatekeeping standard</strong> under IDPC Rule 1400. The 'I had no confirmed proof' defence is no longer adequate. Supervisors must recognize red flags, actively investigate them, and document findings — even when no definitive rule breach has yet been confirmed."},
+{e:6,q:"A client's margin account has securities worth $90,000 with a $50,000 margin loan. The minimum equity requirement is 30%. Is a margin call triggered?",o:["Yes — because the equity ($40,000) exceeds the minimum, causing an imbalance","No — equity of $40,000 is 44.4% of $90,000 total position, which exceeds the 30% minimum","Yes — the margin loan of $50,000 exceeds the 30% threshold based on the original purchase price","Yes — any margin loan above $40,000 automatically triggers a margin call under CIRO rules"],a:1,ex:"Equity = $90,000 − $50,000 = $40,000. Equity % = $40,000/$90,000 = 44.4%. Minimum = 30% × $90,000 = $27,000. Since $40,000 > $27,000, <strong>no margin call is triggered</strong>. A margin call would occur if equity fell below $27,000 (i.e., if securities fell below approximately $71,400)."},
+{e:6,q:"What document must be signed before a client can begin trading options or futures?",o:["The standard New Account Application Form — no additional documentation is required for derivatives","A specialized Derivatives Account Application, Derivatives Trading Agreement, and Derivatives Risk Disclosure Statement — separate from the standard account agreement","Only the Derivatives Risk Disclosure Statement — the standard agreement covers trading authority","A CIRO-issued derivatives license form signed by both the client and their provincial regulator"],a:1,ex:"Before any derivative trading, clients must complete: (1) <strong>Derivatives Account Application</strong> (KYC specific to derivatives knowledge). (2) <strong>Derivatives Trading Agreement</strong> (governs the relationship). (3) <strong>Derivatives Risk Disclosure Statement</strong> (acknowledges unique derivative risks). (4) <strong>Margin Agreement Form</strong> (for margin-based derivatives). All must be completed before the first order is accepted."},
+{e:6,q:"Under UMIR, which of the following activities is explicitly prohibited as payment for order flow?",o:["Receiving commission income from clients for executing their orders on exchanges","Receiving payments from marketplaces or intermediaries for directing client order flow to them — prohibited under UMIR 7.5","Charging clients higher commissions for orders on less liquid securities","Receiving annual fees from fund companies for distributing their products through the dealer's network"],a:1,ex:"<strong>Payment for order flow (PFOF) is prohibited under UMIR 7.5</strong>. PFOF occurs when a dealer receives payments from a marketplace or intermediary for directing client orders to them — creating an incentive to route based on who pays, rather than based on best execution. This directly undermines the best execution obligation."},
+{e:6,q:"An advisory account client changes their limit order from 500 shares to 300 shares at the same price. What happens to the order's time priority?",o:["Time priority is lost — any modification to an order results in losing queue position","Time priority is retained — reducing quantity is the one modification that preserves the order's position in the queue","Time priority is split — the 300-share order retains priority for 300 shares, the 200 lost go to end of queue","Time priority is lost for 30 minutes then automatically restored by the exchange"],a:1,ex:"<strong>Reducing quantity retains time priority</strong> — this is the one order modification that does not move the order to the back of the queue. The rationale: a seller agreeing to sell fewer shares is still providing the same service to the market and should not be penalized. Increasing quantity or changing price both result in loss of time priority."},
+{e:6,q:"What is the UMIR 10.16 gatekeeper reporting deadline for a confirmed internal violation (other than DEA)?",o:["Immediately — upon discovering any potential violation","Within 5 business days of completing the investigation","By the 15th day of the month following the month in which the investigation findings are made","Within 30 calendar days of the violation occurring"],a:2,ex:"Under <strong>UMIR 10.16</strong>: when an internal investigation finds a UMIR violation has occurred, a written report must be filed with CIRO by the <strong>15th day of the month following the month findings are made</strong>. Exception: DEA violations must be reported immediately (forthwith). All investigation records are retained for 7 years."},
+{e:6,q:"What is the difference between the 'grey list' (watch list) and the 'restricted list' in the context of information barriers?",o:["Grey list means trading is prohibited; restricted list means enhanced scrutiny is required","Grey list = possible MNPI — trading permitted but under enhanced scrutiny; restricted list = definite MNPI — trading is prohibited for employees and proprietary accounts","Both lists prohibit trading — the restricted list applies more severe penalties for violations","Grey list applies to clients; restricted list applies only to the firm's proprietary accounts"],a:1,ex:"<strong>Grey/watch list</strong>: firm MAY have MNPI — trading permitted but every trade in that security is scrutinized by compliance. <strong>Restricted list</strong>: firm DEFINITELY has MNPI (e.g., actively advising on a deal involving the issuer) — trading is PROHIBITED for employees and proprietary accounts. Employees are told about the restricted list; the grey list is generally kept confidential."},
+{e:6,q:"A client places a buy stop order at $55 on a stock currently trading at $50. The stock gaps from $49 to $62 overnight. At what price does the buy stop order execute?",o:["Exactly at $55 — the stop price guarantees execution at the specified price","At approximately $62 — the opening market price, since the stock gapped past the stop price without trading at $55","The order is cancelled since the stop price was never reached through normal trading","At $50 — the last price before the gap occurred"],a:1,ex:"A stop order becomes a <strong>market order</strong> when triggered. Since the stock gapped from $49 to $62 without ever trading at $55, the stop is triggered at the opening and the order executes as a market order at approximately <strong>$62</strong> — the best available price. This 'gap risk' is why CIRO requires OEO dealers to warn clients about stop order execution risks."},
+{e:6,q:"Under CIRO rules, how frequently must derivative account holders receive account statements?",o:["Quarterly — same as standard investment accounts","Monthly — more frequently than standard accounts due to the daily mark-to-market nature of many derivatives","Semi-annually — combined with the annual performance report","Only when open positions exist — no statements required for inactive derivative accounts"],a:1,ex:"Derivative accounts must receive <strong>monthly account statements</strong> — more frequent than the minimum for regular investment accounts. This reflects the higher risk, leverage, and daily settlement dynamics of derivatives. Statements must show: all open positions with market value, unrealized P&L, margin requirements vs current equity, and daily settlement history."},
+
+// ─── ELEMENT 7 (21 questions) ───────────────────────────────────
+{e:7,q:"A bond has a 5% coupon rate and is trading at $920 (face value $1,000). What can be said about its yield to maturity (YTM)?",o:["YTM is exactly 5% since the coupon rate determines the yield","YTM is less than 5% since the bond is trading at a discount to par","YTM is greater than 5% — the bond is below par, so the investor earns the coupon plus capital appreciation to maturity","YTM cannot be determined without knowing the exact maturity date and market interest rates"],a:2,ex:"When a bond trades <strong>below par (discount)</strong>, the YTM is <strong>greater than the coupon rate</strong>. The investor earns the coupon ($50/year) PLUS gains as the bond approaches par ($1,000) at maturity from the $920 purchase price. The extra return vs the coupon is reflected in a higher YTM. Inverse: premium bond → YTM < coupon."},
+{e:7,q:"Cumulative preferred shares differ from non-cumulative preferred shares in that:",o:["Cumulative preferred shares can be converted to common shares; non-cumulative cannot","Skipped dividends on cumulative preferred shares accumulate as arrears that must be paid before any common dividends can be declared; non-cumulative dividends are simply forfeited if not paid","Cumulative preferred shares have voting rights; non-cumulative preferred shares do not","Cumulative preferred shares have a fixed maturity date; non-cumulative preferred shares are perpetual"],a:1,ex:"<strong>Cumulative preferred shares</strong>: any unpaid dividends accumulate as 'dividends in arrears.' These arrears must be fully paid to preferred shareholders before the company can pay any dividends to common shareholders. <strong>Non-cumulative</strong>: missed dividends are permanently lost — the company has no obligation to make up skipped payments."},
+{e:7,q:"An ETF's market price is $48.20 while its INAV (Indicative NAV) is $47.60. What is the term for this situation, and how is it corrected?",o:["The ETF is at a discount to NAV — designated brokers redeem units to eliminate the gap","The ETF is at a premium to NAV — designated brokers create new units by delivering the underlying basket at NAV ($47.60), profiting from the $0.60 spread until it narrows","The ETF is mispriced and the exchange must halt trading until NAV and market price align","The ETF is at a premium, but this cannot be corrected since ETFs trade continuously at market prices"],a:1,ex:"Market price ($48.20) > INAV ($47.60) = ETF trades at a <strong>premium</strong>. Designated Brokers (DBs) exploit this: they buy the underlying basket at NAV and deliver it to create new ETF units worth $48.20 — capturing the $0.60 spread. This creation activity increases supply of ETF units, pushing the market price down toward NAV. This <strong>creation/redemption mechanism</strong> keeps ETF prices close to NAV."},
+{e:7,q:"What was the DSC (Deferred Sales Charge) prohibition implemented by the CSA, and when did it take effect?",o:["DSC fees were capped at 3% — they were not fully banned","New DSC mutual fund purchases by retail investors were prohibited effective June 2022, preventing funds from locking investors with declining redemption penalties","DSC fees were replaced with front-end loads — the redemption schedule was eliminated but purchase fees were retained","DSC only applies to wrap funds — individual mutual fund series were never subject to DSC restrictions"],a:1,ex:"The CSA prohibited <strong>new DSC mutual fund purchases by retail investors effective June 2022</strong>. DSC funds charged declining redemption fees over 5–7 years, trapping investors in unsuitable funds because of redemption penalties. This investor protection measure eliminated the incentive for advisors to recommend funds with DSC structures to earn upfront commissions."},
+{e:7,q:"The Fund Facts document must be delivered to a mutual fund investor:",o:["Within 2 business days after the dealer accepts the purchase order — same timing as ETF Facts","Before or at the time of the sale — the investor must receive Fund Facts before the purchase is accepted","Within 30 days of the first purchase, as part of the welcome package","Only upon the investor's request — Fund Facts delivery is optional for investors with existing accounts"],a:1,ex:"<strong>Fund Facts must be delivered before or at the point of sale</strong> — the investor must receive it before the purchase order is accepted. If not delivered pre-sale, the investor has a right of withdrawal within 2 business days of later receiving the document. This differs from <strong>ETF Facts</strong> which is delivered <strong>within 2 business days AFTER</strong> the purchase order is accepted."},
+{e:7,q:"What is the key difference between 'price return' and 'total return' for a market index?",o:["Price return includes dividends reinvested; total return only captures capital gains from price appreciation","Price return only captures capital price changes; total return includes price changes PLUS dividends or income reinvested","Total return adjusts for inflation; price return is the nominal unadjusted measure","They are identical — the distinction is terminology only and has no practical significance"],a:1,ex:"<strong>Price return index</strong>: tracks only price changes — dividends excluded. <strong>Total return index</strong>: includes both price changes AND assumes all dividends/income are reinvested. For dividend-heavy markets like Canada (banks, utilities), total return can be 2–3% higher annually than price return. Total return is the correct benchmark for evaluating investment managers."},
+{e:7,q:"Modified duration of 7.5 means that if interest rates rise by 1%, the bond's price will approximately:",o:["Rise by 7.5%","Fall by 7.5%","Rise by 0.75%","Fall by $75 per $1,000 face value regardless of current market price"],a:1,ex:"Modified duration measures price sensitivity to yield changes: <strong>% price change ≈ −Modified Duration × % change in yield</strong>. A 1% yield rise × 7.5 duration = approximately <strong>7.5% price decline</strong>. Duration also tells us: longer maturity = higher duration = more price sensitivity. STRIPs have the highest duration (all cash flow at maturity)."},
+{e:7,q:"The Total Cost Reporting (TCR) Enhancement effective January 1, 2026 requires dealers to:",o:["Disclose only the MER on mutual funds held in client accounts — no change from existing CRM2 requirements","Disclose ALL investment fund costs in dollar amounts in client account reports, including costs embedded in fund MERs not directly paid by the client, applying to mutual funds, ETFs, and other investment funds","Report total portfolio costs only on accounts with more than $100,000 in investment funds","Eliminate all trailer commissions from mutual funds — trailers are being replaced by direct advisor fees"],a:1,ex:"The <strong>TCR Enhancement (effective January 1, 2026)</strong> requires dealers to disclose ALL fund costs in dollar amounts — including MERs embedded in mutual funds and ETFs that are not directly paid by the client. This is the most significant cost disclosure change since CRM2 in 2016, making the full cost of fund ownership transparent."},
+{e:7,q:"What is the key difference between a closed-end fund and an open-ended mutual fund?",o:["Closed-end funds invest only in fixed income; open-ended funds invest in equities","Closed-end funds have a fixed number of units trading on an exchange at market prices (which may differ from NAV); open-ended mutual funds continuously issue and redeem units at calculated NAV","Closed-end funds charge no management fees; open-ended funds charge MERs","Closed-end funds are only available to institutional investors; open-ended funds are available to all retail clients"],a:1,ex:"<strong>Closed-end funds</strong>: fixed number of units issued at IPO, then trade on stock exchange at market prices which can be at premium or discount to NAV. <strong>Open-ended mutual funds</strong>: continuously issue new units to buyers and redeem units from sellers at the daily calculated NAV. The closed-end fund's market price may persistently differ from its underlying value."},
+{e:7,q:"Which of the following best describes a STRIP bond?",o:["A bond with variable (floating) interest payments that resets quarterly with the prime rate","A zero-coupon bond created by separating coupon payments from the principal of a regular bond — sold at a deep discount, with return realized entirely at maturity","A bond with special tax treatment that strips out interest income for tax purposes","A short-term government bond with a maturity of 30 days or less used for cash management"],a:1,ex:"<strong>STRIPs (Separate Trading of Registered Interest and Principal of Securities)</strong> are zero-coupon bonds created by separating each cash flow from a regular bond. Sold at deep discount; the difference between purchase price and face value is the entire return, realized at maturity. STRIPs have the highest duration of any bond — maximally sensitive to interest rate changes."},
+{e:7,q:"The S&P/TSX Composite Index is a market-cap weighted index. What does this mean for the index's composition?",o:["Each security has equal weight regardless of company size — all 240+ companies contribute equally","Larger companies (by market capitalization) have proportionally greater weight — a $100B company has 10× the influence of a $10B company","The index weights securities by their share price — higher-priced stocks have greater influence","Each sector is equally weighted — the index is rebalanced quarterly to maintain equal sector exposure"],a:1,ex:"<strong>Market-cap weighted</strong>: each component's weight = its market cap ÷ total market cap of all components. Large companies dominate performance. For the S&P/TSX Composite, the largest Canadian banks and resource companies have outsized influence. This is the construction method of virtually all major equity indices (S&P/TSX, S&P 500, MSCI World)."},
+{e:7,q:"A hedge fund charges a '2 and 20' fee structure. What does this mean?",o:["2% minimum guaranteed return and 20% of all profits above that minimum","2% annual management fee on assets under management plus a 20% performance fee on all profits generated","2 years of lock-up period followed by a 20% redemption fee on early withdrawals","2% maximum annual fees with a 20% performance cap to protect investors"],a:1,ex:"<strong>'2 and 20'</strong>: a <strong>2% annual management fee</strong> (charged on total AUM regardless of performance) plus a <strong>20% performance fee</strong> on all profits generated. A 'high-water mark' typically requires the fund to recover prior losses before charging performance fees again. This fee structure aligns manager incentives but creates significant costs compared to passive products."},
+{e:7,q:"Under CSA Staff Notice 81-334 (ESG-Related Investment Fund Disclosure, revised 2024), what is the primary concern addressed?",o:["Requiring all investment funds to achieve a minimum ESG rating before being sold to retail investors","Preventing greenwashing — requiring that ESG fund names, disclosures, and marketing accurately reflect the fund's actual investment approach, and that 'ESG' labels cannot be applied where ESG is only a secondary consideration","Prohibiting negative screening strategies since they reduce diversification for retail investors","Mandating that all ETFs include an ESG sleeve as a condition of approval"],a:1,ex:"CSA Staff Notice 81-334 (revised 2024) directly addresses <strong>greenwashing risk</strong>. ESG fund names and marketing must accurately reflect the actual investment methodology. Funds cannot call themselves 'ESG', 'sustainable', or 'responsible' if ESG factors are only peripheral to the investment process. The advisor's KYP obligation requires understanding the fund's actual ESG methodology."},
+{e:7,q:"Canada's first Bitcoin ETF was approved and launched in which month and year?",o:["January 2018 — Canada was the second country after the US to approve a Bitcoin ETF","February 2021 — Canada was the first country globally to approve a spot Bitcoin ETF","January 2023 — coinciding with the formation of CIRO and expanded crypto regulatory framework","March 2024 — following the SEC's approval of spot Bitcoin ETFs in the United States"],a:1,ex:"Canada approved the world's <strong>first spot Bitcoin ETF in February 2021</strong> — the Purpose Bitcoin ETF. This made Canada a global pioneer in crypto investment products, well ahead of the US (which approved spot Bitcoin ETFs in January 2024). Canadian-listed crypto ETFs must comply with modified NI 81-102 requirements."},
+{e:7,q:"When an ETF Facts document must be delivered to a retail investor who purchases ETF units:",o:["Before the investor places the purchase order — same pre-sale requirement as mutual fund Fund Facts","Within 2 business days after the dealer accepts the investor's purchase order","At the annual account review — not required at point of sale for ETFs","Only if the investor specifically requests the document after their purchase"],a:1,ex:"<strong>ETF Facts must be delivered within 2 business days AFTER the dealer accepts the purchase order</strong>. This is a post-sale delivery requirement — unlike Fund Facts for mutual funds which must be delivered PRE-sale. The different timing reflects the practical difficulty of providing pre-trade disclosure for securities trading continuously on an exchange."},
+{e:7,q:"An investor holds a bond with a 10-year maturity and a 6% coupon, purchased at par. Market interest rates rise to 8%. What happens to the bond's price and modified duration relative to a bond with the same maturity but a 3% coupon?",o:["Both bonds fall in price equally since they have the same maturity","The 6% coupon bond falls less in price and has lower duration than the 3% coupon bond because its higher interim cash flows (coupons) reduce the weighted average time to receive cash flows","The 3% coupon bond falls less in price because its lower coupon means less cash flow is exposed to rate risk","Both bonds have identical duration since duration depends only on maturity, not coupon rate"],a:1,ex:"Higher coupon bonds have <strong>lower duration</strong> than lower coupon bonds with the same maturity. The 6% bond delivers more cash flows sooner (higher interim coupons), reducing the weighted average time to receive cash = lower duration. Lower duration = less price sensitivity to rate changes. The 3% bond has more of its return dependent on the distant par repayment = higher duration = larger price decline when rates rise."},
+{e:7,q:"What is the primary difference between a Real Estate Investment Trust (REIT) and direct real estate ownership?",o:["REITs provide guaranteed returns; direct real estate carries uncertain returns","REITs pool capital to own income-producing properties, trading on stock exchanges for liquidity and distributing 90%+ of taxable income monthly — direct ownership provides tax advantages but no liquidity","REITs only invest in commercial properties; direct ownership can include residential investments","REITs are subject to higher taxes than direct property ownership in all circumstances"],a:1,ex:"<strong>REITs</strong> offer: exchange liquidity (buy/sell anytime), diversification across multiple properties, professional management, and high monthly income distributions (90%+ of taxable income). <strong>Direct real estate</strong> offers: control, potential leverage through mortgage, possible primary residence exemptions, but no liquidity, concentration risk, and management burden."},
+{e:7,q:"Under the CSA's 5-point risk classification methodology for mutual funds, what is the basis for assigning a risk rating?",o:["The fund manager's subjective assessment of portfolio risk based on investment strategy","The 10-year standard deviation of monthly returns — funds are rated Low, Low to Medium, Medium, Medium to High, or High based on this measure","The fund's maximum drawdown over its history compared to the S&P/TSX Composite benchmark","The ratio of equity to fixed income holdings in the fund's portfolio"],a:1,ex:"The CSA-mandated <strong>standard risk classification methodology</strong> uses the <strong>10-year standard deviation of monthly returns</strong> to assign one of five risk ratings: Low, Low to Medium, Medium, Medium to High, or High. New funds use a reference index if lacking 10-year history. Funds must reassess annually. This ensures all funds use consistent, objective risk terminology."},
+{e:7,q:"A mutual fund has a net asset value (NAV) of $28.40 per unit. An investor submits a purchase order at 2:30 PM on a Tuesday. At what price do they purchase the units?",o:["At $28.40 — the NAV current at the time the order was placed","At Tuesday's end-of-day NAV, which will only be known after market close — the investor does not know the exact price when placing the order","At the opening NAV from Tuesday morning since morning orders get the day's opening price","At Wednesday's opening NAV since 2:30 PM is after the typical cutoff for same-day processing"],a:1,ex:"Mutual funds use <strong>forward pricing</strong> — all orders accepted before the fund's daily cutoff (typically 3–4 PM ET) execute at that <strong>same day's end-of-day NAV</strong>. The investor submits at 2:30 PM and receives Tuesday's closing NAV — which they don't know at the time of ordering. This prevents market-timing arbitrage. Settlement is T+2."},
+{e:7,q:"What term describes a preferred share that can be called (redeemed) by the issuing company at a preset price before the maturity date?",o:["Retractable preferred share — the shareholder can force redemption at a specified price","Callable preferred share — the issuer retains the right to redeem the shares at a preset call price, typically at a premium to par","Convertible preferred share — the shares can be converted into common shares at the holder's election","Floating-rate preferred share — the dividend resets periodically with interest rate changes"],a:1,ex:"A <strong>callable preferred share</strong> gives the issuer the right (but not the obligation) to redeem the shares at a preset call price. This is a risk to investors because: (1) call is typically exercised when rates fall (forcing reinvestment at lower rates). (2) the call price may be below current market price. Conversely, a <strong>retractable preferred</strong> gives the <strong>shareholder</strong> the right to force redemption."},
+{e:7,q:"A bond trading at par is most accurately described as having:",o:["A yield to maturity (YTM) equal to its coupon rate","An interest rate risk of zero because the price is at par","A capital gain potential of zero if held to maturity","A duration equal to half its stated maturity date"],a:0,ex:"When a bond trades exactly at par ($1,000 for a $1,000 face value bond), its YTM equals its coupon rate. For example, a 5% coupon bond trading at par has a YTM of 5%. Capital appreciation/depreciation will occur if rates change after purchase. Duration will be less than maturity (due to interim coupons). The bond is at par because the market yield exceeds expectations."},
+
+// ─── ELEMENT 8 (6 questions) ───────────────────────────────────
+{e:8,q:"An investor buys 1 call option on BCE with a $45 strike, paying $2.50 premium per share. At expiry, BCE trades at $52. What is the investor's profit per share?",o:["$7.00 per share ($52 − $45 strike)","$4.50 per share ($52 − $45 strike − $2.50 premium)","$2.50 per share equal to the premium paid back","$9.50 per share ($52 market price − $2.50 premium paid)"],a:1,ex:"Long call profit = stock price − strike − premium = $52 − $45 − $2.50 = <strong>$4.50 per share</strong>. The breakeven was $45 + $2.50 = $47.50. Since $52 > $47.50, the trade is profitable. Total profit on 1 contract (100 shares) = $450 on a $250 investment — an 80% return on a 15.6% move in the underlying."},
+{e:8,q:"What is the maximum possible loss for an investor who buys a put option?",o:["Unlimited — because the stock can theoretically rise to infinity against the put position","The strike price minus the premium (if the stock falls to zero)","The premium paid for the put option — nothing more","The full market value of the underlying shares controlled by the contract"],a:2,ex:"<strong>Maximum loss for any long option (call or put) = the premium paid</strong>. If the put expires worthless (stock stays above the strike), the buyer simply loses the premium. They are never obligated to do anything further. The premium paid is the defined maximum downside — this is the defining advantage of buying options."},
+{e:8,q:"A 'covered call' strategy involves:",o:["Selling a call option while simultaneously shorting the underlying shares as a hedge","Owning the underlying shares and selling (writing) a call option against them to generate premium income","Buying both a call and a put at the same strike price to profit from large price moves","Selling a call option without owning the underlying — the most leveraged options strategy"],a:1,ex:"A <strong>covered call</strong> = own the underlying shares + sell (write) a call option against them. The 'covered' refers to the fact that if the call is exercised, the writer delivers existing shares — not having to buy in the market. Maximum profit = (strike − cost basis) + premium. The strategy generates income in flat or mildly rising markets but caps upside at the strike price."},
+{e:8,q:"What is the key difference between a futures contract and a forward contract?",o:["Futures are used only for commodities; forwards are used only for currencies and interest rates","Futures are standardized and exchange-traded with central clearing (no counterparty risk) and daily MTM; forwards are customized OTC agreements with counterparty risk and single settlement at maturity","Forwards require both parties to post initial margin daily; futures settle only at contract expiry","Futures allow either party to walk away before expiry; forwards are obligations that cannot be terminated early"],a:1,ex:"Key differences: <strong>Futures</strong>: standardized, exchange-traded, CDCC clears (no counterparty risk), daily mark-to-market settlement. <strong>Forwards</strong>: customized OTC, bilateral counterparty risk (no clearing house), single settlement at maturity. Both create obligations for both parties — but the mechanism and risk profile differ significantly."},
+{e:8,q:"What are the three prohibited derivative trading practices under CIRO's IDPC Rules?",o:["Front running, wash trading, and market manipulation — all governed by UMIR","Trading while under margin, trading beyond margin/credit limits, and cumulative losses exceeding risk limits","Naked call writing, naked put writing, and leveraged ETF use in conservative accounts","Short selling, exercising options early, and writing straddles in retail accounts"],a:1,ex:"Three prohibited derivative practices: (1) <strong>Trading while under margin</strong> — entering new positions when the account is below maintenance margin. (2) <strong>Trading beyond margin or credit limits</strong> — exceeding position size limits set in the derivatives trading agreement. (3) <strong>Cumulative losses exceeding risk limits</strong> — continuing to trade after losses hit the predefined threshold requiring a forced stop and review."},
+{e:8,q:"An investor believes a company will make a major announcement next week that will move the stock significantly — but doesn't know which direction. Which strategy is most appropriate?",o:["Buy a call option to profit from an expected upward move","Write a covered call to generate income from the expected volatility","Buy a straddle — purchase both a call and a put at the same strike and expiry, profiting from a large move in either direction","Buy a futures contract to take a fully leveraged directional position"],a:2,ex:"A <strong>long straddle</strong> (buy call + buy put at same strike, same expiry) profits when the underlying moves <strong>significantly in either direction</strong>. Total premium paid = the maximum loss. Upside breakeven = strike + total premium. Downside breakeven = strike − total premium. The strategy is used when expecting large volatility but uncertain direction — e.g., before earnings, central bank decisions, or major corporate events."},
+
+// ─── ELEMENT 9 (16 questions) ───────────────────────────────────
+{e:9,q:"Under CIRO's IDPC Rules, when a material conflict of interest cannot be managed in the client's best interest, what is the required action?",o:["Disclose the conflict in detail in the RDI and proceed with the transaction","Avoid the conflict entirely — the dealer or approved person must not participate in the conflicted activity","File a report with CIRO within 5 business days and await guidance before proceeding","Obtain written client consent acknowledging the conflict before proceeding with the transaction"],a:1,ex:"The CIRO COI hierarchy: (1) Identify. (2a) <strong>Avoid</strong> — if the conflict cannot be managed in the client's best interest, the activity must not proceed. (2b) Address — if manageable, implement controls. (3) Disclose. <strong>Disclosure alone is never sufficient</strong> when the conflict can be avoided or adequately controlled. Some conflicts are so fundamentally contrary to client interests that no disclosure or control is adequate."},
+{e:9,q:"What is the correct sequence for managing a material conflict of interest under CIRO rules?",o:["Disclose first, then address through controls, and only avoid as a last resort when disclosure is refused","Identify → then either avoid (if unmanageable) or address through controls (if manageable) → always disclose to the client","Report to CIRO first, then implement controls based on CIRO's guidance and timeline","Seek legal counsel, then disclose to clients, then decide on avoidance or controls"],a:1,ex:"The CIRO three-step process: (1) <strong>Identify</strong> all existing and reasonably foreseeable material conflicts. (2a) <strong>Avoid</strong> if the conflict cannot be managed in the client's best interest. (2b) <strong>Address</strong> through controls if it can be managed. (3) <strong>Disclose</strong> in all cases. The sequence matters — avoidance/address comes before disclosure, not after."},
+{e:9,q:"An approved person is explicitly prohibited from which personal financial dealing with a client under CIRO's IDPC Rules?",o:["Attending a dinner hosted by the client as a sign of professional relationship","Borrowing money from a client without the dealer's written approval and the client being a related person under the Income Tax Act","Sending the client a holiday greeting card with a personal message","Calling the client to discuss their portfolio outside regular business hours"],a:1,ex:"<strong>Borrowing from clients</strong> is explicitly prohibited under IDPC Rule 3111 except where: (1) the client is a related person under the Income Tax Act (immediate family), AND (2) the dealer has provided prior written approval. The prohibition exists because it creates dependency — the advisor may bias recommendations to maintain the relationship needed to repay the loan."},
+{e:9,q:"Before engaging in any outside business activity, an approved person must:",o:["Notify clients who might be affected by the new activity within 30 days of starting","Disclose the activity to the dealer and obtain the dealer's pre-approval before commencing — disclosure and pre-approval are both required under CIRO Rule 2554","Register the outside activity with the provincial securities regulator","Ensure the outside activity generates less income than their dealer compensation"],a:1,ex:"Under CIRO Rule 2554, approved persons must: (1) <strong>Disclose</strong> all outside activities to the dealer. (2) Obtain the dealer's <strong>pre-approval</strong> before commencing. The dealer assesses: client confusion risk, conflict of interest risk, whether effective controls can be established, and whether appropriate supervision is possible. Records must be maintained."},
+{e:9,q:"What is the 'newspaper test' in the context of ethical decision-making for registered persons?",o:["A requirement that all client communications be reviewed by a compliance editor before distribution","A practical ethical heuristic — would you be comfortable if your actions were reported on the front page of a national newspaper? If not, reconsider regardless of technical permissibility","A test applied by CIRO during examinations to assess whether a registered person's conduct met public standards","A measure of whether an advisor's recommendations align with what leading financial journalists currently recommend"],a:1,ex:"The <strong>newspaper test</strong> is a practical ethical framework: before acting, ask 'Would I be comfortable if this was front-page news?' This captures the principle that ethical conduct should withstand full public scrutiny. Advisors who act ethically never need to ask 'will I get caught?' — the test reflects the higher standard that ethics demands above and beyond mere rule compliance."},
+{e:9,q:"An RR is offered a position on the board of directors of a publicly traded company whose shares several of the RR's clients hold. What is the most critical concern the dealer must assess before approving this outside activity?",o:["Whether the board compensation exceeds the RR's dealer income","The likelihood that the RR will have access to material non-public information (MNPI) as a director, the conflict in advising clients on a stock where the RR has an insider relationship, and whether effective controls (e.g., restricting advice on this company) can adequately manage the conflict","Whether the company's industry sector overlaps with any of the dealer's underwriting activities","Whether the RR's time commitment to the board position will reduce their availability to clients"],a:1,ex:"Board membership in a public company creates: (1) <strong>MNPI access risk</strong> — directors regularly have non-public financial information. (2) <strong>Conflict risk</strong> — the RR has financial interests in the company while advising clients holding its shares. (3) <strong>Control question</strong> — can this be managed (e.g., restricted list for this company, RR recused from advice on it) or does it require denial of the outside activity?"},
+{e:9,q:"Under PIPEDA, when must an investment dealer report a data privacy breach to the Office of the Privacy Commissioner of Canada (OPC)?",o:["Only when confirmed financial losses to clients have resulted from the breach","When the breach creates a real risk of significant harm to affected individuals — including risk of identity theft, financial fraud, or reputational damage","Only when more than 500 client records are compromised in a single breach event","At the end of each calendar year as part of the annual privacy compliance summary report"],a:1,ex:"Under <strong>PIPEDA</strong>, breach reporting to the OPC and notification to affected individuals is triggered when the breach creates a <strong>'real risk of significant harm'</strong> — including identity theft, financial fraud, reputational damage, or physical safety risk. There is no minimum number of affected individuals. Even one person with high-risk exposure can trigger the reporting obligation."},
+{e:9,q:"What distinguishes the grey list (watch list) from the restricted list in the context of information barriers?",o:["Grey list prohibits trading; restricted list requires enhanced scrutiny but permits trading","Grey list = possible MNPI with enhanced scrutiny but trading permitted; restricted list = definite MNPI with trading prohibited for employees and proprietary accounts","Both lists prohibit trading — the difference is the severity of penalties for violations","Grey list applies to client accounts; restricted list applies only to proprietary trading"],a:1,ex:"<strong>Grey/Watch List</strong>: firm MAY have MNPI — trading permitted with enhanced compliance scrutiny. <strong>Restricted List</strong>: firm DEFINITELY has MNPI (e.g., actively advising on a deal involving the issuer) — trading is PROHIBITED for employees and proprietary accounts. Employees are told about restricted securities; the grey list is generally kept confidential from employees."},
+{e:9,q:"Ethics differs from rules in the investment industry because:",o:["Ethics is optional and aspirational; rules are mandatory and enforceable","Rules set the minimum enforceable standard; ethics demands going further — asking 'is this right for the client?' rather than 'is this technically permitted?' Ethics applies even in situations not explicitly covered by rules","Ethics applies only to senior executives; rules apply to all registered persons","Rules govern civil conduct; ethics govern criminal conduct in the securities industry"],a:1,ex:"<strong>Rules</strong>: minimum enforceable standard, clear consequences for violations. <strong>Ethics</strong>: broader principles applying even where no specific rule exists, demanding the registrant go beyond technical compliance to genuinely serve the client's best interest. The test is not 'can I get away with this?' but 'is this the right thing for my client?' The 'newspaper test' captures this principle."},
+{e:9,q:"The Client Focused Reforms (CFR) introduced a 'best interest' standard for recommendations. How does this differ from the previous 'suitability' standard?",o:["The best interest standard applies only to discretionary accounts; suitability still applies to advisory accounts","The best interest standard requires that advisors prioritize the client's interests, including when managing conflicts of interest — it is a higher standard than mere suitability, requiring active conflict management rather than just ensuring the investment is 'suitable'","The best interest standard only applies to products with MERs above 1% — low-cost products are exempt","There is no material difference — CFR simply renamed the existing suitability obligation"],a:1,ex:"CFR's <strong>best interest standard</strong> goes further than suitability: it requires advisors to <strong>prioritize client interests</strong> in all recommendations and actions. When a conflict exists, the advisor must resolve it in the client's favour — not just disclose it. CFR requires advisors to consider alternatives, including lower-cost options, and to ensure that recommendations genuinely serve the client's best interest, not merely clear a suitability threshold."},
+{e:9,q:"Under the 2025 CIRO Rule Consolidation Phase 4 proposals, which NEW restriction on personal financial dealings with clients is being proposed?",o:["A ban on approved persons holding more than 100 shares in any company whose securities they recommend","A restriction on approved persons accepting beneficiary status or a bequest from a client's estate, with an exception for immediate family members","A prohibition on approved persons attending any event funded by fund companies or issuers","A new requirement that all personal financial dealings be pre-approved by the provincial securities regulator"],a:1,ex:"Phase 4 (2025) proposes a new restriction on approved persons <strong>accepting beneficiary status from a client's estate</strong>, with an exception for immediate family members. This extends existing prohibitions (acting as executor, POA, trustee for non-family clients) to include beneficiary designations — recognizing that inheritance from a client creates an unmanageable conflict of interest."},
+{e:9,q:"A long-standing client of an RR names the RR as executor of her estate. The client is not an immediate family member. What should the RR do?",o:["Accept the role since the client's consent makes it permissible","Decline — acting as executor for a non-family client is prohibited under CIRO's IDPC Rules, and the RR should explain this and help the client find an appropriate independent executor","Accept and disclose the arrangement to the dealer immediately","Accept only if the dealer provides written approval — which dealers may grant for long-standing relationships"],a:1,ex:"<strong>Acting as executor for a non-family client is prohibited</strong> under IDPC Rule 3111 personal financial dealings. The prohibition exists because an executor has financial interests in the estate while still potentially advising the client — an unmanageable conflict. The RR must decline, explain the regulatory prohibition, and help the client identify an appropriate independent executor (lawyer, trust company)."},
+{e:9,q:"Which type of conflict of interest is 'structural' and must be disclosed in the RDI?",o:["An advisor personally holding shares in a company they are recommending to clients — a personal conflict","The dealer earning trailer commissions from mutual fund companies whose products it recommends to clients — a structural conflict built into the business model","An advisor being named as beneficiary in a client's will — a position of influence conflict","An advisor recommending a security immediately after reading a positive analyst report — a timing conflict"],a:1,ex:"<strong>Structural conflicts</strong> are inherent in the business model — the dealer earning trailing commissions from fund companies creates an incentive to recommend those funds regardless of comparative merit. Structural conflicts: (1) must be identified systematically through policies. (2) must be disclosed in the RDI. (3) must be addressed through controls (CFR suitability requirement overrides any incentive to recommend for commission reasons)."},
+{e:9,q:"Under CIRO's cybersecurity requirements, what does the 'least privilege' principle require?",o:["All employees must have access to all client data to ensure seamless service across the firm","Each employee should only have access to the client data and systems necessary for their specific job function — access beyond what the role requires creates unnecessary security and confidentiality risk","Only senior executives require formal access controls; junior employees share login credentials for efficiency","System access is reviewed once every 5 years as part of the IT infrastructure audit cycle"],a:1,ex:"The <strong>'least privilege' principle</strong> limits each employee's access to only what they need for their specific role. A junior operations employee processing confirmations doesn't need access to comprehensive client financial profiles. This minimizes the number of people who could misuse or inadvertently expose client data. Access must be reviewed regularly — especially when employees change roles or leave the firm."},
+{e:9,q:"A dealer's compliance officer discovers that an RR has been recommending an affiliated proprietary fund to clients without disclosing that the dealer earns higher revenue from proprietary product sales than third-party alternatives. What violations are present?",o:["No violation — recommending affiliated funds is a standard and expected business practice that requires no special disclosure","A conflict of interest management violation — the structural conflict (higher dealer revenue from proprietary products) must be identified, disclosed in the RDI and at point of sale, and the recommendation must genuinely reflect the client's best interest under CFR","Only a recordkeeping violation — the RR should have documented the recommendation but no further action is required","A suitability violation only — the affiliated fund may not have been suitable, but conflicts of interest are separate from suitability requirements"],a:1,ex:"Multiple violations: (1) <strong>COI identification failure</strong> — the structural conflict (higher revenue from proprietary products) must be identified in policies. (2) <strong>COI disclosure failure</strong> — must be disclosed in RDI and specifically at point of recommendation. (3) <strong>CFR suitability concern</strong> — was the proprietary fund genuinely in the client's best interest, or was it recommended for its higher revenue? All three dimensions must be addressed."},
+{e:9,q:"An RR's client is going through a divorce and asks the RR to rapidly transfer $500,000 to a foreign account before proceedings begin. The RR suspects this is to conceal assets. What is the correct action?",o:["Process the transfer — the client is the account owner and has legal authority over their own assets","Decline to process the transfer and escalate to compliance — the request raises concerns about potential asset concealment in legal proceedings and possible AML/FINTRAC suspicious activity requiring an STR","Process the transfer but notify the client's spouse's lawyer as a courtesy","Transfer half the amount as a compromise while the situation is clarified"],a:1,ex:"The request raises multiple concerns: (1) <strong>Asset concealment</strong> — rapidly moving assets offshore before known legal proceedings may constitute fraud on the court. (2) <strong>AML concern</strong> — the pattern (urgency, large transfer, foreign destination, pending legal proceedings) may constitute suspicious activity requiring an STR to FINTRAC. The RR must <strong>decline and escalate to compliance</strong> — the client's ownership of assets does not override the dealer's obligation to avoid facilitating potentially illegal activity."}
+];
+
+// ══════════════════════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════════════════════
+let timerInterval, timeLeft = 120*60;
+let answers = new Array(110).fill(null);  // null = unanswered
+let flagged = new Array(110).fill(false);
+let currentQ = 0;
+
+// ══════════════════════════════════════════════════════════════════
+//  BUILD LAUNCH SCREEN
+// ══════════════════════════════════════════════════════════════════
+function buildLaunch(){
+  const wg = document.getElementById('wtGrid');
+  ELEMENTS.forEach(el=>{
+    const div = document.createElement('div');
+    div.className = 'wt-item';
+    div.innerHTML = `<div class="wt-dot" style="background:${el.color}"></div>
+      <div class="wt-label">E${el.id}: ${el.name}</div>
+      <div class="wt-count">${el.count}Q</div>`;
+    wg.appendChild(div);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  TIMER
+// ══════════════════════════════════════════════════════════════════
+function formatTime(s){
+  const h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
+  return `${String(h).padStart(1,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+function startTimer(){
+  const tv = document.getElementById('timerVal');
+  timerInterval = setInterval(()=>{
+    timeLeft--;
+    tv.textContent = formatTime(timeLeft);
+    if(timeLeft <= 600 && timeLeft > 300) tv.className = 'timer-val warn';
+    else if(timeLeft <= 300) tv.className = 'timer-val danger';
+    if(timeLeft <= 0){ clearInterval(timerInterval); autoSubmit(); }
+  }, 1000);
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  BUILD SIDEBAR NAV
+// ══════════════════════════════════════════════════════════════════
+function buildNav(){
+  const nav = document.getElementById('sidebarNav');
+  nav.innerHTML = '';
+  let qi = 0;
+  ELEMENTS.forEach(el=>{
+    const label = document.createElement('div');
+    label.className = 'nav-element-label';
+    label.innerHTML = `<span>E${el.id}: ${el.label}</span><span>${el.count}Q</span>`;
+    nav.appendChild(label);
+    const grid = document.createElement('div');
+    grid.className = 'nav-grid';
+    for(let i=0; i<el.count; i++){
+      const btn = document.createElement('button');
+      btn.className = 'nav-btn';
+      btn.id = `nb${qi}`;
+      btn.textContent = qi+1;
+      const qIdx = qi;
+      btn.onclick = ()=>{ gotoQ(qIdx); };
+      grid.appendChild(btn);
+      qi++;
+    }
+    nav.appendChild(grid);
+  });
+}
+function updateNav(){
+  for(let i=0;i<110;i++){
+    const btn = document.getElementById(`nb${i}`);
+    if(!btn) continue;
+    btn.className = 'nav-btn';
+    if(i===currentQ) btn.classList.add('current');
+    else if(flagged[i]) btn.classList.add('flagged');
+    else if(answers[i]!==null) btn.classList.add('answered');
+  }
+}
+function updateProgress(){
+  const answered = answers.filter(a=>a!==null).length;
+  const pct = Math.round(answered/110*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressTxt').textContent = `${answered} / 110 answered`;
+  document.getElementById('progressPct').textContent = pct+'%';
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  RENDER QUESTION
+// ══════════════════════════════════════════════════════════════════
+function renderQ(){
+  const q = QUESTIONS[currentQ];
+  const el = ELEMENTS.find(e=>e.id===q.e);
+  const card = document.getElementById('qcard');
+  card.innerHTML = `
+    <div class="qcard-top">
+      <span class="qnum">Q${currentQ+1} of 110</span>
+      <span class="qelement" style="color:${el.color};border-color:${el.color}33">E${el.id}: ${el.name}</span>
+      <button class="qflag${flagged[currentQ]?' on':''}" onclick="toggleFlag()">${flagged[currentQ]?'⚑ Flagged':'⚐ Flag'}</button>
+    </div>
+    <div class="qtext">${q.q}</div>
+    <div class="opts">
+      ${q.o.map((opt,i)=>`
+        <div class="opt${answers[currentQ]===i?' selected':''}" onclick="selectOpt(${i})">
+          <span class="opt-letter">${String.fromCharCode(65+i)}</span>
+          <span class="opt-text">${opt}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div class="qnav">
+      <button class="qnav-btn" onclick="prevQ()" ${currentQ===0?'disabled':''}>← Previous</button>
+      <span class="qnav-center">${answers[currentQ]!==null?'✓ Answered':'Not answered'}</span>
+      <button class="qnav-btn" onclick="nextQ()" ${currentQ===109?'disabled':''}>Next →</button>
+    </div>`;
+  updateNav();
+  // scroll card to top
+  document.querySelector('.exam-main').scrollTop = 0;
+}
+
+function selectOpt(i){
+  answers[currentQ] = i;
+  updateProgress();
+  renderQ();
+}
+function toggleFlag(){
+  flagged[currentQ] = !flagged[currentQ];
+  renderQ();
+}
+function gotoQ(i){ currentQ=i; renderQ(); }
+function prevQ(){ if(currentQ>0){ currentQ--; renderQ(); } }
+function nextQ(){ if(currentQ<109){ currentQ++; renderQ(); } }
+function toggleMobileSidebar(){ document.getElementById('exam').classList.toggle('sidebar-open'); }
+
+// ══════════════════════════════════════════════════════════════════
+//  SUBMIT MODAL
+// ══════════════════════════════════════════════════════════════════
+function openSubmitModal(){
+  const answered = answers.filter(a=>a!==null).length;
+  const unanswered = 110-answered;
+  const flags = flagged.filter(f=>f).length;
+  document.getElementById('mAnswered').textContent = answered;
+  document.getElementById('mUnanswered').textContent = unanswered;
+  document.getElementById('mFlagged').textContent = flags;
+  if(unanswered>0){
+    document.getElementById('modalMsg').textContent = `You have ${unanswered} unanswered question${unanswered>1?'s':''}. Unanswered questions count as incorrect. Are you sure you want to submit?`;
+  } else {
+    document.getElementById('modalMsg').textContent = 'All 110 questions are answered. Ready to submit your exam?';
+  }
+  document.getElementById('submitModal').classList.add('show');
+}
+function closeSubmitModal(){ document.getElementById('submitModal').classList.remove('show'); }
+function autoSubmit(){ document.getElementById('submitModal').classList.remove('show'); submitExam(); }
+
+// ══════════════════════════════════════════════════════════════════
+//  SUBMIT & CALCULATE RESULTS
+// ══════════════════════════════════════════════════════════════════
+function submitExam(){
+  clearInterval(timerInterval);
+  document.getElementById('submitModal').classList.remove('show');
+  // calculate
+  const totalCorrect = QUESTIONS.filter((q,i)=>answers[i]===q.a).length;
+  const pct = Math.round(totalCorrect/110*100);
+  const passed = pct>=60;
+  const timeTaken = 120*60 - timeLeft;
+  const mm = Math.floor(timeTaken/60), ss = timeTaken%60;
+
+  // show results screen
+  showScreen('results');
+
+  // badge & title
+  document.getElementById('resultsBadge').textContent = passed?'✓ PASS':'✗ FAIL';
+  document.getElementById('resultsBadge').className = 'results-badge'+(passed?'':' fail');
+  document.getElementById('resultsTitle').textContent = passed?'Congratulations — Exam Passed!':'Exam Complete — Review Your Results';
+
+  // ring
+  const ring = document.getElementById('ringFill');
+  const circumference = 402;
+  const offset = circumference - (pct/100)*circumference;
+  ring.style.stroke = passed?'#22c55e':'#ef4444';
+  setTimeout(()=>{ ring.style.strokeDashoffset = offset; }, 100);
+  document.getElementById('ringPct').textContent = pct+'%';
+  document.getElementById('ringPct').style.color = passed?'#22c55e':'#ef4444';
+
+  // meta
+  const meta = document.getElementById('resultsMeta');
+  meta.innerHTML = `
+    <div class="rmeta"><div class="rmeta-n" style="color:#22c55e">${totalCorrect}</div><div class="rmeta-l">Correct</div></div>
+    <div class="rmeta"><div class="rmeta-n" style="color:#ef4444">${110-totalCorrect}</div><div class="rmeta-l">Incorrect</div></div>
+    <div class="rmeta"><div class="rmeta-n" style="color:#f59e0b">${answers.filter(a=>a===null).length}</div><div class="rmeta-l">Unanswered</div></div>
+    <div class="rmeta"><div class="rmeta-n" style="color:#93c5fd">${mm}m ${ss}s</div><div class="rmeta-l">Time Taken</div></div>
+    <div class="rmeta"><div class="rmeta-n" style="color:${passed?'#22c55e':'#ef4444'}">${passed?'PASS':'FAIL'}</div><div class="rmeta-l">Result (60% pass)</div></div>`;
+
+  // element breakdown
+  buildBreakdown();
+  // review items
+  buildReview('all');
+}
+
+function buildBreakdown(){
+  const rows = document.getElementById('elRows');
+  rows.innerHTML = '';
+  let qIdx = 0;
+  ELEMENTS.forEach(el=>{
+    let correct=0, total=el.count;
+    const elQs = QUESTIONS.slice(qIdx, qIdx+total);
+    elQs.forEach((q,i)=>{ if(answers[qIdx+i]===q.a) correct++; });
+    const pct = Math.round(correct/total*100);
+    const pass = pct>=60;
+    const row = document.createElement('div');
+    row.className = 'el-row';
+    row.innerHTML = `
+      <div class="el-row-top">
+        <div style="width:10px;height:10px;border-radius:50%;background:${el.color};flex-shrink:0"></div>
+        <div class="el-name">E${el.id}: ${el.name}</div>
+        <div class="el-score ${pass?'pass':'fail'}">${correct}/${total} (${pct}%)</div>
+      </div>
+      <div class="el-bar-bg"><div class="el-bar-fill" style="width:0%;background:${el.color}" data-w="${pct}"></div></div>
+      <div class="el-detail">${correct} correct · ${total-correct} incorrect · ${total} questions</div>`;
+    rows.appendChild(row);
+    qIdx += total;
+  });
+  // animate bars
+  setTimeout(()=>{
+    document.querySelectorAll('.el-bar-fill').forEach(b=>{
+      b.style.width = b.dataset.w+'%';
+    });
+  }, 200);
+}
+
+// ── REVIEW ──────────────────────────────────────────────────────
+let currentFilter = 'all';
+function filterReview(f, btn){
+  currentFilter = f;
+  document.querySelectorAll('.rf').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildReview(f);
+}
+function buildReview(filter){
+  const container = document.getElementById('reviewItems');
+  container.innerHTML = '';
+  QUESTIONS.forEach((q,i)=>{
+    const correct = answers[i]===q.a;
+    const unanswered = answers[i]===null;
+    if(filter==='wrong' && (correct||unanswered)) return;
+    if(filter==='correct' && !correct) return;
+    if(filter==='unanswered' && !unanswered) return;
+    const el = ELEMENTS.find(e=>e.id===q.e);
+    let icon = unanswered?'⬜':correct?'✅':'❌';
+    const item = document.createElement('div');
+    item.className = 'ritem';
+    const yourAns = answers[i]!==null ? q.o[answers[i]] : '(Not answered)';
+    const correctAns = q.o[q.a];
+    const different = answers[i]!==q.a;
+    item.innerHTML = `
+      <div class="ritem-head" onclick="toggleRitem(this)">
+        <span class="ritem-icon">${icon}</span>
+        <span class="ritem-q">Q${i+1}. ${q.q}</span>
+        <span class="ritem-elem" style="color:${el.color};border-color:${el.color}33">E${el.id}</span>
+      </div>
+      <div class="ritem-body">
+        ${different?`<div class="ritem-ans wrong-ans">✗ Your Answer: ${yourAns}</div>`:''}
+        <div class="ritem-ans correct-ans">✓ Correct Answer: ${correctAns}</div>
+        <div class="ritem-exp">${q.ex}</div>
+      </div>`;
+    container.appendChild(item);
+  });
+  if(container.innerHTML===''){
+    container.innerHTML = '<div style="color:var(--ink3);font-size:14px;padding:20px;text-align:center">No questions match this filter.</div>';
+  }
+}
+function toggleRitem(head){
+  const body = head.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  SCREEN SWITCHING
+// ══════════════════════════════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function startExam(){
+  answers = new Array(110).fill(null);
+  flagged = new Array(110).fill(false);
+  currentQ = 0;
+  timeLeft = 120*60;
+  showScreen('exam');
+  buildNav();
+  renderQ();
+  updateProgress();
+  startTimer();
+}
+
+function retake(){
+  showScreen('launch');
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════════════════
+buildLaunch();
+</script>
+</body>
+</html>

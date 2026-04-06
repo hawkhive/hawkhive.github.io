@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Free, self-study hub for the Canadian Investment Regulatory Exam (CIRE). Access all 9 comprehensive study elements created by a candidate to help others prepare without expensive courses.">
-  <title>CIRE Exam Hub | Free Self-Study Resources</title>
-  
+  <meta name="description" content="Free, self-study hub for the Canadian Investment Regulatory Exam (CIRE). Access all 9 comprehensive study elements and 5 full mock tests with performance analytics.">
+  <title>HawkHive Study Prep | CIRE Exam Hub</title>
   <style>
     * {
       margin: 0;
@@ -14,14 +13,14 @@
     }
 
     body {
-      background: #f4f7fc;
+      background: #f5fafd;
       font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       line-height: 1.5;
       color: #1a2c3e;
       scroll-behavior: smooth;
     }
 
-    /* subtle texture / theme consistency */
+    /* background pattern */
     body::before {
       content: '';
       position: fixed;
@@ -29,9 +28,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: radial-gradient(#e0edf5 1px, transparent 1px);
+      background-image: radial-gradient(circle at 20% 30%, rgba(30, 111, 92, 0.03) 1.5px, transparent 1.5px);
       background-size: 32px 32px;
-      opacity: 0.3;
       pointer-events: none;
       z-index: -2;
     }
@@ -39,184 +37,358 @@
     .container {
       max-width: 1280px;
       margin: 0 auto;
-      padding: 2rem 1.5rem 3rem;
+      padding: 1.5rem 1.8rem 3rem;
     }
 
-    /* header + hero */
+    /* ---------- NAVIGATION BAR ---------- */
+    .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #e2edf2;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+    font-family: inherit;
+    }
+
+    .nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0.8rem 1.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    }
+
+    .nav-logo {
+    font-size: 1.4rem;
+    font-weight: 800;
+    background: linear-gradient(125deg, #164b5e, #1e6f5c);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    text-decoration: none;
+    letter-spacing: -0.3px;
+    }
+
+    .nav-menu {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    }
+
+    .nav-link {
+    text-decoration: none;
+    font-weight: 500;
+    color: #2c5a6e;
+    transition: color 0.2s;
+    font-size: 1rem;
+    padding: 0.4rem 0;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+    color: #1e6f5c;
+    border-bottom: 2px solid #1e6f5c;
+    }
+
+    /* mobile toggle (hidden on desktop) */
+    .nav-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    }
+
+    .nav-toggle span {
+    width: 25px;
+    height: 2px;
+    background: #1e6f5c;
+    margin: 3px 0;
+    transition: 0.2s;
+    border-radius: 2px;
+    }
+
+    /* responsive */
+    @media (max-width: 768px) {
+    .nav-toggle {
+        display: flex;
+    }
+    .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem 0;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        border-top: 1px solid #e2edf2;
+        transform: translateY(-120%);
+        transition: transform 0.3s ease;
+        z-index: 999;
+    }
+    .nav-menu.active {
+        transform: translateY(0);
+    }
+    .nav-link {
+        font-size: 1.1rem;
+    }
+    }
+
+  /* small JS to toggle mobile menu – add this script before closing body */
+
+    /* ---------- HERO SECTION (refreshed) ---------- */
     .hero {
-      text-align: center;
-      margin-bottom: 3rem;
+      background: linear-gradient(135deg, #ffffff 0%, #f1f9fc 100%);
+      border-radius: 48px;
+      padding: 2.5rem 2.2rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2f0f5;
       position: relative;
+      overflow: hidden;
     }
 
-    .badge {
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -10%;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(30,111,92,0.08) 0%, rgba(30,111,92,0) 70%);
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-text {
+      flex: 2;
+      min-width: 260px;
+    }
+
+    .brand {
       display: inline-block;
-      background: #1e6f5c;
-      color: white;
+      background: #1e6f5c10;
+      backdrop-filter: blur(2px);
+      padding: 0.3rem 1rem;
+      border-radius: 60px;
       font-size: 0.8rem;
       font-weight: 600;
-      padding: 0.25rem 1rem;
-      border-radius: 40px;
+      color: #1e6f5c;
       letter-spacing: 0.3px;
       margin-bottom: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      border: 1px solid #d0e9e2;
     }
 
-    h1 {
-      font-size: 2.8rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #1a3c48, #2a6b5e);
+    .hero-text h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      background: linear-gradient(125deg, #164b5e, #1e6f5c);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      letter-spacing: -0.3px;
-      margin-bottom: 1rem;
+      margin-bottom: 0.8rem;
+      line-height: 1.2;
     }
 
-    .subhead {
+    .hero-tagline {
       font-size: 1.2rem;
-      color: #2c4b5c;
-      max-width: 720px;
-      margin: 0 auto 1rem;
+      color: #2c5a6e;
+      margin-bottom: 1.8rem;
+      max-width: 550px;
     }
 
-    .intro-card {
-      background: white;
-      border-radius: 32px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02);
-      padding: 2rem;
-      margin: 2rem 0 2rem;
-      border: 1px solid #e2edf2;
-      transition: box-shadow 0.2s ease;
-    }
-
-    .intro-card h2 {
-      font-size: 1.7rem;
-      font-weight: 600;
-      color: #1e4a5f;
-      margin-bottom: 1rem;
-      border-left: 5px solid #2c8f7a;
-      padding-left: 1rem;
-    }
-
-    .intro-card p {
-      margin-bottom: 1rem;
-      font-size: 1.05rem;
-      color: #2d4a62;
-    }
-
-    .exam-grid {
+    .hero-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 1.5rem;
-      justify-content: space-between;
-      margin: 2rem 0 2.5rem;
+      gap: 1rem;
+      margin-bottom: 1rem;
     }
 
-    .exam-highlight {
-      flex: 1;
-      min-width: 180px;
-      background: #ffffffdd;
-      backdrop-filter: blur(2px);
-      background: white;
-      border-radius: 24px;
-      padding: 1.3rem 1rem;
-      text-align: center;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.03);
-      border: 1px solid #e0eff5;
+    .btn-primary {
+      background: #1e6f5c;
+      color: white;
+      padding: 0.7rem 1.6rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     }
 
-    .exam-highlight .number {
-      font-size: 2rem;
-      font-weight: 800;
+    .btn-primary:hover {
+      background: #155b4b;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 20px -8px rgba(30,111,92,0.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid #c0dae3;
       color: #1e6f5c;
+      padding: 0.7rem 1.6rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
     }
 
-    .exam-highlight p {
+    .btn-outline:hover {
+      border-color: #1e6f5c;
+      background: #eef5f2;
+    }
+
+    .hero-stats {
+      flex: 1;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(8px);
+      border-radius: 32px;
+      padding: 1.5rem;
+      border: 1px solid #e2f0ec;
+      box-shadow: 0 10px 20px -8px rgba(0,0,0,0.02);
+    }
+
+    .hero-stats h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #164b5e;
+    }
+
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #e2f0ec;
+    }
+
+    .stat-label {
       font-weight: 500;
       color: #2c5a6e;
     }
 
-    /* elements grid */
+    .stat-number {
+      font-weight: 800;
+      color: #1e6f5c;
+    }
+
+    /* rest of the sections (unchanged but polished) */
+    .section-card {
+      background: white;
+      border-radius: 36px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+      padding: 2rem;
+      margin: 2rem 0;
+      border: 1px solid #e6edf2;
+    }
+
     .section-title {
       font-size: 1.9rem;
-      font-weight: 600;
-      margin: 2rem 0 1rem;
-      color: #1e3e4a;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #1a4b5c;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .section-title span {
-      background: #1e6f5c20;
-      padding: 0.2rem 0.7rem;
-      border-radius: 40px;
+      background: #e3f2ef;
+      padding: 0.2rem 1rem;
+      border-radius: 60px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1e6f5c;
+    }
+
+    .section-description {
+      color: #4a6f7e;
+      margin-bottom: 1.8rem;
       font-size: 1rem;
-      font-weight: 500;
+      border-left: 3px solid #cbdde6;
+      padding-left: 1rem;
     }
 
-    .elements-grid {
+    .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
       gap: 1.8rem;
-      margin: 1.5rem 0 2.5rem;
+      margin: 1.5rem 0 0.5rem;
     }
 
-    .element-card {
+    .card {
       background: white;
       border-radius: 28px;
-      overflow: hidden;
       transition: all 0.25s ease;
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03);
-      border: 1px solid #e5f0f5;
+      border: 1px solid #e2edf2;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
 
-    .element-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 30px -12px rgba(0, 32, 32, 0.15);
-      border-color: #cbdde6;
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 36px -16px rgba(0, 48, 40, 0.18);
+      border-color: #c7dfe8;
     }
 
     .card-header {
-      background: #f9fefc;
-      padding: 1.2rem 1.5rem 0.6rem;
-      border-bottom: 2px solid #e2f0ec;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      row-gap: 0.5rem;
-      align-items: center;
+      padding: 1.2rem 1.5rem 0.4rem;
+      border-bottom: 2px solid #f0f6f8;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
     }
 
-    .element-num {
-      font-size: 0.9rem;
+    .card-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
-      font-weight: 700;
       color: #2c8f7a;
-      grid-column: 1;
+      background: #eafaf5;
+      padding: 0.2rem 0.7rem;
+      border-radius: 30px;
     }
 
-    .element-weightage {
-      font-size: 0.9rem;
-      color: #4f6f7e;
+    .card-weight {
+      font-size: 0.8rem;
       font-weight: 600;
-      margin-top: 0.2rem;
-      text-align: right;
-      min-width: 110px;
-      grid-column: 2;
-      justify-self: end;
+      color: #5c7f8c;
+      background: #f4f8fa;
+      padding: 0.2rem 0.7rem;
+      border-radius: 30px;
     }
 
-    .element-title {
-      font-size: 1.4rem;
+    .card-title {
+      font-size: 1.35rem;
       font-weight: 700;
-      color: #1f5063;
-      margin: 0;
+      color: #1a5063;
+      margin: 0.75rem 1.5rem 0;
       line-height: 1.3;
-      grid-column: 1 / -1;
     }
 
     .card-body {
@@ -225,15 +397,15 @@
     }
 
     .card-body p {
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       color: #3b5c6e;
       font-size: 0.95rem;
-      margin-bottom: 1rem;
-      text-align: justify;
+      margin-bottom: 1.2rem;
     }
 
     .card-link {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       background: #eef5f8;
       color: #1e6f5c;
       font-weight: 600;
@@ -241,52 +413,47 @@
       border-radius: 40px;
       text-decoration: none;
       transition: all 0.2s;
-      font-size: 0.9rem;
-      border: 1px solid #cde3ea;
+      font-size: 0.85rem;
+      border: 1px solid #d4e4ea;
     }
 
     .card-link:hover {
       background: #1e6f5c;
       color: white;
-      border-color: #1e6f5c;
     }
 
-    /* author / sharing note */
-    .sharing-note {
-      background: #eafaf5;
-      border-radius: 28px;
-      padding: 2rem 1.8rem;
-      margin: 2.5rem 0 2rem;
+    .donation-note {
+      background: #eef6f3;
+      border-radius: 32px;
+      padding: 2rem;
+      margin: 2.5rem 0;
       border-left: 6px solid #1e6f5c;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
     }
 
-    .sharing-note h3 {
-      font-size: 1.6rem;
-      font-weight: 600;
-      color: #185f4e;
-      margin-bottom: 0.75rem;
-    }
-
-    .sharing-note p {
-      font-size: 1.05rem;
-      color: #255e4f;
-      margin-bottom: 0.5rem;
-    }
-
-    .highlight {
+    .paypal-badge {
       background: white;
-      padding: 0.2rem 0.4rem;
-      border-radius: 12px;
-      font-weight: 500;
-      color: #146454;
+      display: inline-block;
+      padding: 0.4rem 1.2rem;
+      border-radius: 40px;
+      font-family: monospace;
+      font-weight: bold;
+      margin: 0.75rem 0;
+      border: 1px solid #cbdde6;
+    }
+
+    .exam-facts {
+      background: #ffffffcc;
+      border-radius: 28px;
+      padding: 1.2rem 1.8rem;
+      margin: 1.5rem 0 0.5rem;
+      border: 1px solid #dde9f0;
     }
 
     footer {
       margin-top: 3rem;
       text-align: center;
-      padding-top: 1.5rem;
-      border-top: 1px solid #cde0e8;
+      padding-top: 1.8rem;
+      border-top: 1px solid #d0e2ea;
       color: #5f7f8c;
       font-size: 0.85rem;
     }
@@ -294,9 +461,9 @@
     .footer-links {
       display: flex;
       justify-content: center;
-      gap: 2rem;
+      gap: 1.8rem;
       flex-wrap: wrap;
-      margin-bottom: 0.8rem;
+      margin-bottom: 1rem;
     }
 
     .footer-links a {
@@ -305,217 +472,124 @@
       font-weight: 500;
     }
 
-    .footer-links a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 680px) {
+    @media (max-width: 780px) {
       .container {
-        padding: 1.5rem 1rem 2rem;
+        padding: 1rem 1rem 2rem;
       }
-      h1 {
-        font-size: 2rem;
+      .hero-content {
+        flex-direction: column;
       }
-      .section-title {
-        font-size: 1.5rem;
+      .hero-text h1 {
+        font-size: 2.2rem;
       }
-      .intro-card h2 {
-        font-size: 1.4rem;
+      .hero::after {
+        width: 180px;
+        height: 180px;
       }
-      .sharing-note h3 {
-        font-size: 1.3rem;
+      .cards-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+    <div class="nav-container">
+        <a href="#" class="nav-logo">🪶 HawkHive</a>
+        <ul class="nav-menu">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#elements" class="nav-link">Elements</a></li>
+        <li><a href="#mocktests" class="nav-link">Mock Tests</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <div class="nav-toggle">
+        <span></span><span></span><span></span>
+        </div>
+    </div>
+    </nav>
+
 <div class="container">
+  <!-- NEW HERO SECTION -->
   <div class="hero">
-    <div class="badge">🇨🇦  free self-study resource</div>
-    <h1>CIRE Exam Hub</h1>
-    <div class="subhead">Canadian Investment Regulatory Examination — complete preparation, zero cost.</div>
-  </div>
-
-  <!-- main intro: what is CIRE -->
-  <div class="intro-card">
-    <h2>📘 What is the CIRE exam?</h2>
-    <p>The <strong>Canadian Investment Regulatory Examination (CIRE)</strong> is a mandatory licensing exam for individuals seeking registration as a <strong>Dealing Representative</strong> (investment advisor) under CIRO (Canadian Investment Regulatory Organization). It replaced legacy exams and ensures candidates master Canadian securities regulation, ethical conduct, investment products, and client suitability standards.</p>
-    <p>Administered by CIRO, the exam consists of <strong>110 multiple-choice questions</strong> (2 hours) and requires a solid grasp of topics like prohibited practices, registrant obligations, portfolio management, and product analysis. Passing the CIRE is a key step toward becoming a Registered Representative (RR) in Canada.</p>
-    <div class="exam-grid">
-      <div class="exam-highlight"><div class="number">110</div><p>Multiple-choice<br>questions</p></div>
-      <div class="exam-highlight"><div class="number">2h</div><p>Duration</p></div>
-      <div class="exam-highlight"><div class="number">60%+</div><p>Approx. passing mark*</p></div>
-      <div class="exam-highlight"><div class="number">CIRO</div><p>Regulatory body</p></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="brand">🪶 HAWKHIVE STUDY PREP</div>
+        <h1>CIRE Exam Hub</h1>
+        <div class="hero-tagline">Canadian Investment Regulatory Examination — complete preparation, zero cost.</div>
+        <div class="hero-buttons">
+          <a href="#elements" class="btn-primary">📘 Explore Elements →</a>
+          <a href="#mocktests" class="btn-outline">📝 Try Mock Tests</a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <h3>⚡ Exam at a glance</h3>
+        <div class="stat-item"><span class="stat-label">Questions</span><span class="stat-number">110 MCQs</span></div>
+        <div class="stat-item"><span class="stat-label">Duration</span><span class="stat-number">2 hours</span></div>
+        <div class="stat-item"><span class="stat-label">Passing mark</span><span class="stat-number">~60%</span></div>
+        <div class="stat-item"><span class="stat-label">Regulator</span><span class="stat-number">CIRO</span></div>
+      </div>
     </div>
-    <p style="font-size: 0.9rem; color:#4f6f7e;">*Passing grade subject to official CIRO standards — always verify current exam guidelines.</p>
   </div>
 
-    <!-- personal note: why I created this for free self-study + donation + contact -->
-    <div class="sharing-note">
+  <!-- intro: what is CIRE (kept, but shortened slightly for flow) -->
+  <div class="section-card">
+    <div class="section-title">📘 What is the CIRE exam?</div>
+    <p style="margin-bottom: 1rem;">The <strong>Canadian Investment Regulatory Examination (CIRE)</strong> is a mandatory licensing exam for individuals seeking registration as a <strong>Dealing Representative</strong> (investment advisor) under CIRO. It replaced legacy exams and ensures candidates master Canadian securities regulation, ethical conduct, investment products, and client suitability standards.</p>
+    <p>Administered by CIRO, the exam consists of <strong>110 multiple-choice questions</strong> (2 hours) and requires a solid grasp of prohibited practices, registrant obligations, portfolio management, and product analysis. Passing the CIRE is a key step toward becoming a Registered Representative (RR) in Canada.</p>
+    <p style="font-size: 0.85rem; margin-top: 1rem; color:#5f7f8c;">*Passing grade subject to official CIRO standards — always verify current exam guidelines.</p>
+  </div>
+
+  <!-- 9 elements section (id for anchor) -->
+  <div class="section-card" id="elements">
+    <div class="section-title">🧠 The complete study roadmap <span>9 core elements</span></div>
+    <div class="section-description">Click any card to access detailed notes — each element covers a key domain of the CIRE syllabus, designed for focused self-study.</div>
+    <div class="cards-grid">
+      <!-- Element 1 to 9 (same content as before, compact) -->
+      <div class="card"><div class="card-header"><div class="card-badge">ELEMENT 01</div><div class="card-weight">10%</div></div><div class="card-title">Overview of regulatory framework</div><div class="card-body"><p>Identify, describe and explain the purpose of main investment industry regulators in Canada, AML legislation, confidentiality and privacy.</p><a href="Element-1.html" class="card-link">Explore →</a></div></div>
+      <div class="card"><div class="card-header"><div class="card-badge">ELEMENT 02</div><div class="card-weight">10%</div></div><div class="card-title">Prospective client relationships</div><div class="card-body"><p>Client relationship model, conflict disclosure, suitability assessment, KYC, and account performance reporting.</p><a href="Element-2.html" class="card-link">Explore →</a></div></div>
+      <div class="card"><div class="card-header"><div class="card-badge">ELEMENT 03</div><div class="card-weight">15%</div></div><div class="card-title">Scope of client relationship</div><div class="card-body"><p>Investment vs Registered Representative, KYC, product due diligence, fiduciary duty, trust and agency concepts.</p><a href="Element-3.html" class="card-link">Explore →</a></div></div>
+      <div class="card"><div class="card-header"><div class="card-badge">ELEMENT 04</div><div class="card-weight">5%</div></div><div class="card-title">Client complaints handling</div><div class="card-body"><p>Requirements for complaint handling, regulatory obligations, recordkeeping, and client recourse options.</p><a href="Element-4.html" class="card-link">Explore →</a></div></div>
+      <div class="card"><div class="card-header"><div class="card-badge">ELEMENT 05</div><div class="card-weight">8%</div></div><div class="card-title">Market and company analysis</div><div class="card-body"><p>Macroeconomic theories, central banks, fiscal policy, and sources of market insight.</p><a href="Element-5.html" class="card-link">Explore →</a></div></div>
+      <div class="card"><div class="card-header"><div class="card-badge">ELEMENT 06</div><div class="card-weight">12%</div></div><div class="card-title">Market integrity, trade execution and settlement</div><div class="card-body"><p>UMIR rules, gatekeeping, order types, settlement and delivery processes.</p><a href="Element-6.html" class="card-link">Explore →</a></div></div>
+      <div class="card"><div class="card-header"><div class="card-badge">ELEMENT 07</div><div class="card-weight">19%</div></div><div class="card-title">Securities, managed products and mutual funds</div><div class="card-body"><p>Features, risks, returns of securities, managed products, and mutual funds.</p><a href="Element-7.html" class="card-link">Explore →</a></div></div>
+      <div class="card"><div class="card-header"><div class="card-badge">ELEMENT 08</div><div class="card-weight">5%</div></div><div class="card-title">Derivatives</div><div class="card-body"><p>Options, futures, basic strategies, administrative requirements, and prohibited practices.</p><div><a href="Element-8.1.html" class="card-link">Part 1 →</a> <a href="Element-8.2.html" class="card-link" style="margin-left: 0.6rem;">Part 2 →</a></div></div></div>
+      <div class="card"><div class="card-header"><div class="card-badge">ELEMENT 09</div><div class="card-weight">16%</div></div><div class="card-title">Conflicts of interest and ethics</div><div class="card-body"><p>Identify and manage conflicts, ethical dilemmas, information security, and legal responsibilities.</p><a href="Element-9.html" class="card-link">Explore →</a></div></div>
+    </div>
+  </div>
+
+  <!-- MOCK TESTS SECTION (id for anchor) -->
+  <div class="section-card" id="mocktests">
+    <div class="section-title">📝 Mock Tests <span>5 full practice exams</span></div>
+    <div class="section-description">Here are the mock tests for you to practice the learning. You can take each test and check your knowledge. At the end of each test you can review your results and answers, and also see on which element you are performing well/poor — which will give you a clear idea on where you need to focus more.</div>
+    <div class="cards-grid">
+      <div class="card"><div class="card-header"><div class="card-badge">MOCK TEST 01</div></div><div class="card-title">Practice Exam #1</div><div class="card-body"><p>110 questions across 9 elements with separate sections so you can easily review each element.</p><a href="mock-test-1.html" class="card-link">Start Mock Test 1 →</a></div></div>
+      <div class="card"><div class="card-header"><div class="card-badge">MOCK TEST 02</div></div><div class="card-title">Practice Exam #2</div><div class="card-body"><p>Focus on regulations, ethics, and client suitability. See which areas need improvement.</p><a href="mock-test-2.html" class="card-link">Start Mock Test 2 →</a></div></div>
+      <div class="card"><div class="card-header"><div class="card-badge">MOCK TEST 03</div></div><div class="card-title">Practice Exam #3</div><div class="card-body"><p>Heavy on investment products (equities, fixed income, funds) and portfolio theory.</p><a href="mock-test-3.html" class="card-link">Start Mock Test 3 →</a></div></div>
+      <div class="card"><div class="card-header"><div class="card-badge">MOCK TEST 04</div></div><div class="card-title">Practice Exam #4</div><div class="card-body"><p>Derivatives, structured products, and risk management scenarios.</p><a href="mock-test-4.html" class="card-link">Start Mock Test 4 →</a></div></div>
+      <div class="card"><div class="card-header"><div class="card-badge">MOCK TEST 05</div></div><div class="card-title">Practice Exam #5</div><div class="card-body"><p>Comprehensive final review: all 9 elements, real exam difficulty, with detailed performance analytics.</p><a href="mock-test-5.html" class="card-link">Start Mock Test 5 →</a></div></div>
+    </div>
+  </div>
+
+  <!-- donation & personal note (unchanged) -->
+  <div class="donation-note">
     <h3>✨ From a candidate to you — no expensive prep needed</h3>
-    <p>After successfully preparing for the CIRE exam, I realized how costly commercial prep courses can be. That’s why I built these <strong>9 complete study elements</strong> from official CIRO syllabus — to help motivated learners like you access high‑quality, structured material <strong>completely free</strong>. No subscriptions, no hidden fees, just clear notes that focus on what really matters for the exam.</p>
-    <p>📖 <strong>What you'll find inside each element:</strong> key definitions, regulatory highlights, practical examples, and exam tips distilled from official sources and my own study journey. Also, I have added exam Practice Questions at the end of each element to reinforce your learning. <br> <br>Whether you're changing careers, a new graduate, or an industry professional refreshing knowledge, these pages are designed for focused, self-paced learning.</p>
-    <p>🌟 <span class="highlight">My goal:</span> Level the playing field and make regulatory exam preparation accessible for everyone. If these notes help you pass — that’s the biggest reward. Happy studying!</p>
-    
-    <!-- donation & contact block -->
-    <div style="background: #ffffffcc; border-radius: 20px; padding: 1.2rem 1.5rem; margin: 1.5rem 0 0.5rem; border-left: 4px solid #1e6f5c;">
-        <p style="font-weight: 600; margin-bottom: 0.5rem;">☕ Support this free resource</p>
-        <p>If this study guide helps you pass your exam and you’d like to say thanks, you can <strong>voluntarily donate whatever you can</strong> via PayPal:</p>
-        <p style="background: #fff0e0; display: inline-block; padding: 0.3rem 1rem; border-radius: 30px; font-family: monospace; font-weight: bold; margin: 0.5rem 0;">bclub1713@gmail.com</p>
-        <p style="margin-top: 0.8rem;">📬 <strong>Questions or suggestions?</strong> Feel free to reach out anytime: <a href="mailto:bclub1713@gmail.com" style="color: #1e6f5c; text-decoration: underline;">bclub1713@gmail.com</a></p>
-        <p style="font-size: 0.85rem; margin-top: 0.8rem;">Your feedback helps improve these notes for everyone — I’d love to hear how I can make them even better.</p>
+    <p>After successfully preparing for the CIRE exam, I realized how costly commercial prep courses can be. That’s why I built these <strong>9 complete study elements</strong> from the official CIRO syllabus — to help motivated learners like you access high‑quality, structured material <strong>completely free</strong>. No subscriptions, no hidden fees, just clear notes that focus on what really matters for the exam.</p>
+    <p>📖 <strong>What you'll find inside each element:</strong> key definitions, regulatory highlights, practical examples, and exam practice questions at the end of each element to reinforce your learning. Whether you're changing careers, a new graduate, or an industry professional refreshing knowledge, these pages are designed for focused, self-paced learning.</p>
+    <p>🌟 <span style="background: white; padding: 0.1rem 0.4rem; border-radius: 12px;">My goal:</span> Level the playing field and make regulatory exam preparation accessible for everyone. If these notes help you pass — that’s the biggest reward. Happy studying!</p>
+    <div style="background: white; border-radius: 24px; padding: 1.2rem 1.5rem; margin: 1.5rem 0 0.5rem; border-left: 4px solid #1e6f5c;">
+      <p style="font-weight: 600; margin-bottom: 0.5rem;">☕ Support this free resource</p>
+      <p>If this study guide helps you pass your exam and you’d like to say thanks, you can <strong>voluntarily donate whatever you can</strong> via PayPal:</p>
+      <p class="paypal-badge">bclub1713@gmail.com</p>
+      <p>📬 <strong>Questions or suggestions?</strong> Feel free to reach out anytime: <a href="mailto:bclub1713@gmail.com" style="color: #1e6f5c; text-decoration: underline;">bclub1713@gmail.com</a></p>
+      <p style="font-size: 0.85rem; margin-top: 0.8rem;">Your feedback helps improve these notes for everyone — I’d love to hear how I can make them even better.</p>
     </div>
-    
     <p style="margin-top: 12px; font-style: italic;">— A fellow CIRE candidate & open‑source advocate</p>
-    </div>
-
-  <!-- 9 elements grid section -->
-  <div class="section-title">
-    🧠 The complete study roadmap 
-    <span>9 core elements</span>
-  </div>
-  <p style="margin-bottom: 0.5rem; color:#2c5a6e;">Click any card to access detailed notes — each element covers a key domain of the CIRE syllabus, designed for focused self-study.</p>
-  
-  <div class="elements-grid">
-    <!-- Element 1 -->
-    <div class="element-card">
-      <div class="card-header">
-        <div class="element-num">ELEMENT 01</div>
-        <div class="element-weightage"> Weightage: 10% </div>
-        <div class="element-title"> Overview of regulatory framework</div>
-      </div>
-      <div class="card-body">
-        <p>This element requires candidates to be able to identify, describe and explain the purpose of the main investment industry regulators in Canada, as well as list and define
-other regulators and agencies, and the markets they oversee. Candidates are required to understand and explain the legislation and controls around anti-money laundering and be
-able to recall the features of other legislation including confidentiality and privacy.</p>
-        <a href="Element-1.html" class="card-link">Explore Element 1 →</a>
-      </div>
-    </div>
-    <!-- Element 2 -->
-    <div class="element-card">
-      <div class="card-header">
-        <div class="element-num">ELEMENT 02</div>
-        <div class="element-weightage"> Weightage: 10% </div>
-        <div class="element-title"> Prospective client relationships </div>
-      </div>
-      <div class="card-body">
-        <p>This element requires candidates to display a sound understanding of the client relationship model including
-relationship disclosure, conflicts of interest management, suitability assessment and account performance reporting.
-Candidates must be able to differentiate retail clients from institutional clients and also be able to list the various
-documentation required in the process of onboarding clients.</p>
-        <a href="Element-2.html" class="card-link">Explore Element 2 →</a>
-      </div>
-    </div>
-    <!-- Element 3 -->
-    <div class="element-card">
-      <div class="card-header">
-        <div class="element-num">ELEMENT 03</div>
-        <div class="element-weightage"> Weightage: 15% </div>
-        <div class="element-title"> Scope of client relationship</div>
-      </div>
-      <div class="card-body">
-        <p>This element looks in detail at the relationship between the Investment Dealer’s representative and the client, with specific focus on the different roles of an Investment
-Representative and a Registered Representative. The element expects a candidate to be able to identify, describe and explain account appropriateness, product due diligence and
-know-your-product requirements as well as display an awareness of know-your-client (KYC) requirements and suitability determination. Candidates should also be able to explain the
-concepts of trust, agency, and fiduciary duty, and the purpose of relationship disclosure.</p>
-        <a href="Element-3.html" class="card-link">Explore Element 3 →</a>
-      </div>
-    </div>
-    <!-- Element 4 -->
-    <div class="element-card">
-      <div class="card-header">
-        <div class="element-num">ELEMENT 04</div>
-        <div class="element-weightage"> Weightage: 5% </div>
-        <div class="element-title"> Client complaints handling</div>
-      </div>
-      <div class="card-body">
-        <p>In this element candidates are expected to be able to identify, describe and explain the requirements
-for client complaints handling. It requires comprehension of Investment Dealers’ professional, regulatory and legal
-obligations regarding complaints. This includes potential client issues, reporting and recordkeeping requirements, and
-recourse options for dissatisfied clients.</p>
-        <a href="Element-4.html" class="card-link">Explore Element 4 →</a>
-      </div>
-    </div>
-    <!-- Element 5 -->
-    <div class="element-card">
-      <div class="card-header">
-        <div class="element-num">ELEMENT 05</div>
-        <div class="element-weightage"> Weightage: 8% </div>
-        <div class="element-title"> Market and company analysis </div>
-      </div>
-      <div class="card-body">
-        <p>This element provides an overview of economic and corporate factors that can affect the valuations of
-financial assets and investor return. Candidates are expected to list and define basic macroeconomic theories, and
-how factors such as central banks and fiscal policy affect financial markets. Candidates are also expected to identify
-sources of information and ways of using information to provide meaningful insight.</p>
-        <a href="Element-5.html" class="card-link">Explore Element 5 →</a>
-      </div>
-    </div>
-    <!-- Element 6 -->
-    <div class="element-card">
-      <div class="card-header">
-        <div class="element-num">ELEMENT 06</div>
-        <div class="element-weightage"> Weightage: 12% </div>
-        <div class="element-title"> Market integrity, trade execution and settlement </div>
-      </div>
-      <div class="card-body">
-        <p>This element requires a detailed understanding of key requirements under the Universal Market Integrity Rules, including the application of gatekeeping obligations to market scenarios. Candidates should also be able to recall the processes for entering specific order types, settlement, and delivery.</p>
-        <a href="Element-6.html" class="card-link">Explore Element 6 →</a>
-      </div>
-    </div>
-    <!-- Element 7 -->
-    <div class="element-card">
-      <div class="card-header">
-        <div class="element-num">ELEMENT 07</div>
-        <div class="element-weightage"> Weightage: 19% </div>
-        <div class="element-title"> Securities, managed products and mutual funds </div>
-      </div>
-      <div class="card-body">
-        <p>This element requires a candidate to be able to identify, describe and explain the types, features, risks, and
-            returns of securities and managed products, such as mutual funds. Candidates must demonstrate an understanding of
-            the main considerations affecting current or potential investors in these products and instruments.</p>
-        <a href="Element-7.html" class="card-link">Explore Element 7 →</a>
-      </div>
-    </div>
-    <!-- Element 8 -->
-    <div class="element-card">
-      <div class="card-header">
-        <div class="element-num">ELEMENT 08</div>
-        <div class="element-weightage"> Weightage: 5% </div>
-        <div class="element-title">Derivatives</div>
-      </div>
-      <div class="card-body">
-        <p>This element provides an overview of derivatives. It requires candidates to state and define the features and
-            uses of options, futures, and other derivatives. Candidates must also be able to define some basic derivative trading
-            strategies and be aware of administrative requirements and prohibited trading practices.</p>
-        <a href="Element-8.1.html" class="card-link">Explore Element 8 (Part 1)→</a>
-        <a href="Element-8.2.html" class="card-link" style="margin-left: 0.5rem;">Explore Element 8 (Part 2)→</a>
-      </div>
-    </div>
-    <!-- Element 9 -->
-    <div class="element-card">
-      <div class="card-header">
-        <div class="element-num">ELEMENT 09</div>
-        <div class="element-weightage"> Weightage: 16% </div>
-        <div class="element-title"> Conflicts of interest and ethics </div>
-      </div>
-      <div class="card-body">
-        <p>This element requires a detailed understanding of identifying and managing conflicts of interest and the role
-            of ethics in the investment industry, together with the ethical and legal responsibilities of Investment Dealers and their
-            representatives to clients. Candidates will analyze ethical dilemmas, apply independent judgment and critical thinking
-            skills to provide considered responses on the course of action to take. The section also highlights the importance of
-            information security.</p>
-        <a href="Element-9.html" class="card-link">Explore Element 9 →</a>
-      </div>
-    </div>
   </div>
 
-
-
-  <!-- extra official / quick facts -->
-  <div style="background: #ffffffcc; border-radius: 24px; padding: 1.2rem 1.5rem; margin: 1rem 0 0.5rem; border: 1px solid #dde9f0;">
-    <p style="font-weight: 500;">📌 <strong>Quick exam facts:</strong> The CIRE exam is closed-book, proctored (in-person or online), and focuses heavily on ethics, regulations, and suitability. Many candidates recommend 40–60 hours of study. These 9 elements cover the complete Competency Profile set by CIRO.</p>
-    <p style="font-size: 0.9rem; margin-top: 0.5rem;">⚠️ Disclaimer: This is an independent, unofficial resource created to aid self-study. Always refer to CIRO’s official handbook and current exam syllabus for definitive requirements.</p>
+  <div class="exam-facts">
+    <p style="font-weight: 600;">📌 Quick exam facts: The CIRE exam is closed-book, proctored (in-person or online), and focuses heavily on ethics, regulations, and suitability. Many candidates recommend 40–60 hours of study. These 9 elements cover the complete Competency Profile set by CIRO.</p>
+    <p style="font-size: 0.85rem; margin-top: 0.6rem;">⚠️ Disclaimer: This is an independent, unofficial resource created to aid self-study. Always refer to CIRO’s official handbook and current exam syllabus for definitive requirements.</p>
   </div>
 
   <footer>
@@ -531,9 +605,37 @@ sources of information and ways of using information to provide meaningful insig
       <a href="Element-8.2.html">Element 8 (Part 2)</a>
       <a href="Element-9.html">Element 9</a>
     </div>
-    <p>© CIRE Self‑Study Hub — created to support affordable exam preparation. Freely share with fellow learners.</p>
+    <p>© HawkHive Study Prep — created to support affordable exam preparation. Freely share with fellow learners.</p>
     <p style="margin-top: 8px;">📍 All 9 elements are live at <strong>hawkhive.ca/CIRE/Element-1</strong> through <strong>Element-9</strong></p>
   </footer>
 </div>
+<script>
+  // Mobile menu toggle
+  const toggleBtn = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('.nav-menu');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+    });
+  }
+  // Close menu when clicking a link
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      navMenu.classList.remove('active');
+    });
+  });
+  // Active link highlight on scroll (optional)
+  window.addEventListener('scroll', () => {
+    let fromTop = window.scrollY + 100;
+    document.querySelectorAll('.nav-link').forEach(link => {
+      let section = document.querySelector(link.getAttribute('href'));
+      if (section && section.offsetTop <= fromTop && section.offsetTop + section.offsetHeight > fromTop) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  });
+</script>
 </body>
 </html>
