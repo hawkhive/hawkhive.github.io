@@ -29,6 +29,7 @@
   --navy-border: #90aad8;
   --sidebar-w: 290px;
   --accent: #c47b1a;
+  --blue-deep: #1b3a5c;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -257,7 +258,7 @@ body {
 
 /* ─── CONTENT ─── */
 .content {
-  max-width: 840px;
+  max-width: auto;
   padding: 0 72px 120px;
 }
 
@@ -591,10 +592,28 @@ tr:nth-child(even) td { background: var(--warm); }
   .compare-grid, .strat-grid { grid-template-columns: 1fr; }
   .def-row { grid-template-columns: 1fr; }
   .cover-grid { grid-template-columns: 1fr 1fr; }
+  #sidebar-toggle {
+      display: block;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: var(--blue-deep);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+    #sidebar.open {
+      display: block !important;
+    }
 }
 </style>
 </head>
 <body>
+  <button id="sidebar-toggle">&#9776;</button>
 
 <!-- SIDEBAR -->
 <nav id="sidebar">
@@ -1620,7 +1639,11 @@ tr:nth-child(even) td { background: var(--warm); }
 </div><!-- /main -->
 
 <button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-
+<script>
+document.getElementById('sidebar-toggle').addEventListener('click', function() {
+  document.getElementById('sidebar').classList.toggle('open');
+});
+</script>
 <script>
 function goTo(id) {
   const el = document.getElementById(id);

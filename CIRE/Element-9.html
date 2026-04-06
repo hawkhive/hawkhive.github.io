@@ -16,6 +16,7 @@
   --gold:#8a6200;--gold-bg:#fdf8ee;--gold-bd:#e0c060;
   --plum:#4a1060;--plum-bg:#f5eefa;--plum-bd:#c090e0;
   --rust:#8a3010;--rust-bg:#faf2ee;--rust-bd:#e0a880;
+  --blue-deep: #1b3a5c;
   --sidebar-w:285px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -61,7 +62,7 @@ body{background:#0c0e12;font-family:'Mulish',sans-serif;color:var(--ink);display
 .cvstatn{font-family:'Lora',serif;font-size:24px;font-weight:700;color:#e0c060;line-height:1;margin-bottom:3px;}
 .cvstatl{font-size:9px;color:rgba(255,255,255,0.22);line-height:1.35;}
 
-.content{max-width:820px;padding:0 70px 140px;}
+.content{max-width:auto;padding:0 70px 140px;}
 .sec{padding-top:72px;}
 .secrule{height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:24px;}
 .sechead{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;}
@@ -202,10 +203,37 @@ tr:nth-child(even) td{background:var(--warm);}
 .scorel{font-size:12px;color:rgba(255,255,255,0.38);margin-top:5px;}
 #scrolltop{position:fixed;bottom:24px;right:24px;background:var(--gold);color:#fff;border:none;border-radius:50%;width:42px;height:42px;font-size:17px;cursor:pointer;opacity:0;transition:opacity 0.3s;z-index:200;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 4px 18px rgba(0,0,0,0.35);}
 #scrolltop.vis{opacity:1;}
-@media(max-width:900px){#sb{display:none;}#main{margin-left:0;}.content{padding:0 22px 80px;}.cover{padding:56px 22px;}.quizwrap{padding:30px 22px 70px;}.ethics-grid{grid-template-columns:1fr;}.cvstats{grid-template-columns:repeat(2,1fr);}.coi-process{flex-direction:column;}}
+@media(max-width:900px){
+  #sb{display:none;}
+  #main{margin-left:0;}
+  .content{padding:0 22px 80px;}
+  .cover{padding:56px 22px;}
+  .quizwrap{padding:30px 22px 70px;}
+  .ethics-grid{grid-template-columns:1fr;}
+  .cvstats{grid-template-columns:repeat(2,1fr);}
+  .coi-process{flex-direction:column;} 
+  #sidebar-toggle {
+      display: block;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: var(--blue-deep);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+    #sidebar.open {
+      display: block !important;
+    }
+    }
 </style>
 </head>
 <body>
+  <button id="sidebar-toggle">&#9776;</button>
 <nav id="sb">
   <div class="sbh">
     <div class="sbpill">CIRE · Element 9</div>
@@ -632,7 +660,11 @@ tr:nth-child(even) td{background:var(--warm);}
 </div>
 </div><!-- /main -->
 <button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-
+<script>
+document.getElementById('sidebar-toggle').addEventListener('click', function() {
+  document.getElementById('sidebar').classList.toggle('open');
+});
+</script>
 <script>
 const Qs=[
 {id:1,d:'e',q:"An RR's firm underwrites a new bond issue and earns a significant fee from the issuing corporation. The RR is now recommending this bond to retail clients. What type of conflict of interest does this represent?",o:["A. A personal conflict arising from the RR's individual financial relationship with the issuer","B. A structural conflict built into the dealer's business model — the dealer has a financial incentive to sell the bonds it underwrote, regardless of whether they are the best option for clients","C. Not a conflict of interest since underwriting and sales are legitimate business activities","D. A prohibited conflict that cannot be managed and must be avoided entirely"],a:1,e:"This is a <strong>structural conflict of interest</strong> — the dealer earns a fee from the issuer and then distributes the securities to clients. The dealer has a financial incentive to recommend these bonds regardless of their comparative merit. This must be disclosed to clients (in the RDI and at point of sale), addressed through suitability requirements (the bonds must genuinely be suitable), but does not need to be avoided — it is a manageable structural conflict inherent in the underwriting business."},

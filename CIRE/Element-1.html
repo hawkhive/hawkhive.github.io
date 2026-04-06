@@ -807,6 +807,24 @@
     .def-item { grid-template-columns: 1fr; }
     .ml-stages { grid-template-columns: 1fr; }
     .section-title { font-size: 20px; }
+    table { width: fit-screen; table-layout: fixed;}
+    #sidebar-toggle {
+      display: block;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: var(--blue-deep);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+    #sidebar.open {
+      display: block !important;
+    }
   }
 
   strong { color: var(--black-deep); }
@@ -814,6 +832,8 @@
 </style>
 </head>
 <body>
+
+<button id="sidebar-toggle">&#9776;</button>
 
 <!-- SIDEBAR -->
 <nav id="sidebar">
@@ -2110,6 +2130,11 @@
 
 </div>
 
+<script>
+document.getElementById('sidebar-toggle').addEventListener('click', function() {
+  document.getElementById('sidebar').classList.toggle('open');
+});
+</script>
 <script>
 const Qs=[
 {id:1,d:'e',q:"Who has primary jurisdiction over securities regulation in Canada?",o:["A. The federal Department of Finance, which sets national securities policy","B. Provincial and territorial governments — securities regulation is constitutionally a provincial responsibility","C. CIRO, which is the single national securities regulator formed in 2023","D. The Bank of Canada, which oversees all financial market regulations"],a:1,e:"<strong>Securities regulation in Canada is constitutionally a provincial and territorial responsibility</strong> under the British North America Act (1867), which assigned property and civil rights to provinces. There is no single national securities regulator — each province and territory has its own securities act and regulator. The CSA coordinates provincial regulators; CIRO is a self-regulatory organization operating under provincial regulatory oversight."},

@@ -17,6 +17,7 @@
   --emerald:#065f46;--emerald-bg:#ecfdf5;--emerald-border:#6ee7b7;
   --orange:#c2410c;--orange-bg:#fff7ed;--orange-border:#fdba74;
   --sidebar-w:290px;
+  --blue-deep: #1b3a5c;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -64,7 +65,7 @@ body{background:#1a1028;font-family:'Inter',sans-serif;color:var(--ink);display:
 .cv-stat-l{font-size:9px;color:rgba(255,255,255,0.25);line-height:1.3;}
 
 /* CONTENT */
-.content{max-width:840px;padding:0 62px 120px;}
+.content{max-width:auto;padding:0 62px 120px;}
 .sec{padding-top:70px;}
 .sec-rule{height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:24px;}
 .sec-hdr{display:flex;align-items:flex-start;gap:13px;margin-bottom:20px;}
@@ -244,11 +245,28 @@ tr:nth-child(even) td{background:var(--warm);}
 .score-l{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;}
 #scrolltop{position:fixed;bottom:22px;right:22px;background:var(--violet);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:16px;cursor:pointer;opacity:0;transition:opacity 0.3s;z-index:200;display:flex;align-items:center;justify-content:center;font-weight:700;}
 #scrolltop.visible{opacity:1;}
-@media(max-width:900px){#sb{display:none;}#main{margin-left:0;}.content{padding:0 20px 80px;}.cover{padding:54px 20px;}.quiz-wrap{padding:28px 20px 60px;}.ac-grid,.pref-grid,.cmp-3,.mp-grid{grid-template-columns:1fr 1fr;}.cmp-2{grid-template-columns:1fr;}.cv-stats{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:900px){#sb{display:none;}#main{margin-left:0;}.content{padding:0 20px 80px;}.cover{padding:54px 20px;}.quiz-wrap{padding:28px 20px 60px;}.ac-grid,.pref-grid,.cmp-3,.mp-grid{grid-template-columns:1fr 1fr;}.cmp-2{grid-template-columns:1fr;}.cv-stats{grid-template-columns:repeat(3,1fr);} #sidebar-toggle {
+      display: block;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: var(--blue-deep);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+    #sidebar.open {
+      display: block !important;
+    }
+    }
 </style>
 </head>
 <body>
-
+<button id="sidebar-toggle">&#9776;</button>
 <!-- SIDEBAR -->
 <nav id="sb">
   <div class="sbh">
@@ -922,7 +940,11 @@ Yield to Maturity = Total return if held to maturity, accounting for price paid 
 </div>
 </div><!-- /main -->
 <button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-
+<script>
+document.getElementById('sidebar-toggle').addEventListener('click', function() {
+  document.getElementById('sidebar').classList.toggle('open');
+});
+</script>
 <script>
 const Qs=[
 // EASY 1-15

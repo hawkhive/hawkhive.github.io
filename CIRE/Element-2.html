@@ -22,9 +22,11 @@
   --blue-dim: rgba(99,179,237,0.12);
   --purple: #b794f4;
   --purple-dim: rgba(183,148,244,0.12);
+  --blue-deep: #2a4365;
   --text: #e2e8f0;
   --text-muted: #718096;
   --text-dim: #a0aec0;
+  --blue-deep: #1b3a5c;
   --sidebar-w: 300px;
 }
 
@@ -760,15 +762,35 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
 
 /* MOBILE */
 @media (max-width: 900px) {
+
   #sidebar { display: none; }
   #main { margin-left: 0; }
   .content { padding: 0 24px 80px; }
   .cover { padding: 60px 24px; }
   .cover-num { display: none; }
+  #sidebar-toggle {
+      display: block;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: var(--blue-deep);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+    #sidebar.open {
+      display: block !important;
+    }
 }
 </style>
 </head>
 <body>
+
+  <button id="sidebar-toggle">&#9776;</button>
 
 <!-- SIDEBAR -->
 <nav id="sidebar">
@@ -1963,7 +1985,11 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
 </div><!-- /main -->
 
 <button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-
+<script>
+document.getElementById('sidebar-toggle').addEventListener('click', function() {
+  document.getElementById('sidebar').classList.toggle('open');
+});
+</script>
 <script>
 // Smooth scroll to section
 function scrollToSection(id) {
