@@ -704,7 +704,7 @@ tr:nth-child(even) td{background:var(--warm);}
     <div class="iotm-grid">
       <div class="iotm itm">
         <div class="iotm-title">ITM — In the Money</div>
-        <div class="iotm-body">Has intrinsic value right now.<br><br>Call ITM: Stock > Strike<br>Put ITM: Stock &lt; Strike<br><br>Example: $100 call when stock = $115 → ITM by $15<br><br>ITM options cost more (more intrinsic value). Moving deeper ITM = delta approaches 1.0</div>
+        <div class="iotm-body">Has intrinsic value right now.<br><br>Call ITM: Stock &gt; Strike<br>Put ITM: Stock &lt; Strike<br><br>Example: $100 call when stock = $115 → ITM by $15<br><br>ITM options cost more (more intrinsic value). Moving deeper ITM = delta approaches 1.0</div>
       </div>
       <div class="iotm atm">
         <div class="iotm-title">ATM — At the Money</div>
@@ -712,7 +712,7 @@ tr:nth-child(even) td{background:var(--warm);}
       </div>
       <div class="iotm otm">
         <div class="iotm-title">OTM — Out of the Money</div>
-        <div class="iotm-body">Has no intrinsic value — only time value.<br><br>Call OTM: Stock &lt; Strike<br>Put OTM: Stock > Strike<br><br>Example: $100 call when stock = $82 → OTM by $18<br><br>OTM options are cheaper (less likely to reach strike). Can go to zero rapidly near expiry. Delta &lt; 0.50</div>
+        <div class="iotm-body">Has no intrinsic value — only time value.<br><br>Call OTM: Stock &lt; Strike<br>Put OTM: Stock &gt; Strike<br><br>Example: $100 call when stock = $82 → OTM by $18<br><br>OTM options are cheaper (less likely to reach strike). Can go to zero rapidly near expiry. Delta &lt; 0.50</div>
       </div>
     </div>
   </div>
