@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIRE Element 1 — Canadian Securities Regulatory Framework</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --ink-light: #2d2d4e;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e8;
+    --gold: #c9942a;
+    --gold-light: #e8b84b;
+    --gold-pale: #f5e6c0;
+    --red: #8b1a1a;
+    --blue-deep: #1b3a5c;
+    --blue-mid: #2563a8;
+    --blue-light: #dceeff;
+    --green-deep: #1a4a2a;
+    --green-light: #e8f5eb;
+    --accent: #c9942a;
+    --rule: #d4c5a0;
+    --sidebar-bg: #1b3a5c;
+    --white-deep: #ffffff;
+    --sb:#0d1421;--sb-b:rgba(255,255,255,0.07);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #2a2a3e;
+    font-family: 'Source Serif 4', Georgia, serif;
+    color: var(--ink);
+    line-height: 1.75;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--sb);
+    border-right: 1px solid var(--sb-b);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding-top: 30px;
+  }
+
+  #sidebar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  #sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  #sidebar::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 2px;
+  }
+
+  .sidebar-header {
+    padding: 20px 24px 28px;
+    border-bottom: 1px solid var(--sb-b);
+    background: linear-gradient(135deg, rgba(201,148,42,0.08), transparent);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+  }
+
+  .sidebar-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .sidebar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+  }
+
+  .sidebar-subtitle {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+  }
+
+  .nav-group {
+    padding: 16px 0;
+  }
+
+  .nav-group-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    padding: 0 24px 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    position: relative;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .nav-item:hover {
+    background: rgba(201,148,42,0.05);
+    border-left-color: var(--gold);
+    color: rgba(255,255,255,0.9);
+  }
+
+  .nav-item.active {
+    background: rgba(201,148,42,0.15);
+    border-left-color: var(--gold);
+    color: #fff;
+  }
+
+  .nav-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    min-width: 28px;
+    padding-top: 2px;
+    font-weight: 500;
+  }
+
+  .nav-text {
+    font-size: 12.5px;
+    line-height: 1.4;
+    transition: color 0.2s;
+  }
+
+  /* ── MAIN WRAPPER ── */
+  #main {
+    margin-left: 280px;
+    flex: 1;
+    width: 100%;
+  }
+
+  /* COVER */
+  .cover {
+    background: var(--blue-deep);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      repeating-linear-gradient(
+        0deg, transparent, transparent 40px,
+        rgba(201,148,42,0.06) 40px, rgba(201,148,42,0.06) 41px
+      ),
+      repeating-linear-gradient(
+        90deg, transparent, transparent 40px,
+        rgba(201,148,42,0.04) 40px, rgba(201,148,42,0.04) 41px
+      );
+  }
+  .cover-border {
+    position: absolute;
+    top: 24px; left: 24px; right: 24px; bottom: 24px;
+    border: 2px solid rgba(201,148,42,0.4);
+    pointer-events: none;
+  }
+  .cover-border::before {
+    content: '';
+    position: absolute;
+    top: 6px; left: 6px; right: 6px; bottom: 6px;
+    border: 1px solid rgba(201,148,42,0.2);
+  }
+  .cover-maple {
+    font-size: 72px;
+    margin-bottom: 24px;
+    filter: drop-shadow(0 0 20px rgba(201,148,42,0.4));
+  }
+  .cover-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0.9;
+  }
+  .cover-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 900;
+    color: #fff;
+    text-align: center;
+    line-height: 1.15;
+    max-width: 700px;
+    margin-bottom: 8px;
+  }
+  .cover-title span { color: var(--gold); }
+  .cover-subtitle {
+    font-family: 'Source Serif 4', serif;
+    font-size: 20px;
+    color: rgba(255,255,255,0.65);
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 48px;
+    max-width: 500px;
+  }
+  .cover-divider {
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 40px;
+  }
+  .cover-toc {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    max-width: 720px;
+    width: 100%;
+  }
+  .cover-toc-item {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(201,148,42,0.2);
+    border-radius: 6px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .cover-toc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    min-width: 24px;
+  }
+  .cover-toc-text {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.3;
+  }
+
+  /* MAIN LAYOUT */
+  .book {
+    max-width: auto;
+    margin: 0 auto;
+    background: var(--paper);
+  }
+
+  /* CHAPTER HEADER */
+  .chapter-header {
+    background: var(--blue-deep);
+    padding: 60px 64px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .chapter-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+  }
+  .chapter-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .chapter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    max-width: 600px;
+  }
+  .chapter-intro {
+    margin-top: 20px;
+    font-size: 16px;
+    color: rgba(255,255,255,0.65);
+    max-width: 580px;
+    font-style: italic;
+  }
+
+  /* CONTENT */
+  .content {
+    padding: 0 64px 80px;
+  }
+
+  /* SECTION */
+  .section {
+    margin-top: 72px;
+    padding-top: 40px;
+    border-top: 1px solid var(--rule);
+  }
+  .section:first-child { border-top: none; }
+
+  .section-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    background: var(--blue-deep);
+    color: var(--gold);
+    padding: 4px 10px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--blue-deep);
+    line-height: 1.3;
+    margin-bottom: 20px;
+  }
+  .section-body p {
+    font-size: 15.5px;
+    color: var(--ink);
+    margin-bottom: 16px;
+    line-height: 1.85;
+  }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  /* SUBSECTIONS */
+  .subsection {
+    margin-top: 32px;
+  }
+  .subsection-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--blue-deep);
+    margin-bottom: 12px;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold);
+  }
+
+  /* CALLOUT BOXES */
+  .callout {
+    margin: 28px 0;
+    padding: 20px 24px;
+    border-radius: 6px;
+    border-left: 4px solid;
+  }
+  .callout.info {
+    background: var(--blue-light);
+    border-color: var(--blue-mid);
+  }
+  .callout.warning {
+    background: #fff8e1;
+    border-color: var(--gold);
+  }
+  .callout.important {
+    background: #fdecea;
+    border-color: var(--red);
+  }
+  .callout.tip {
+    background: var(--green-light);
+    border-color: #2d8a4e;
+  }
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .callout.info .callout-label { color: var(--blue-mid); }
+  .callout.warning .callout-label { color: #8a6200; }
+  .callout.important .callout-label { color: var(--red); }
+  .callout.tip .callout-label { color: #1a5c32; }
+  .callout p {
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+
+  /* DEFINITION LIST */
+  .def-list { margin: 20px 0; }
+  .def-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0;
+    margin-bottom: 2px;
+  }
+  .def-term {
+    background: var(--blue-deep);
+    color: var(--gold-light);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: flex-start;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+  }
+  .def-desc {
+    background: #eef3fa;
+    padding: 10px 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  /* DIAGRAMS */
+  .diagram {
+    margin: 32px 0;
+    background: var(--paper-warm);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 32px;
+    overflow-x: auto;
+  }
+  .diagram-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--blue-mid);
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  /* HIERARCHY DIAGRAM */
+  .hierarchy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .h-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+  }
+  .h-box {
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    min-width: 130px;
+    max-width: 200px;
+  }
+  .h-box.federal { background: var(--blue-deep); color: #fff; }
+  .h-box.provincial { background: var(--blue-mid); color: #fff; }
+  .h-box.sro { background: var(--gold); color: var(--blue-deep); }
+  .h-box.market { background: #e8f5eb; color: var(--green-deep); border: 1px solid #2d8a4e; }
+  .h-box.investor { background: #fdecea; color: var(--red); border: 1px solid var(--red); }
+  .h-connector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 0;
+  }
+  .h-connector svg { display: block; }
+  .h-connector-wide {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 4px 0;
+  }
+
+  /* FLOW DIAGRAM */
+  .flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .flow-step {
+    background: var(--blue-deep);
+    color: #fff;
+    padding: 14px 18px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 110px;
+    flex: 1;
+    max-width: 160px;
+  }
+  .flow-step.highlight { background: var(--red); }
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    color: var(--gold);
+    font-size: 20px;
+    font-weight: 900;
+  }
+
+  /* TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 14px;
+  }
+  th {
+    background: var(--blue-deep);
+    color: var(--gold-light);
+    padding: 12px 14px;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+  tr:nth-child(even) td { background: var(--paper-warm); }
+  tr:hover td { background: var(--blue-light); }
+
+  /* PILL TAGS */
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+  .tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .tag.blue { background: var(--blue-light); color: var(--blue-deep); }
+  .tag.gold { background: var(--gold-pale); color: #7a5500; }
+  .tag.green { background: var(--green-light); color: var(--green-deep); }
+  .tag.red { background: #fdecea; color: var(--red); }
+
+  /* KEY POINTS */
+  .key-points {
+    background: var(--paper-warm);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 28px 0;
+  }
+  .key-points-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .key-points ul { padding-left: 20px; }
+  .key-points li {
+    font-size: 14.5px;
+    margin-bottom: 8px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .key-points li::marker { color: var(--gold); }
+
+  /* MONEY LAUNDERING STAGES */
+  .ml-stages {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .ml-stage {
+    background: var(--blue-deep);
+    border-radius: 8px;
+    padding: 20px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .ml-stage::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--gold);
+  }
+  .ml-stage-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.08);
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    line-height: 1;
+  }
+  .ml-stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .ml-stage-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .ml-stage p { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.6; }
+
+  /* AGENCY CARDS */
+  .agency-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .agency-card {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 18px 20px;
+    border-top: 3px solid var(--blue-mid);
+  }
+  .agency-card.gold-top { border-top-color: var(--gold); }
+  .agency-card.red-top { border-top-color: var(--red); }
+  .agency-card.green-top { border-top-color: #2d8a4e; }
+  .agency-abbr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue-mid);
+    margin-bottom: 4px;
+  }
+  .agency-card.gold-top .agency-abbr { color: #8a6200; }
+  .agency-card.red-top .agency-abbr { color: var(--red); }
+  .agency-card.green-top .agency-abbr { color: #1a5c32; }
+  .agency-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .agency-desc {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.55;
+  }
+
+  /* CIPF BOX */
+  .cipf-box {
+    background: linear-gradient(135deg, var(--blue-deep) 0%, #0d2540 100%);
+    border-radius: 10px;
+    padding: 32px;
+    color: #fff;
+    margin: 28px 0;
+  }
+  .cipf-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--gold);
+    margin: 12px 0 4px;
+  }
+  .cipf-label { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 20px; }
+  .cipf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .cipf-item {
+    background: rgba(255,255,255,0.07);
+    border-radius: 6px;
+    padding: 14px;
+  }
+  .cipf-item-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .cipf-item p { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+
+  /* EXAM TIP */
+  .exam-tip {
+    background: linear-gradient(135deg, #1a4a2a, #0d2a18);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 28px 0;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .exam-tip-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+  .exam-tip-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #5dc77a;
+    margin-bottom: 6px;
+  }
+  .exam-tip p { font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.65; }
+
+  /* DIVIDER */
+  .gold-rule {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 40px 0;
+  }
+
+  /* FOOTER */
+  .book-footer {
+    background: var(--blue-deep);
+    padding: 40px 64px;
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    text-align: center;
+  }
+  .book-footer strong { color: var(--gold); }
+
+  /* Quiz Styles */
+  .quiz-wrap{background:var(--sb);padding:46px 62px 80px;}
+.quiz-h1{font-family:'Fraunces',serif;font-size:32px;font-weight:900;color:#e0eeff;margin-bottom:6px;text-align:center;}
+.quiz-sub-txt{font-size:12px;color:rgba(255,255,255,0.3);font-family:'Roboto Mono',monospace;letter-spacing:1px;text-align:center;}
+.quiz-stats{display:flex;justify-content:center;gap:28px;margin-top:18px;flex-wrap:wrap;padding-bottom:32px;}
+.qs-n{font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:#93c5fd;}
+.qs-l{font-size:10px;color:rgba(255,255,255,0.28);text-align:center;}
+.qq{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:9px;padding:20px;margin-bottom:11px;transition:border-color 0.2s;}
+.qq:hover{border-color:rgba(15,85,153,0.35);}
+.qq-top{display:flex;align-items:flex-start;gap:11px;margin-bottom:13px;}
+.qq-num{font-family:'Roboto Mono',monospace;font-size:10px;color:#93c5fd;min-width:30px;flex-shrink:0;margin-top:2px;}
+.qq-diff{font-family:'Roboto Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+.de{background:rgba(21,128,61,0.2);color:#4ade80;border:1px solid rgba(21,128,61,0.3);}
+.dm{background:rgba(194,87,0,0.2);color:#fb923c;border:1px solid rgba(194,87,0,0.3);}
+.dh{background:rgba(185,28,28,0.2);color:#f87171;border:1px solid rgba(185,28,28,0.3);}
+.qq-text{font-size:13.5px;color:rgba(224,238,255,0.82);line-height:1.7;flex:1;}
+.qq-opts{display:flex;flex-direction:column;gap:5px;padding-left:41px;}
+.qq-opt{display:flex;gap:8px;align-items:flex-start;padding:8px 12px;border-radius:5px;cursor:pointer;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);transition:all 0.17s;font-size:13px;color:rgba(224,238,255,0.55);line-height:1.5;}
+.qq-opt:hover{background:rgba(15,85,153,0.1);border-color:rgba(15,85,153,0.3);color:rgba(224,238,255,0.85);}
+.qq-opt.correct{background:rgba(21,128,61,0.15);border-color:rgba(21,128,61,0.4);color:#86efac;}
+.qq-opt.wrong{background:rgba(185,28,28,0.12);border-color:rgba(185,28,28,0.3);color:#fca5a5;}
+.opt-l{font-family:'Roboto Mono',monospace;font-size:10px;color:#93c5fd;min-width:16px;flex-shrink:0;margin-top:1px;}
+.qq-opt.correct .opt-l{color:#4ade80;}
+.qq-opt.wrong .opt-l{color:#f87171;}
+.qq-exp{margin-top:10px;padding:10px 12px;background:rgba(15,85,153,0.08);border-left:3px solid var(--blue);border-radius:0 5px 5px 0;display:none;font-size:12.5px;color:rgba(224,238,255,0.55);line-height:1.7;}
+.qq-exp strong{color:#93c5fd;}
+.qq-exp.show{display:block;}
+.quiz-ctrl{text-align:center;padding:22px 0 0;}
+.btn{padding:10px 26px;border-radius:6px;border:none;cursor:pointer;font-family:'Nunito Sans',sans-serif;font-size:13px;font-weight:700;transition:all 0.18s;}
+.btn-p{background:var(--blue);color:#fff;}
+.btn-p:hover{background:#0c4476;}
+.btn-s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.65);margin-left:8px;}
+.score-disp{background:rgba(15,85,153,0.15);border:1px solid rgba(15,85,153,0.3);border-radius:8px;padding:16px 26px;margin:16px auto;max-width:340px;display:none;text-align:center;}
+.score-n{font-family:'Fraunces',serif;font-size:46px;font-weight:700;color:#93c5fd;line-height:1;}
+.score-l{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;}
+#scrolltop{position:fixed;bottom:22px;right:22px;background:var(--blue);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:16px;cursor:pointer;opacity:0;transition:opacity 0.3s;z-index:200;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,0.4);}
+#scrolltop.visible{opacity:1;}
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    #sidebar { display: none; }
+    #main { margin-left: 0; }
+    .content { padding: 0 24px 60px; }
+    .chapter-header { padding: 40px 24px 36px; }
+    .chapter-title { font-size: 26px; }
+    .def-item { grid-template-columns: 1fr; }
+    .ml-stages { grid-template-columns: 1fr; }
+    .section-title { font-size: 20px; }
+  }
+
+  strong { color: var(--black-deep); }
+  em { color: var(--gold); font-style: normal; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">CIRE Exam — Element 1</div>
+    <div class="sidebar-title">Canadian Securities Regulatory Framework</div>
+    <div class="sidebar-subtitle">11 sections · Click to navigate</div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Contents</div>
+    <a class="nav-item" onclick="scrollToSection('s11')">
+      <span class="nav-num">1.1</span>
+      <span class="nav-text">CSA & Provincial Regulators</span>
+    </a>
+    <a class="nav-item" onclick="scrollToSection('s12')">
+      <span class="nav-num">1.2</span>
+      <span class="nav-text">CIRO</span>
+    </a>
+    <a class="nav-item" onclick="scrollToSection('s13')">
+      <span class="nav-num">1.3</span>
+      <span class="nav-text">Registration & Approval</span>
+    </a>
+    <a class="nav-item" onclick="scrollToSection('s14')">
+      <span class="nav-num">1.4</span>
+      <span class="nav-text">Marketplaces</span>
+    </a>
+    <a class="nav-item" onclick="scrollToSection('s15')">
+      <span class="nav-num">1.5</span>
+      <span class="nav-text">Clearing Agencies</span>
+    </a>
+    <a class="nav-item" onclick="scrollToSection('s16')">
+      <span class="nav-num">1.6</span>
+      <span class="nav-text">CIPF Investor Protection</span>
+    </a>
+    <a class="nav-item" onclick="scrollToSection('s17')">
+      <span class="nav-num">1.7</span>
+      <span class="nav-text">Other Regulators</span>
+    </a>
+    <a class="nav-item" onclick="scrollToSection('s18')">
+      <span class="nav-num">1.8</span>
+      <span class="nav-text">Key Legislation</span>
+    </a>
+    <a class="nav-item" onclick="scrollToSection('s19')">
+      <span class="nav-num">1.9</span>
+      <span class="nav-text">Criminal Code</span>
+    </a>
+    <a class="nav-item" onclick="scrollToSection('s110')">
+      <span class="nav-num">1.10</span>
+      <span class="nav-text">AML / PCMLTFA</span>
+    </a>
+    <a class="nav-item" onclick="scrollToSection('s111')">
+      <span class="nav-num">1.11</span>
+      <span class="nav-text">Other Applicable Laws</span>
+    </a>
+    <a class="nav-item" onclick="scrollToSection('summary')">
+      <span class="nav-num">★</span>
+      <span class="nav-text">Master Summary</span>
+    </a>
+    <a class="nav-item" onclick="scrollToSection('quiz')">
+      <span class="nav-num">❓</span>
+      <span class="nav-text">Practice Quiz</span>
+    </a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-border"></div>
+  <div class="cover-maple">🍁</div>
+  <div class="cover-label">CIRE Examination Preparation</div>
+  <h1 class="cover-title">Element <span>1</span></h1>
+  <p class="cover-subtitle">Canadian Securities Regulatory Framework — Complete Study Guide</p>
+  <div class="cover-divider"></div>
+  <div class="cover-toc">
+    <div class="cover-toc-item"><span class="cover-toc-num">1.1</span><span class="cover-toc-text">CSA & Provincial Regulators</span></div>
+    <div class="cover-toc-item"><span class="cover-toc-num">1.2</span><span class="cover-toc-text">CIRO — Role & Rules</span></div>
+    <div class="cover-toc-item"><span class="cover-toc-num">1.3</span><span class="cover-toc-text">Registration & Approval</span></div>
+    <div class="cover-toc-item"><span class="cover-toc-num">1.4</span><span class="cover-toc-text">Marketplaces</span></div>
+    <div class="cover-toc-item"><span class="cover-toc-num">1.5</span><span class="cover-toc-text">Clearing Agencies</span></div>
+    <div class="cover-toc-item"><span class="cover-toc-num">1.6</span><span class="cover-toc-text">CIPF Investor Protection</span></div>
+    <div class="cover-toc-item"><span class="cover-toc-num">1.7</span><span class="cover-toc-text">Other Regulators</span></div>
+    <div class="cover-toc-item"><span class="cover-toc-num">1.8</span><span class="cover-toc-text">Key Legislation</span></div>
+    <div class="cover-toc-item"><span class="cover-toc-num">1.9</span><span class="cover-toc-text">Criminal Code</span></div>
+    <div class="cover-toc-item"><span class="cover-toc-num">1.10</span><span class="cover-toc-text">AML / PCMLTFA</span></div>
+    <div class="cover-toc-item"><span class="cover-toc-num">1.11</span><span class="cover-toc-text">Other Applicable Laws</span></div>
+  </div>
+</div>
+
+<!-- BOOK -->
+<div class="book">
+
+  <!-- CHAPTER HEADER -->
+  <div class="chapter-header">
+    <div class="chapter-eyebrow">Element 1 — Full Syllabus Coverage</div>
+    <h2 class="chapter-title">Overview of the Canadian Securities Regulatory Framework</h2>
+    <p class="chapter-intro">A complete, exam-ready breakdown of every regulatory body, rule, law, and concept tested in Element 1 of the CIRE examination.</p>
+  </div>
+
+  <div class="content">
+
+    <!-- ==================== 1.1 CSA ==================== -->
+    <div id="s11" class="section">
+      <div class="section-tag">1.1</div>
+      <h2 class="section-title">Canadian Securities Administrators (CSA) & Provincial Regulators</h2>
+      <div class="section-body">
+
+        <div class="callout info">
+          <div class="callout-label">🇨🇦 The Big Picture</div>
+          <p>Unlike the United States (which has a single federal regulator, the SEC), Canada has <strong>no single national securities regulator</strong>. Securities regulation is a <strong>provincial and territorial jurisdiction</strong> under the Canadian Constitution. Each of Canada's 10 provinces and 3 territories has its own securities regulator. The CSA is the <em>umbrella body</em> that coordinates them.</p>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">What is the CSA?</h3>
+          <p>The <strong>Canadian Securities Administrators (CSA)</strong> is not a regulator in the legal sense — it does not have its own statutory authority. It is a voluntary umbrella organization made up of the 13 provincial and territorial securities regulators. It exists purely to <strong>harmonize and coordinate</strong> securities regulation across Canada so that the patchwork of 13 separate regimes functions as a coherent national system.</p>
+          <p>Think of it this way: if SEBI in India has full authority over Indian markets, in Canada that same authority is split among 13 separate bodies. The CSA is the "meeting table" where those 13 bodies coordinate policy.</p>
+        </div>
+
+        <!-- HIERARCHY DIAGRAM -->
+        <div class="diagram">
+          <div class="diagram-title">Canadian Regulatory Hierarchy — Overview</div>
+          <div class="hierarchy">
+            <div class="h-row">
+              <div class="h-box federal">CSA<br><small style="font-weight:400;font-size:11px">Coordinating Umbrella</small></div>
+            </div>
+            <div class="h-connector"><svg width="2" height="30"><line x1="1" y1="0" x2="1" y2="30" stroke="#c9942a" stroke-width="2"/></svg></div>
+            <div class="h-row" style="gap:8px;flex-wrap:wrap;">
+              <div class="h-box provincial" style="font-size:11px;min-width:90px;max-width:120px;padding:8px 10px;">OSC<br>Ontario</div>
+              <div class="h-box provincial" style="font-size:11px;min-width:90px;max-width:120px;padding:8px 10px;">AMF<br>Québec</div>
+              <div class="h-box provincial" style="font-size:11px;min-width:90px;max-width:120px;padding:8px 10px;">BCSC<br>BC</div>
+              <div class="h-box provincial" style="font-size:11px;min-width:90px;max-width:120px;padding:8px 10px;">ASC<br>Alberta</div>
+              <div class="h-box provincial" style="font-size:11px;min-width:90px;max-width:120px;padding:8px 10px;">+ 9 others</div>
+            </div>
+            <div class="h-connector"><svg width="2" height="30"><line x1="1" y1="0" x2="1" y2="30" stroke="#c9942a" stroke-width="2"/></svg></div>
+            <div class="h-row">
+              <div class="h-box sro">CIRO<br><small style="font-size:11px;font-weight:400">Self-Regulatory Organization</small></div>
+            </div>
+            <div class="h-connector"><svg width="2" height="30"><line x1="1" y1="0" x2="1" y2="30" stroke="#c9942a" stroke-width="2"/></svg></div>
+            <div class="h-row" style="gap:8px;flex-wrap:wrap;">
+              <div class="h-box market" style="font-size:11px;">Investment Dealers</div>
+              <div class="h-box market" style="font-size:11px;">Mutual Fund Dealers</div>
+              <div class="h-box investor" style="font-size:11px;">Investors / Public</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Jurisdiction of the CSA</h3>
+          <p>The CSA has <strong>no direct statutory jurisdiction</strong> — it cannot pass binding laws. However, through the collective adoption of <strong>National Instruments (NI)</strong>, each province agrees to enact the same rules simultaneously, creating <em>de facto</em> national standards. Key jurisdictional points:</p>
+          <ul style="padding-left:22px;margin:12px 0;">
+            <li style="margin-bottom:8px;font-size:15px;">Covers all 10 provinces and 3 territories</li>
+            <li style="margin-bottom:8px;font-size:15px;">Each provincial regulator has its own Act (e.g., Ontario's <em>Securities Act</em>, BC's <em>Securities Act</em>)</li>
+            <li style="margin-bottom:8px;font-size:15px;">The CSA's coordination power comes from its members voluntarily agreeing to act together</li>
+            <li style="margin-bottom:8px;font-size:15px;">The largest and most influential members are the <strong>OSC</strong> (Ontario), <strong>AMF</strong> (Quebec), and <strong>BCSC</strong> (BC)</li>
+          </ul>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Mandate and Objectives of the CSA</h3>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Investor Protection</div>
+              <div class="def-desc">Protect investors from unfair, improper, or fraudulent practices in the securities markets.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Fair & Efficient Markets</div>
+              <div class="def-desc">Foster fair, efficient, and competitive capital markets that allow businesses to raise capital.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Reduce Systemic Risk</div>
+              <div class="def-desc">Manage risks that could destabilize the financial system as a whole.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Harmonization</div>
+              <div class="def-desc">Eliminate duplication and inconsistency in securities regulation across provinces.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Types of CSA Instruments — Explained in Full</h3>
+          <p>The CSA uses a layered system of documents to create rules, policies, and guidance. Understanding the difference between these is critical for the exam:</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Instrument Type</th>
+                <th>Legally Binding?</th>
+                <th>How Adopted</th>
+                <th>What It Does</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>National Instrument (NI)</strong></td>
+                <td>✅ Yes</td>
+                <td>All 13 jurisdictions adopt simultaneously</td>
+                <td>Creates binding rules with the force of law across Canada. Example: NI 31-103 (Registration Requirements)</td>
+              </tr>
+              <tr>
+                <td><strong>Multilateral Instrument (MI)</strong></td>
+                <td>✅ Yes</td>
+                <td>Two or more (but not all) jurisdictions</td>
+                <td>Same binding force as NI, but only in jurisdictions that adopt it. Used when some provinces disagree.</td>
+              </tr>
+              <tr>
+                <td><strong>National Policy (NP)</strong></td>
+                <td>❌ No (Guidance only)</td>
+                <td>All 13 jurisdictions</td>
+                <td>States the CSA's policy position and interpretive approach. Not legally binding but carries strong weight.</td>
+              </tr>
+              <tr>
+                <td><strong>Staff Notice</strong></td>
+                <td>❌ No</td>
+                <td>Issued by CSA staff</td>
+                <td>Communicates staff's interpretation, expectations, or general guidance. Not law — but signals enforcement priorities.</td>
+              </tr>
+              <tr>
+                <td><strong>Companion Policy (CP)</strong></td>
+                <td>❌ No</td>
+                <td>Accompanies an NI or MI</td>
+                <td>Explains the purpose and interpretation of specific rules in a related NI/MI. Think of it as the "explanatory notes."</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout tip">
+            <div class="callout-label">💡 Memory Anchor</div>
+            <p><strong>NI = National, binding on everyone.</strong> <strong>MI = Multilateral, binding on some.</strong> <strong>NP / CP / Staff Notices = guidance only.</strong> The exam often tests whether you know which instruments are legally enforceable.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">The Role of Approving Prospectuses</h3>
+          <p>A <strong>prospectus</strong> is a legal document that a company must file when offering securities to the public. It discloses all material information an investor needs to make an informed decision — think of it as the company's "full disclosure under oath."</p>
+          <p>The CSA/provincial regulators are responsible for <strong>reviewing and approving prospectuses</strong>. Key points:</p>
+          <ul style="padding-left:22px;margin:12px 0;">
+            <li style="margin-bottom:8px;font-size:15px;">The company files the prospectus with the relevant provincial securities regulator (usually the regulator in the province where the company's principal operations are)</li>
+            <li style="margin-bottom:8px;font-size:15px;">Under the <strong>passport system</strong>, filing in one jurisdiction (the "principal regulator") gives access to all other participating jurisdictions automatically</li>
+            <li style="margin-bottom:8px;font-size:15px;">There is a mandatory <strong>receipt process</strong> — once a receipt is issued, the securities can be sold to the public</li>
+            <li style="margin-bottom:8px;font-size:15px;">The regulator reviews for completeness and compliance — it does NOT verify the merits or quality of the investment</li>
+          </ul>
+          <div class="callout warning">
+            <div class="callout-label">⚠️ Common Misconception</div>
+            <p>Regulator approval of a prospectus does <strong>not</strong> mean the regulator endorses the investment. It only means the disclosure requirements have been met. This is called the <em>disclosure-based</em> regulatory model.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Enforcement Powers of Provincial Regulators / CSA</h3>
+          <p>While enforcement is ultimately carried out by each provincial regulator (not the CSA itself), the powers available include:</p>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Cease Trade Orders</div>
+              <div class="def-desc">Prohibit trading in specific securities. Can be applied to a company or an individual.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Fines & Penalties</div>
+              <div class="def-desc">Monetary sanctions for violations of securities legislation.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Registration Suspension/Revocation</div>
+              <div class="def-desc">Remove the right to operate as a registrant (e.g., dealer, adviser).</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Market Bans</div>
+              <div class="def-desc">Prohibit individuals from participating in securities markets for a defined period or permanently.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Disgorgement</div>
+              <div class="def-desc">Order the return of ill-gotten gains obtained through securities violations.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Referral to Crown</div>
+              <div class="def-desc">For criminal matters (fraud, manipulation), refer to law enforcement for criminal prosecution.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== 1.2 CIRO ==================== -->
+    <div id="s12" class="section">
+      <div class="section-tag">1.2</div>
+      <h2 class="section-title">Canadian Investment Regulatory Organization (CIRO)</h2>
+      <div class="section-body">
+
+        <div class="callout important">
+          <div class="callout-label">🚨 Critical Context for Your Exam</div>
+          <p>CIRO was formed on <strong>January 1, 2023</strong> through the merger of <strong>IIROC</strong> (Investment Industry Regulatory Organization of Canada) and <strong>MFDA</strong> (Mutual Fund Dealers Association of Canada). If you see references to IIROC or MFDA in older materials, those now fall under CIRO. CIRO is Canada's <strong>single national self-regulatory organization (SRO)</strong> for investment dealers and mutual fund dealers.</p>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">What is a Self-Regulatory Organization (SRO)?</h3>
+          <p>An SRO is an organization that is granted authority by the government to regulate its own members. CIRO is an SRO recognized by the CSA (the provincial regulators). This means the investment industry — through CIRO — regulates itself under government oversight. CIRO is not a government body; it is a <strong>not-for-profit corporation</strong> funded by its member firms.</p>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Jurisdiction of CIRO</h3>
+          <p>CIRO has jurisdiction over:</p>
+          <div class="tags">
+            <span class="tag blue">Investment Dealers</span>
+            <span class="tag blue">Mutual Fund Dealers</span>
+            <span class="tag blue">Registered Individuals (Advisors, Traders)</span>
+            <span class="tag blue">Trading activity on all Canadian marketplaces</span>
+          </div>
+          <p>It operates <strong>nationally</strong> — unlike the provincial regulators which have geographic limits, CIRO's rules apply across Canada through the recognition it receives from all provincial regulators.</p>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Mandate and Objectives of CIRO</h3>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Investor Protection</div>
+              <div class="def-desc">Protect investors by ensuring dealer firms and their registered individuals meet high standards of conduct.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Market Integrity</div>
+              <div class="def-desc">Maintain fair, efficient, and transparent markets through oversight of trading activity.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Regulatory Compliance</div>
+              <div class="def-desc">Ensure member firms comply with applicable rules and regulations.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Public Confidence</div>
+              <div class="def-desc">Foster public confidence in the Canadian investment industry.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">CIRO's Rulebooks — Deep Dive</h3>
+          <p>CIRO operates with two distinct but complementary rulebooks:</p>
+
+          <div class="callout info">
+            <div class="callout-label">📘 IDPC Rules — Investment Dealer and Partially Consolidated Rules</div>
+            <p>The <strong>IDPC Rules</strong> govern the <em>business conduct</em> of investment dealers and their registered individuals. They cover how firms must treat clients, manage conflicts of interest, handle accounts, maintain financial adequacy, and conduct themselves professionally. Think of IDPC Rules as the <strong>"how to run your firm and treat your clients"</strong> rulebook.</p>
+          </div>
+
+          <p><strong>Key areas covered by IDPC Rules include:</strong></p>
+          <ul style="padding-left:22px;margin:12px 0;">
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Know Your Client (KYC)</strong> — firms must understand each client's financial situation, investment knowledge, risk tolerance, and investment objectives</li>
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Suitability</strong> — all investment recommendations must be suitable for the specific client</li>
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Financial and operational requirements</strong> — minimum capital requirements, financial reporting obligations</li>
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Supervision</strong> — how firms must supervise their registered individuals</li>
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Conflicts of interest</strong> — identifying and managing situations where the firm's interests may conflict with the client's</li>
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Referral arrangements</strong> — rules around paying referral fees</li>
+          </ul>
+
+          <div class="callout info">
+            <div class="callout-label">📙 UMIR — Universal Market Integrity Rules</div>
+            <p>The <strong>UMIR</strong> governs <em>trading conduct</em> on Canadian marketplaces. Where IDPC Rules govern how a firm runs its business, UMIR governs what happens at the trading level — how orders are entered, executed, and reported on exchanges and ATS platforms. Think of UMIR as the <strong>"rules of the road for trading"</strong> rulebook.</p>
+          </div>
+
+          <p><strong>Key areas covered by UMIR include:</strong></p>
+          <ul style="padding-left:22px;margin:12px 0;">
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Prohibited trading practices</strong> — market manipulation, wash trading, front-running</li>
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Short selling</strong> — requirements for marking orders as short, uptick rules</li>
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Order marking</strong> — proper designation of orders (client vs. principal)</li>
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Pre-trade and post-trade transparency</strong> — requirements to display quotes and report trades</li>
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Trading halts</strong> — procedures for halting trading in a security</li>
+          </ul>
+
+          <div class="exam-tip">
+            <div class="exam-tip-icon">🎯</div>
+            <div>
+              <div class="exam-tip-label">Exam Tip — IDPC vs UMIR</div>
+              <p><strong>IDPC = Business conduct (how you run your firm and serve clients).</strong> <strong>UMIR = Market conduct (how you trade on the market).</strong> A firm that mis-sells a product violates IDPC. A firm that manipulates stock prices violates UMIR.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Purpose of Rules, Guidance Notes, Forms & Schedules</h3>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Rules</div>
+              <div class="def-desc">Binding obligations. Firms MUST comply. Violation leads to enforcement action.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Guidance Notes</div>
+              <div class="def-desc">Not binding, but explain how CIRO interprets and expects its rules to be applied. Firms that follow guidance notes demonstrate good faith.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Forms</div>
+              <div class="def-desc">Standardized forms required for applications, registrations, reports, etc. Submissions must use official CIRO forms.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Supporting Schedules</div>
+              <div class="def-desc">Detailed tables or checklists that accompany rules — specify exactly what information must be collected or reported.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">CIRO Enforcement Powers</h3>
+          <p>CIRO has significant enforcement powers over its member firms and their registered individuals:</p>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Fines</div>
+              <div class="def-desc">Monetary penalties against firms and individuals for rule violations.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Suspensions</div>
+              <div class="def-desc">Temporary removal of registration or trading privileges.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Permanent Bans</div>
+              <div class="def-desc">Lifetime prohibition from working in the securities industry.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Membership Termination</div>
+              <div class="def-desc">Expel a dealer firm from CIRO — effectively shutting down their business.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Conditions on Registration</div>
+              <div class="def-desc">Restrict what a firm or individual can do (e.g., ban from advising certain clients).</div>
+            </div>
+          </div>
+          <div class="callout warning">
+            <div class="callout-label">⚠️ Important Note</div>
+            <p>CIRO can discipline its own members, but for <strong>criminal matters</strong>, it refers cases to provincial securities regulators or law enforcement (RCMP). CIRO cannot pursue criminal charges itself.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== 1.3 REGISTRATION ==================== -->
+    <div id="s13" class="section">
+      <div class="section-tag">1.3</div>
+      <h2 class="section-title">Investment Dealer Registration & Individual Approval</h2>
+      <div class="section-body">
+
+        <p>Anyone who wishes to trade securities, advise on securities, or manage a portfolio professionally in Canada must be <strong>registered</strong>. This is a fundamental concept — registration is how the system protects investors by ensuring only qualified, vetted people can participate in the industry.</p>
+
+        <div class="subsection">
+          <h3 class="subsection-title">The Two-Layer Registration System</h3>
+          <p>Registration in Canada operates at two levels simultaneously:</p>
+
+          <div class="diagram">
+            <div class="diagram-title">Registration Process — Dual Oversight</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+              <div style="background:var(--blue-deep);border-radius:8px;padding:20px;color:#fff;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gold);margin-bottom:10px;">FIRM LEVEL</div>
+                <div style="font-size:16px;font-weight:700;margin-bottom:10px;">Investment Dealer Registration</div>
+                <p style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.6;">The dealer firm itself must be registered with the provincial securities regulator (OSC, AMF, BCSC, etc.) under their Securities Act. The firm must also be a CIRO member.</p>
+              </div>
+              <div style="background:var(--gold);border-radius:8px;padding:20px;color:var(--blue-deep);">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--blue-deep);opacity:0.7;margin-bottom:10px;">INDIVIDUAL LEVEL</div>
+                <div style="font-size:16px;font-weight:700;margin-bottom:10px;">Registered Representative Approval</div>
+                <p style="font-size:13px;color:rgba(0,0,30,0.75);line-height:1.6;">Each individual (advisor, trader, branch manager) must separately be approved — first by CIRO, then through the provincial system. Passing the CIRE exam is part of meeting this requirement.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Role of CSA in Registration</h3>
+          <p>The <strong>CSA</strong> (through its provincial member regulators) is responsible for granting registration to both firms and individuals. The key National Instrument governing this is <strong>NI 31-103 — Registration Requirements, Exemptions and Ongoing Registrant Obligations</strong>.</p>
+          <p>Under the CSA's <strong>passport system</strong>, a firm or individual registered in one jurisdiction can get access to other jurisdictions without having to apply separately in each — a massive simplification compared to applying to all 13 regulators.</p>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Role of CIRO in Registration</h3>
+          <p>CIRO handles the <strong>proficiency and approval process</strong> for individual registered persons. CIRO:</p>
+          <ul style="padding-left:22px;margin:12px 0;">
+            <li style="margin-bottom:8px;font-size:15px;">Sets the proficiency requirements (exams, education, experience) for each registration category</li>
+            <li style="margin-bottom:8px;font-size:15px;">Reviews applications from individuals seeking approval (Registered Representatives, Investment Representatives, Branch Managers, etc.)</li>
+            <li style="margin-bottom:8px;font-size:15px;">Conducts background checks and fitness assessments</li>
+            <li style="margin-bottom:8px;font-size:15px;">Maintains the <strong>National Registration Database (NRD)</strong> — the central database of all registered individuals and firms in Canada</li>
+          </ul>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Key Registration Categories</h3>
+          <table>
+            <thead>
+              <tr><th>Category</th><th>Who Qualifies</th><th>Main Exam Required</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Registered Representative (RR)</strong></td><td>Advises clients on and trades all types of securities</td><td>CIRE + RSE</td></tr>
+              <tr><td><strong>Investment Representative (IR)</strong></td><td>Takes client orders but does NOT provide advice</td><td>CIRE</td></tr>
+              <tr><td><strong>Portfolio Manager</strong></td><td>Manages discretionary client portfolios</td><td>CFA or equivalent</td></tr>
+              <tr><td><strong>Branch Manager</strong></td><td>Supervises a branch's registered individuals</td><td>Branch Manager's exam</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== 1.4 MARKETPLACES ==================== -->
+    <div id="s14" class="section">
+      <div class="section-tag">1.4</div>
+      <h2 class="section-title">Marketplaces in the Investment Industry</h2>
+      <div class="section-body">
+
+        <p>A <strong>marketplace</strong> is any venue where buyers and sellers of securities are brought together to trade. Canada has several types of marketplaces, each with different structures and regulatory requirements.</p>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Exchanges</h3>
+          <p>An <strong>exchange</strong> is the traditional, most highly regulated marketplace. Exchanges operate under strict rules, are recognized by provincial securities regulators, and provide transparent, centralized trading.</p>
+          <p><strong>Key Canadian exchanges:</strong></p>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">TSX</div>
+              <div class="def-desc">Toronto Stock Exchange — Canada's flagship exchange, home to large-cap equities (major banks, energy, resources). Equivalent to NYSE in the US.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">TSX Venture (TSXV)</div>
+              <div class="def-desc">Junior/small-cap exchange for emerging companies. Higher risk profile. Like the TSX's "training ground."</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Montréal Exchange (MX)</div>
+              <div class="def-desc">Canada's derivatives exchange — lists equity options, interest rate futures, index futures.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">NEO Exchange</div>
+              <div class="def-desc">A newer exchange offering an alternative to TSX for listings, with a focus on modern market structure.</div>
+            </div>
+          </div>
+          <p style="margin-top:14px;">All exchanges are subject to oversight by provincial securities regulators <strong>and</strong> must comply with UMIR for their trading activity.</p>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Alternative Trading Systems (ATS)</h3>
+          <p>An <strong>ATS</strong> is an electronic trading platform that matches buyers and sellers but is <em>not</em> a recognized exchange. Think of it as a private marketplace that competes with the TSX for order flow.</p>
+          <p><strong>Key characteristics of ATS:</strong></p>
+          <ul style="padding-left:22px;margin:12px 0;">
+            <li style="margin-bottom:8px;font-size:15px;">Must be registered as a <strong>marketplace</strong> under NI 21-101 (Marketplace Operation)</li>
+            <li style="margin-bottom:8px;font-size:15px;">Subject to UMIR for trading — same trading rules as exchanges</li>
+            <li style="margin-bottom:8px;font-size:15px;">Often used by institutional investors for large block trades (called <strong>dark pools</strong>)</li>
+            <li style="margin-bottom:8px;font-size:15px;">Examples in Canada: Alpha Exchange (now part of TMX), Liquidnet, TriAct MATCH Now</li>
+          </ul>
+          <div class="callout tip">
+            <div class="callout-label">💡 Exchange vs ATS</div>
+            <p>An exchange <strong>lists</strong> securities and provides a public trading venue with full transparency. An ATS does <strong>not list</strong> securities — it simply matches orders for securities already listed elsewhere. ATS often offer price improvement by negotiating trades between parties before sending remainder to exchanges.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Crypto-Asset Trading Platforms (CTPs)</h3>
+          <p>CTPs are platforms for trading crypto-assets (Bitcoin, Ethereum, etc.). Canada was among the first major jurisdictions to formally regulate these platforms within the securities framework.</p>
+          <p><strong>Key regulatory points for CTPs:</strong></p>
+          <ul style="padding-left:22px;margin:12px 0;">
+            <li style="margin-bottom:8px;font-size:15px;">Many crypto-assets qualify as securities or derivatives — CTPs that offer them must be registered with the CSA</li>
+            <li style="margin-bottom:8px;font-size:15px;">The CSA issued guidance requiring CTPs to sign commitments regarding asset segregation, leverage limits, and custody requirements</li>
+            <li style="margin-bottom:8px;font-size:15px;">Must comply with know-your-client and anti-money laundering requirements</li>
+            <li style="margin-bottom:8px;font-size:15px;">Ongoing evolution — the regulatory framework for CTPs is still developing as of the CIRE syllabus</li>
+          </ul>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Foreign Organized Regulated Markets (FORM)</h3>
+          <p>A <strong>FORM</strong> is a foreign exchange or trading system that is recognized by a Canadian securities regulator. This allows Canadian registered dealers to execute trades on foreign markets without those foreign markets needing to be separately registered in Canada as an ATS or exchange.</p>
+          <p>Examples include the NYSE, NASDAQ, and LSE. Canadian dealers who route client orders to these markets must do so through their approved access.</p>
+        </div>
+
+        <!-- Marketplace Comparison -->
+        <div class="diagram">
+          <div class="diagram-title">Marketplace Types — Quick Comparison</div>
+          <table style="margin:0;">
+            <thead>
+              <tr><th>Feature</th><th>Exchange</th><th>ATS</th><th>CTP</th><th>FORM</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Lists securities?</td><td>✅ Yes</td><td>❌ No</td><td>Crypto only</td><td>Foreign listed</td></tr>
+              <tr><td>Regulated by CSA?</td><td>✅ Yes</td><td>✅ Yes</td><td>✅ Yes</td><td>✅ Recognized</td></tr>
+              <tr><td>Subject to UMIR?</td><td>✅ Yes</td><td>✅ Yes</td><td>Partially</td><td>Home country rules</td></tr>
+              <tr><td>Transparency</td><td>Full (public)</td><td>Partial (can be dark)</td><td>Varies</td><td>Home country standard</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== 1.5 CLEARING ==================== -->
+    <div id="s15" class="section">
+      <div class="section-tag">1.5</div>
+      <h2 class="section-title">Clearing Agencies — CDS & CDCC</h2>
+      <div class="section-body">
+
+        <p>After a trade is executed on a marketplace, it must be <strong>cleared and settled</strong>. Clearing is the process of confirming and reconciling the trade; settlement is the actual transfer of securities and money. Clearing agencies sit in the middle of every trade, acting as the central counterparty to eliminate the risk of one side defaulting.</p>
+
+        <div class="diagram">
+          <div class="diagram-title">How Clearing Works — Trade Lifecycle</div>
+          <div class="flow" style="flex-wrap:wrap;">
+            <div class="flow-step">Buyer & Seller<br>agree on trade</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">Marketplace<br>(TSX / ATS)<br>executes trade</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step highlight">Clearing Agency<br>steps in as<br>central counterparty</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">CDS/CDCC<br>settles trade<br>(T+1 or T+2)</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">Securities &<br>cash transferred</div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Canadian Depository for Securities (CDS)</h3>
+          <p>The <strong>CDS</strong> is Canada's central securities depository and clearing agency for <strong>equity and debt securities</strong> (stocks, bonds, ETFs, etc.). It is owned by the TMX Group.</p>
+          <p><strong>Key functions of CDS:</strong></p>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Central Counterparty</div>
+              <div class="def-desc">Novates trades — becomes the buyer to every seller and the seller to every buyer. If your counterparty defaults, CDS still completes the trade.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Clearing</div>
+              <div class="def-desc">Confirms and reconciles all trade details — quantity, price, parties, settlement date.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Settlement</div>
+              <div class="def-desc">Executes the actual transfer of securities (via book entry — no physical certificates) and cash. Equities settle on T+1 in Canada.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Custody / Depository</div>
+              <div class="def-desc">Holds securities on behalf of participants — eliminates the need to physically move paper certificates.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Netting</div>
+              <div class="def-desc">Calculates net obligations — instead of settling every individual trade, CDS nets all trades and settles only the net position, dramatically reducing the volume of settlements.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Canadian Derivatives Clearing Corporation (CDCC)</h3>
+          <p>The <strong>CDCC</strong> is the clearing house specifically for <strong>exchange-traded derivatives</strong> (options, futures) traded on the Montréal Exchange. It is a subsidiary of the TMX Group.</p>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Central Counterparty</div>
+              <div class="def-desc">Becomes the counterparty to all options and futures trades on MX, eliminating counterparty risk.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Margin Management</div>
+              <div class="def-desc">Collects initial margin and variation margin from participants to cover potential losses — critical for derivatives.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Default Management</div>
+              <div class="def-desc">Has a defined process for managing member defaults to protect the financial system.</div>
+            </div>
+          </div>
+          <div class="callout tip">
+            <div class="callout-label">💡 CDS vs CDCC — Quick Distinction</div>
+            <p><strong>CDS = Equities and Debt (stocks, bonds, ETFs).</strong> <strong>CDCC = Exchange-Traded Derivatives (options, futures on Montréal Exchange).</strong> Both are critical market infrastructure that reduce systemic risk.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== 1.6 CIPF ==================== -->
+    <div id="s16" class="section">
+      <div class="section-tag">1.6</div>
+      <h2 class="section-title">Canadian Investor Protection Fund (CIPF)</h2>
+      <div class="section-body">
+
+        <p>The <strong>CIPF</strong> is Canada's investor protection fund for clients of CIRO member firms. It was formerly called the <em>IIROC Investor Protection Fund</em> and was renamed when CIRO was formed. It is <strong>not</strong> a government program — it is a private fund established and maintained by CIRO members.</p>
+
+        <div class="cipf-box">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:8px;">CIPF Coverage Limit (Per Account Category)</div>
+          <div class="cipf-amount">$1,000,000</div>
+          <div class="cipf-label">per separate account category</div>
+          <div class="cipf-grid">
+            <div class="cipf-item">
+              <div class="cipf-item-label">General Accounts</div>
+              <p>Cash, margin, short accounts combined count as one category — up to $1M covered.</p>
+            </div>
+            <div class="cipf-item">
+              <div class="cipf-item-label">RRSP / RRIF</div>
+              <p>Registered retirement accounts get their own separate $1M limit.</p>
+            </div>
+            <div class="cipf-item">
+              <div class="cipf-item-label">TFSA</div>
+              <p>Tax-Free Savings Accounts get a separate $1M limit.</p>
+            </div>
+            <div class="cipf-item">
+              <div class="cipf-item-label">RESP / RDSP</div>
+              <p>Education and disability savings accounts each have separate limits.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Objective of CIPF</h3>
+          <p>CIPF's purpose is to <strong>protect clients of CIRO member firms against the loss of assets held by a member firm that becomes insolvent</strong>. It does <strong>NOT</strong> protect against investment losses — if your portfolio drops in value due to market movements, CIPF provides no coverage.</p>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Eligible Claims and Eligible Claimants</h3>
+          <p><strong>Eligible claimants</strong> are clients of CIRO member firms who have assets held at the firm. "Assets" includes cash, securities, futures contracts, and segregated funds held by the dealer on behalf of the client.</p>
+          <p><strong>Eligible claims arise when:</strong></p>
+          <ul style="padding-left:22px;margin:12px 0;">
+            <li style="margin-bottom:8px;font-size:15px;">A CIRO member firm becomes insolvent or bankrupt</li>
+            <li style="margin-bottom:8px;font-size:15px;">Client assets held at the firm are missing or insufficient to meet all client claims</li>
+          </ul>
+          <p><strong>CIPF does NOT cover:</strong></p>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Market Losses</div>
+              <div class="def-desc">Investment losses due to market price declines are not covered under any circumstances.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Unsuitable Advice</div>
+              <div class="def-desc">If you received bad advice and lost money, CIPF does not cover this. You would pursue CIRO discipline or civil action.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Non-CIRO Member Firms</div>
+              <div class="def-desc">Only clients of CIRO member firms are covered. If a firm is not a CIRO member, its clients have no CIPF protection.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Role in Investment Dealer Bankruptcy — Pooling of Customer Assets</h3>
+          <p>When a CIRO member firm becomes insolvent, a crucial concept applies: <strong>customer assets are segregated from the firm's own assets</strong>. This means:</p>
+          <ul style="padding-left:22px;margin:12px 0;">
+            <li style="margin-bottom:8px;font-size:15px;">Securities held on behalf of clients are <strong>not</strong> part of the firm's estate available to general creditors</li>
+            <li style="margin-bottom:8px;font-size:15px;">The Trustee in Bankruptcy pools all client assets and distributes them pro-rata to clients</li>
+            <li style="margin-bottom:8px;font-size:15px;">If the pool of client assets is insufficient to cover all client claims (due to fraud, operational failure), CIPF covers the shortfall up to the per-category limits</li>
+          </ul>
+          <p>This is governed by <strong>Part XII of the Bankruptcy and Insolvency Act</strong> (Bankruptcy of a Securities Firm — see section 1.8).</p>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Funding Requirements by Investment Dealers</h3>
+          <p>CIRO member firms are required to pay <strong>assessments (levies) to CIPF</strong> based on their revenues. This creates the pool of money that CIPF holds in reserve. Firms with higher revenue — and therefore larger client exposure — pay more. CIPF maintains this fund to ensure it has resources available if a firm fails.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== 1.7 OTHER REGULATORS ==================== -->
+    <div id="s17" class="section">
+      <div class="section-tag">1.7</div>
+      <h2 class="section-title">Other Investment Industry Regulators and Agencies</h2>
+      <div class="section-body">
+
+        <p>Beyond the CSA and CIRO, a number of other federal and provincial bodies play important roles in Canada's financial regulatory ecosystem. You need to remember each one's function.</p>
+
+        <div class="agency-grid">
+          <div class="agency-card">
+            <div class="agency-abbr">FSRA</div>
+            <div class="agency-name">Financial Services Regulatory Authority of Ontario</div>
+            <div class="agency-desc">Ontario's financial services regulator — oversees insurance, credit unions, mortgage brokers, pension plans, and loan and trust companies in Ontario. Does NOT regulate securities or investment dealers (that's the OSC/CIRO).</div>
+          </div>
+          <div class="agency-card gold-top">
+            <div class="agency-abbr" style="color:#8a6200;">Bank of Canada</div>
+            <div class="agency-name">Canada's Central Bank</div>
+            <div class="agency-desc">Sets the overnight interest rate (target for the policy rate). Manages monetary policy, oversees the stability of the financial system, and provides settlement services for large-value payments. It does not regulate securities firms but its rate decisions profoundly affect markets.</div>
+          </div>
+          <div class="agency-card red-top">
+            <div class="agency-abbr" style="color:var(--red);">RCMP — IMET</div>
+            <div class="agency-name">Integrated Market Enforcement Teams</div>
+            <div class="agency-desc">RCMP units dedicated to investigating major capital market crimes — large-scale fraud, insider trading with criminal elements, market manipulation. Bridge between securities regulators and criminal law enforcement.</div>
+          </div>
+          <div class="agency-card">
+            <div class="agency-abbr">FINTRAC</div>
+            <div class="agency-name">Financial Transactions and Reports Analysis Centre of Canada</div>
+            <div class="agency-desc">Canada's financial intelligence unit (FIU). Collects, analyzes, and discloses financial intelligence on money laundering and terrorist financing. Investment dealers are "reporting entities" and must submit suspicious transaction reports to FINTRAC.</div>
+          </div>
+          <div class="agency-card green-top">
+            <div class="agency-abbr" style="color:#1a5c32;">OSFI</div>
+            <div class="agency-name">Office of the Superintendent of Financial Institutions</div>
+            <div class="agency-desc">Federal regulator for banks, insurance companies, trust companies, and pension plans. Ensures federally regulated financial institutions are solvent and comply with capital requirements. Does not directly regulate investment dealers, but overlaps when dealers are subsidiaries of banks.</div>
+          </div>
+          <div class="agency-card">
+            <div class="agency-abbr">Privacy Commissioners</div>
+            <div class="agency-name">Federal & Provincial Privacy Commissioners</div>
+            <div class="agency-desc">Oversee compliance with PIPEDA (federal) and provincial privacy laws. Investment firms must comply with privacy requirements around client personal information. The Office of the Privacy Commissioner of Canada (OPC) handles PIPEDA complaints.</div>
+          </div>
+          <div class="agency-card gold-top">
+            <div class="agency-abbr" style="color:#8a6200;">OBSI</div>
+            <div class="agency-name">Ombudsman for Banking Services and Investments</div>
+            <div class="agency-desc">Canada's free, independent dispute resolution service for consumers who have unresolved complaints against their bank or investment firm. CIRO member firms are required to participate in OBSI. OBSI can recommend compensation but cannot force it (though firms rarely refuse).</div>
+          </div>
+          <div class="agency-card">
+            <div class="agency-abbr">SEC / CFTC / FCA</div>
+            <div class="agency-name">US and Foreign Regulators</div>
+            <div class="agency-desc">The SEC and CFTC regulate US securities and derivatives. Canadian dealers trading cross-border must navigate both Canadian and applicable foreign rules. CIRO and CSA maintain cooperative agreements with foreign regulators for information sharing and enforcement cooperation.</div>
+          </div>
+        </div>
+
+        <div class="exam-tip">
+          <div class="exam-tip-icon">🎯</div>
+          <div>
+            <div class="exam-tip-label">Exam Tip — Who Regulates What</div>
+            <p>The exam may ask which regulator handles a specific situation. Key distinctions: <strong>OSFI = federally-chartered banks/insurance.</strong> <strong>FSRA = Ontario financial services (NOT securities).</strong> <strong>FINTRAC = AML intelligence.</strong> <strong>RCMP IMET = criminal market fraud.</strong> <strong>OBSI = consumer complaints against dealers/banks.</strong></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== 1.8 KEY LEGISLATION ==================== -->
+    <div id="s18" class="section">
+      <div class="section-tag">1.8</div>
+      <h2 class="section-title">Bank Act & Bankruptcy and Insolvency Act</h2>
+      <div class="section-body">
+
+        <div class="subsection">
+          <h3 class="subsection-title">Bank Act</h3>
+          <p>The <strong>Bank Act</strong> is federal legislation that governs the establishment, operation, and regulation of banks in Canada. It is administered by the federal government through OSFI and the Department of Finance.</p>
+          <p><strong>Implications for investment dealers:</strong></p>
+          <ul style="padding-left:22px;margin:12px 0;">
+            <li style="margin-bottom:8px;font-size:15px;">Many investment dealers are subsidiaries of chartered banks (e.g., RBC Dominion Securities is a subsidiary of RBC). The Bank Act governs the parent bank while securities regulations govern the dealer subsidiary.</li>
+            <li style="margin-bottom:8px;font-size:15px;">The Bank Act contains the <strong>"four pillars" separation</strong> — banks, trust companies, insurance companies, and securities dealers were historically kept separate. While significant cross-ownership is now permitted, the Bank Act still governs how banks can engage in the investment industry.</li>
+            <li style="margin-bottom:8px;font-size:15px;">Provisions of the Bank Act overlap with securities regulations when banks directly offer investment products.</li>
+          </ul>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Bankruptcy and Insolvency Act — Part XII: Bankruptcy of a Securities Firm</h3>
+          <p><strong>Part XII</strong> of the Bankruptcy and Insolvency Act (BIA) contains special provisions specifically for the insolvency of securities firms. These are different from ordinary bankruptcy rules because the failure of a securities firm creates unique complications — clients' assets are held at the firm, and the priority of those assets must be clearly established.</p>
+          <p><strong>Key provisions of Part XII:</strong></p>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Customer Priority</div>
+              <div class="def-desc">Client (customer) assets held by the bankrupt dealer are treated separately from the firm's own assets. Clients rank ahead of the firm's general creditors in claims against the pooled client assets.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Pooling of Assets</div>
+              <div class="def-desc">All client assets are pooled together and distributed to clients on a pro-rata basis. If Client A has $100K of shares and Client B has $100K of bonds, all assets are pooled and clients receive a proportional share of whatever is recovered.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">CIPF Involvement</div>
+              <div class="def-desc">CIPF steps in to cover any shortfall in the pooled client assets, up to the per-category limits. This interplay between Part XII and CIPF is critical.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Trustee in Bankruptcy</div>
+              <div class="def-desc">A licensed trustee administers the firm's bankruptcy under Part XII, working with CIPF and CIRO to ensure client assets are returned.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== 1.9 CRIMINAL CODE ==================== -->
+    <div id="s19" class="section">
+      <div class="section-tag">1.9</div>
+      <h2 class="section-title">The Criminal Code & Financial Crime</h2>
+      <div class="section-body">
+
+        <p>While most securities violations are handled by provincial regulators and CIRO through civil/administrative proceedings, certain conduct rises to the level of <strong>criminal offences</strong> under Canada's Criminal Code. Criminal proceedings are far more serious — they result in criminal records and imprisonment, not just fines and registration suspensions.</p>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Key Criminal Code Provisions Relevant to Finance</h3>
+          <table>
+            <thead>
+              <tr><th>Offence</th><th>Criminal Code Section</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Fraud</strong></td>
+                <td>Section 380</td>
+                <td>Dishonest act intended to deprive another person of property or money. Penalties up to 14 years imprisonment. Includes Ponzi schemes, investment fraud.</td>
+              </tr>
+              <tr>
+                <td><strong>Theft</strong></td>
+                <td>Section 322</td>
+                <td>Taking assets fraudulently, including misappropriation of client funds by an advisor.</td>
+              </tr>
+              <tr>
+                <td><strong>Insider Trading (Criminal)</strong></td>
+                <td>Section 382.1</td>
+                <td>Criminal code version of insider trading (provinces also have their own civil/administrative provisions). Criminal insider trading can result in up to 10 years imprisonment.</td>
+              </tr>
+              <tr>
+                <td><strong>Market Manipulation</strong></td>
+                <td>Section 382</td>
+                <td>Wash trading, painting the tape, or other schemes to artificially affect market prices or trading volumes.</td>
+              </tr>
+              <tr>
+                <td><strong>Falsification of Records</strong></td>
+                <td>Section 397</td>
+                <td>Altering or destroying financial records to deceive. Relevant to account falsification by dealers.</td>
+              </tr>
+              <tr>
+                <td><strong>Money Laundering</strong></td>
+                <td>Section 462.31</td>
+                <td>Possessing, using, or transferring proceeds of crime. Maximum 10 years imprisonment.</td>
+              </tr>
+              <tr>
+                <td><strong>Terrorist Financing</strong></td>
+                <td>Section 83.02</td>
+                <td>Providing or collecting funds intended for terrorist activity. Up to 10 years imprisonment.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Dual Track — Regulatory AND Criminal</h3>
+          <p>Many securities violations can be prosecuted on two separate tracks simultaneously:</p>
+          <div class="callout warning">
+            <div class="callout-label">⚠️ Important Concept</div>
+            <p>A person can face <strong>both</strong> a CIRO/CSA administrative proceeding (fines, bans) AND a criminal prosecution for the same conduct. These are independent proceedings. The regulatory track uses a lower standard of proof (balance of probabilities); the criminal track requires proof beyond a reasonable doubt. Being found not guilty criminally does not prevent regulatory discipline, and vice versa.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">RCMP IMET's Role (Revisiting)</h3>
+          <p>The RCMP's Integrated Market Enforcement Teams (IMET) are specifically mandated to investigate and prosecute <strong>serious capital markets crime</strong> — complex fraud, large-scale market manipulation, and insider trading at the criminal level. They work closely with the CSA and CIRO but operate under criminal law.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== 1.10 AML / PCMLTFA ==================== -->
+    <div id="s110" class="section">
+      <div class="section-tag">1.10</div>
+      <h2 class="section-title">Proceeds of Crime (Money Laundering) and Terrorism Financing Act (PCMLTFA)</h2>
+      <div class="section-body">
+
+        <p>The <strong>PCMLTFA</strong> is Canada's primary federal anti-money laundering (AML) and anti-terrorist financing (ATF) legislation. It is administered by <strong>FINTRAC</strong>. Investment dealers are <em>reporting entities</em> under the PCMLTFA — meaning they have specific, mandatory obligations.</p>
+
+        <div class="callout important">
+          <div class="callout-label">🚨 This Section is High-Yield for the Exam</div>
+          <p>The PCMLTFA and its implications are heavily tested. Make sure you understand the stages of money laundering, the compliance program requirements, and what a dealer must do when they identify suspicious activity.</p>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">The Three Stages of Money Laundering</h3>
+          <div class="ml-stages">
+            <div class="ml-stage">
+              <div class="ml-stage-num">1</div>
+              <div class="ml-stage-label">Stage 1</div>
+              <div class="ml-stage-title">Placement</div>
+              <p>Introducing "dirty" cash into the financial system. Examples: depositing cash from drug sales into a bank account, buying high-value assets with cash, smurfing (structuring deposits below reporting thresholds across multiple accounts).</p>
+            </div>
+            <div class="ml-stage">
+              <div class="ml-stage-num">2</div>
+              <div class="ml-stage-label">Stage 2</div>
+              <div class="ml-stage-title">Layering</div>
+              <p>Moving money through a complex series of transactions to disguise its origin. Examples: wire transfers through multiple jurisdictions, buying and selling securities rapidly, converting to different currencies, using shell companies.</p>
+            </div>
+            <div class="ml-stage">
+              <div class="ml-stage-num">3</div>
+              <div class="ml-stage-label">Stage 3</div>
+              <div class="ml-stage-title">Integration</div>
+              <p>Re-introducing cleaned money into the legitimate economy so it appears lawfully earned. Examples: investing in real estate, acquiring businesses, receiving "returns" on investments. At this stage, the money appears legitimate.</p>
+            </div>
+          </div>
+          <div class="callout tip">
+            <div class="callout-label">💡 Memory: P-L-I — Place, Layer, Integrate</div>
+            <p>Think of it as the criminal's goal: <strong>Place</strong> the money in the system, <strong>Layer</strong> it to hide its trail, then <strong>Integrate</strong> it back as clean money. Investment dealers are most vulnerable to layering — rapid buy/sell of securities is a classic layering technique.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Compliance Program Requirements</h3>
+          <p>Every CIRO member firm must implement a written AML/ATF compliance program. The PCMLTFA mandates that this program include all of the following elements:</p>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Compliance Officer</div>
+              <div class="def-desc">A designated individual responsible for overseeing AML/ATF compliance. Must have the authority and resources to implement the program effectively.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Written Policies & Procedures</div>
+              <div class="def-desc">Documented procedures for KYC, transaction monitoring, suspicious activity reporting, record-keeping, and all other PCMLTFA obligations.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Risk Assessment</div>
+              <div class="def-desc">An enterprise-wide risk assessment that identifies and documents the firm's specific ML/TF risks based on its clients, products, services, geographies, and delivery channels.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Employee Training</div>
+              <div class="def-desc">Ongoing training for all relevant staff on recognizing suspicious activity, understanding their obligations, and how to report. Must be documented and up to date.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Effectiveness Review</div>
+              <div class="def-desc">A review of the program at least every two years by a qualified independent reviewer to assess whether it is effective.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Client Information and Due Diligence Requirements</h3>
+          <p>Investment dealers must perform <strong>Customer Due Diligence (CDD)</strong> when establishing a business relationship and on an ongoing basis. This includes:</p>
+
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Client Identification</div>
+              <div class="def-desc">Verifying the identity of every client using government-issued photo ID and other acceptable methods. Must be done before or at the time of opening an account.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Beneficial Ownership</div>
+              <div class="def-desc">For corporate clients, identifying individuals who own or control 25% or more of the entity. Critical for preventing criminals from hiding behind corporate structures.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Politically Exposed Persons (PEPs)</div>
+              <div class="def-desc">Identifying whether clients are current or former government officials (domestic or foreign), heads of state, or their immediate family members. PEPs require enhanced due diligence due to higher corruption risk.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Heads of International Organizations (HIOs)</div>
+              <div class="def-desc">Similar to PEPs — officials at the head of major international organizations also require enhanced due diligence.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Ongoing Monitoring</div>
+              <div class="def-desc">Continuously monitoring transactions and updating client information to ensure it remains accurate and that transactions are consistent with the client's expected activity.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Reporting Obligations to FINTRAC</h3>
+          <p>Dealers have mandatory reporting obligations to FINTRAC for specific transactions:</p>
+          <table>
+            <thead>
+              <tr><th>Report Type</th><th>Trigger</th><th>Timeframe</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Large Cash Transaction Report (LCTR)</strong></td>
+                <td>Cash transactions of $10,000 CAD or more (single or multiple transactions in 24 hours)</td>
+                <td>15 business days</td>
+              </tr>
+              <tr>
+                <td><strong>Suspicious Transaction Report (STR)</strong></td>
+                <td>Any transaction where there are reasonable grounds to suspect it is related to ML/TF, regardless of amount</td>
+                <td>30 days from detection</td>
+              </tr>
+              <tr>
+                <td><strong>Electronic Funds Transfer Report (EFTR)</strong></td>
+                <td>International EFTs of $10,000 or more (sent or received)</td>
+                <td>5 business days</td>
+              </tr>
+              <tr>
+                <td><strong>Terrorist Property Report (TPR)</strong></td>
+                <td>Knowledge or belief that property is owned or controlled by a terrorist</td>
+                <td>Immediately (ASAP)</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout important">
+            <div class="callout-label">🚨 Tipping Off is Illegal</div>
+            <p>Once a Suspicious Transaction Report is filed with FINTRAC, the firm is <strong>prohibited from disclosing this to the client</strong> (tipping off). Telling a client that a report has been made is a criminal offence under the PCMLTFA.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Enterprise Risk Assessment & Indicators of Suspicious Activity</h3>
+          <p>Firms must conduct an <strong>enterprise-wide risk assessment</strong> to document their ML/TF risks. The assessment considers:</p>
+          <ul style="padding-left:22px;margin:12px 0;">
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Client risk</strong> — are there high-risk clients (PEPs, cash-intensive businesses, offshore entities)?</li>
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Product/service risk</strong> — do certain products lend themselves to layering (e.g., rapid equity trading)?</li>
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Geographic risk</strong> — does the firm deal with high-risk jurisdictions (FATF blacklisted countries)?</li>
+            <li style="margin-bottom:8px;font-size:15px;"><strong>Delivery channel risk</strong> — are accounts opened online without face-to-face verification?</li>
+          </ul>
+          <p><strong>Common indicators of suspicious activity (red flags):</strong></p>
+          <ul style="padding-left:22px;margin:12px 0;">
+            <li style="margin-bottom:8px;font-size:15px;">Client is evasive about the source of funds</li>
+            <li style="margin-bottom:8px;font-size:15px;">Structuring deposits just below $10,000 to avoid LCTR reporting</li>
+            <li style="margin-bottom:8px;font-size:15px;">Rapid buy/sell of securities with no apparent investment rationale</li>
+            <li style="margin-bottom:8px;font-size:15px;">Third parties frequently depositing or withdrawing on behalf of a client</li>
+            <li style="margin-bottom:8px;font-size:15px;">Client unconcerned about fees, returns, or losses (suggesting the investment purpose is secondary to moving money)</li>
+            <li style="margin-bottom:8px;font-size:15px;">Transactions inconsistent with the client's known profile or economic activity</li>
+          </ul>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Business Relationship Record-Keeping</h3>
+          <p>The PCMLTFA requires firms to maintain detailed records for a specified period. Key record-keeping rules:</p>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Retention Period</div>
+              <div class="def-desc">Most records must be kept for a minimum of <strong>5 years</strong> from the date of the transaction or end of the business relationship.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Client Identification Records</div>
+              <div class="def-desc">Records of how the client's identity was verified (ID type, number, issuer) must be maintained.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Transaction Records</div>
+              <div class="def-desc">Records of all transactions, including date, amount, account, and parties involved.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Business Relationship Records</div>
+              <div class="def-desc">When a business relationship is established (i.e., a client account is opened), the firm must record the purpose and intended nature of the relationship.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== 1.11 OTHER LAWS ==================== -->
+    <div id="s111" class="section">
+      <div class="section-tag">1.11</div>
+      <h2 class="section-title">Other Applicable Laws</h2>
+      <div class="section-body">
+
+        <div class="subsection">
+          <h3 class="subsection-title">Confidentiality Agreements</h3>
+          <p>Investment dealers frequently handle highly sensitive information — corporate takeover plans, earnings not yet disclosed, client financial details. <strong>Confidentiality agreements</strong> are contracts that legally bind parties not to disclose specific information.</p>
+          <p><strong>Types of confidential information in the investment industry:</strong></p>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Corporate Information</div>
+              <div class="def-desc">Non-public information about a corporation (e.g., merger plans, earnings forecasts). Sharing this could constitute insider trading. Investment banks maintain "Chinese Walls" (information barriers) to prevent this from flowing between departments.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Client Information</div>
+              <div class="def-desc">Client financial details, investment holdings, personal information. Dealers cannot share this without client consent, subject to regulatory and legal exceptions.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Third-Party Information</div>
+              <div class="def-desc">Information about third parties obtained in the course of business. Also protected under confidentiality principles and privacy legislation.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">PIPEDA — Personal Information Protection and Electronic Documents Act</h3>
+          <p><strong>PIPEDA</strong> is federal privacy legislation that governs how private-sector organizations (including investment dealers) collect, use, and disclose personal information in the course of commercial activity.</p>
+          <p><strong>PIPEDA's key principles (10 Fair Information Principles):</strong></p>
+          <table>
+            <thead>
+              <tr><th>Principle</th><th>What It Means for Dealers</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Accountability</strong></td><td>Firm must designate someone responsible for PIPEDA compliance (typically the Chief Compliance Officer)</td></tr>
+              <tr><td><strong>Identifying Purposes</strong></td><td>Firm must tell clients why it is collecting their information before or at time of collection</td></tr>
+              <tr><td><strong>Consent</strong></td><td>Client consent required for collection, use, or disclosure of personal information (subject to exceptions)</td></tr>
+              <tr><td><strong>Limiting Collection</strong></td><td>Only collect information necessary for identified purposes — cannot collect information "just in case"</td></tr>
+              <tr><td><strong>Limiting Use, Disclosure, Retention</strong></td><td>Information can only be used for the purpose it was collected; dispose of it when no longer needed</td></tr>
+              <tr><td><strong>Accuracy</strong></td><td>Keep client information accurate, complete, and up to date</td></tr>
+              <tr><td><strong>Safeguards</strong></td><td>Protect information with appropriate security measures (encryption, access controls, etc.)</td></tr>
+              <tr><td><strong>Openness</strong></td><td>Be transparent about your privacy policies and practices</td></tr>
+              <tr><td><strong>Individual Access</strong></td><td>Clients can request access to their own personal information held by the firm</td></tr>
+              <tr><td><strong>Challenging Compliance</strong></td><td>Clients can challenge the firm's compliance with PIPEDA</td></tr>
+            </tbody>
+          </table>
+          <div class="callout info">
+            <div class="callout-label">📌 Note on Provincial Privacy Laws</div>
+            <p>Quebec, Alberta, and BC have their own provincial privacy legislation considered "substantially similar" to PIPEDA. In those provinces, the provincial law applies to intra-provincial activities, while PIPEDA applies to inter-provincial and international activities. For the exam, PIPEDA is the primary framework to know.</p>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Canadian Anti-Spam Legislation (CASL)</h3>
+          <p><strong>CASL</strong> governs the sending of commercial electronic messages (CEMs) and the installation of computer programs. It applies to investment dealers when they send marketing or promotional emails, texts, or other electronic messages to clients or prospects.</p>
+          <p><strong>Key CASL requirements:</strong></p>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Consent Required</div>
+              <div class="def-desc">You must have express or implied consent before sending a CEM. Express consent = the person explicitly agreed. Implied consent = an existing business relationship.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Identification</div>
+              <div class="def-desc">Every CEM must clearly identify the sender and provide contact information.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Unsubscribe Mechanism</div>
+              <div class="def-desc">Every CEM must include a clear, easy-to-use mechanism to withdraw consent (unsubscribe). The request must be honoured within 10 business days.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Penalties</div>
+              <div class="def-desc">CASL violations carry significant fines — up to $1 million per violation for individuals and $10 million per violation for organizations.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3 class="subsection-title">Rules for Company Disclosure & Statutory Rights of Shareholders</h3>
+          <p>Public companies (issuers) listed on Canadian exchanges have mandatory disclosure obligations that are enforced by the CSA and exchanges. These protect investors by ensuring all material information is publicly available.</p>
+
+          <p><strong>Key Disclosure Requirements:</strong></p>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Continuous Disclosure</div>
+              <div class="def-desc">Ongoing obligation to disclose material information promptly (press releases for material changes, quarterly and annual financial statements, MD&A, AIFs).</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Material Change Reporting</div>
+              <div class="def-desc">Any change in a company's business, operations, or capital that would be expected to have a significant effect on the market price of its securities must be disclosed immediately.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Insider Reporting</div>
+              <div class="def-desc">Insiders (directors, officers, 10%+ shareholders) must publicly report their trades in the company's securities within specified timeframes.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Proxy Circular</div>
+              <div class="def-desc">When soliciting shareholder votes, companies must provide a management proxy circular with full disclosure about matters to be voted on.</div>
+            </div>
+          </div>
+
+          <p style="margin-top:20px;"><strong>Statutory Rights of Shareholders:</strong></p>
+          <div class="def-list">
+            <div class="def-item">
+              <div class="def-term">Right of Rescission</div>
+              <div class="def-desc">If a company's prospectus contained a misrepresentation, an investor can rescind (cancel) the purchase and get their money back.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Right of Action for Damages</div>
+              <div class="def-desc">Investors can sue for damages if they suffered losses due to a misrepresentation in a prospectus or continuous disclosure document.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Voting Rights</div>
+              <div class="def-desc">Common shareholders generally have the right to vote on major corporate decisions at annual and special meetings (election of directors, approval of auditors, major transactions).</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Dissent Rights</div>
+              <div class="def-desc">In certain transactions (mergers, fundamental changes), shareholders who dissent can require the company to buy their shares at fair value.</div>
+            </div>
+            <div class="def-item">
+              <div class="def-term">Derivative Actions</div>
+              <div class="def-desc">Shareholders can bring a lawsuit on behalf of the corporation (derivative action) against directors or officers who have harmed the company.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <hr class="gold-rule">
+
+    <!-- SUMMARY TABLE -->
+    <div id="summary" class="section" style="border-top:none;margin-top:0;padding-top:0;">
+      <div class="section-tag">SUMMARY</div>
+      <h2 class="section-title">Element 1 — Master Reference Table</h2>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr><th>Section</th><th>Key Entity/Law</th><th>Core Function</th><th>Exam Priority</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1.1</td><td>CSA</td><td>Coordinates 13 provincial regulators; issues NI, MI, NP, CP</td><td>⭐⭐⭐</td></tr>
+            <tr><td>1.2</td><td>CIRO</td><td>SRO for investment dealers; enforces IDPC Rules (business) and UMIR (trading)</td><td>⭐⭐⭐</td></tr>
+            <tr><td>1.3</td><td>Registration System</td><td>Two-layer: firm (CSA) + individual (CIRO). NI 31-103.</td><td>⭐⭐⭐</td></tr>
+            <tr><td>1.4</td><td>Marketplaces</td><td>Exchange / ATS / CTP / FORM — all regulated, different structures</td><td>⭐⭐</td></tr>
+            <tr><td>1.5</td><td>CDS / CDCC</td><td>CDS = equity/debt clearing. CDCC = derivatives clearing.</td><td>⭐⭐</td></tr>
+            <tr><td>1.6</td><td>CIPF</td><td>$1M per category protection against dealer insolvency (not market loss)</td><td>⭐⭐⭐</td></tr>
+            <tr><td>1.7</td><td>FINTRAC, OSFI, OBSI, etc.</td><td>Specialized agencies covering AML intel, bank supervision, consumer disputes</td><td>⭐⭐</td></tr>
+            <tr><td>1.8</td><td>Bank Act / BIA Part XII</td><td>Bank Act governs banks; Part XII governs securities firm bankruptcy (client asset pooling)</td><td>⭐⭐</td></tr>
+            <tr><td>1.9</td><td>Criminal Code</td><td>Fraud, theft, insider trading, manipulation — criminal charges, not just regulatory</td><td>⭐⭐</td></tr>
+            <tr><td>1.10</td><td>PCMLTFA / AML</td><td>Place-Layer-Integrate; mandatory compliance program; reports to FINTRAC</td><td>⭐⭐⭐</td></tr>
+            <tr><td>1.11</td><td>PIPEDA / CASL / Disclosure</td><td>Privacy, anti-spam, shareholder rights — operational compliance obligations</td><td>⭐⭐</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="key-points">
+      <div class="key-points-title">🏆 Top 10 Things to Know Cold for the Exam</div>
+      <ul>
+        <li>Canada has NO single federal securities regulator — the CSA coordinates 13 provincial/territorial regulators</li>
+        <li>NI = binding on all 13 jurisdictions; MI = binding only on adopting jurisdictions; NP/CP/Notices = guidance only</li>
+        <li>CIRO formed Jan 2023 from merger of IIROC + MFDA. IDPC Rules = business conduct; UMIR = trading conduct</li>
+        <li>Registration is two-layer: firm registered with provincial regulator + individuals approved by CIRO</li>
+        <li>CDS clears equities/bonds; CDCC clears exchange-traded derivatives (Montréal Exchange)</li>
+        <li>CIPF covers up to $1M per account category against dealer insolvency — NOT against investment losses</li>
+        <li>Money laundering has 3 stages: Placement → Layering → Integration</li>
+        <li>FINTRAC receives: LCTR ($10K+ cash, 15 days), STR (suspicious, 30 days), EFTR ($10K+ international, 5 days), TPR (terrorism, immediately)</li>
+        <li>Tipping off a client that you filed an STR is a criminal offence</li>
+        <li>PIPEDA has 10 Fair Information Principles; CASL requires consent + ID + unsubscribe for all commercial electronic messages</li>
+      </ul>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="quiz" class="quiz-wrap">
+      <div class="quiz-h1">Element 1 — Practice Questions</div>
+      <div class="quiz-sub-txt">45 scenario-based questions · Exam-level difficulty · Click an option to reveal answer</div>
+      <div class="quiz-stats">
+        <div><div class="qs-n">15</div><div class="qs-l">Easy</div></div>
+        <div><div class="qs-n">20</div><div class="qs-l">Medium</div></div>
+        <div><div class="qs-n">10</div><div class="qs-l">Hard</div></div>
+        <div><div class="qs-n" id="sLbl">0/45</div><div class="qs-l">Score</div></div>
+      </div>
+      <div id="qC"></div>
+      <div class="quiz-ctrl">
+        <div class="score-disp" id="fS"></div>
+        <button class="btn btn-p" onclick="resetQ()">🔄 Reset</button>
+        <button class="btn btn-s" onclick="revealAll()">👁 Reveal All</button>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="book-footer">
+    <strong>CIRE Exam Preparation — Element 1</strong> | Canadian Securities Regulatory Framework<br>
+    <span style="font-size:12px;margin-top:6px;display:block;">Based on CIRO CIRE Exam Syllabus. For study purposes only.</span>
+  </div>
+
+</div>
+
+<script>
+const Qs=[
+{id:1,d:'e',q:"Who has primary jurisdiction over securities regulation in Canada?",o:["A. The federal Department of Finance, which sets national securities policy","B. Provincial and territorial governments — securities regulation is constitutionally a provincial responsibility","C. CIRO, which is the single national securities regulator formed in 2023","D. The Bank of Canada, which oversees all financial market regulations"],a:1,e:"<strong>Securities regulation in Canada is constitutionally a provincial and territorial responsibility</strong> under the British North America Act (1867), which assigned property and civil rights to provinces. There is no single national securities regulator — each province and territory has its own securities act and regulator. The CSA coordinates provincial regulators; CIRO is a self-regulatory organization operating under provincial regulatory oversight."},
+{id:2,d:'e',q:"What is the primary purpose of the Canadian Investor Protection Fund (CIPF)?",o:["A. To compensate investors who lose money due to poor investment recommendations","B. To protect eligible client property if a CIRO member dealer becomes insolvent","C. To guarantee investment returns for RRSP and TFSA account holders","D. To provide insurance against market losses in all registered and non-registered accounts"],a:1,e:"CIPF protects eligible client property (securities and cash) held by a CIRO member dealer in the event of that <strong>dealer's insolvency</strong>. It does NOT protect against market losses (declining investment values), unsuitable advice, or fraud by advisors. Coverage is automatic for all CIRO member accounts, up to $1,000,000 per account category."},
+{id:3,d:'e',q:"A National Instrument (NI) differs from a CSA Staff Notice in that:",o:["A. National Instruments are drafted by CIRO; Staff Notices are drafted by the CSA","B. National Instruments have the force of law; Staff Notices are guidance reflecting staff views only","C. National Instruments apply only in Ontario; Staff Notices apply nationally","D. National Instruments apply only to registered dealers; Staff Notices apply to all market participants"],a:1,e:"A <strong>National Instrument (NI)</strong> has the force of law — it is adopted by each provincial regulator through formal rule-making processes and is legally enforceable. A <strong>CSA Staff Notice</strong> reflects staff interpretations and views but does not have independent legal force. However, Staff Notices are still very influential — they signal regulatory expectations and are cited in enforcement proceedings."},
+{id:4,d:'e',q:"CIRO was formed in January 2023 through the amalgamation of which two organizations?",o:["A. The OSC and the AMF — Canada's two largest provincial securities regulators","B. IIROC (Investment Industry Regulatory Organization of Canada) and the MFDA (Mutual Fund Dealers Association of Canada)","C. The Bank of Canada and OSFI — Canada's two federal financial regulators","D. The CSA and the former Canadian Depository for Securities (CDS)"],a:1,e:"<strong>CIRO</strong> was formed on January 1, 2023 through the amalgamation of <strong>IIROC</strong> (which regulated investment dealers and market integrity) and the <strong>MFDA</strong> (which regulated mutual fund dealers). This created a single self-regulatory organization for all CIRO-member dealers — both investment dealers and mutual fund dealers — and is the most significant structural change in Canadian securities regulation in recent history."},
+{id:5,d:'e',q:"What dollar threshold triggers a mandatory Large Cash Transaction Report (LCTR) to FINTRAC?",o:["A. $5,000 or more in a single cash transaction","B. $10,000 or more in cash, or multiple related transactions totalling $10,000 in 24 hours","C. $25,000 or more in any form of payment","D. $50,000 or more in cash, with a 30-day reporting window"],a:1,e:"A <strong>Large Cash Transaction Report (LCTR)</strong> must be filed with FINTRAC for any single cash transaction of <strong>$10,000 or more</strong>, OR multiple related cash transactions totalling $10,000 or more within a 24-hour period (anti-structuring provision). Must be filed within 15 business days. Note: this threshold applies specifically to cash — wire transfers and cheques have separate EFT reporting requirements at the same $10,000 threshold."},
+{id:6,d:'e',q:"What is the difference between a stock exchange (like the TSX) and an Alternative Trading System (ATS)?",o:["A. Exchanges use electronic trading; ATSs use traditional floor-based trading","B. Exchanges list companies and set listing standards; ATSs match buyers and sellers without listing companies","C. ATSs are unregulated; exchanges are subject to securities regulation","D. Exchanges are available to all retail investors; ATSs are restricted to institutional clients only"],a:1,e:"The key distinction: <strong>Exchanges list companies</strong> — issuers must meet listing requirements to have their securities traded on an exchange. Exchanges also set corporate governance standards for listed companies. <strong>ATSs do not list companies</strong> — they simply provide an electronic platform for matching buyers and sellers who are trading securities already listed elsewhere. Both exchanges and ATSs are regulated under NI 21-101 and subject to UMIR for market integrity."},
+{id:7,d:'e',q:"A client holds $800,000 in a general (non-registered) brokerage account and $700,000 in an RRSP with the same CIRO member dealer. The dealer becomes insolvent. What is the CIPF coverage?",o:["A. Total coverage of $1,000,000 covering both accounts combined","B. $800,000 for the general account and $700,000 for the RRSP — both covered in full under separate $1M per category limits","C. $1,000,000 total — the general account is covered but the RRSP is not","D. $500,000 per account since the $1M limit must be split between two accounts"],a:1,e:"CIPF provides up to $1,000,000 per <strong>account category</strong>. The general account ($800,000) and the RRSP ($700,000) are separate categories — each covered independently up to $1M. Both accounts are <strong>fully covered</strong>: $800,000 + $700,000 = $1,500,000 total coverage in this scenario. The maximum coverage would be $1M + $1M = $2M if both accounts hit the limit."},
+{id:8,d:'e',q:"Which regulator is responsible for the prudential (solvency) oversight of Canadian banks?",o:["A. CIRO — which oversees all financial market participants in Canada","B. The OSC — as Canada's largest provincial securities regulator","C. OSFI (Office of the Superintendent of Financial Institutions) — the federal prudential regulator","D. The Bank of Canada — as Canada's central bank and lender of last resort"],a:2,e:"<strong>OSFI (Office of the Superintendent of Financial Institutions)</strong> is the federal regulator responsible for the prudential oversight (solvency, capital adequacy, risk management) of Canadian banks, insurance companies, and federally regulated trust companies. OSFI is separate from CIRO — a bank's investment dealer subsidiary falls under CIRO for securities regulation, while the bank itself (capital, risk, solvency) falls under OSFI."},
+{id:9,d:'e',q:"OBSI (Ombudsman for Banking Services and Investments) can award compensation of up to what amount per complaint?",o:["A. $100,000 per complaint, with no right of appeal","B. $350,000 per complaint through non-binding recommendations","C. $1,000,000 per complaint, which is legally binding on member firms","D. There is no monetary limit — OBSI can recommend full compensation for any loss proven"],a:1,e:"OBSI can recommend compensation of up to <strong>$350,000</strong> per complaint. Importantly, OBSI's recommendations are <strong>non-binding</strong> — firms can refuse to implement them (though OBSI can publicly name firms that refuse). The service is free to complainants, available in both official languages, and must be accessed within 180 days of the firm's final written response."},
+{id:10,d:'e',q:"Canada moved to T+1 equity settlement in May 2024. What does T+1 mean?",o:["A. Trades must be confirmed by both parties within 1 hour of execution","B. Securities and cash must be exchanged between buyer and seller within 1 business day of the trade date","C. All retail trades must settle before 1:00 pm on the day after the trade","D. Large institutional trades settle in 1 day while retail trades settle in 2 days"],a:1,e:"<strong>T+1</strong> means that after a trade is executed (Trade date = T), the settlement — the actual transfer of securities from seller to buyer and cash from buyer to seller — must be completed within <strong>1 business day</strong>. Canada aligned with the US in making this change on May 27, 2024. CDS (Canadian Depository for Securities) handles the book-entry settlement electronically. Previously T+2 (2 days)."},
+{id:11,d:'e',q:"What is the function of the CDCC (Canadian Derivatives Clearing Corporation)?",o:["A. To list and regulate derivative products available on Canadian exchanges","B. To become the central clearing counterparty for exchange-traded derivatives — eliminating counterparty risk for all parties","C. To oversee compliance with UMIR's derivative trading rules","D. To provide insurance for losses on derivative positions similar to how CIPF covers equity losses"],a:1,e:"The CDCC becomes the <strong>legal counterparty to every exchange-traded derivative transaction</strong> through novation — replacing the bilateral exposure between two traders with two separate contracts (each trader with CDCC). This eliminates counterparty risk: if one trader defaults, CDCC absorbs the loss and ensures the other side's obligation is met. CDCC requires daily margin deposits from all participants to fund this guarantee."},
+{id:12,d:'e',q:"What are the three stages of money laundering?",o:["A. Detection, reporting, and prosecution — the three steps regulators follow","B. Placement, layering, and integration — how criminals move dirty money into the legitimate economy","C. Identification, monitoring, and freezing — the three steps investment dealers must follow","D. Cash, conversion, and concealment — the regulatory terminology under PCMLTFA"],a:1,e:"The three stages of money laundering: (1) <strong>Placement</strong> — dirty cash enters the financial system (e.g., deposited as fictitious revenue). (2) <strong>Layering</strong> — complex transactions create distance between the funds and their source (wire transfers, shell companies, securities trades). (3) <strong>Integration</strong> — the funds re-enter the legitimate economy as apparently 'clean' money. Investment dealers are targeted at all three stages."},
+{id:13,d:'e',q:"CASL (Canada's Anti-Spam Legislation) requires investment dealers and advisors to:",o:["A. File reports with the CRTC for every commercial email sent to clients","B. Obtain express or implied consent before sending commercial electronic messages to clients or prospects","C. Send all client communications by secure encrypted email only","D. Limit marketing emails to no more than one per month per client"],a:1,e:"<strong>CASL</strong> requires organizations to obtain either <strong>express consent</strong> (explicitly given, e.g., ticking a checkbox) or <strong>implied consent</strong> (e.g., an existing business relationship) before sending commercial electronic messages (emails, texts, or other electronic messages). Advisors must maintain consent records and honor unsubscribe requests promptly. CRTC administers CASL; violations can result in significant fines."},
+{id:14,d:'e',q:"Under NI 62-104, a formal takeover bid is triggered when a purchaser acquires what percentage of a public company's voting shares?",o:["A. 5% — requiring only a disclosure filing on SEDAR+","B. 10% — triggering basic reporting requirements under the takeover bid rules","C. 20% — triggering mandatory bid rules requiring equal treatment of all shareholders","D. 50% — triggering change of control provisions requiring shareholder approval"],a:2,e:"Under <strong>NI 62-104</strong>, a formal takeover bid is triggered when a purchaser acquires <strong>20% or more</strong> of a public company's voting shares. Key protections: the bid must be open for at least 105 days, all shareholders must be offered equal terms, a minimum 50% tender condition must be met before the bidder can take up shares. These rules prevent coercive bids that could pressure shareholders to sell."},
+{id:15,d:'e',q:"What does CDS (Canadian Depository for Securities) do in the Canadian financial system?",o:["A. It provides deposit insurance for bank accounts similar to CDIC","B. It holds and transfers securities electronically between buyers and sellers as the central depository and clearing house for equities and bonds","C. It regulates the listing of new securities on Canadian exchanges","D. It provides backup clearing for derivative trades when CDCC capacity is exceeded"],a:1,e:"<strong>CDS (Canadian Depository for Securities)</strong> is Canada's central securities depository. All listed securities are held in CDS as electronic book entries — no physical share certificates exchange hands. When equity trades settle (T+1), CDS transfers the securities from the seller's account to the buyer's account electronically. CDS also processes corporate actions (dividends, rights issues, splits). Separate from CDCC which handles derivative clearing."},
+// MEDIUM 16-35
+{id:16,d:'m',q:"A new investment dealer firm wants to operate in Canada, serving both retail and institutional clients across all provinces. Which combination of registrations and memberships is required?",o:["A. Registration as an Investment Dealer with the OSC only — the OSC's national reach covers all provinces","B. Investment Dealer registration in each province/territory where it operates (or passport equivalents), CIRO membership (mandatory for investment dealers), and CIPF membership (mandatory for CIRO members)","C. Only CIRO membership is required — CIRO's authority supersedes provincial registration requirements","D. Registration with the CSA as a national entity — the CSA's national instruments create a single registration requirement"],a:1,e:"An investment dealer must: (1) Register in each province/territory under that province's securities legislation (NI 31-103 passport system allows registration in one province to be recognized in others, simplifying multi-provincial registration). (2) Become a <strong>CIRO member</strong> — mandatory for investment dealers under CIRO rules and provincial regulations. (3) Participate in <strong>CIPF</strong> — mandatory for all CIRO members. The CSA is a coordinator, not a direct regulator, and CIRO membership does not replace provincial registration."},
+{id:17,d:'m',q:"An investment dealer's compliance team learns that a client has been depositing $9,000 in cash every week for the past month — just below the $10,000 LCTR reporting threshold. What must the dealer do?",o:["A. No reporting is required since each transaction is below the $10,000 threshold","B. This pattern of 'structuring' transactions to avoid reporting thresholds is itself suspicious activity; the dealer should file a Suspicious Transaction Report (STR) with FINTRAC","C. File a Large Cash Transaction Report only when the cumulative monthly total exceeds $10,000","D. Wait until the pattern repeats for 6 months before taking any reporting action"],a:1,e:"<strong>Structuring</strong> — intentionally breaking large transactions into smaller amounts below reporting thresholds to avoid FINTRAC detection — is itself a criminal offence and an AML red flag. The pattern of $9,000 weekly deposits is a classic structuring indicator. The dealer must file a <strong>Suspicious Transaction Report (STR)</strong> — which has no minimum dollar threshold and is triggered by reasonable grounds to suspect money laundering, including suspicious transaction patterns. The dealer must NOT tip off the client."},
+{id:18,d:'m',q:"A client complains to their investment dealer about unsuitable recommendations that resulted in $180,000 in losses. The dealer's compliance department reviews the complaint and provides a final written response that the client finds unsatisfactory. The client received the dealer's final response 6 months ago. Can the client still go to OBSI?",o:["A. No — the 180-day filing window has expired; the client has missed the OBSI deadline","B. Yes — 6 months is exactly 180 days; the client is at the deadline and should file immediately","C. No — OBSI only handles complaints under $100,000","D. Yes — there is no time limit for OBSI complaints as long as the amount is under $350,000"],a:1,e:"OBSI's rule: clients must file their complaint within <strong>180 days of receiving the dealer's final written response</strong>. Six months is approximately 180 days — the client is right at the deadline and should file immediately. The $180,000 loss amount is within OBSI's $350,000 maximum. OBSI handles investment suitability complaints (unlike CIPF which covers insolvency). If the client misses the 180-day window, OBSI will typically decline to investigate."},
+{id:19,d:'m',q:"An advisor working at a CIRO-registered investment dealer wants to recommend the shares of a company listed on the NYSE to a Canadian retail client. Which regulatory framework applies to the execution of this trade?",o:["A. US SEC rules only — since the NYSE is a US exchange governed by US securities law","B. Canadian UMIR and CIRO rules apply to the dealer and how the order is handled; NYSE rules apply to the execution on the US exchange; UMIR 6.4 governs accessing foreign organized regulated markets","C. No Canadian regulation applies since the security is listed on a foreign exchange","D. The trade is prohibited for retail clients since only institutional investors can access foreign markets"],a:1,e:"When a Canadian dealer executes client orders on a <strong>Foreign Organized Regulated Market (FORM)</strong> like the NYSE: (1) <strong>UMIR 6.4</strong> governs the dealer's obligations when accessing foreign markets, including protecting against trading through better-priced orders on Canadian marketplaces. (2) The dealer's <strong>best execution obligation</strong> (UMIR 5.1) still applies. (3) NYSE's own rules govern execution on the NYSE. Canadian dealers must comply with both Canadian regulatory requirements and the rules of the foreign market they access on the client's behalf."},
+{id:20,d:'m',q:"A Suspicious Transaction Report (STR) is filed with FINTRAC by an investment dealer. The client later asks the compliance officer why there has been unusual activity on their account. What must the compliance officer do?",o:["A. Explain that an STR was filed since transparency with clients is an ethical obligation","B. Decline to confirm or deny any STR filing — the tipping-off prohibition makes it a criminal offence to inform the subject of an STR","C. Provide the client with a copy of the STR as required by PIPEDA disclosure obligations","D. Tell the client that a routine regulatory review is occurring without mentioning the STR"],a:1,e:"The <strong>tipping-off prohibition</strong> under PCMLTFA is absolute: once an STR has been filed, the reporting entity is <strong>prohibited from disclosing to the subject</strong> that a report was made or that FINTRAC is aware. Violating this prohibition is itself a criminal offence. The compliance officer must not confirm, deny, or provide any information that would alert the client to the STR. This prohibition exists to preserve the integrity of FINTRAC investigations."},
+{id:21,d:'m',q:"What is the key difference between OBSI's dispute resolution service and pursuing a complaint through CIRO's enforcement division?",o:["A. OBSI handles criminal matters; CIRO enforcement handles civil complaints only","B. OBSI focuses on financial compensation for harmed clients and provides non-binding recommendations; CIRO enforcement focuses on industry discipline (fines, suspensions, bans) through formal proceedings","C. OBSI requires a lawyer; CIRO enforcement is a self-service process for clients","D. OBSI is only for RRSP complaints; CIRO handles all other account types"],a:1,e:"The distinction is fundamental: <strong>OBSI</strong> — compensatory focus, investigates whether the client was harmed and recommends financial redress (up to $350,000), non-binding, free to clients. <strong>CIRO enforcement</strong> — regulatory/disciplinary focus, investigates whether registered persons or dealers violated CIRO rules, imposes penalties (fines, suspensions, permanent bars), proceedings are published publicly. A client who wants money back goes to OBSI; a client who wants the advisor punished (or both) would use CIRO enforcement."},
+{id:22,d:'m',q:"A company's stock is listed on both the TSX and the NYSE (cross-listed). A CIRO member dealer receives an order from a retail client to buy 5,000 shares. The TSX has a better-priced offer available. What UMIR obligation is engaged?",o:["A. The dealer may execute on either exchange at its discretion since the client only specified a quantity","B. UMIR 5.1 best execution requires the dealer to pursue the most advantageous execution terms — if the TSX has a better price, the Order Protection Rule requires protecting those better-priced orders","C. All orders for cross-listed securities must execute on the Canadian exchange first, then any remaining quantity on the US exchange","D. The dealer must split the order equally between TSX and NYSE to ensure market impact neutrality"],a:1,e:"UMIR 5.1 (best execution) requires the dealer to <strong>pursue the most advantageous execution terms reasonably available</strong>. For cross-listed securities, the dealer must consider both Canadian and US marketplaces. The <strong>Order Protection Rule (OPR)</strong> under NI 23-101 requires protecting better-priced orders — if the TSX has a better price, the dealer must fill against that before accessing the NYSE. UMIR 6.4 governs accessing foreign markets and requires compliance with OPR before executing on a FORM when better prices exist in Canada."},
+{id:23,d:'m',q:"An investment dealer is setting up compliance procedures. When must an Electronic Funds Transfer Report (EFTR) be filed with FINTRAC?",o:["A. For all electronic wire transfers regardless of amount, whenever funds leave Canada","B. For international electronic funds transfers of $10,000 or more — both incoming and outgoing — filed within 5 business days","C. Only for outgoing international transfers that lack a clear commercial purpose, filed within 30 days","D. For domestic transfers only, when the recipient is flagged as high-risk by the dealer's AML system"],a:1,e:"An <strong>Electronic Funds Transfer Report (EFTR)</strong> must be filed for international EFTs of <strong>$10,000 or more</strong> — this applies to both incoming and outgoing international wire transfers. The filing deadline is within <strong>5 business days</strong> of the transfer (compared to 15 business days for LCTRs). This applies to both individuals and businesses. Domestic transfers have different reporting requirements."},
+{id:24,d:'m',q:"What is the GATEKEEPER REPORTING obligation under UMIR 10.16 for a dealer who discovers a UMIR violation during an internal investigation?",o:["A. Must immediately report to CIRO upon discovering any suspicious activity","B. Must file a report to CIRO by the 15th day of the month following the month in which the findings of the investigation are made","C. Must file a report within 5 business days of completing the internal investigation","D. Must report quarterly as part of the standard regulatory reporting cycle"],a:1,e:"Under <strong>UMIR 10.16</strong> (gatekeeper obligations): when an internal investigation finds that a UMIR violation has occurred, the dealer must file a written report with CIRO no later than the <strong>15th day of the month following the month</strong> in which the findings are made. Exception: for DEA (Direct Electronic Access) violations, reporting must be immediate (forthwith). All investigation records must be retained for 7 years. The investigation is triggered when there is 'reason to believe' a violation may have occurred — not only upon confirmed proof."},
+{id:25,d:'m',q:"A client of a CIRO member mutual fund dealer has $900,000 in their account. The dealer becomes insolvent. The client lives in Quebec. What CIPF coverage applies?",o:["A. Full CIPF coverage of $900,000 since the account is under the $1M limit","B. No CIPF coverage — customers of mutual fund dealers in Quebec are covered by the Fonds d'indemnisation des services financiers (FISF), not CIPF","C. CIPF covers the first $500,000; the client must seek other remedies for the remaining $400,000","D. CIPF coverage applies automatically regardless of province since the dealer is a CIRO member"],a:1,e:"This is the Quebec exception: <strong>Customers of mutual fund dealers located in Quebec are NOT covered by CIPF</strong>. Instead, they are covered by the <strong>Fonds d'indemnisation des services financiers (FISF)</strong> — Quebec's own financial services compensation fund. This exception applies specifically to mutual fund dealers; Quebec customers of investment dealers ARE covered by CIPF."},
+{id:26,d:'m',q:"What is the difference between the NRD (National Registration Database) and SEDAR+ in the Canadian securities regulatory framework?",o:["A. NRD is for investor complaints; SEDAR+ is for advisor compliance records","B. NRD is the system through which firms and individuals apply for and maintain their registration; SEDAR+ is the system through which public companies file disclosure documents","C. NRD is operated by CIRO for dealer member monitoring; SEDAR+ is operated by provincial regulators for fund oversight","D. NRD stores historical trade data; SEDAR+ stores current account information for all registered clients"],a:1,e:"<strong>NRD (National Registration Database)</strong> — the platform where dealers, portfolio managers, and individual registrants apply for and maintain their registration with provincial securities regulators. The public can search NRD to verify whether a firm or individual is registered. <strong>SEDAR+</strong> (System for Electronic Document Analysis and Retrieval Plus) — where public companies and investment funds file mandatory disclosure documents (prospectuses, annual reports, financial statements, proxy circulars, material change reports). Two completely different systems for two different regulatory functions."},
+{id:27,d:'m',q:"A Canadian investment dealer's UMIR gatekeeper review identifies that a DEA (Direct Electronic Access) client has breached a material provision of the DEA agreement. What is the correct response?",o:["A. File a report with CIRO by the 15th of the following month as per UMIR 10.16","B. Immediately activate the kill switch to terminate the DEA client's access AND forthwith notify CIRO — DEA violations require immediate reporting, not month-end","C. Notify the DEA client of the breach and give them 30 days to remedy the situation","D. Flag the violation internally and include it in the next quarterly compliance report to CIRO"],a:1,e:"DEA violations are treated differently from standard UMIR violations. Under <strong>UMIR 7.13(6)</strong>, when a dealer has knowledge or reason to believe there has been a breach of a material provision of the DEA agreement: (1) <strong>Immediately activate the kill switch</strong> — terminate the DEA client's access in real time. (2) <strong>Forthwith (immediately) notify CIRO</strong> — not the end-of-month deadline. The rationale: DEA clients enter orders directly on the marketplace under the dealer's Participant ID — an active breach poses immediate market integrity risk requiring instant response."},
+{id:28,d:'m',q:"An Ontario-based investment dealer operates in all provinces. When a client complaint cannot be resolved internally, the client wants to access OBSI. The dealer's final written response was sent 200 days ago. What is the client's situation?",o:["A. The client can still access OBSI since the 2-year Ontario limitation period applies","B. The client has missed OBSI's 180-day filing window and OBSI will typically decline to investigate — they should consider other options such as legal proceedings","C. The client can file with OBSI since the 180 days is not a hard deadline but a guideline","D. The client must file with CIRO enforcement instead since the OBSI window has closed"],a:1,e:"OBSI's <strong>180-day filing window</strong> runs from the date the client receives the dealer's final written response. At 200 days, the client has <strong>missed this deadline</strong>. OBSI will typically decline to investigate cases filed outside the 180-day window. The client's remaining options include: civil litigation (subject to applicable provincial limitation periods — typically 2 years under Ontario's Limitations Act), CIRO enforcement complaint (for regulatory consequences to the advisor/dealer, not financial compensation), or in some cases provincial securities regulator enforcement."},
+{id:29,d:'m',q:"Under NI 62-104 takeover bid rules, a bidder has acquired 52% of Company X's shares through a formal bid. The minimum tender condition of 50% was met. The bidder now wants to acquire the remaining 48% of shares. What rules apply?",o:["A. The bidder must make a new formal bid at a higher price to acquire the remaining shares","B. The bidder can extend the bid to acquire remaining shares, and once over 90%, can use statutory squeeze-out provisions to acquire all remaining shares","C. The remaining 48% of shares cannot be acquired — minority shareholders have an absolute right to retain their shares","D. The bidder must hold the remaining 48% permanently since forcing shareholders to sell violates constitutional property rights"],a:1,e:"Under takeover bid rules: once the minimum tender condition (50%) is met and the bid closes, the bidder can: (1) <strong>Extend the bid</strong> to acquire more shares. (2) Once the bidder reaches <strong>90% of shares not already held</strong>, most Canadian jurisdictions allow the bidder to use <strong>statutory compulsory acquisition (squeeze-out)</strong> to acquire the remaining shares at the same bid price. This balances majority shareholder decisions with minority shareholder protection (through the equal price requirement). Minority shareholders can apply to court for a review of the squeeze-out price."},
+{id:30,d:'m',q:"What is the role of the Bank of Canada in the Canadian securities regulatory framework?",o:["A. The Bank of Canada is the primary regulator for all federally chartered financial institutions","B. The Bank of Canada sets monetary policy (overnight rate), provides liquidity to the financial system, and oversees systemically important payment systems — but is NOT a securities regulator","C. The Bank of Canada directly supervises CIRO and CIPF to ensure adequate capital buffers","D. The Bank of Canada investigates money laundering in the securities industry alongside FINTRAC"],a:1,e:"The <strong>Bank of Canada</strong> performs three main functions relevant to the securities industry: (1) <strong>Monetary policy</strong> — sets the overnight rate, which affects all interest rates and thus all fixed income and equity valuations. (2) <strong>Financial system liquidity</strong> — lender of last resort in systemic stress events. (3) <strong>Payment system oversight</strong> — oversees systemically important payment systems. It does NOT directly regulate securities markets, investment dealers, or market participants — that is CIRO's and provincial regulators' mandate."},
+{id:31,d:'m',q:"A client purchases shares in a BC-based company through a Toronto-based investment dealer. The company files its prospectus with the BCSC only. Can the Toronto dealer sell these shares to Ontario retail investors?",o:["A. Yes — CIRO membership gives dealers national reach to sell any securities","B. Only if the BCSC receipt of the prospectus is recognized in Ontario under the CSA's passport system or if the OSC has also receipted the prospectus","C. Yes — as long as the company is listed on the TSX, any dealer can sell to any Canadian investor","D. No — provincial securities legislation prohibits cross-provincial securities sales in all circumstances"],a:1,e:"Provincial securities law requires a prospectus receipt from each province where securities are distributed. The <strong>CSA Passport System</strong> (NI 31-103 and related instruments) allows a company to file its principal regulator's receipt to be recognized in other participating provinces. Ontario participates in the passport system — an OSC filing or an OSC receipt of another province's filing would be required for lawful distribution to Ontario retail investors. Selling to Ontario investors without proper prospectus receipts in Ontario would violate Ontario securities law."},
+{id:32,d:'m',q:"RCMP IMET (Integrated Market Enforcement Teams) and CIRO enforcement both investigate securities wrongdoing. What is the key difference in their jurisdiction and outcomes?",o:["A. IMET investigates retail investor complaints; CIRO handles institutional misconduct","B. IMET pursues criminal prosecution under the Criminal Code for major capital market fraud and insider trading; CIRO handles administrative/regulatory enforcement with non-criminal penalties","C. IMET only operates in Ontario; CIRO enforcement is national","D. IMET can impose unlimited fines; CIRO is limited to $1M penalties per violation"],a:1,e:"<strong>RCMP IMET</strong> investigates and prosecutes major capital market fraud, insider trading, and manipulation as <strong>criminal offences</strong> under the Criminal Code. Outcomes: criminal conviction, imprisonment, criminal fines. <strong>CIRO enforcement</strong> is administrative/regulatory — it investigates violations of CIRO's IDPC Rules and UMIR, and can impose administrative penalties (fines, disgorgement, suspensions, permanent bars, conditions on registration). Both can act on the same set of facts — the same insider trading case can result in parallel CIRO and criminal proceedings. Criminal prosecution requires a higher standard of proof (beyond reasonable doubt) vs CIRO (balance of probabilities)."},
+{id:33,d:'m',q:"MI 61-101 (Insider Bids and Related Party Transactions) requires what additional protections when a controlling shareholder proposes to take a public company private?",o:["A. Only a regulatory review by the relevant provincial securities commission is required","B. Enhanced disclosure, an independent valuation of the company, and approval by a majority of minority shareholders (excluding the interested party from the vote)","C. Approval by 75% of all shareholders including the controlling shareholder","D. A waiting period of 120 days before any transaction can proceed"],a:1,e:"<strong>MI 61-101</strong> protects minority shareholders in transactions where insiders (related parties) have interests that could conflict with those of minority shareholders. For going-private transactions: (1) <strong>Enhanced disclosure</strong> — the offer document must include detailed information about the transaction. (2) <strong>Independent formal valuation</strong> — an arm's-length valuation must be obtained. (3) <strong>Minority approval</strong> — a majority of the minority shareholders (excluding the controlling shareholder and related parties) must vote in favour. This ensures the controlling party cannot simply buy out minorities at an unfairly low price."},
+{id:34,d:'m',q:"A compliance officer at an investment dealer discovers the firm has been sending commercial emails to a prospecting list without obtaining prior consent. What legislation is engaged and what is the risk?",o:["A. PIPEDA — the firm must file a privacy breach report with the OPC","B. CASL (Canada's Anti-Spam Legislation) — the firm faces potential administrative monetary penalties from the CRTC for sending commercial electronic messages without consent","C. The Bank Act — which governs communications between financial institutions and the public","D. The Criminal Code — which prohibits unsolicited financial marketing communications"],a:1,e:"<strong>CASL (Canada's Anti-Spam Legislation)</strong> requires express or implied consent before sending commercial electronic messages. Sending marketing emails to a list without prior consent violates CASL. The <strong>Canadian Radio-television and Telecommunications Commission (CRTC)</strong> administers and enforces CASL. Penalties can be significant — up to $10M per violation for organizations. The firm should immediately cease the unsolicited emails, purge the non-consented list, implement proper consent procedures, and assess whether a voluntary disclosure to the CRTC is warranted."},
+{id:35,d:'m',q:"A client requests a list of all personal information their investment dealer holds about them. Under what legislation does this right exist, and what must the dealer do?",o:["A. Under the Bank Act — clients can request financial summaries annually","B. Under PIPEDA — individuals have the right to access their personal information held by organizations, and the dealer must respond within 30 days","C. Under CIRO's IDPC Rules — clients can request account records within 7 years of transactions","D. Under NI 31-103 — clients can access KYC information only, not transaction records"],a:1,e:"Under <strong>PIPEDA (Personal Information Protection and Electronic Documents Act)</strong>, individuals have the right to: (1) Access their personal information held by an organization. (2) Challenge the accuracy of that information. (3) Have incorrect information corrected. The organization must respond within <strong>30 days</strong> of the request (with some extensions allowed). The dealer must provide the client with their personal information in a meaningful format. This is separate from the account statement obligation under CIRO rules — PIPEDA's right of access covers all personal data collected, not just account holdings."},
+// HARD 36-45
+{id:36,d:'h',q:"An investment dealer registered as both an investment dealer and a mutual fund dealer has clients in both Ontario and Quebec. One client is a Quebec resident with a mutual fund dealer account ($400,000), and another is an Ontario resident with an investment dealer account ($800,000). Both dealers become insolvent simultaneously. What are the CIPF/FISF coverage outcomes?",o:["A. Both clients are covered by CIPF since the dealer is a CIRO member","B. Quebec mutual fund dealer client: covered by FISF (not CIPF) — up to FISF limits. Ontario investment dealer client: covered by CIPF up to $1,000,000","C. Quebec client: no coverage since the dealer has dual registration. Ontario client: CIPF covers $500,000 only","D. Both clients covered by CIPF since the investment dealer registration supersedes the mutual fund dealer exception"],a:1,e:"The Quebec mutual fund dealer exception is specific and applies to customers whose account is at a <strong>mutual fund dealer</strong> in Quebec — those customers are covered by <strong>FISF</strong>, not CIPF, regardless of whether the dealer also has investment dealer registration. The Ontario investment dealer client has a standard CIPF-covered account. Result: Quebec MFD client → FISF coverage. Ontario ID client → CIPF coverage up to $1,000,000 (their $800,000 is fully covered). This distinction requires precise understanding of the Quebec carve-out."},
+{id:37,d:'h',q:"A publicly traded company's CEO discovers material non-public information (a pending major acquisition). The CEO directly trades shares; the CEO's spouse also trades shares (having overheard a phone call). The company's investment dealer has research analysts covering the company and its investment banking team is advising on the acquisition. Identify ALL the regulatory frameworks potentially engaged.",o:["A. Only UMIR 2.1 (manipulation) and CIRO IDPC Rules apply","B. Multiple frameworks: Criminal Code s. 382.1 (CEO and spouse criminal insider trading), provincial securities acts (civil insider trading by all parties), UMIR 4.1/2.1 (dealer's proprietary or employee trading if informed), Chinese Wall requirements (information barrier between banking and research), and restricted list requirements for the dealer","C. Only the provincial securities act in the company's home province applies","D. Only the PCMLTFA applies since securities trading proceeds would constitute proceeds of crime"],a:1,e:"This scenario involves multiple overlapping frameworks: (1) <strong>Criminal Code s. 382.1</strong> — CEO and spouse potentially subject to criminal insider trading prosecution (imprisonment, criminal fines). (2) <strong>Provincial securities acts</strong> — civil insider trading violations by all trading parties. (3) <strong>UMIR</b> — if the dealer's employees or proprietary accounts trade based on the MNPI, UMIR 4.1 (front running) and UMIR 2.1 are engaged. (4) <strong>Information barriers</strong> — the deal must be on the restricted list; information must not cross from banking to research. (5) <strong>UMIR 10.16</strong> — if the dealer suspects violations, gatekeeper reporting obligations are triggered."},
+{id:38,d:'h',q:"Quebec's Law 25 (the privacy modernization law) and PIPEDA both govern data protection for investment dealers operating in Quebec. How do these frameworks interact, and what specific additional obligation does Law 25 impose compared to PIPEDA?",o:["A. Law 25 replaces PIPEDA entirely for Quebec — dealers only need to comply with Law 25","B. Law 25 and PIPEDA both apply; Law 25 imposes stricter requirements including: 72-hour notification for high-risk privacy incidents (vs PIPEDA's 'promptly' standard), mandatory privacy impact assessments for certain technologies, and enhanced requirements for the destruction of personal information","C. PIPEDA applies federally and supersedes Law 25 for federally regulated entities like banks","D. Law 25 only applies to companies headquartered in Quebec; dealers with Ontario head offices are exempt"],a:1,e:"For dealers operating in Quebec, both frameworks apply and interact: (1) <strong>PIPEDA</strong> applies federally to investment dealers (federally regulated enterprises) — breach reporting must occur 'promptly' when there is 'real risk of significant harm.' (2) <strong>Law 25</strong> (Quebec's Act to modernize privacy legislation) imposes additional/stricter requirements for entities processing Quebec residents' data: <strong>72-hour notification</strong> for high-risk incidents (stricter than PIPEDA's general 'promptly' standard), mandatory <strong>Privacy Impact Assessments (PIAs)</strong> for certain new technologies, enhanced data destruction obligations, and broader individual rights. Dealers must satisfy both frameworks."},
+{id:39,d:'h',q:"The CSA's oversight review (CSA Staff Notice 25-315, 2025) noted CIRO's response to the August 2025 cybersecurity breach. What regulatory frameworks are engaged when a CIRO member dealer suffers a significant cybersecurity breach exposing client data?",o:["A. Only PIPEDA reporting to the OPC — cybersecurity is purely a privacy law matter","B. Multiple simultaneous obligations: CIRO reporting (material cybersecurity incident), PIPEDA breach reporting to OPC and affected clients (if real risk of significant harm), Quebec Law 25 (72-hour notification if Quebec residents affected), and potential engagement of FINTRAC if the breach could have facilitated financial crime","C. Only CIRO reporting — the SRO's cybersecurity rules supersede other reporting obligations","D. Only if client funds were stolen — data-only breaches have no regulatory reporting requirement"],a:1,e:"A material cybersecurity breach creates multiple simultaneous reporting obligations: (1) <strong>CIRO</strong> — material cybersecurity incidents must be reported promptly. (2) <strong>PIPEDA / OPC</strong> — if real risk of significant harm exists, report to the Office of the Privacy Commissioner and notify affected individuals. (3) <strong>Quebec Law 25</strong> — 72-hour notification to Quebec's Commission d'accès à l'information (CAI) for high-risk incidents affecting Quebec residents. (4) <strong>FINTRAC consideration</strong> — if the breach may have exposed data that could facilitate money laundering or if account credentials were compromised enabling unauthorized transactions, AML/ATF obligations may be engaged. Each framework has different timelines and requirements that must be managed simultaneously."},
+{id:40,d:'h',q:"A company wants to raise capital. It has three possible approaches: (A) Issue shares under a prospectus on the TSX; (B) Issue shares under NI 45-106 accredited investor exemption; (C) Issue shares on the TSX Venture Exchange through a reverse takeover. Identify which CSA instruments govern each approach and the key regulatory difference.",o:["A. All three are governed by NI 31-103 since registration requirements apply to all capital raises","B. Approach A: NI 41-101 (prospectus requirements) + NI 51-102 (continuous disclosure obligations); Approach B: NI 45-106 (prospectus exemptions — accredited investor) — no prospectus but limited to qualified investors; Approach C: TSX-V listing requirements + NI 41-101 for the prospectus-equivalent filing; each imposes different disclosure obligations and investor eligibility restrictions","C. All three require the same full prospectus under NI 41-101 — the investor type does not change the disclosure requirement","D. Only Approach A requires regulatory filings — private placements and exchange listings are self-regulated by the market"],a:1,e:"Three different regulatory pathways: (A) <strong>NI 41-101</strong> (general prospectus requirements) — full prospectus filed with relevant provincial regulators, receipted by the principal regulator, continuous disclosure under <strong>NI 51-102</strong>. Available to all investors. (B) <strong>NI 45-106</strong> (prospectus exemptions) — Accredited Investor exemption allows capital raising without a prospectus from qualifying investors (high net worth individuals and institutions). More restricted investor base, no ongoing disclosure obligations equivalent to a public company. (C) TSX-V reverse takeover involves a private company acquiring control of a listed shell company — must comply with TSX-V listing requirements and is functionally equivalent to an IPO requiring regulatory approval from both TSX-V and the applicable securities commission."},
+{id:41,d:'h',q:"Under the Bankruptcy and Insolvency Act (BIA) Part XII, when a CIRO member dealer becomes insolvent and CIPF is triggered, what is the intended sequence of events to protect clients?",o:["A. CIPF immediately pays all clients their maximum coverage and then pursues the dealer's assets","B. Under BIA Part XII, securities regulators and CIPF work together to: appoint a trustee in bankruptcy, segregate client assets from the firm's proprietary assets, facilitate transfer of client accounts to solvent dealers where possible, and use CIPF funds only for the shortfall that cannot be covered through asset recovery","C. CIPF freezes all accounts and conducts a 12-month audit before paying any claims","D. Client assets are pooled with the dealer's proprietary assets since they are commingled at the time of insolvency"],a:1,e:"The <strong>BIA Part XII</strong> framework for investment dealer insolvency is designed to: (1) <strong>Appoint a trustee in bankruptcy</strong> to take control of the firm's assets and operations. (2) <strong>Segregate client property</strong> from the dealer's proprietary assets — client accounts are separately tracked. (3) <strong>Transfer client accounts</strong> to solvent CIRO member dealers where possible — clients get their accounts moved, not just cash payments. (4) <strong>CIPF fills the shortfall</strong> — the gap between what clients are owed and what can be recovered from the dealer's assets is covered by CIPF (up to $1M per category). Since 1969, all 21 CIRO member insolvencies resulted in full coverage of eligible client claims by CIPF."},
+{id:42,d:'h',q:"The CIRO Rule Consolidation Project is in Phase 6 (as of February 2026). What is the project's ultimate objective and which two existing rule sets is it consolidating?",o:["A. Consolidating provincial securities acts into a single federal securities statute","B. Consolidating CIRO's two current rule sets — the Investment Dealer and Partially Consolidated Rules (IDPC Rules) and the Mutual Fund Dealer Rules (MFD Rules) — into a single unified set of CIRO Dealer and Consolidated Rules (DC Rules) applying consistently to all CIRO members","C. Consolidating UMIR and the IDPC Rules into a single market integrity and conduct rulebook","D. Consolidating the OSC and AMF into a single national securities regulator under CIRO oversight"],a:1,e:"The <strong>Rule Consolidation Project</strong> aims to merge CIRO's two existing rule sets: (1) <strong>IDPC Rules</strong> (Investment Dealer and Partially Consolidated Rules) — currently governing investment dealers and their registered persons. (2) <strong>MFD Rules</strong> (Mutual Fund Dealer Rules) — currently governing mutual fund dealers. The resulting unified <strong>DC Rules (CIRO Dealer and Consolidated Rules)</strong> will apply consistently to all CIRO members. Key Phase 4 changes: extending personal financial dealings restrictions to all employees, new beneficiary status restrictions, enhanced conflict of interest identification requirements. Phase 6 published February 2026."},
+{id:43,d:'h',q:"A Canadian investment dealer has a client who is a Politically Exposed Person (PEP) from a high-risk jurisdiction who wants to open an account and deposit CAD 2,000,000. Under FINTRAC's AML/ATF framework, what enhanced obligations apply?",o:["A. No special obligations — FINTRAC only distinguishes between residents and non-residents, not political status","B. Enhanced due diligence is mandatory: source of funds verification, senior management approval to open the account, ongoing enhanced monitoring of all transactions, and additional documentation of the PEP's wealth and business activities — plus standard FINTRAC reporting obligations for any applicable transactions","C. The account cannot be opened — PEPs from high-risk jurisdictions are prohibited from holding Canadian investment accounts","D. Only a standard STR must be filed since the amount exceeds the $10,000 reporting threshold"],a:1,e:"<strong>Politically Exposed Persons (PEPs)</strong> — current or former senior political figures and their family/close associates — are a high-risk category under PCMLTFA and FINTRAC guidance. For PEP clients from high-risk jurisdictions, enhanced due diligence requirements apply: (1) <strong>Source of funds and wealth verification</strong> — must document and assess how the client accumulated their wealth. (2) <strong>Senior management approval</strong> — opening a PEP account requires explicit approval from a senior officer. (3) <strong>Enhanced ongoing monitoring</strong> — PEP accounts must be more closely monitored for suspicious activity than standard accounts. (4) Standard FINTRAC reporting (LCTRs, EFTRs, STRs) still applies. Accounts can be opened — there is no blanket prohibition — but with significantly more rigor."},
+{id:44,d:'h',q:"A proxy circular for Company XYZ reveals that the CEO received $25M in total compensation last year while the company's net income was $10M and the stock declined 30%. A group of institutional shareholders wants to force a vote on executive compensation. What mechanisms and instruments govern their ability to do so?",o:["A. Shareholders have no recourse — executive compensation is exclusively the board of directors' prerogative","B. Say-on-pay votes (if company has adopted them), shareholder proposal mechanisms under provincial corporate statutes (CBCA or provincial equivalents), proxy advisory firm recommendations, and activist shareholder engagement — all governed by the company's articles, applicable corporate statutes, and NI 51-102 continuous disclosure requirements","C. CIRO enforcement can order a proxy vote on any corporate governance matter at shareholders' request","D. Only pension funds with over 10% holdings can requisition a special meeting to vote on compensation matters"],a:1,e:"Institutional shareholders have several mechanisms to challenge excessive executive compensation: (1) <strong>Say-on-pay votes</strong> — many public companies hold advisory (non-binding) votes on executive compensation at annual meetings (required by TSX governance guidelines for most issuers). (2) <strong>Shareholder proposals</strong> — under the CBCA and provincial corporate statutes, eligible shareholders can submit proposals to be included in the proxy circular for shareholder vote (subject to eligibility requirements). (3) <strong>Requisitioning a special meeting</strong> — holders of 5%+ of voting shares can generally requisition a special meeting under CBCA. (4) <strong>Proxy advisory firms</strong> (ISS, Glass Lewis) can recommend against director candidates. (5) All proxy disclosure governed by <strong>NI 51-102</strong> continuous disclosure requirements."},
+{id:45,d:'h',q:"A CIRO dealer member is considering launching a new cryptocurrency trading desk. The firm wants to allow clients to buy and hold Bitcoin and Ethereum. What is the complete regulatory framework they must navigate?",o:["A. No special regulatory framework applies — crypto assets are not securities and require only MSB registration with FINTRAC","B. Multiple frameworks: CSA registration requirements for crypto trading platforms (CTPs) under applicable NIs and CSA guidance; CIRO membership requirements if operating as a registered investment dealer dealing in crypto assets that are securities/derivatives; FINTRAC MSB registration for any money services business activities; OSFI guidance for banking-affiliated entities; CIPF noting crypto assets are explicitly excluded from coverage","C. Only OSFI approval is required since crypto assets are financial instruments regulated by the federal banking regulator","D. The dealer requires only a new product approval from CIRO — no additional regulatory registrations are needed"],a:1,e:"Crypto trading involves multiple overlapping regulatory frameworks: (1) <strong>CSA registration</strong> — crypto assets that qualify as securities or derivatives require registration as a CTP (Crypto Trading Platform) under applicable CSA instruments. The CSA has issued specific guidance requiring investor protection measures including custody standards, capital requirements, and disclosure. (2) <strong>CIRO</strong> — if the dealer trades crypto products that are regulated as securities or derivatives, CIRO rules (IDPC Rules) apply to the dealer's conduct. CIRO membership minimum capital for restricted dealers: CAD $50,000+. (3) <strong>FINTRAC</strong> — dealing in cryptocurrency as a money services business (MSB) requires FINTRAC registration regardless of securities registration. (4) <strong>CIPF exclusion</strong> — explicitly excluded from CIPF coverage; clients must be informed. (5) <strong>OSFI</strong> — if the dealer is bank-affiliated, OSFI guidance on crypto asset capital treatment applies."}
+];
+
+let ans={},cor=0,att=0;
+function build(){const c=document.getElementById('qC');c.innerHTML='';Qs.forEach((q,i)=>{const dc=q.d==='e'?'de':q.d==='m'?'dm':'dh',dl=q.d==='e'?'Easy':q.d==='m'?'Medium':'Hard';const opts=q.o.map((o,oi)=>`<div class="qq-opt" onclick="chk(${i},${oi})" id="o${i}_${oi}"><span class="opt-l">${String.fromCharCode(65+oi)}</span>${o.substring(3)}</div>`).join('');c.innerHTML+=`<div class="qq" id="q${i}"><div class="qq-top"><span class="qq-num">Q${q.id}</span><span class="qq-diff ${dc}">${dl}</span><div class="qq-text">${q.q}</div></div><div class="qq-opts">${opts}</div><div class="qq-exp" id="e${i}">${q.e}</div></div>`;});}
+function chk(qi,sel){if(ans[qi]!==undefined)return;ans[qi]=sel;att++;const q=Qs[qi],ok=sel===q.a;if(ok)cor++;for(let i=0;i<q.o.length;i++){const el=document.getElementById(`o${qi}_${i}`);if(i===q.a)el.classList.add('correct');else if(i===sel&&!ok)el.classList.add('wrong');}document.getElementById(`e${qi}`).classList.add('show');document.getElementById('sLbl').textContent=`${cor}/${att}`;if(att===Qs.length){const pct=Math.round(cor/Qs.length*100),fd=document.getElementById('fS');fd.style.display='block';fd.innerHTML=`<div class="score-n">${pct}%</div><div class="score-l">${cor}/${Qs.length} correct — ${pct>=60?'✅ Pass':'❌ Below pass'}</div>`;}}
+function revealAll(){Qs.forEach((q,qi)=>{if(ans[qi]!==undefined)return;ans[qi]=q.a;for(let i=0;i<q.o.length;i++){const el=document.getElementById(`o${qi}_${i}`);if(i===q.a)el.classList.add('correct');}document.getElementById(`e${qi}`).classList.add('show');});}
+function resetQ(){ans={};cor=0;att=0;document.getElementById('sLbl').textContent='0/45';document.getElementById('fS').style.display='none';build();}
+function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function scrollToSection(id){const el=document.getElementById(id);if(el){el.scrollIntoView({behavior:'smooth',block:'start'});document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));const items=document.querySelectorAll('.nav-item');items.forEach(item=>{if(item.getAttribute('onclick')&&item.getAttribute('onclick').includes(id)){item.classList.add('active');}});}}
+function updateUI(){const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;const f=document.getElementById('pFill');if(f)f.style.width=Math.min(dh>0?(st/dh)*100:0,100)+'%';const btn=document.getElementById('scrolltop');st>500?btn.classList.add('visible'):btn.classList.remove('visible');const ids=['cover','s11','s12','s12-csa','s12-ni','s13','s13-idpc','s13-umir','s14','s15','s15-types','s15-cds','s16','s17','s17-osfi','s17-fintrac','s17-criminal','s18','summary','quiz'];let cur='cover';ids.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<100)cur=id;});document.querySelectorAll('.nav-item').forEach(item=>{item.classList.remove('active');const onclick=item.getAttribute('onclick')||'';if(onclick.includes("'"+cur+"'"))item.classList.add('active');});}
+window.addEventListener('scroll',updateUI,{passive:true});
+build();updateUI();
+</script>
+</div><!-- /main -->
+</body>
+</html>

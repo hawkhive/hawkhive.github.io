@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIRE Element 4 — Client Complaint Handling & Reporting</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f4ef;
+  --paper: #ffffff;
+  --surface: #f0ece5;
+  --border: #ddd8cf;
+  --ink: #1a1410;
+  --ink2: #3a3028;
+  --ink3: #6b6055;
+  --muted: #9c9088;
+  --sidebar-bg: #1e2a3a;
+  --sidebar-border: rgba(255,255,255,0.07);
+  --accent: #2563a8;
+  --accent-bg: #eef4fc;
+  --accent-border: #90b8e8;
+  --gold: #b07d2a;
+  --gold-bg: #fef8ec;
+  --gold-border: #e8c878;
+  --red: #a82525;
+  --red-bg: #fdf0f0;
+  --red-border: #e8a8a8;
+  --green: #1e6b3a;
+  --green-bg: #eef8f2;
+  --green-border: #88c8a8;
+  --sidebar-w: 285px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#1e2a3a;font-family:'Sora',sans-serif;color:var(--ink);display:flex;}
+
+/* ── SIDEBAR ── */
+#sidebar{
+  width:var(--sidebar-w);min-width:var(--sidebar-w);
+  background:var(--sidebar-bg);position:fixed;
+  top:0;left:0;bottom:0;overflow-y:auto;z-index:100;
+}
+#sidebar::-webkit-scrollbar{width:3px;}
+#sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);}
+
+.sb-top{
+  padding:26px 20px 18px;border-bottom:1px solid var(--sidebar-border);
+  background:rgba(0,0,0,0.25);position:sticky;top:0;z-index:5;
+}
+.sb-pill{
+  display:inline-block;background:rgba(37,99,168,0.25);
+  border:1px solid rgba(37,99,168,0.4);color:#90b8e8;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;
+  letter-spacing:2px;padding:3px 10px;border-radius:20px;
+  text-transform:uppercase;margin-bottom:10px;
+}
+.sb-title{font-family:'Crimson Pro',serif;font-size:19px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:3px;}
+.sb-sub{font-size:10px;color:rgba(255,255,255,0.3);}
+
+.sb-prog{padding:12px 20px 4px;}
+.sb-prog-lbl{font-size:9px;color:rgba(255,255,255,0.25);font-family:'IBM Plex Mono',monospace;margin-bottom:5px;}
+.sb-prog-track{height:3px;background:rgba(255,255,255,0.07);border-radius:3px;}
+.sb-prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),#63b3ed);border-radius:3px;width:0%;transition:width 0.3s;}
+
+.nav-sec{padding:8px 0;}
+.nav-sec-lbl{padding:6px 20px;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,0.22);text-transform:uppercase;font-family:'IBM Plex Mono',monospace;}
+.nl{display:flex;align-items:flex-start;gap:9px;padding:7px 20px;cursor:pointer;border-left:2px solid transparent;transition:all 0.18s;text-decoration:none;}
+.nl:hover{background:rgba(255,255,255,0.04);border-left-color:rgba(37,99,168,0.5);}
+.nl.active{background:rgba(37,99,168,0.12);border-left-color:var(--accent);}
+.nl-num{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#90b8e8;min-width:28px;margin-top:2px;flex-shrink:0;}
+.nl-text{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.4;transition:color 0.18s;}
+.nl:hover .nl-text,.nl.active .nl-text{color:rgba(255,255,255,0.85);}
+.ns{display:block;padding:4px 20px 4px 57px;font-size:11px;color:rgba(255,255,255,0.28);cursor:pointer;border-left:2px solid transparent;transition:all 0.18s;text-decoration:none;}
+.ns:hover{color:rgba(255,255,255,0.5);border-left-color:rgba(37,99,168,0.3);}
+
+/* ── MAIN ── */
+#main{margin-left:var(--sidebar-w);flex:1;background:var(--bg);min-height:100vh;}
+
+/* COVER */
+.cover{
+  min-height:100vh;
+  background:linear-gradient(160deg,#0a1628 0%,#0e2040 40%,#0c1830 100%);
+  padding:80px;display:flex;flex-direction:column;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.cover::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:repeating-linear-gradient(90deg,rgba(37,99,168,0.03) 0,rgba(37,99,168,0.03) 1px,transparent 1px,transparent 60px),
+  repeating-linear-gradient(0deg,rgba(37,99,168,0.03) 0,rgba(37,99,168,0.03) 1px,transparent 1px,transparent 60px);
+}
+.cv-glow{position:absolute;top:-80px;right:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(37,99,168,0.12),transparent 70%);border-radius:50%;}
+.cv-glow2{position:absolute;bottom:-60px;left:20%;width:400px;height:400px;background:radial-gradient(circle,rgba(168,37,37,0.06),transparent 70%);border-radius:50%;}
+
+.cv-tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:4px;color:#90b8e8;text-transform:uppercase;margin-bottom:22px;display:flex;align-items:center;gap:12px;position:relative;}
+.cv-tag::before{content:'';display:inline-block;width:28px;height:1px;background:#90b8e8;}
+.cv-title{font-family:'Crimson Pro',serif;font-size:clamp(38px,6vw,70px);font-weight:700;color:#fff;line-height:1.1;max-width:640px;margin-bottom:14px;position:relative;}
+.cv-title em{color:#90b8e8;font-style:italic;}
+.cv-rule{width:70px;height:2px;background:linear-gradient(90deg,var(--accent),transparent);margin:20px 0;position:relative;}
+.cv-desc{font-size:15px;color:rgba(255,255,255,0.55);max-width:540px;line-height:1.85;margin-bottom:50px;position:relative;}
+
+.cv-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;max-width:580px;border:1px solid rgba(37,99,168,0.2);border-radius:8px;overflow:hidden;position:relative;}
+.cv-stat{padding:18px 16px;background:rgba(255,255,255,0.03);}
+.cv-stat-n{font-family:'Crimson Pro',serif;font-size:32px;font-weight:700;color:#90b8e8;line-height:1;margin-bottom:4px;}
+.cv-stat-l{font-size:10px;color:rgba(255,255,255,0.28);line-height:1.3;}
+
+/* ── CONTENT ── */
+.content{max-width:830px;padding:0 64px 120px;}
+
+.sec{padding-top:76px;}
+.sec-rule{height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:28px;}
+.sec-hdr{display:flex;align-items:flex-start;gap:14px;margin-bottom:24px;}
+.sec-badge{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--accent-bg);border:1px solid var(--accent-border);color:var(--accent);padding:5px 12px;border-radius:4px;white-space:nowrap;margin-top:5px;flex-shrink:0;}
+.sec-title{font-family:'Crimson Pro',serif;font-size:30px;font-weight:700;color:var(--ink);line-height:1.2;}
+
+.body{font-size:14.5px;color:var(--ink3);line-height:1.9;margin-bottom:16px;}
+.body strong{color:var(--ink);font-weight:600;}
+.body em{color:var(--accent);font-style:normal;font-weight:500;}
+
+.sub{margin-top:32px;}
+.sub-title{font-family:'Crimson Pro',serif;font-size:20px;font-weight:700;color:var(--ink2);margin-bottom:12px;padding-left:12px;border-left:3px solid var(--accent);}
+.subsub{margin-top:20px;}
+.subsub-title{font-size:13.5px;font-weight:700;color:var(--ink2);margin-bottom:9px;display:flex;align-items:center;gap:7px;}
+.subsub-title::before{content:'▶';font-size:10px;color:var(--accent);}
+
+/* CALLOUTS */
+.callout{margin:20px 0;padding:15px 18px;border-radius:6px;border-left:3px solid;display:flex;gap:12px;align-items:flex-start;}
+.callout.blue{background:var(--accent-bg);border-color:var(--accent);}
+.callout.gold{background:var(--gold-bg);border-color:var(--gold);}
+.callout.red{background:var(--red-bg);border-color:var(--red);}
+.callout.green{background:var(--green-bg);border-color:var(--green);}
+.ci{font-size:16px;flex-shrink:0;margin-top:1px;}
+.cb{}
+.cl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+.callout.blue .cl{color:var(--accent);}
+.callout.gold .cl{color:var(--gold);}
+.callout.red .cl{color:var(--red);}
+.callout.green .cl{color:var(--green);}
+.callout p{font-size:13.5px;color:var(--ink3);line-height:1.7;}
+.callout p strong{color:var(--ink);}
+
+/* DEF TABLE */
+.dt{margin:16px 0;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+.dr{display:grid;grid-template-columns:190px 1fr;}
+.dr:not(:last-child){border-bottom:1px solid var(--border);}
+.dterm{background:var(--surface);padding:12px 14px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);border-right:1px solid var(--border);display:flex;align-items:flex-start;line-height:1.5;font-weight:500;}
+.dval{background:var(--paper);padding:12px 14px;font-size:13.5px;color:var(--ink3);line-height:1.65;}
+.dval strong{color:var(--ink);}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+thead tr{background:var(--sidebar-bg);}
+th{padding:10px 14px;text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:#90b8e8;font-weight:500;}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--ink3);line-height:1.6;vertical-align:top;}
+td strong{color:var(--ink);}
+tr:last-child td{border-bottom:none;}
+tr:nth-child(even) td{background:var(--surface);}
+
+/* CHECKLIST */
+.chklist{margin:14px 0;}
+.chi{display:flex;align-items:flex-start;gap:9px;padding:9px 13px;border-radius:5px;margin-bottom:4px;background:var(--surface);border:1px solid var(--border);font-size:13.5px;color:var(--ink3);line-height:1.55;}
+.chi strong{color:var(--ink);}
+.chico{color:var(--accent);font-size:12px;flex-shrink:0;margin-top:2px;}
+
+/* FLOW */
+.flow{display:flex;align-items:stretch;gap:3px;flex-wrap:wrap;margin:20px 0;}
+.fs{flex:1;min-width:100px;background:var(--sidebar-bg);color:#e2e8f0;padding:12px 14px;border-radius:5px;text-align:center;font-size:12px;font-weight:600;line-height:1.4;}
+.fs.blue{background:var(--accent);color:#fff;}
+.fs.red{background:var(--red);color:#fff;}
+.fs.green{background:var(--green);color:#fff;}
+.fa{display:flex;align-items:center;color:var(--muted);font-size:16px;padding:0 3px;flex-shrink:0;}
+
+/* TIMELINE */
+.timeline{margin:20px 0;position:relative;padding-left:32px;}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),transparent);}
+.tl-item{position:relative;margin-bottom:20px;}
+.tl-dot{position:absolute;left:-28px;top:3px;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--bg);}
+.tl-time{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent);margin-bottom:4px;letter-spacing:1px;}
+.tl-title{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:4px;}
+.tl-desc{font-size:13.5px;color:var(--ink3);line-height:1.65;}
+
+/* HIGHLIGHT */
+.hlbox{background:var(--sidebar-bg);border-radius:8px;padding:22px 26px;margin:20px 0;}
+.hlbox-title{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;color:#90b8e8;text-transform:uppercase;margin-bottom:10px;}
+.hlbox p{font-size:14px;color:rgba(255,255,255,0.7);line-height:1.8;}
+.hlbox p strong{color:#90b8e8;}
+
+/* ── QUIZ SECTION ── */
+.quiz-section{
+  background:var(--sidebar-bg);padding:48px 64px 80px;
+  margin-top:0;
+}
+.quiz-header{text-align:center;padding:0 0 40px;}
+.quiz-title{font-family:'Crimson Pro',serif;font-size:36px;font-weight:700;color:#fff;margin-bottom:8px;}
+.quiz-sub{font-size:13px;color:rgba(255,255,255,0.4);font-family:'IBM Plex Mono',monospace;letter-spacing:1px;}
+.quiz-stats-row{display:flex;justify-content:center;gap:32px;margin-top:20px;flex-wrap:wrap;}
+.qs-stat{text-align:center;}
+.qs-n{font-family:'Crimson Pro',serif;font-size:28px;font-weight:700;color:#90b8e8;}
+.qs-l{font-size:10px;color:rgba(255,255,255,0.3);}
+
+.quiz-question{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;padding:24px;margin-bottom:14px;
+  transition:border-color 0.2s;
+}
+.quiz-question:hover{border-color:rgba(37,99,168,0.4);}
+.qq-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;}
+.qq-num{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#90b8e8;min-width:36px;flex-shrink:0;margin-top:2px;}
+.qq-diff{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1px;
+  padding:2px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:2px;
+}
+.diff-e{background:rgba(30,107,58,0.2);color:#68d391;border:1px solid rgba(30,107,58,0.4);}
+.diff-m{background:rgba(176,125,42,0.2);color:#f0c060;border:1px solid rgba(176,125,42,0.4);}
+.diff-h{background:rgba(168,37,37,0.2);color:#fc8080;border:1px solid rgba(168,37,37,0.4);}
+.qq-text{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.7;flex:1;}
+.qq-options{display:flex;flex-direction:column;gap:6px;padding-left:50px;}
+.qq-opt{
+  display:flex;gap:10px;align-items:flex-start;padding:9px 14px;
+  border-radius:5px;cursor:pointer;border:1px solid rgba(255,255,255,0.06);
+  background:rgba(255,255,255,0.02);transition:all 0.2s;font-size:13px;
+  color:rgba(255,255,255,0.6);line-height:1.5;
+}
+.qq-opt:hover{background:rgba(37,99,168,0.1);border-color:rgba(37,99,168,0.3);color:rgba(255,255,255,0.85);}
+.qq-opt.correct{background:rgba(30,107,58,0.15);border-color:rgba(30,107,58,0.4);color:#a0e0b8;}
+.qq-opt.wrong{background:rgba(168,37,37,0.12);border-color:rgba(168,37,37,0.3);color:#f0a0a0;}
+.opt-letter{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#90b8e8;min-width:18px;flex-shrink:0;margin-top:1px;}
+.qq-opt.correct .opt-letter{color:#68d391;}
+.qq-opt.wrong .opt-letter{color:#fc8080;}
+
+.qq-explain{
+  margin-top:12px;padding:12px 14px;
+  background:rgba(37,99,168,0.08);border-left:3px solid var(--accent);
+  border-radius:0 5px 5px 0;display:none;
+  font-size:13px;color:rgba(255,255,255,0.6);line-height:1.7;
+}
+.qq-explain strong{color:#90b8e8;}
+.qq-explain.show{display:block;}
+
+.quiz-controls{text-align:center;padding:28px 0 0;}
+.btn{
+  padding:12px 32px;border-radius:6px;border:none;cursor:pointer;
+  font-family:'Sora',sans-serif;font-size:13px;font-weight:600;
+  transition:all 0.2s;letter-spacing:0.3px;
+}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:#1d52a0;}
+.btn-secondary{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);margin-left:10px;}
+.btn-secondary:hover{background:rgba(255,255,255,0.12);}
+.score-display{
+  background:rgba(37,99,168,0.15);border:1px solid rgba(37,99,168,0.3);
+  border-radius:8px;padding:20px 32px;margin:20px auto;max-width:400px;
+  display:none;text-align:center;
+}
+.score-num{font-family:'Crimson Pro',serif;font-size:52px;font-weight:700;color:#90b8e8;line-height:1;}
+.score-lbl{font-size:13px;color:rgba(255,255,255,0.5);margin-top:6px;}
+
+/* SUMMARY */
+.summary-box{background:var(--sidebar-bg);border-radius:10px;padding:32px;margin-top:60px;}
+.sum-title{font-family:'Crimson Pro',serif;font-size:26px;font-weight:700;color:#fff;margin-bottom:6px;}
+.sum-sub{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,0.25);margin-bottom:26px;text-transform:uppercase;}
+.si{display:flex;gap:14px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13.5px;color:rgba(255,255,255,0.6);line-height:1.65;align-items:flex-start;}
+.si:last-child{border-bottom:none;}
+.si strong{color:#90b8e8;}
+.sin{font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(144,184,232,0.5);min-width:24px;flex-shrink:0;margin-top:2px;}
+
+#scrolltop{position:fixed;bottom:24px;right:24px;background:var(--accent);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:16px;cursor:pointer;opacity:0;transition:opacity 0.3s;z-index:200;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,0.3);}
+#scrolltop.visible{opacity:1;}
+@media(max-width:900px){
+  #sidebar{display:none;}#main{margin-left:0;}
+  .content{padding:0 24px 80px;}.cover{padding:60px 24px;}
+  .quiz-section{padding:32px 24px 60px;}
+  .cv-stats{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sb-top">
+    <div class="sb-pill">CIRE · Element 4</div>
+    <div class="sb-title">Client Complaint Handling & Reporting</div>
+    <div class="sb-sub">7 sections + 45 exam questions</div>
+  </div>
+  <div class="sb-prog"><div class="sb-prog-lbl">Progress</div><div class="sb-prog-track"><div class="sb-prog-fill" id="pFill"></div></div></div>
+
+  <div class="nav-sec">
+    <div class="nav-sec-lbl">Content</div>
+    <a class="nl" onclick="goTo('cover')"><span class="nl-num">◉</span><span class="nl-text">Cover & Introduction</span></a>
+    <a class="nl" onclick="goTo('s41')"><span class="nl-num">4.1</span><span class="nl-text">CIRO & Regulators in Complaints</span></a>
+    <a class="ns" onclick="goTo('s41-ciro')">CIRO's Role</a>
+    <a class="ns" onclick="goTo('s41-prov')">Provincial Regulators</a>
+    <a class="nl" onclick="goTo('s42')"><span class="nl-num">4.2</span><span class="nl-text">Client Recourse Options</span></a>
+    <a class="ns" onclick="goTo('s42-obsi')">OBSI Process</a>
+    <a class="ns" onclick="goTo('s42-arb')">Arbitration</a>
+    <a class="ns" onclick="goTo('s42-lit')">Litigation</a>
+    <a class="nl" onclick="goTo('s43')"><span class="nl-num">4.3</span><span class="nl-text">Issues Leading to Liability</span></a>
+    <a class="ns" onclick="goTo('s43-types')">Types of Misconduct</a>
+    <a class="ns" onclick="goTo('s43-cons')">Consequences</a>
+    <a class="nl" onclick="goTo('s44')"><span class="nl-num">4.4</span><span class="nl-text">Reporting Obligations & Penalties</span></a>
+    <a class="ns" onclick="goTo('s44-flow')">Complaint Process Flow</a>
+    <a class="ns" onclick="goTo('s44-penalties')">Penalties for Failure</a>
+    <a class="nl" onclick="goTo('s45')"><span class="nl-num">4.5</span><span class="nl-text">Dealer Obligations to Clients</span></a>
+    <a class="nl" onclick="goTo('s46')"><span class="nl-num">4.6</span><span class="nl-text">Policies, Procedures & Records</span></a>
+    <a class="ns" onclick="goTo('s46-retail')">Retail Clients</a>
+    <a class="ns" onclick="goTo('s46-inst')">Institutional Clients</a>
+    <a class="nl" onclick="goTo('s47')"><span class="nl-num">4.7</span><span class="nl-text">Prohibited Settlement Practices</span></a>
+    <a class="nl" onclick="goTo('summary')"><span class="nl-num">★</span><span class="nl-text">Master Summary</span></a>
+  </div>
+
+  <div class="nav-sec">
+    <div class="nav-sec-lbl">Practice</div>
+    <a class="nl" onclick="goTo('quiz')"><span class="nl-num">📝</span><span class="nl-text">45 Practice Questions</span></a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+
+<!-- COVER -->
+<div id="cover" class="cover">
+  <div class="cv-glow"></div><div class="cv-glow2"></div>
+  <div class="cv-tag" style="position:relative;">CIRE Examination Preparation</div>
+  <h1 class="cv-title">Client <em>Complaint Handling</em> & Reporting</h1>
+  <div class="cv-rule"></div>
+  <p class="cv-desc">A complete, exam-ready guide covering every aspect of Element 4 — regulatory frameworks, OBSI process, client recourse options, dealer obligations, policies and procedures, prohibited practices, and 45 exam-difficulty practice questions with explanations.</p>
+  <div class="cv-stats">
+    <div class="cv-stat"><div class="cv-stat-n">5</div><div class="cv-stat-l">Business days to acknowledge</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">90</div><div class="cv-stat-l">Calendar days for response</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">$350K</div><div class="cv-stat-l">Max OBSI recommendation</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">7yr</div><div class="cv-stat-l">Record retention</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ═══════════════════════ 4.1 ═══════════════════════ -->
+<div id="s41" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">4.1</div><h2 class="sec-title">Role of CIRO and Provincial Regulators in the Complaints Handling Framework</h2></div>
+
+  <p class="body">Canada's complaint handling framework for investment dealers operates on two parallel tracks: <strong>regulatory/SRO oversight</strong> (CIRO and provincial regulators) and <strong>dispute resolution</strong> (OBSI and legal pathways). These tracks serve different purposes — the regulatory track investigates and disciplines firms for rule violations; the dispute resolution track helps clients recover financial losses.</p>
+
+  <div id="s41-ciro" class="sub">
+    <h3 class="sub-title">CIRO's Role in Complaint Handling</h3>
+    <p class="body">CIRO does not directly handle individual investor complaints — it is not a compensatory body. However, it plays a critical oversight role in the complaint handling system through <strong>IDPC Rule 3700</strong> (Reporting, Internal Investigation and Client Complaint Requirements).</p>
+
+    <div class="subsub">
+      <h4 class="subsub-title">CIRO's Functions in the Complaints Framework</h4>
+      <div class="chklist">
+        <div class="chi"><span class="chico">◆</span><div><strong>Setting minimum standards:</strong> CIRO's IDPC Rule 3700 establishes the minimum procedural requirements for how all member firms must handle, investigate, report, and record client complaints. Firms may exceed these standards but cannot fall below them.</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Receiving complaint reports:</strong> Member firms are required to file written reports to CIRO about all written client complaints that allege misconduct related to the handling of accounts (breaches of CIRO rules). CIRO uses these reports to monitor member conduct and identify systemic patterns of misconduct.</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Conducting independent investigations:</strong> When CIRO receives a complaint report or becomes aware of potential misconduct, it can independently investigate — separate from the firm's internal investigation. CIRO can compel documents, interview witnesses, and pursue enforcement action.</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Enforcement action:</strong> If investigation reveals a violation of CIRO rules, CIRO can discipline the member firm and/or the registered individual through its enforcement process — fines, suspensions, bans, membership termination.</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Publishing enforcement decisions:</strong> CIRO publishes summaries of disciplinary proceedings and decisions on its website, creating transparency and deterrence. These form part of the public record.</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Operating the CIRO Arbitration Program:</strong> CIRO operates a formal arbitration program as an alternative dispute resolution option for investors who cannot resolve their complaints through other channels (see 4.2).</div></div>
+      </div>
+    </div>
+
+    <div class="callout blue">
+      <div class="ci">📋</div>
+      <div class="cb">
+        <div class="cl">Key Rule — IDPC Rule 3700</div>
+        <p>IDPC Rule 3700 is the primary rule governing complaint handling for investment dealer members. It covers: the definition of a reportable complaint, timelines for acknowledgement and response, what must be included in the acknowledgement and substantive response letters, reporting obligations to CIRO, record-keeping requirements, and the Designated Complaints Officer requirement. Updated versions are being consolidated in CIRO's Phase 5 Rule Consolidation Project.</p>
+      </div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">The Designated Complaints Officer (DCO)</h4>
+      <p class="body">CIRO requires every member firm to designate a <strong>Designated Complaints Officer (DCO)</strong>. The DCO is responsible for overseeing the firm's complaint handling process. Key points about the DCO:</p>
+      <div class="chklist">
+        <div class="chi"><span class="chico">◆</span><div>The DCO position does <strong>not</strong> need to be held by a registered individual — it is an administrative oversight role, not a trading/advisory role</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Must have sufficient authority within the firm to implement changes and ensure compliance with complaint handling requirements</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Must ensure complaints are acknowledged within the 5-business-day timeline</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Responsible for filing reports to CIRO about reportable complaints</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Must maintain the complaint register (log of all complaints received)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s41-prov" class="sub">
+    <h3 class="sub-title">Provincial Securities Regulators' Role</h3>
+    <p class="body">Provincial securities regulators (OSC, AMF, BCSC, etc.) also play a role in the complaints framework — parallel to but distinct from CIRO's role.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Rule-Setting Authority</div><div class="dval">Provincial regulators set the overarching legislative framework for complaint handling through their Securities Acts and regulations. They oversee CIRO's complaint handling rules to ensure they meet the public interest standard.</div></div>
+      <div class="dr"><div class="dterm">Receiving Direct Complaints</div><div class="dval">Investors can also submit complaints directly to their provincial securities regulator. The provincial regulator can investigate independently of both CIRO and the firm. If misconduct involves a breach of provincial securities law (not just a CIRO rule), provincial regulators have jurisdiction to act.</div></div>
+      <div class="dr"><div class="dterm">Quasi-Criminal Powers</div><div class="dval">For serious misconduct (fraud, illegal securities trading), provincial regulators can refer matters to Crown prosecutors for criminal prosecution under provincial securities legislation. Penalties can include substantial fines and imprisonment.</div></div>
+      <div class="dr"><div class="dterm">Québec — AMF Special Position</div><div class="dval">The AMF (Autorité des marchés financiers) has specific complaint handling regulations that took effect July 1, 2025 (the AMF Regulation). In Québec, firms must respond within <strong>60 days</strong> (extendable to 90 in exceptional circumstances) — shorter than the 90-day standard in other provinces. CIRO has issued transitional guidance for Québec-based dealer members.</div></div>
+    </div>
+
+    <div class="callout gold">
+      <div class="ci">⚠️</div>
+      <div class="cb">
+        <div class="cl">2025 Update — Québec Timeline</div>
+        <p>As of July 1, 2025, CIRO dealer members operating in Québec must comply with the AMF Regulation requiring a <strong>60-day maximum response time</strong> to client complaints (with a possible 30-day extension in exceptional circumstances). This is different from the 90-day standard that applies in all other Canadian provinces. CIRO has issued a blanket order and FAQ for members during the transition to consolidated CIRO rules. Expect the exam to test the standard 90-day timeline for non-Québec purposes.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ 4.2 ═══════════════════════ -->
+<div id="s42" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">4.2</div><h2 class="sec-title">Recourse Available to a Dissatisfied Client</h2></div>
+
+  <p class="body">When a client is dissatisfied with a firm's response to their complaint — or receives no response within the required timeframe — several recourse options are available. Understanding each option, its costs, limitations, and appropriate use is critical for the exam.</p>
+
+  <div class="flow">
+    <div class="fs blue">Step 1<br><small style="font-weight:400;font-size:10px;">Internal Complaint to Firm</small></div>
+    <div class="fa">→</div>
+    <div class="fs">Step 2<br><small style="font-weight:400;font-size:10px;">Unsatisfied? → OBSI</small></div>
+    <div class="fa">→</div>
+    <div class="fs">Step 3<br><small style="font-weight:400;font-size:10px;">Parallel Options</small></div>
+    <div class="fa">→</div>
+    <div class="fs red">Arbitration or Litigation<br><small style="font-weight:400;font-size:10px;">(if warranted)</small></div>
+  </div>
+
+  <div id="s42-obsi" class="sub">
+    <h3 class="sub-title">OBSI — Ombudsman for Banking Services and Investments</h3>
+    <p class="body">OBSI is Canada's <strong>free, independent, external dispute resolution service</strong> for investment and banking complaints. It is not a government agency — it is a non-profit organization. All CIRO member firms are <em>required</em> to be members of OBSI and to participate in its process.</p>
+
+    <div class="subsub">
+      <h4 class="subsub-title">When Can a Client Go to OBSI?</h4>
+      <p class="body">A client can take their complaint to OBSI:</p>
+      <div class="chklist">
+        <div class="chi"><span class="chico">◆</span><div>After receiving a final (substantive) response from the firm — the client has <strong>180 days</strong> from receiving the firm's response to file with OBSI</div></div>
+        <div class="chi"><span class="chico">◆</span><div>If the firm has not provided a response within <strong>90 days</strong> (60 in Québec) — the client can go to OBSI without waiting for the firm's response</div></div>
+        <div class="chi"><span class="chico">◆</span><div>If the internal complaint appeal process (optional, offered by some firms) has not resolved the complaint to the client's satisfaction</div></div>
+      </div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">OBSI's Limitation Period — The 6-Year Rule</h4>
+      <p class="body">OBSI applies a <strong>6-year limitation period</strong>. The 6 years runs from the earlier of: (a) the date the client first <em>knew</em> about the problem, or (b) the date the client <em>reasonably ought to have known</em> about the problem. OBSI will not investigate a complaint if the client took more than 6 years to raise it with the firm. This is separate from the 180-day window after the firm's response.</p>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">The OBSI Investigation Process</h4>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">Step 1</div><div class="tl-title">Client Files Complaint with OBSI</div><div class="tl-desc">Client submits complaint online, by phone, mail, or email. No cost to the client. OBSI reviews eligibility — is it within mandate? Within limitation period? Has the firm been given a chance to respond?</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">Step 2</div><div class="tl-title">OBSI Opens Investigation</div><div class="tl-desc">Client signs a consent form allowing OBSI to discuss the case with the firm. OBSI investigator reviews documents from both the client and the firm — account statements, KYC forms, trade confirmations, correspondence.</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">Step 3</div><div class="tl-title">Investigation and Assessment</div><div class="tl-desc">OBSI assesses whether the firm treated the client fairly. Did the recommendations follow KYC and suitability rules? Were fees properly disclosed? Were trades unauthorized? What loss, if any, resulted from the conduct?</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">Step 4a</div><div class="tl-title">Facilitated Settlement (if meritorious)</div><div class="tl-desc">If OBSI finds merit, it tries to facilitate a settlement between the client and the firm. A Facilitated Settlement Proposal may be prepared. Both parties can comment. If accepted, the case is closed.</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">Step 4b</div><div class="tl-title">Investigation Report (if no settlement)</div><div class="tl-desc">If the firm refuses to settle, OBSI prepares a formal Investigation Report with its recommendation. Both parties receive a draft for comment before it is finalized.</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">Step 5</div><div class="tl-title">Final Recommendation</div><div class="tl-desc">OBSI makes its recommendation. This is NOT legally binding. Most firms comply. If a firm refuses, OBSI must publicly "name and shame" the firm by publishing the investigation report naming the firm (the client's name is never published).</div></div>
+      </div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Key OBSI Parameters</h4>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Cost to Client</div><div class="dval"><strong>Free</strong> — OBSI charges no fees to consumers. The cost of running OBSI is borne by member firms through annual assessments.</div></div>
+        <div class="dr"><div class="dterm">Maximum Compensation</div><div class="dval"><strong>$350,000</strong> per complaint (not per account). This limit does not increase when multiple accounts are involved. A client with a $500,000 claim can voluntarily reduce it to $350,000 to use OBSI.</div></div>
+        <div class="dr"><div class="dterm">Binding?</div><div class="dval"><strong>No</strong> — OBSI's recommendations are not legally binding on either party. However, most firms comply. If a firm refuses, OBSI publishes its findings publicly, naming the firm.</div></div>
+        <div class="dr"><div class="dterm">Timeline</div><div class="dval">OBSI typically completes investigations within <strong>120 days</strong> of opening a case, though complex cases may take longer.</div></div>
+        <div class="dr"><div class="dterm">Who Can Use It</div><div class="dval">Individuals and small businesses who are clients of CIRO member firms. Institutional clients generally cannot use OBSI.</div></div>
+        <div class="dr"><div class="dterm">Litigation Impact</div><div class="dval">When a client files with OBSI, the limitation period for suing the firm in court is <strong>typically suspended</strong> during OBSI's review — protecting the client's legal rights while OBSI investigates.</div></div>
+        <div class="dr"><div class="dterm">What OBSI Covers</div><div class="dval">Financial losses resulting from firm or advisor misconduct. May also recommend non-financial compensation (e.g., credit bureau correction, apology) in appropriate cases.</div></div>
+        <div class="dr"><div class="dterm">What OBSI Does NOT Cover</div><div class="dval">Market losses (investment value declined due to market movements — not misconduct). Commercial decisions (firm raising fees, changing products). Matters already decided in court or arbitration.</div></div>
+      </div>
+    </div>
+
+    <div class="callout red">
+      <div class="ci">🚨</div>
+      <div class="cb">
+        <div class="cl">Current Development — Binding Authority</div>
+        <p>As of 2025, there is an active regulatory debate about whether OBSI should be given <strong>binding decision-making authority</strong>. Currently OBSI can only recommend — firms can refuse (though they face public naming). The CSA published proposed changes in late 2024. Many investor advocates argue binding authority is overdue; some industry participants oppose it. <strong>For the exam: OBSI's recommendations are currently NOT binding</strong>. Know this fact — it may change in the future.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="s42-arb" class="sub">
+    <h3 class="sub-title">CIRO Arbitration Program</h3>
+    <p class="body">CIRO operates a formal <strong>arbitration program</strong> as an alternative dispute resolution option. Unlike OBSI, arbitration produces a <em>legally binding</em> decision.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">How It Works</div><div class="dval">An independent arbitrator (or panel) reviews evidence from both parties and issues a binding decision. The process is more formal than OBSI — similar in structure to a simplified legal proceeding.</div></div>
+      <div class="dr"><div class="dterm">Cost</div><div class="dval">Not free — both parties bear costs (filing fees, arbitrator fees). Much less expensive than full court litigation but more costly than OBSI.</div></div>
+      <div class="dr"><div class="dterm">Binding?</div><div class="dval"><strong>Yes</strong> — arbitration decisions are legally binding on both parties. The decision can be enforced through the courts.</div></div>
+      <div class="dr"><div class="dterm">When Appropriate</div><div class="dval">Generally for larger claims (over OBSI's $350,000 limit) or complex disputes where the parties want a binding outcome. OBSI is usually recommended first for smaller claims due to its zero-cost structure.</div></div>
+      <div class="dr"><div class="dterm">Limitation</div><div class="dval">If a matter has been arbitrated, OBSI cannot then investigate the same complaint — arbitration produces a final binding decision that OBSI cannot revisit.</div></div>
+    </div>
+  </div>
+
+  <div id="s42-lit" class="sub">
+    <h3 class="sub-title">Litigation (Civil Courts)</h3>
+    <p class="body">A client can always choose to <strong>sue the dealer or registered individual in court</strong>. Litigation is a right that exists independently of the regulatory complaint process.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">No Compensation Cap</div><div class="dval">Unlike OBSI ($350,000 limit), courts have no cap on the compensation they can award. A client with a $2M claim can pursue the full amount through the courts.</div></div>
+      <div class="dr"><div class="dterm">Cost and Complexity</div><div class="dval">Litigation is expensive (legal fees), slow (years for a case to proceed through courts), and uncertain. Not appropriate for small claims. For large or complex claims with strong evidence, it may be the best option.</div></div>
+      <div class="dr"><div class="dterm">Limitation Periods</div><div class="dval">Provincial limitation periods apply (typically 2 years from when the client knew or ought to have known of the claim in Ontario; other provinces vary). Missing a limitation period kills the claim. Note: filing with OBSI typically suspends the limitation period.</div></div>
+      <div class="dr"><div class="dterm">Parallel to Regulatory</div><div class="dval">A client can sue civilly AND file a regulatory complaint with CIRO simultaneously. These are independent processes. A CIRO disciplinary finding does not directly compensate the client but can be used as evidence in civil litigation.</div></div>
+    </div>
+
+    <div class="hlbox">
+      <div class="hlbox-title">Recourse Options — Quick Comparison</div>
+      <p><strong>OBSI:</strong> Free, non-binding, max $350K, typical 120-day process — best for most retail investors.<br>
+      <strong>CIRO Arbitration:</strong> Costs money, binding decision, no stated cap, formal process — best for larger or complex claims.<br>
+      <strong>Civil Litigation:</strong> Expensive, slow, binding, no cap — best for large claims or where OBSI/arbitration isn't sufficient.<br>
+      <strong>CIRO/Provincial Regulator:</strong> Regulatory action, no compensation to client — seeks discipline and deterrence, not client recovery.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ 4.3 ═══════════════════════ -->
+<div id="s43" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">4.3</div><h2 class="sec-title">Potential Issues with Clients That Could Lead to Liability</h2></div>
+
+  <p class="body">Understanding what types of conduct create legal and regulatory liability is essential. Investment dealers and their registered persons face liability from multiple directions — contractual, regulatory, and tortious (civil wrong).</p>
+
+  <div id="s43-types" class="sub">
+    <h3 class="sub-title">Types of Conduct That Generate Complaints and Liability</h3>
+
+    <table>
+      <thead><tr><th>Issue Type</th><th>Description</th><th>Type of Liability</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Unsuitable Recommendations</strong></td><td>Recommending investments that do not align with the client's KYC profile — wrong risk level, wrong time horizon, wrong product type for the client's knowledge level. Most common source of complaints.</td><td>CIRO disciplinary; civil liability for losses; breach of suitability obligation</td></tr>
+        <tr><td><strong>Unauthorized Trading</strong></td><td>Executing trades without the client's explicit authorization. In non-discretionary accounts, every trade requires client consent. Trading without authorization is a serious violation — the client may have the trade reversed and can claim for any resulting losses.</td><td>CIRO disciplinary; civil liability; potential criminal charges if fraudulent</td></tr>
+        <tr><td><strong>Churning</strong></td><td>Excessive trading in a client's account primarily to generate commissions for the advisor rather than to benefit the client. Identified by unusually high portfolio turnover rate relative to client objectives. Classic conflict of interest — advisor enriches themselves at the client's expense.</td><td>CIRO disciplinary; disgorgement of commissions; civil liability for losses</td></tr>
+        <tr><td><strong>Misrepresentation</strong></td><td>Providing false or misleading information about an investment, its risks, potential returns, or features. Can be intentional (fraud) or negligent. If a client buys based on a material misrepresentation and loses money, the dealer is liable.</td><td>Civil liability; CIRO disciplinary; potential fraud charges (criminal)</td></tr>
+        <tr><td><strong>Failure to Disclose Conflicts</strong></td><td>Not disclosing material conflicts of interest that influenced a recommendation — e.g., receiving additional compensation for recommending a specific fund without telling the client.</td><td>CIRO disciplinary; civil liability</td></tr>
+        <tr><td><strong>Failure to Follow Client Instructions</strong></td><td>Ignoring a client's explicit instructions — not executing a requested trade, not selling when the client instructed, continuing to hold a position after the client asked to exit.</td><td>Civil liability for any resulting losses; CIRO disciplinary</td></tr>
+        <tr><td><strong>Breach of Confidentiality</strong></td><td>Disclosing client personal or financial information to unauthorized parties without consent. Violates PIPEDA, CIRO rules, and common law confidentiality obligations.</td><td>CIRO disciplinary; civil liability; PIPEDA penalties</td></tr>
+        <tr><td><strong>Elder Financial Exploitation</strong></td><td>Taking advantage of elderly or vulnerable clients — encouraging unnecessary trades, manipulating through a POA, withholding information, making unauthorized withdrawals.</td><td>CIRO disciplinary; civil liability; potential criminal charges</td></tr>
+        <tr><td><strong>Negligence / Negligent Advice</strong></td><td>Providing investment advice that falls below the standard of care of a reasonably competent advisor, resulting in client losses. Even without malice, negligence can create significant liability.</td><td>Civil liability (tort of negligence)</td></tr>
+        <tr><td><strong>Failure to Supervise</strong></td><td>Firms are vicariously liable for the misconduct of their registered persons if they failed to properly supervise. Branch managers and compliance departments can be held responsible for inadequate supervision.</td><td>CIRO disciplinary against the firm and supervising manager; civil liability</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="s43-cons" class="sub">
+    <h3 class="sub-title">Potential Consequences of Misconduct</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Regulatory Sanctions (CIRO)</div><div class="dval">Fines against the firm and/or individual; suspension of registration; permanent prohibition from working in the securities industry; membership termination of the firm. Disciplinary decisions are published publicly — reputational damage even beyond formal sanctions.</div></div>
+      <div class="dr"><div class="dterm">Civil Liability</div><div class="dval">The firm and/or individual may be sued by the client for damages. If the client succeeds, the court can award: compensatory damages (to put the client back in the position they would have been without the misconduct), disgorgement of profits earned through misconduct, and potentially punitive damages for egregious conduct.</div></div>
+      <div class="dr"><div class="dterm">Criminal Charges</div><div class="dval">For the most serious misconduct — fraud, theft, insider trading — criminal charges can be laid by the RCMP/Crown. Conviction can result in imprisonment. Criminal charges are independent of regulatory disciplinary action.</div></div>
+      <div class="dr"><div class="dterm">Reputational Damage</div><div class="dval">Even without formal sanctions, complaints that become public can severely damage the firm's and advisor's reputation. Client trust is difficult to rebuild. Negative press coverage can result in client losses beyond the specific complainant.</div></div>
+      <div class="dr"><div class="dterm">Regulatory Capital Requirements</div><div class="dval">Large fines or civil judgments can affect the firm's financial position and trigger capital requirement concerns under CIRO's financial compliance rules.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ 4.4 ═══════════════════════ -->
+<div id="s44" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">4.4</div><h2 class="sec-title">Investment Dealer Obligations to Report Complaints & Penalties for Failure</h2></div>
+
+  <p class="body">The reporting obligations under CIRO rules are mandatory — they are not discretionary. Firms that fail to report complaints face separate and distinct regulatory consequences, independent of the underlying complaint itself.</p>
+
+  <div id="s44-flow" class="sub">
+    <h3 class="sub-title">The Complaint Handling Process — Step by Step</h3>
+
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">Receipt of Complaint</div><div class="tl-title">Complaint Received by the Firm</div><div class="tl-desc">A complaint is received — can be verbal or written. However, full complaint handling procedures (acknowledgement, investigation, reporting to CIRO) are required for <strong>written complaints</strong> alleging misconduct. For verbal complaints alleging serious misconduct, the firm must treat them as written. The complaint is logged in the complaint register immediately.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">Within 5 Business Days</div><div class="tl-title">Acknowledgement Letter Sent</div><div class="tl-desc">Firm must send a written acknowledgement within <strong>5 business days</strong> of receiving the complaint. The acknowledgement must include: (1) contact information for the person handling the complaint; (2) statement that the client can request status updates; (3) explanation of the internal complaint handling process; (4) copy of CIRO-approved complaint handling process brochure; (5) reference to the 90-day timeline for substantive response; (6) request for any additional information needed; (7) information about the statute of limitations applicable to their claim.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">Ongoing</div><div class="tl-title">Internal Investigation</div><div class="tl-desc">The firm investigates the complaint — reviews account records, KYC forms, trade confirmations, correspondence, and interviews relevant staff. Investigation is conducted by compliance department, not by the RR or branch manager who is the subject of the complaint. Must be independent and thorough.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">Promptly</div><div class="tl-title">Report Filed with CIRO</div><div class="tl-desc">The firm must file a report to CIRO about the complaint "promptly" after receipt. This is separate from the substantive response to the client. The report alerts CIRO to the complaint so CIRO can assess whether an independent investigation is warranted.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">Within 90 Calendar Days</div><div class="tl-title">Substantive Response to Client</div><div class="tl-desc">The firm must provide a complete, substantive response to the client within <strong>90 calendar days</strong> (60 in Québec). The substantive response must: (1) accept, reject, or make an offer to settle the complaint; (2) explain the reasons for the firm's position; (3) reference the availability of OBSI if the client is not satisfied; (4) inform the client that OBSI can consider the complaint at the earlier of: receiving the substantive response OR 90 days after the original complaint.</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-time">After 90 Days (if no resolution)</div><div class="tl-title">OBSI Information Must Be Provided</div><div class="tl-desc">If no substantive response has been given after 90 days, the firm must inform the client that they may now take their complaint to OBSI. The client's right to go to OBSI cannot be blocked or discouraged by the firm.</div></div>
+    </div>
+
+    <div class="callout blue">
+      <div class="ci">📌</div>
+      <div class="cb">
+        <div class="cl">Two Critical Timelines to Memorize</div>
+        <p><strong>5 business days</strong> = acknowledge the complaint in writing.<br>
+        <strong>90 calendar days</strong> = provide substantive response (60 calendar days in Québec).<br>
+        These are the two most frequently tested numbers in Element 4. Do not confuse business days vs calendar days.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="s44-penalties" class="sub">
+    <h3 class="sub-title">What Must Be Reported to CIRO — and Penalties for Failure</h3>
+
+    <div class="subsub">
+      <h4 class="subsub-title">What Complaints Must Be Reported?</h4>
+      <p class="body">Under IDPC Rule 3700, firms must report <strong>all written client complaints alleging misconduct</strong> relating to the handling of client accounts. Specifically, this includes complaints about:</p>
+      <div class="chklist">
+        <div class="chi"><span class="chico">◆</span><div>Breach of client confidentiality</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Unauthorized trading (buying or selling without the client's approval)</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Unsuitable investment recommendations</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Misrepresentation or omission of material information</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Fraud or theft</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Failure to follow client instructions</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Churning or excessive trading</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Any other complaint alleging that the firm or its employees/approved persons violated applicable rules or standards</div></div>
+      </div>
+      <p class="body">Note: "Service complaints" (e.g., "the website was down") that do not allege misconduct may not require CIRO reporting, though firms still need to handle and record them internally.</p>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Penalties for Failure to Report or Improper Handling</h4>
+      <div class="dt">
+        <div class="dr"><div class="dterm">CIRO Disciplinary Action</div><div class="dval">Failure to report complaints to CIRO, failure to meet timelines, inadequate investigation, failure to maintain records — all are separate CIRO rule violations subject to disciplinary action, independent of the original complaint.</div></div>
+        <div class="dr"><div class="dterm">Fines</div><div class="dval">Fines against the firm and potentially the DCO or individual responsible. CIRO can impose significant fines for systemic failure to comply with complaint handling rules.</div></div>
+        <div class="dr"><div class="dterm">Suspension/Termination</div><div class="dval">In egregious cases — deliberately concealing complaints, destroying records, obstructing CIRO's investigation — membership termination or individual registration suspension/cancellation can result.</div></div>
+        <div class="dr"><div class="dterm">Increased Scrutiny</div><div class="dval">A firm with a poor complaint handling record will be subject to enhanced compliance examinations by CIRO — more frequent, more intensive audits of their compliance systems.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ 4.5 ═══════════════════════ -->
+<div id="s45" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">4.5</div><h2 class="sec-title">Investment Dealer Obligations to Clients — Legislative, Contractual & Organizational</h2></div>
+
+  <p class="body">Dealer obligations to clients arise from multiple sources simultaneously. Understanding all three pillars of obligation is important — a dealer may comply with regulatory rules but still be liable under contract law, and vice versa.</p>
+
+  <div class="sub">
+    <h3 class="sub-title">1. Legislative Obligations</h3>
+    <p class="body">These are obligations imposed by law — the dealer must comply regardless of what any contract says.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Securities Acts (Provincial)</div><div class="dval">Provincial securities legislation imposes dealer registration requirements, prospectus obligations, continuous disclosure requirements, and prohibitions on insider trading, market manipulation, and fraud. Non-compliance is a provincial offence.</div></div>
+      <div class="dr"><div class="dterm">CIRO Rules (IDPC)</div><div class="dval">CIRO rules have the force of contractual obligation for member firms. By becoming a CIRO member, the firm agrees to comply with all CIRO rules. These include KYC, suitability, complaint handling, supervision, financial requirements, and all other IDPC Rule requirements.</div></div>
+      <div class="dr"><div class="dterm">PCMLTFA (AML)</div><div class="dval">Anti-money laundering obligations — client identification, suspicious transaction reporting, record-keeping. Non-compliance can result in criminal charges and regulatory penalties under federal law.</div></div>
+      <div class="dr"><div class="dterm">PIPEDA</div><div class="dval">Privacy obligations — how client personal information is collected, used, disclosed, and protected. Violations can result in privacy commissioner investigations, orders, and reputational damage.</div></div>
+      <div class="dr"><div class="dterm">Bank Act / BIA</div><div class="dval">Federal legislation governing the financial operations of dealers and the treatment of client assets in insolvency situations (see Element 1, section 1.8).</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">2. Contractual Obligations</h3>
+    <p class="body">The account agreement (signed at account opening) creates a binding contract between the dealer and the client. Contractual obligations include:</p>
+    <div class="chklist">
+      <div class="chi"><span class="chico">◆</span><div><strong>Obligation to execute orders as instructed</strong> — the contract requires the dealer to follow the client's instructions for trades in the manner agreed upon (market order, limit order, etc.)</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Obligation to hold client assets safely</strong> — the dealer agrees to safeguard client assets in their custody</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Obligation to provide accurate statements and reports</strong> — the account agreement includes the firm's commitment to provide regular account statements and performance reports</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Fee terms</strong> — the fee schedule is contractually binding; the firm cannot charge fees beyond what was agreed and disclosed</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Complaint handling procedures</strong> — by providing clients with the complaint handling brochure (which is referenced in the account agreement), the firm contractually commits to following those procedures</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">3. Organizational / Professional Obligations</h3>
+    <p class="body">Beyond legislation and contract, dealers have obligations arising from their professional role and organizational policies:</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Duty of Care (Tort Law)</div><div class="dval">Dealers owe a common law duty of care to their clients. Breaching this duty through negligent advice, negligent supervision, or any other negligent act that causes harm creates civil liability in tort (negligence lawsuit).</div></div>
+      <div class="dr"><div class="dterm">Internal Policies & Procedures</div><div class="dval">The firm's own written compliance policies and procedures create internal obligations. A branch manager who fails to follow the firm's supervision manual may be disciplined internally and face CIRO action for inadequate supervision.</div></div>
+      <div class="dr"><div class="dterm">Fiduciary Duty (Where Applicable)</div><div class="dval">Where a fiduciary relationship exists (discretionary portfolio manager, advisor with dominant relationship), obligations are elevated to the highest standard — undivided loyalty, no self-dealing, full disclosure (see Element 3, section 3.3).</div></div>
+      <div class="dr"><div class="dterm">Best Interest Standard (CFR)</div><div class="dval">Under CIRO's Client Focused Reforms, registered advisors (RRs) have an obligation to act in the best interest of clients — putting client interests first when making recommendations. This is an organizational/regulatory standard that exceeds mere contractual compliance.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ 4.6 ═══════════════════════ -->
+<div id="s46" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">4.6</div><h2 class="sec-title">Regulatory Requirements for Policies, Procedures & Record-Keeping</h2></div>
+
+  <p class="body">CIRO requires all member firms to maintain written policies and procedures governing their complaint handling process. These must be documented, implemented, and auditable. The requirements differ between retail and institutional clients.</p>
+
+  <div id="s46-retail" class="sub">
+    <h3 class="sub-title">Requirements for Retail Clients</h3>
+    <p class="body">For retail client complaints, the full suite of CIRO complaint handling obligations applies:</p>
+    <div class="chklist">
+      <div class="chi"><span class="chico">◆</span><div><strong>Written complaint receipt policy:</strong> Procedures for receiving, routing, and logging all client complaints, whether received in person, by phone, email, mail, or through the firm's website.</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Acknowledgement procedure:</strong> Clear process to ensure every written misconduct complaint is acknowledged within 5 business days. Who is responsible? What must the acknowledgement contain? How is it delivered?</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Investigation procedure:</strong> How is the complaint investigated? Who conducts the investigation? What is the escalation path for serious complaints (e.g., fraud → Chief Compliance Officer → CIRO report)?</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Substantive response procedure:</strong> Ensuring the 90-day response obligation is met. What happens if a response cannot be completed in 90 days? (Client must be notified, OBSI information provided.)</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>OBSI disclosure:</strong> Policies must specify that clients are informed of OBSI's availability in the substantive response letter and/or when the 90-day deadline is reached.</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>CIRO reporting procedure:</strong> How and when complaints are reported to CIRO — who submits the report, within what timeframe, what information is included.</div></div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Record-Keeping Requirements — Retail Complaints</h4>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Complaint Register</div><div class="dval">The firm must maintain a complete log of all complaints received. Each entry must include: date received, client name and account, nature of the complaint, the RR/staff involved, status, and resolution. Must be updated in real-time.</div></div>
+        <div class="dr"><div class="dterm">Complaint File</div><div class="dval">For each complaint, a file must be maintained containing: all correspondence with the client (acknowledgement letter, substantive response), notes from the investigation, documents reviewed, CIRO report copy, and final resolution documentation.</div></div>
+        <div class="dr"><div class="dterm">Retention Period</div><div class="dval">Complaint records must be retained for <strong>7 years</strong> from the date the complaint is resolved.</div></div>
+        <div class="dr"><div class="dterm">Accessibility</div><div class="dval">Records must be accessible to CIRO examiners within the required timeframe during compliance examinations. Typically must be producible within a few business days of a CIRO request.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s46-inst" class="sub">
+    <h3 class="sub-title">Requirements for Institutional Clients</h3>
+    <p class="body">While the full retail complaint handling framework applies to retail clients, the requirements for institutional clients are <em>modified</em>. Institutional clients are presumed sophisticated and capable of protecting their own interests.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">OBSI Not Required</div><div class="dval">Institutional clients do not have the right to use OBSI — OBSI is designed for retail investors and small businesses, not sophisticated institutional counterparties. Institutional disputes are handled through commercial/legal channels.</div></div>
+      <div class="dr"><div class="dterm">Negotiated Dispute Resolution</div><div class="dval">Disputes between dealers and institutional clients are typically handled through the legal terms of the account agreement or the ISDA master agreement (for derivatives). Institutional clients pursue legal remedies through commercial arbitration or litigation.</div></div>
+      <div class="dr"><div class="dterm">CIRO Reporting Still Applies</div><div class="dval">Even for institutional clients, if the complaint alleges a breach of CIRO rules, the firm must still report the complaint to CIRO. The reporting obligation is not conditional on the client type.</div></div>
+      <div class="dr"><div class="dterm">Internal Records</div><div class="dval">The firm must still maintain internal records of institutional complaints — complaint register, correspondence, investigation notes. Retention requirements still apply.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ 4.7 ═══════════════════════ -->
+<div id="s47" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">4.7</div><h2 class="sec-title">Prohibited Practices — Settlement Agreements Without Firm Approval</h2></div>
+
+  <p class="body">One of the most exam-tested concepts in Element 4 is the prohibition on registered individuals entering into personal settlement agreements with clients without the investment dealer's knowledge and approval.</p>
+
+  <div class="sub">
+    <h3 class="sub-title">The Core Prohibition</h3>
+    <p class="body">A <strong>Registered Representative, Investment Representative, or any other approved person is strictly prohibited from entering into a settlement agreement with a client on their own</strong> — without the investment dealer's knowledge, review, and approval. This applies even if the individual genuinely wants to make the client whole and intends to pay personally.</p>
+
+    <div class="callout red">
+      <div class="ci">🚫</div>
+      <div class="cb">
+        <div class="cl">Why This Is a Major Violation</div>
+        <p>An RR who settles with a client privately is:</p>
+        <p><strong>1.</strong> Potentially <em>concealing misconduct</em> from the firm and CIRO — the firm and regulator never find out about the underlying problem<br>
+        <strong>2.</strong> <em>Admitting liability</em> on behalf of the firm without the firm's authorization — this could create legal obligations for the firm<br>
+        <strong>3.</strong> <em>Undermining the complaint handling framework</em> — CIRO requires complaints to be logged, investigated, and reported; a private settlement circumvents all of this<br>
+        <strong>4.</strong> Potentially creating <em>regulatory compliance issues</em> — unreported settlements involving misconduct are violations of IDPC Rule 3700 reporting requirements</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">What the Proper Process Looks Like</h3>
+    <div class="flow">
+      <div class="fs blue">Client Complaint Received</div>
+      <div class="fa">→</div>
+      <div class="fs">Escalate to Compliance / DCO</div>
+      <div class="fa">→</div>
+      <div class="fs">Firm Investigates</div>
+      <div class="fa">→</div>
+      <div class="fs">Firm Approves Settlement</div>
+      <div class="fa">→</div>
+      <div class="fs green">Settlement Executed<br>+ CIRO Reported</div>
+    </div>
+    <p class="body" style="margin-top:16px;">The settlement must be executed by the <strong>firm</strong> (not by the individual RR personally) after proper investigation. This ensures: the complaint is properly investigated and recorded, CIRO is notified as required, the settlement terms are reasonable and documented, and the firm has legal oversight of its liability exposure.</p>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">What Happens If an RR Settles Privately?</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Disciplinary Action</div><div class="dval">The RR faces CIRO disciplinary action for circumventing the firm's complaint handling process and for failing to report the matter. This is treated as serious misconduct even if the underlying complaint itself was minor.</div></div>
+      <div class="dr"><div class="dterm">Concealment of Misconduct</div><div class="dval">If the private settlement was intended to hide underlying misconduct from CIRO, the severity of the violation is dramatically higher — this becomes an intentional circumvention of regulatory oversight.</div></div>
+      <div class="dr"><div class="dterm">Firm Liability</div><div class="dval">Depending on the circumstances, the firm may still be liable for the underlying misconduct even if the RR settled personally — the settlement does not necessarily release the firm from its obligations to the client.</div></div>
+      <div class="dr"><div class="dterm">Personal Liability</div><div class="dval">The RR who paid personal compensation has no guarantee of recovery from the firm — they acted without authority and the firm is not obligated to reimburse them.</div></div>
+    </div>
+
+    <div class="callout gold">
+      <div class="ci">💡</div>
+      <div class="cb">
+        <div class="cl">Key Exam Distinction</div>
+        <p>It is <strong>not</strong> prohibited for an RR to acknowledge to a client that a mistake was made, to apologize, or to promise to investigate. What is prohibited is <strong>entering into a formal settlement agreement</strong> (including paying compensation) without the firm's knowledge and approval. An apology is not a settlement.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div id="summary" class="section">
+  <div class="summary-box" style="margin-top:70px;">
+    <div class="sum-title">Element 4 — Master Summary</div>
+    <div class="sum-sub">12 exam-critical points</div>
+    <div class="si"><span class="sin">01</span><div><strong>5 business days:</strong> Acknowledgement letter to client. <strong>90 calendar days:</strong> Substantive response. <strong>60 calendar days</strong> in Québec (effective July 1, 2025). Memorize all three — do not confuse calendar days vs business days.</div></div>
+    <div class="si"><span class="sin">02</span><div><strong>OBSI:</strong> Free, independent, not binding, max $350,000 per complaint (not per account), 180 days to file after firm's response, 6-year limitation period. All CIRO members must be OBSI members.</div></div>
+    <div class="si"><span class="sin">03</span><div><strong>OBSI vs Arbitration vs Litigation:</strong> OBSI = free, non-binding, $350K cap. Arbitration = costs money, binding, no stated cap. Litigation = expensive, binding, no cap. OBSI recommended first for retail claims.</div></div>
+    <div class="si"><span class="sin">04</span><div><strong>Name and shame:</strong> If a firm refuses OBSI's recommendation, OBSI must publicly publish the firm's name and its findings. The client's identity is never published.</div></div>
+    <div class="si"><span class="sin">05</span><div><strong>Designated Complaints Officer (DCO):</strong> Every CIRO member must have one. Not required to be a registered individual. Responsible for overseeing the complaint handling process and filing CIRO reports.</div></div>
+    <div class="si"><span class="sin">06</span><div><strong>What triggers full complaint handling:</strong> Written complaints alleging misconduct related to account handling. Verbal complaints alleging serious misconduct must be treated as written. Service complaints (website down) may not require full handling.</div></div>
+    <div class="si"><span class="sin">07</span><div><strong>Reporting to CIRO:</strong> All written misconduct complaints must be reported to CIRO promptly. This is mandatory and separate from the client response. Failure to report = separate CIRO rule violation.</div></div>
+    <div class="si"><span class="sin">08</span><div><strong>Prohibited settlement:</strong> An RR or IR cannot enter into a settlement agreement with a client without the investment dealer's knowledge and approval. Doing so is a serious violation, regardless of intent.</div></div>
+    <div class="si"><span class="sin">09</span><div><strong>Three pillars of dealer obligation:</strong> Legislative (Securities Acts, CIRO rules, PCMLTFA, PIPEDA), Contractual (account agreement), Organizational (duty of care, fiduciary duty, internal policies).</div></div>
+    <div class="si"><span class="sin">10</span><div><strong>Record retention:</strong> Complaint records = 7 years from resolution. Complaint register must be maintained in real-time. All files must be accessible to CIRO examiners.</div></div>
+    <div class="si"><span class="sin">11</span><div><strong>Institutional clients:</strong> Cannot use OBSI. CIRO reporting obligation still applies if the complaint alleges a CIRO rule breach. Disputes handled through commercial/legal channels.</div></div>
+    <div class="si"><span class="sin">12</span><div><strong>OBSI binding authority — current status:</strong> As of 2025, OBSI's recommendations are NOT binding. CSA proposed changes are under consultation. For the exam, OBSI = non-binding recommendation service.</div></div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<!-- ═══════════════════════ QUIZ ═══════════════════════ -->
+<div id="quiz" class="quiz-section">
+  <div class="quiz-header">
+    <div class="quiz-title">Element 4 — Practice Questions</div>
+    <div class="quiz-sub">45 questions · Exam-level difficulty · Click an option to reveal answer</div>
+    <div class="quiz-stats-row">
+      <div class="qs-stat"><div class="qs-n">15</div><div class="qs-l">Easy</div></div>
+      <div class="qs-stat"><div class="qs-n">20</div><div class="qs-l">Medium</div></div>
+      <div class="qs-stat"><div class="qs-n">10</div><div class="qs-l">Hard</div></div>
+      <div class="qs-stat"><div class="qs-n" id="scoreDisplay">0/45</div><div class="qs-l">Your Score</div></div>
+    </div>
+  </div>
+
+  <div id="quizContainer"></div>
+
+  <div class="quiz-controls">
+    <div class="score-display" id="finalScore"></div>
+    <button class="btn btn-primary" onclick="resetQuiz()">🔄 Reset All Questions</button>
+    <button class="btn btn-secondary" onclick="showAllAnswers()">👁 Reveal All Answers</button>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// ── QUESTIONS DATA ──
+const questions = [
+  // EASY (1-15)
+  {id:1,diff:'e',text:"Under CIRO's complaint handling rules, within how many business days must an investment dealer acknowledge a written client complaint?",opts:["A. 2 business days","B. 5 business days","C. 10 business days","D. 30 calendar days"],ans:1,exp:"IDPC Rule 3700 requires the acknowledgement letter to be sent to the client within <strong>5 business days</strong> of receiving the complaint. This is one of the most frequently tested numbers in Element 4."},
+  {id:2,diff:'e',text:"What is the maximum amount of compensation OBSI can recommend in a single investment complaint?",opts:["A. $100,000","B. $200,000","C. $350,000","D. $500,000"],ans:2,exp:"OBSI can recommend up to <strong>$350,000</strong> per complaint. This limit does not increase if multiple accounts are involved. A client with a larger claim can voluntarily reduce it to $350,000 to use OBSI."},
+  {id:3,diff:'e',text:"Are OBSI's recommendations legally binding on investment firms?",opts:["A. Yes — firms must comply with all OBSI recommendations","B. No — OBSI's recommendations are not legally binding","C. Yes, but only if the claim is over $50,000","D. Only if both parties sign an agreement to be bound"],ans:1,exp:"OBSI's recommendations are <strong>not legally binding</strong>. Most firms comply, but if a firm refuses, OBSI's only enforcement mechanism is to publicly name and publish its findings against the firm. The client retains the right to pursue litigation."},
+  {id:4,diff:'e',text:"Within how many calendar days must an investment dealer provide a substantive response to a client complaint (outside Québec)?",opts:["A. 30 calendar days","B. 60 calendar days","C. 90 calendar days","D. 120 calendar days"],ans:2,exp:"Under IDPC Rule 3700 (and outside Québec), the firm must provide a <strong>substantive response within 90 calendar days</strong>. Note: Québec now requires 60 days (effective July 1, 2025). The exam tests the standard 90-day rule."},
+  {id:5,diff:'e',text:"Who must all CIRO investment dealer members be mandatory members of for dispute resolution purposes?",opts:["A. The CIRO Arbitration Panel","B. The Ombudsman for Banking Services and Investments (OBSI)","C. The Financial Consumer Agency of Canada (FCAC)","D. The provincial securities regulator"],ans:1,exp:"CIRO rules require <strong>all investment dealer members to be mandatory members of OBSI</strong>. This ensures clients of any CIRO-regulated firm have access to the same free, independent dispute resolution service."},
+  {id:6,diff:'e',text:"What does OBSI do if a firm refuses to accept its recommendation to compensate a client?",opts:["A. Automatically awards the compensation through the courts","B. Refers the matter to CIRO for criminal prosecution","C. Publicly names the firm and publishes the investigation report","D. Transfers the case to the arbitration program"],ans:2,exp:"If a firm refuses OBSI's recommendation, OBSI is obligated to <strong>publicly name the firm and publish its investigation report</strong> detailing the findings. The client's name is never published. This 'name and shame' mechanism is OBSI's only enforcement tool."},
+  {id:7,diff:'e',text:"What is the OBSI limitation period for filing investment complaints?",opts:["A. 2 years from the date of the incident","B. 3 years from the date of the loss","C. 6 years from when the client knew or ought to have known about the problem","D. 10 years from account opening"],ans:2,exp:"OBSI applies a <strong>6-year limitation period</strong> running from the earlier of: when the client first knew about the problem, or when they reasonably ought to have known. After 6 years, OBSI will not investigate."},
+  {id:8,diff:'e',text:"Under CIRO rules, how long must complaint records be retained after a complaint is resolved?",opts:["A. 2 years","B. 5 years","C. 7 years","D. 10 years"],ans:2,exp:"Complaint records must be retained for <strong>7 years</strong> from the date the complaint is resolved, consistent with general CIRO record-keeping requirements."},
+  {id:9,diff:'e',text:"Which of the following is NOT a permitted recourse option for a dissatisfied retail investment client?",opts:["A. Filing a complaint with OBSI","B. Initiating civil litigation against the dealer","C. Demanding the firm reverse all trades in the account","D. Submitting a complaint to CIRO for investigation"],ans:2,exp:"A client cannot unilaterally demand the reversal of all trades — this is not a legal right. Valid recourse options include OBSI, CIRO complaint submission, CIRO arbitration, and civil litigation. Individual trade reversals may be a remedy if misconduct is found, but must go through proper channels."},
+  {id:10,diff:'e',text:"What is the primary role of CIRO in the complaint handling framework?",opts:["A. To directly compensate investors for losses","B. To set minimum standards and oversee member firms' complaint handling processes","C. To operate as the first level of dispute resolution for all clients","D. To replace OBSI as the main dispute resolution body"],ans:1,exp:"CIRO's primary role is to <strong>set minimum standards, receive reports, and provide oversight</strong> of member firms' complaint handling. CIRO does not directly compensate investors — compensation is handled through OBSI, arbitration, or litigation."},
+  {id:11,diff:'e',text:"How long after receiving an investment firm's response does a client have to file a complaint with OBSI?",opts:["A. 30 days","B. 90 days","C. 180 days","D. 365 days"],ans:2,exp:"A client has <strong>180 days (approximately 6 months)</strong> after receiving the firm's substantive response to file a complaint with OBSI. If the firm has not responded after 90 days, the client can go to OBSI at that point without waiting."},
+  {id:12,diff:'e',text:"Which document must be attached to or referenced in the acknowledgement letter sent to a client who has filed a complaint?",opts:["A. A copy of the client's account agreement","B. The CIRO-approved complaint handling process brochure","C. The firm's annual report","D. A copy of CIRO's enforcement decisions"],ans:1,exp:"The acknowledgement letter must reference or include a copy of the <strong>CIRO-approved complaint handling process brochure</strong>. This ensures the client receives standardized information about their rights and the complaint process."},
+  {id:13,diff:'e',text:"What type of client CANNOT use OBSI for dispute resolution?",opts:["A. Individual retail investors","B. Small businesses","C. Institutional investors","D. Senior citizens"],ans:2,exp:"<strong>Institutional investors</strong> are not eligible to use OBSI. OBSI's service is designed for individual consumers and small businesses. Institutional disputes are handled through commercial and legal channels."},
+  {id:14,diff:'e',text:"Which of the following best describes churning?",opts:["A. Failing to execute a client's trade order","B. Excessive trading in a client's account primarily to generate commissions","C. Providing incorrect market quotes to a client","D. Selling securities without proper prospectus disclosure"],ans:1,exp:"<strong>Churning</strong> is excessive trading in a client's account primarily to generate commissions for the advisor rather than to benefit the client. It is a serious form of misconduct identified by unusually high portfolio turnover relative to the client's investment objectives."},
+  {id:15,diff:'e',text:"A client receives OBSI's investigation recommendation but disagrees with it. What can the client do?",opts:["A. Nothing — the OBSI decision is final and binding","B. Request a reconsideration by someone not previously involved in the case","C. Immediately escalate to CIRO for a new investigation","D. Appeal to the Supreme Court of Canada"],ans:1,exp:"A client who disagrees with OBSI's finding can <strong>request a reconsideration</strong> by an OBSI reconsiderations officer who was not previously involved in the case. After that, the client can still pursue litigation, but the OBSI process itself is exhausted."},
+
+  // MEDIUM (16-35)
+  {id:16,diff:'m',text:"An investment firm acknowledges a client complaint but does not provide a substantive response within 90 days. What obligation does the firm have at the 90-day mark?",opts:["A. The complaint is deemed resolved in the firm's favour","B. The client must restart the complaint process","C. The firm must inform the client that OBSI can now consider the complaint","D. The firm automatically owes the client compensation"],ans:2,exp:"When no substantive response is provided within 90 days, the firm must <strong>inform the client that OBSI can now consider the complaint</strong>. CIRO requires this notification so clients know their right to escalate externally. A failure to notify is itself a compliance breach."},
+  {id:17,diff:'m',text:"A client's investment portfolio lost $800,000 due to alleged unsuitable recommendations. The client wants to use OBSI. What is the practical challenge with this approach?",opts:["A. OBSI will not investigate suitability complaints","B. OBSI's maximum recommendation is $350,000, which is less than the full loss","C. OBSI only handles banking complaints, not investment complaints","D. The 6-year limitation period has automatically expired"],ans:1,exp:"The client can use OBSI, but OBSI can recommend a maximum of <strong>$350,000</strong> — less than the $800,000 loss. If the client wants to claim the full $800,000, they must pursue litigation or CIRO arbitration. The client may voluntarily reduce their claim to $350,000 to use OBSI, or use OBSI for $350,000 and pursue additional amounts through other channels."},
+  {id:18,diff:'m',text:"A registered representative (RR) believes their client's complaint is unfair and offers to personally pay the client $5,000 to drop it without telling their firm. Which of the following best describes this action?",opts:["A. This is acceptable if the RR genuinely believes they caused a loss","B. This is a prohibited practice under CIRO rules","C. This is permitted if the amount is under $10,000","D. This is acceptable as long as the client signs a release"],ans:1,exp:"This is a <strong>prohibited practice</strong>. CIRO rules explicitly prohibit registered individuals from entering into settlement agreements with clients without the investment dealer's knowledge and approval. The RR is concealing the complaint from the firm and CIRO, undermining the complaint reporting requirements."},
+  {id:19,diff:'m',text:"When a client files a complaint with OBSI while also considering civil litigation, what typically happens to the civil litigation limitation period?",opts:["A. The limitation period is permanently waived once OBSI is involved","B. The limitation period continues to run without interruption","C. The limitation period for suing the firm is typically suspended while OBSI reviews the complaint","D. Filing with OBSI resets the limitation period to the original 6-year term"],ans:2,exp:"Filing a complaint with OBSI <strong>typically suspends the civil litigation limitation period</strong> while OBSI reviews the case. This is a client protection measure — without this, a client might lose their right to sue while waiting for OBSI to complete its investigation. However, clients should get legal advice to confirm the exact limitations rules in their province."},
+  {id:20,diff:'m',text:"Which of the following conduct would NOT typically result in a CIRO reportable complaint?",opts:["A. An advisor recommending unsuitable investments","B. A client's account password not working on the firm's website","C. An advisor executing unauthorized trades","D. Failure to disclose a conflict of interest"],ans:1,exp:"A client's password issue with the firm's website is a <strong>service complaint</strong> — it does not allege misconduct in the handling of a securities account. CIRO reportable complaints must allege misconduct related to account handling. Website/technical issues are administrative service matters, not regulatory violations."},
+  {id:21,diff:'m',text:"What is the role of the Designated Complaints Officer (DCO) at an investment dealer?",opts:["A. To personally investigate all client complaints on behalf of the firm","B. To oversee the firm's complaint handling process and ensure CIRO reporting obligations are met","C. To represent the firm in all OBSI and arbitration proceedings","D. To be the point of contact for all regulatory enforcement matters"],ans:1,exp:"The DCO is responsible for <strong>overseeing the firm's complaint handling process</strong>, ensuring timelines are met, maintaining the complaint register, and filing reports to CIRO. The DCO does not need to be a registered individual — it is an administrative oversight role. The actual investigation may be conducted by compliance staff."},
+  {id:22,diff:'m',text:"A client wants to proceed with OBSI but also use the firm's optional internal complaint appeal process. Which of the following is TRUE?",opts:["A. The client must use the internal appeal process before going to OBSI","B. Using the internal appeal process extends the 180-day deadline to file with OBSI","C. The internal appeal process is voluntary and the 180-day OBSI clock continues during it","D. CIRO prohibits firms from offering internal complaint appeal processes"],ans:2,exp:"The internal complaint appeal process is <strong>voluntary</strong> and a client is never required to use it. Importantly, the <strong>180-day window to file with OBSI continues to run during the internal appeal process</strong>. A client who participates in the internal appeal may have less than 180 days remaining by the time they decide to go to OBSI."},
+  {id:23,diff:'m',text:"An investment dealer has three obligations to clients — legislative, contractual, and organizational. A client claims the dealer breached its duty of care through negligent investment advice. Under which obligation category does 'duty of care' primarily fall?",opts:["A. Legislative — it is directly set out in the Securities Act","B. Contractual — it arises from the signed account agreement","C. Organizational — it is a common law duty arising from professional practice","D. None of the above — duty of care only applies to portfolio managers"],ans:2,exp:"The common law <strong>duty of care</strong> (which underlies negligence claims) falls under the <strong>organizational/professional</strong> obligation category. It arises from tort law, not directly from statute or contract, though it runs parallel to both. The dealer owes a duty of care to act with reasonable skill and diligence in providing advice and executing orders."},
+  {id:24,diff:'m',text:"Under CIRO rules, which of the following complaints from an institutional client must still be reported to CIRO?",opts:["A. A complaint that OBSI has already investigated","B. A complaint alleging a breach of CIRO rules in the handling of the client's account","C. All institutional complaints regardless of content","D. Only complaints that result in client financial losses"],ans:1,exp:"Even for institutional clients, CIRO's reporting obligation applies if the complaint alleges a <strong>breach of CIRO rules</strong> relating to account handling. The reduced protections for institutional clients (no OBSI, reduced suitability obligations) do not eliminate the firm's obligation to report regulatory misconduct to CIRO."},
+  {id:25,diff:'m',text:"What distinguishes a complaint that CIRO handles differently from one OBSI handles?",opts:["A. CIRO handles complaints to discipline firms; OBSI handles complaints to compensate investors","B. CIRO only handles institutional complaints; OBSI only handles retail complaints","C. CIRO requires minimum $50,000 in losses; OBSI has no minimum","D. There is no difference — both bodies perform the same function"],ans:0,exp:"This is a fundamental distinction: <strong>CIRO handles complaints to investigate and discipline firms/individuals for rule violations</strong> — it does not directly compensate investors. <strong>OBSI handles complaints to investigate whether compensation is warranted</strong> and recommends remediation to the client. A single event can trigger both processes simultaneously but they serve different purposes."},
+  {id:26,diff:'m',text:"An advisor apologizes to a client who complained, saying 'I understand your frustration, I made an error in my recommendation.' Has this advisor entered into a prohibited settlement agreement?",opts:["A. Yes — any admission of error is equivalent to a settlement agreement","B. No — an acknowledgement or apology is not a settlement agreement","C. Yes — the advisor must never acknowledge an error without firm approval","D. No, but only if the apology was verbal and not in writing"],ans:1,exp:"An <strong>acknowledgement or apology is NOT a settlement agreement</strong>. What is prohibited is entering into a formal settlement — including paying compensation — without the firm's approval. An advisor acknowledging an error or apologizing is not prohibited; in fact, it may be appropriate. The line is drawn at formal compensation agreements."},
+  {id:27,diff:'m',text:"What must the substantive response letter from an investment firm include regarding OBSI?",opts:["A. It must state that OBSI's decision will be binding on the firm","B. It must inform the client that OBSI can consider the complaint, and provide OBSI's contact information","C. It must include OBSI's investigation form for the client to complete","D. It must state that OBSI cannot be used if the firm's response was within 90 days"],ans:1,exp:"The substantive response must <strong>inform the client that OBSI can consider the complaint</strong> and provide OBSI contact information. This ensures every client, regardless of whether they accept the firm's response, knows they have an independent dispute resolution option. This is a mandatory requirement, not optional."},
+  {id:28,diff:'m',text:"What is 'unauthorized trading' and why does it generate liability?",opts:["A. Trading in foreign markets without exchange approval","B. Executing trades without the client's explicit authorization in a non-discretionary account","C. Trading in derivatives without proper risk disclosure","D. Trading during extended market hours without proper disclosure"],ans:1,exp:"<strong>Unauthorized trading</strong> means executing trades in a client's non-discretionary account without the client's prior approval. In non-discretionary accounts, every trade requires client consent. Unauthorized trading violates the agency relationship (the RR acts beyond their authority), CIRO rules, and creates civil liability for any resulting losses."},
+  {id:29,diff:'m',text:"A client files a complaint alleging their advisor made unauthorized trades. The firm investigates and finds the trades were indeed unauthorized. Which of the following outcomes is most appropriate?",opts:["A. The RR personally compensates the client without telling the firm","B. The firm acknowledges the complaint, investigates, reports to CIRO, and resolves the complaint within 90 days","C. The firm advises the client to immediately take the matter to OBSI","D. The firm waits for CIRO to initiate its own investigation before responding to the client"],ans:1,exp:"The proper process is: firm acknowledges within 5 days, conducts an investigation, reports to CIRO (mandatory for a misconduct complaint), and provides a substantive response within 90 days that may include an offer to make the client whole. The firm should not wait for CIRO to investigate first — its obligations to the client run independently."},
+  {id:30,diff:'m',text:"Which of the following correctly describes the relationship between CIRO disciplinary action and civil litigation for the same misconduct?",opts:["A. A CIRO finding automatically results in a court judgment against the firm","B. A client who uses CIRO to file a complaint cannot separately sue the dealer","C. CIRO disciplinary proceedings and civil litigation are independent and can proceed simultaneously","D. CIRO's finding is binding on civil courts and determines the outcome of litigation"],ans:2,exp:"CIRO disciplinary proceedings and civil litigation are <strong>completely independent</strong>. They can run simultaneously. A CIRO finding does not create an automatic court judgment, nor does it prevent civil litigation. However, CIRO disciplinary decisions can be used as evidence in civil proceedings."},
+  {id:31,diff:'m',text:"What happens to the limitation period for suing in court if an investor pursues civil litigation BEFORE using OBSI?",opts:["A. The limitation period continues to run during OBSI's investigation","B. Filing in court suspends any ability to use OBSI","C. The court process automatically extends the limitation period","D. OBSI will refuse the complaint if litigation has been initiated"],ans:3,exp:"If the <strong>same complaint has been the subject of court proceedings that resulted in a binding or final decision</strong>, OBSI will not investigate it. Generally, OBSI will not investigate a complaint where proceedings before any court, tribunal, or arbitrator have concluded with a binding decision. OBSI and litigation should be seen as alternative, not simultaneous, paths."},
+  {id:32,diff:'m',text:"The acknowledgement letter sent within 5 business days must include a reference to which of the following?",opts:["A. Only the contact details of the complaints officer","B. The maximum 90 calendar day timeline for substantive response AND the statute of limitations","C. A full summary of the firm's investigation to date","D. A preliminary finding on the merits of the complaint"],ans:1,exp:"The acknowledgement letter must include several mandatory elements, including <strong>reference to the maximum 90-day timeline AND reference to the statute of limitations</strong> applicable to the client's claim. This is critical so clients know how long they have to take legal action if needed."},
+  {id:33,diff:'m',text:"In the Québec complaint handling regime (effective July 1, 2025), what is the standard timeline for a firm to provide a final response?",opts:["A. 30 days with no extension","B. 60 days (extendable to 90 in exceptional circumstances)","C. 90 days with no extension","D. 90 days extendable to 120 in exceptional circumstances"],ans:1,exp:"Under the AMF Regulation (effective July 1, 2025), Québec-based dealer members must provide a final complaint response within <strong>60 days</strong>. This may be extended to 90 days in exceptional circumstances or circumstances beyond the firm's control."},
+  {id:34,diff:'m',text:"Which of the following describes misrepresentation in an investment context?",opts:["A. Providing too many investment options to a confused client","B. Providing false or misleading information about an investment's risks, features, or potential returns","C. Failing to execute a trade at the exact requested price","D. Investing in foreign securities without proper risk disclosure"],ans:1,exp:"<strong>Misrepresentation</strong> is providing false or misleading information about an investment — including overstating potential returns, understating risks, or omitting material facts. It can be intentional (fraudulent) or negligent. Either way, if a client relies on the misrepresentation and suffers loss, the dealer faces liability."},
+  {id:35,diff:'m',text:"An investment firm discovers it failed to file several complaint reports with CIRO over the past year. The underlying complaints were all minor and settled. What are the likely consequences?",opts:["A. No consequences since the complaints were already settled","B. CIRO will impose fines or other disciplinary action for the failure to report, separately from the original complaints","C. CIRO will void all the settlements reached with clients","D. The firm is automatically placed under enhanced supervision for 12 months"],ans:1,exp:"<strong>Failure to file complaint reports to CIRO is itself a CIRO rule violation</strong> subject to disciplinary action, regardless of whether the underlying complaints were resolved. The reporting obligation exists to allow CIRO to monitor industry conduct patterns, not just to handle unresolved complaints. CIRO can fine the firm and require remediation of its complaint handling procedures."},
+
+  // HARD (36-45)
+  {id:36,diff:'h',text:"A client with $600,000 in losses from alleged churning files with OBSI. OBSI investigates and finds the churning claim meritorious. What is the maximum compensation OBSI can recommend, and what are the client's options for the remaining loss?",opts:["A. OBSI recommends $600,000 — no cap applies to churning claims","B. OBSI recommends $350,000 maximum; client can pursue the remaining $250,000 through arbitration or litigation","C. OBSI recommends $350,000 maximum; the remaining $250,000 is forfeited","D. OBSI recommends $350,000; the firm is automatically required to pay the remaining $250,000"],ans:1,exp:"OBSI can recommend a maximum of <strong>$350,000</strong>, regardless of the claim amount or type. For the remaining $250,000, the client's options are: (1) accept the $350,000 recommendation; or (2) reject OBSI's process and pursue the full $600,000 through civil litigation or arbitration. The client cannot receive double compensation — accepting OBSI's recommendation typically resolves the complaint."},
+  {id:37,diff:'h',text:"An investment dealer's compliance department is investigating a complaint. While investigating, the compliance officer discovers evidence of fraud by the registered representative that goes beyond what the client complained about. What should the firm do?",opts:["A. Respond only to the specific complaint raised and keep the additional evidence confidential","B. Report the fraud evidence to CIRO (and potentially law enforcement) as a reportable matter under Rule 3700 and continue the complaint investigation","C. Wait for the client to amend their complaint to include fraud before reporting","D. Let the registered representative resign quietly and avoid alerting regulators"],ans:1,exp:"The discovery of fraud evidence triggers <strong>mandatory reporting obligations to CIRO under Rule 3700</strong>, as a 'reportable matter' (internal investigation finding). Additionally, serious fraud should be referred to law enforcement (RCMP). The firm cannot suppress evidence of criminal conduct. The client complaint is handled on its own timeline, but the fraud evidence creates separate and immediate reporting obligations."},
+  {id:38,diff:'h',text:"A client wants to use OBSI, but their complaint involves events from 8 years ago. The client says they only recently discovered the problem. Why might OBSI be unable to investigate?",opts:["A. OBSI only accepts complaints filed within 2 years of the incident","B. The complaint exceeds OBSI's jurisdiction because it involves events more than 5 years old","C. OBSI applies a 6-year limitation period from when the client knew OR ought to have known — if they should have known earlier, the complaint may be time-barred","D. OBSI cannot investigate complaints involving events more than 7 years old regardless of when they were discovered"],ans:2,exp:"OBSI's 6-year limitation period runs from the earlier of: when the client <strong>actually knew</strong>, or when they <strong>reasonably ought to have known</strong>. If OBSI determines the client should reasonably have discovered the problem more than 6 years ago (e.g., account statements clearly showed the problem years earlier), the complaint may be time-barred even if the client claims ignorance. OBSI investigates the timeline carefully."},
+  {id:39,diff:'h',text:"An investment dealer's registered representative settles a complaint with a client for $20,000 and has the client sign a release. The rep pays from their personal funds without telling the firm. The firm later discovers this. Which of the following is the most accurate statement?",opts:["A. The settlement is valid and the firm has no further liability because the client signed a release","B. The rep has violated CIRO rules; the settlement may be invalid; the firm may still have residual liability; CIRO reporting obligations were not met","C. The settlement is valid but the rep will face a minor administrative sanction","D. The firm must immediately reimburse the rep since it was ultimately the firm's liability"],ans:1,exp:"This involves multiple violations: (1) <strong>Prohibited settlement without firm approval</strong> (CIRO violation); (2) <strong>Failure to report</strong> the complaint to CIRO; (3) The firm's liability may not be extinguished by the private settlement since the rep acted without authority; (4) The client may be able to argue the release is invalid since it was signed under improper circumstances. The rep faces serious CIRO disciplinary action."},
+  {id:40,diff:'h',text:"Under the three-pillar framework of dealer obligations (legislative, contractual, organizational), can a dealer escape legislative obligations by having the client sign a contractual waiver?",opts:["A. Yes — if the client consents in writing, legislative obligations can be waived","B. No — legislative obligations cannot be waived by contract","C. Yes — but only for obligations imposed by CIRO rules, not provincial securities law","D. No — but dealers can waive organizational obligations through contract"],ans:1,exp:"<strong>Legislative obligations cannot be waived by contract</strong>. This is a fundamental principle of law — parties cannot contract out of statutory requirements. A client cannot waive the firm's AML obligations (PCMLTFA), CIRO rule compliance, or provincial securities law obligations through a contract. Regulatory protections exist for the public interest and cannot be eliminated by private agreement."},
+  {id:41,diff:'h',text:"What is the key difference between the CIRO arbitration program and OBSI in terms of the outcome for the investor?",opts:["A. OBSI produces binding decisions; arbitration produces recommendations only","B. Arbitration produces legally binding decisions; OBSI produces non-binding recommendations","C. Both produce binding decisions, but OBSI is faster","D. Both produce non-binding recommendations, but CIRO arbitration has a higher compensation cap"],ans:1,exp:"This is a direct reversal trap. <strong>Arbitration produces legally binding decisions</strong>; OBSI produces non-binding recommendations. Arbitration costs money (not free like OBSI) but the decision is enforceable in court. OBSI is free but a firm can technically refuse its recommendation (at the cost of public naming)."},
+  {id:42,diff:'h',text:"A dealer member receives a verbal complaint from a client alleging their advisor committed fraud. The client does not want to put the complaint in writing. What should the firm do?",opts:["A. File it as a low-priority complaint and wait for a written version before acting","B. Treat the verbal complaint as a written complaint because it alleges serious misconduct, and apply full complaint handling procedures","C. Acknowledge the verbal complaint informally but not report it to CIRO until written","D. Refer the client directly to CIRO without accepting the complaint"],ans:1,exp:"CIRO rules require verbal complaints alleging <strong>serious misconduct</strong> (like fraud) to be treated as if they were written complaints, triggering the full complaint handling process including CIRO reporting. A dealer cannot avoid its reporting obligations simply because the client hasn't put the complaint in writing, particularly for serious allegations."},
+  {id:43,diff:'h',text:"The concept of 'failure to supervise' as a basis for liability means which of the following for an investment dealer?",opts:["A. The dealer is only liable if it directly participated in the misconduct","B. The dealer and supervising manager can be held liable for the misconduct of a registered representative if adequate supervision was not in place","C. Supervision failures only create liability for the branch manager, not the dealer","D. Supervision liability only applies when the firm had prior knowledge of the misconduct"],ans:1,exp:"<strong>Failure to supervise</strong> creates liability for both the firm (vicariously for its registered persons' misconduct) and the supervising manager or branch manager (for inadequate oversight). The dealer does not need to have directly participated — the failure of its supervisory systems to detect and prevent the misconduct is itself the violation. This is why CIRO's supervision rules are so extensive."},
+  {id:44,diff:'h',text:"A registered representative receives a $2,000 discretionary payment from a product manufacturer for recommending their funds, which was not disclosed to clients. This is investigated under a client complaint. What issues arise?",opts:["A. This is only a compensation arrangement issue with no client impact","B. This may constitute undisclosed conflict of interest, a material misrepresentation (if asked about conflicts), and a breach of CIRO rules requiring disclosure of all compensation arrangements","C. This is acceptable provided the fund company discloses it in the fund's prospectus","D. This only requires disclosure if it exceeds $5,000 in total for the year"],ans:1,exp:"An undisclosed payment from a product manufacturer is a serious violation involving: (1) <strong>Undisclosed conflict of interest</strong> — the RR had a financial incentive to recommend this fund not disclosed to clients; (2) <strong>Breach of CIRO rules</strong> requiring disclosure of all compensation arrangements; (3) Potential suitability concerns — did the payment bias the recommendation away from the client's best interest? This would be a reportable complaint to CIRO and could result in significant disciplinary action."},
+  {id:45,diff:'h',text:"An investment firm resolves 40 client complaints internally and self-assesses that none require reporting to CIRO. During a CIRO examination, CIRO determines that 15 of those complaints should have been reported. What is the most likely regulatory outcome?",opts:["A. CIRO accepts the firm's self-assessment if the complaints were settled","B. CIRO will conduct an enhanced review of all 40 complaints and potentially discipline the firm for systemic failure to report","C. CIRO will only take action if the unreported complaints involved criminal conduct","D. The firm receives only an informal warning for its first failure to report"],ans:1,exp:"Systematic under-reporting is a serious compliance failure. CIRO would likely: (1) conduct an <strong>enhanced review</strong> of all complaint handling; (2) <strong>discipline the firm</strong> for the systemic failure to comply with Rule 3700 reporting requirements; (3) may require the firm to implement remedial compliance measures and demonstrate improved processes. Systematic under-reporting suggests the complaint handling culture within the firm is deficient — this is exactly what CIRO's oversight is designed to detect."}
+];
+
+let answers = {};
+let correct = 0;
+let attempted = 0;
+
+function buildQuiz() {
+  const c = document.getElementById('quizContainer');
+  c.innerHTML = '';
+  questions.forEach((q, i) => {
+    const dClass = q.diff === 'e' ? 'diff-e' : q.diff === 'm' ? 'diff-m' : 'diff-h';
+    const dLabel = q.diff === 'e' ? 'Easy' : q.diff === 'm' ? 'Medium' : 'Hard';
+    let optsHtml = q.opts.map((o, oi) => {
+      const letter = String.fromCharCode(65 + oi);
+      return `<div class="qq-opt" onclick="checkAnswer(${i},${oi})" id="opt-${i}-${oi}"><span class="opt-letter">${letter}</span>${o.substring(3)}</div>`;
+    }).join('');
+    c.innerHTML += `
+      <div class="quiz-question" id="q-${i}">
+        <div class="qq-top">
+          <span class="qq-num">Q${q.id}</span>
+          <span class="qq-diff ${dClass}">${dLabel}</span>
+          <div class="qq-text">${q.text}</div>
+        </div>
+        <div class="qq-options">${optsHtml}</div>
+        <div class="qq-explain" id="exp-${i}">${q.exp}</div>
+      </div>`;
+  });
+}
+
+function checkAnswer(qi, selected) {
+  if (answers[qi] !== undefined) return;
+  answers[qi] = selected;
+  attempted++;
+  const q = questions[qi];
+  const isCorrect = selected === q.ans;
+  if (isCorrect) correct++;
+  // Mark options
+  for (let i = 0; i < q.opts.length; i++) {
+    const el = document.getElementById(`opt-${qi}-${i}`);
+    if (i === q.ans) el.classList.add('correct');
+    else if (i === selected && !isCorrect) el.classList.add('wrong');
+  }
+  document.getElementById(`exp-${qi}`).classList.add('show');
+  document.getElementById(`scoreDisplay`).textContent = `${correct}/${attempted}`;
+  if (attempted === questions.length) {
+    const pct = Math.round(correct / questions.length * 100);
+    const fd = document.getElementById('finalScore');
+    fd.style.display = 'block';
+    fd.innerHTML = `<div class="score-num">${pct}%</div><div class="score-lbl">${correct} of ${questions.length} correct — ${pct >= 60 ? '✅ Passing' : '❌ Below passing mark'}</div>`;
+  }
+}
+
+function showAllAnswers() {
+  questions.forEach((q, qi) => {
+    if (answers[qi] !== undefined) return;
+    answers[qi] = q.ans;
+    for (let i = 0; i < q.opts.length; i++) {
+      const el = document.getElementById(`opt-${qi}-${i}`);
+      if (i === q.ans) el.classList.add('correct');
+    }
+    document.getElementById(`exp-${qi}`).classList.add('show');
+  });
+}
+
+function resetQuiz() {
+  answers = {}; correct = 0; attempted = 0;
+  document.getElementById('scoreDisplay').textContent = '0/45';
+  document.getElementById('finalScore').style.display = 'none';
+  buildQuiz();
+}
+
+// ── NAVIGATION ──
+function goTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function updateUI() {
+  const st = window.scrollY;
+  const dh = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = dh > 0 ? (st / dh) * 100 : 0;
+  const f = document.getElementById('pFill');
+  if (f) f.style.width = Math.min(pct, 100) + '%';
+  const btn = document.getElementById('scrolltop');
+  if (st > 500) btn.classList.add('visible'); else btn.classList.remove('visible');
+
+  const ids = ['cover','s41','s42','s43','s44','s45','s46','s47','summary','quiz'];
+  let cur = 'cover';
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 100) cur = id;
+  });
+  document.querySelectorAll('.nl').forEach(link => {
+    link.classList.remove('active');
+    const fn = link.getAttribute('onclick') || '';
+    if (fn.includes("'" + cur + "'")) link.classList.add('active');
+  });
+}
+
+window.addEventListener('scroll', updateUI, { passive: true });
+buildQuiz();
+updateUI();
+</script>
+</body>
+</html>

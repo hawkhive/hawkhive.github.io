@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIRE Element 6 — Market Integrity, Trade Execution & Settlement</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,600&family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f2f5; --paper:#fff; --warm:#f5f7fa; --border:#dde2eb;
+  --ink:#0d1421; --ink2:#1e2d45; --ink3:#4a5a72; --muted:#7a8fa8;
+  --sb:#0d1421; --sb-b:rgba(255,255,255,0.07);
+  --blue:#0f5599; --blue-bg:#e8f2fc; --blue-border:#7ab4e8;
+  --indigo:#3730a3; --indigo-bg:#eef2ff; --indigo-border:#a5b4fc;
+  --amber:#c25700; --amber-bg:#fff7ed; --amber-border:#fed7aa;
+  --red:#b91c1c; --red-bg:#fef2f2; --red-border:#fca5a5;
+  --green:#15803d; --green-bg:#f0fdf4; --green-border:#86efac;
+  --purple:#7c3aed; --purple-bg:#f5f3ff; --purple-border:#c4b5fd;
+  --sidebar-w:286px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#0a1628;font-family:'Nunito Sans',sans-serif;color:var(--ink);display:flex;}
+
+/* SIDEBAR */
+#sb{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--sb);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;}
+#sb::-webkit-scrollbar{width:3px;}
+#sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);}
+.sbh{padding:22px 18px 16px;border-bottom:1px solid var(--sb-b);background:rgba(0,0,0,0.25);position:sticky;top:0;z-index:5;}
+.sbp{font-family:'Roboto Mono',monospace;font-size:9px;letter-spacing:2px;color:#93c5fd;text-transform:uppercase;background:rgba(15,85,153,0.25);border:1px solid rgba(15,85,153,0.35);display:inline-block;padding:2px 8px;border-radius:10px;margin-bottom:8px;}
+.sbt{font-family:'Fraunces',serif;font-size:15.5px;font-weight:700;color:#e0eeff;line-height:1.3;margin-bottom:2px;}
+.sbs{font-size:10px;color:rgba(255,255,255,0.28);}
+.sbpr{padding:10px 18px 3px;}
+.sbpl{font-size:9px;color:rgba(255,255,255,0.22);font-family:'Roboto Mono',monospace;margin-bottom:5px;}
+.sbpt{height:3px;background:rgba(255,255,255,0.07);border-radius:3px;}
+.sbpf{height:100%;background:linear-gradient(90deg,var(--blue),#60a5fa);border-radius:3px;width:0%;transition:width 0.3s;}
+.ng{padding:7px 0;}
+.ngl{padding:5px 18px;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,0.2);text-transform:uppercase;font-family:'Roboto Mono',monospace;}
+.nl{display:flex;align-items:flex-start;gap:8px;padding:6px 18px;cursor:pointer;border-left:2px solid transparent;transition:all 0.17s;text-decoration:none;}
+.nl:hover{background:rgba(255,255,255,0.04);border-left-color:rgba(15,85,153,0.5);}
+.nl.active{background:rgba(15,85,153,0.14);border-left-color:var(--blue);}
+.nn{font-family:'Roboto Mono',monospace;font-size:10px;color:#93c5fd;min-width:28px;margin-top:2px;flex-shrink:0;}
+.nt{font-size:11.5px;color:rgba(255,255,255,0.42);line-height:1.4;transition:color 0.17s;}
+.nl:hover .nt,.nl.active .nt{color:rgba(255,255,255,0.82);}
+.ns{display:block;padding:3px 18px 3px 54px;font-size:10.5px;color:rgba(255,255,255,0.26);cursor:pointer;border-left:2px solid transparent;transition:all 0.17s;text-decoration:none;}
+.ns:hover{color:rgba(255,255,255,0.5);border-left-color:rgba(15,85,153,0.3);}
+
+/* MAIN */
+#main{margin-left:var(--sidebar-w);flex:1;background:var(--bg);min-height:100vh;}
+
+/* COVER */
+.cover{min-height:100vh;background:linear-gradient(150deg,#060e1f 0%,#0a1628 45%,#0e1c35 100%);padding:80px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
+.cv-grid{position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(15,85,153,0.04) 0,rgba(15,85,153,0.04) 1px,transparent 1px,transparent 48px),repeating-linear-gradient(0deg,rgba(15,85,153,0.04) 0,rgba(15,85,153,0.04) 1px,transparent 1px,transparent 48px);}
+.cv-glow{position:absolute;top:-40px;right:-40px;width:520px;height:520px;background:radial-gradient(circle,rgba(15,85,153,0.1),transparent 70%);border-radius:50%;}
+.cv-tag{font-family:'Roboto Mono',monospace;font-size:11px;letter-spacing:4px;color:#93c5fd;text-transform:uppercase;margin-bottom:20px;position:relative;display:flex;align-items:center;gap:12px;}
+.cv-tag::before{content:'';width:24px;height:1px;background:#93c5fd;flex-shrink:0;}
+.cv-title{font-family:'Fraunces',serif;font-size:clamp(34px,5vw,62px);font-weight:900;color:#e0eeff;line-height:1.08;max-width:640px;margin-bottom:14px;position:relative;}
+.cv-title em{color:#93c5fd;font-style:italic;}
+.cv-rule{width:60px;height:2px;background:linear-gradient(90deg,var(--blue),transparent);margin:18px 0;position:relative;}
+.cv-desc{font-size:14.5px;color:rgba(224,238,255,0.5);max-width:540px;line-height:1.9;margin-bottom:46px;position:relative;}
+.cv-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;max-width:640px;border:1px solid rgba(15,85,153,0.2);border-radius:8px;overflow:hidden;position:relative;}
+.cv-stat{padding:15px 13px;background:rgba(255,255,255,0.02);}
+.cv-stat-n{font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:#93c5fd;line-height:1;margin-bottom:3px;}
+.cv-stat-l{font-size:9px;color:rgba(255,255,255,0.25);line-height:1.3;}
+
+/* CONTENT */
+.content{max-width:840px;padding:0 62px 120px;}
+.sec{padding-top:70px;}
+.sec-rule{height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:24px;}
+.sec-hdr{display:flex;align-items:flex-start;gap:13px;margin-bottom:20px;}
+.sec-badge{font-family:'Roboto Mono',monospace;font-size:11px;background:var(--blue-bg);border:1px solid var(--blue-border);color:var(--blue);padding:4px 11px;border-radius:4px;white-space:nowrap;margin-top:5px;flex-shrink:0;}
+.sec-title{font-family:'Fraunces',serif;font-size:27px;font-weight:700;color:var(--ink);line-height:1.2;}
+.body{font-size:14.5px;color:var(--ink3);line-height:1.9;margin-bottom:14px;}
+.body strong{color:var(--ink);font-weight:700;}
+.body em{color:var(--blue);font-style:normal;font-weight:600;}
+
+.sub{margin-top:28px;}
+.sub-title{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--ink2);margin-bottom:11px;padding-left:11px;border-left:3px solid var(--blue);}
+.subsub{margin-top:17px;}
+.subsub-title{font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.subsub-title::before{content:'▶';font-size:9px;color:var(--blue);}
+
+/* CALLOUTS */
+.callout{margin:16px 0;padding:13px 16px;border-radius:6px;border-left:3px solid;display:flex;gap:11px;align-items:flex-start;}
+.callout.blue{background:var(--blue-bg);border-color:var(--blue);}
+.callout.indigo{background:var(--indigo-bg);border-color:var(--indigo);}
+.callout.amber{background:var(--amber-bg);border-color:var(--amber);}
+.callout.red{background:var(--red-bg);border-color:var(--red);}
+.callout.green{background:var(--green-bg);border-color:var(--green);}
+.callout.purple{background:var(--purple-bg);border-color:var(--purple);}
+.ci{font-size:15px;flex-shrink:0;margin-top:1px;}
+.cl{font-family:'Roboto Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.callout.blue .cl{color:var(--blue);}
+.callout.indigo .cl{color:var(--indigo);}
+.callout.amber .cl{color:var(--amber);}
+.callout.red .cl{color:var(--red);}
+.callout.green .cl{color:var(--green);}
+.callout.purple .cl{color:var(--purple);}
+.callout p{font-size:13.5px;color:var(--ink3);line-height:1.7;}
+.callout p strong{color:var(--ink);}
+
+/* DEF TABLE */
+.dt{margin:13px 0;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+.dr{display:grid;grid-template-columns:185px 1fr;}
+.dr:not(:last-child){border-bottom:1px solid var(--border);}
+.dterm{background:var(--warm);padding:11px 13px;font-family:'Roboto Mono',monospace;font-size:11px;color:var(--blue);border-right:1px solid var(--border);display:flex;align-items:flex-start;line-height:1.5;font-weight:500;}
+.dval{background:var(--paper);padding:11px 13px;font-size:13.5px;color:var(--ink3);line-height:1.65;}
+.dval strong{color:var(--ink);}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin:13px 0;font-size:13.5px;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+thead tr{background:var(--sb);}
+th{padding:10px 13px;text-align:left;font-family:'Roboto Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:#93c5fd;font-weight:500;}
+td{padding:10px 13px;border-bottom:1px solid var(--border);color:var(--ink3);line-height:1.6;vertical-align:top;}
+td strong{color:var(--ink);}
+tr:last-child td{border-bottom:none;}
+tr:nth-child(even) td{background:var(--warm);}
+
+/* CHECKLIST */
+.chk{margin:11px 0;}
+.chi{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;border-radius:5px;margin-bottom:3px;background:var(--warm);border:1px solid var(--border);font-size:13.5px;color:var(--ink3);line-height:1.55;}
+.chi strong{color:var(--ink);}
+.chico{color:var(--blue);font-size:11px;flex-shrink:0;margin-top:2px;}
+
+/* ORDER CARDS */
+.order-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0;}
+.oc{border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.oc-head{padding:11px 14px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:7px;}
+.oc.market .oc-head{background:var(--blue-bg);color:var(--blue);border-bottom:1px solid var(--blue-border);}
+.oc.limit .oc-head{background:var(--indigo-bg);color:var(--indigo);border-bottom:1px solid var(--indigo-border);}
+.oc.stop .oc-head{background:var(--amber-bg);color:var(--amber);border-bottom:1px solid var(--amber-border);}
+.oc.special .oc-head{background:var(--purple-bg);color:var(--purple);border-bottom:1px solid var(--purple-border);}
+.oc.short .oc-head{background:var(--red-bg);color:var(--red);border-bottom:1px solid var(--red-border);}
+.oc.ice .oc-head{background:var(--green-bg);color:var(--green);border-bottom:1px solid var(--green-border);}
+.oc-body{padding:12px 14px;font-size:13px;color:var(--ink3);line-height:1.65;background:var(--paper);}
+.oc-body strong{color:var(--ink);}
+
+/* FLOW */
+.flow{display:flex;align-items:stretch;gap:3px;flex-wrap:wrap;margin:16px 0;}
+.fs{flex:1;min-width:95px;background:var(--sb);color:#e0eeff;padding:11px 13px;border-radius:5px;text-align:center;font-size:12px;font-weight:600;line-height:1.4;}
+.fs.blue{background:var(--blue);color:#fff;}
+.fs.green{background:var(--green);color:#fff;}
+.fs.amber{background:var(--amber);color:#fff;}
+.fa{display:flex;align-items:center;color:var(--muted);font-size:16px;padding:0 2px;flex-shrink:0;}
+
+/* ACCOUNT TYPE VISUAL */
+.acc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+.acc-card{border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.acc-head{padding:11px 14px;font-weight:700;font-size:13px;border-bottom:1px solid var(--border);}
+.acc-card.adv .acc-head{background:var(--blue-bg);color:var(--blue);}
+.acc-card.oeo .acc-head{background:var(--indigo-bg);color:var(--indigo);}
+.acc-card.man .acc-head{background:var(--purple-bg);color:var(--purple);}
+.acc-card.disc .acc-head{background:var(--green-bg);color:var(--green);}
+.acc-card.mar .acc-head{background:var(--amber-bg);color:var(--amber);}
+.acc-body{padding:12px 14px;font-size:12.5px;color:var(--ink3);line-height:1.65;background:var(--paper);}
+
+/* HIGHLIGHT BOX */
+.hlbox{background:var(--sb);border-radius:8px;padding:20px 24px;margin:16px 0;}
+.hlbox-title{font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:2px;color:#93c5fd;text-transform:uppercase;margin-bottom:9px;}
+.hlbox p{font-size:13.5px;color:rgba(224,238,255,0.65);line-height:1.8;}
+.hlbox p strong{color:#93c5fd;}
+
+/* MARGIN VISUAL */
+.margin-example{background:var(--warm);border:1px solid var(--border);border-radius:8px;padding:20px;margin:14px 0;}
+.me-title{font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:14px;}
+.me-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13.5px;}
+.me-row:last-child{border-bottom:none;font-weight:700;color:var(--ink);}
+.me-label{color:var(--ink3);}
+.me-val{font-family:'Roboto Mono',monospace;font-weight:600;}
+.me-val.pos{color:var(--green);}
+.me-val.neg{color:var(--red);}
+.me-val.neu{color:var(--blue);}
+
+/* UMIR RULE CARDS */
+.umir-grid{display:grid;grid-template-columns:1fr;gap:8px;margin:14px 0;}
+.ucard{border-radius:7px;border:1px solid var(--border);overflow:hidden;}
+.ucard-head{padding:10px 14px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:13px;}
+.ucard.u21 .ucard-head{background:var(--red-bg);color:var(--red);border-bottom:1px solid var(--red-border);}
+.ucard.u22 .ucard-head{background:var(--amber-bg);color:var(--amber);border-bottom:1px solid var(--amber-border);}
+.ucard.u51 .ucard-head{background:var(--blue-bg);color:var(--blue);border-bottom:1px solid var(--blue-border);}
+.ucard.u71 .ucard-head{background:var(--green-bg);color:var(--green);border-bottom:1px solid var(--green-border);}
+.ucard.u713 .ucard-head{background:var(--indigo-bg);color:var(--indigo);border-bottom:1px solid var(--indigo-border);}
+.ucard.u1016 .ucard-head{background:var(--purple-bg);color:var(--purple);border-bottom:1px solid var(--purple-border);}
+.ucard-rule{font-family:'Roboto Mono',monospace;font-size:10px;opacity:0.8;margin-left:auto;flex-shrink:0;}
+.ucard-body{padding:12px 14px;font-size:13px;color:var(--ink3);line-height:1.65;background:var(--paper);}
+
+/* SUMMARY */
+.sum-box{background:var(--sb);border-radius:10px;padding:28px;margin-top:60px;}
+.sum-title{font-family:'Fraunces',serif;font-size:24px;font-weight:700;color:#e0eeff;margin-bottom:4px;}
+.sum-sub{font-family:'Roboto Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,0.2);margin-bottom:22px;text-transform:uppercase;}
+.si{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13px;color:rgba(224,238,255,0.58);line-height:1.65;align-items:flex-start;}
+.si:last-child{border-bottom:none;}
+.si strong{color:#93c5fd;}
+.sin{font-family:'Roboto Mono',monospace;font-size:10px;color:rgba(147,197,253,0.4);min-width:22px;flex-shrink:0;margin-top:2px;}
+
+/* QUIZ */
+.quiz-wrap{background:var(--sb);padding:46px 62px 80px;}
+.quiz-h1{font-family:'Fraunces',serif;font-size:32px;font-weight:900;color:#e0eeff;margin-bottom:6px;text-align:center;}
+.quiz-sub-txt{font-size:12px;color:rgba(255,255,255,0.3);font-family:'Roboto Mono',monospace;letter-spacing:1px;text-align:center;}
+.quiz-stats{display:flex;justify-content:center;gap:28px;margin-top:18px;flex-wrap:wrap;padding-bottom:32px;}
+.qs-n{font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:#93c5fd;}
+.qs-l{font-size:10px;color:rgba(255,255,255,0.28);text-align:center;}
+.qq{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:9px;padding:20px;margin-bottom:11px;transition:border-color 0.2s;}
+.qq:hover{border-color:rgba(15,85,153,0.35);}
+.qq-top{display:flex;align-items:flex-start;gap:11px;margin-bottom:13px;}
+.qq-num{font-family:'Roboto Mono',monospace;font-size:10px;color:#93c5fd;min-width:30px;flex-shrink:0;margin-top:2px;}
+.qq-diff{font-family:'Roboto Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+.de{background:rgba(21,128,61,0.2);color:#4ade80;border:1px solid rgba(21,128,61,0.3);}
+.dm{background:rgba(194,87,0,0.2);color:#fb923c;border:1px solid rgba(194,87,0,0.3);}
+.dh{background:rgba(185,28,28,0.2);color:#f87171;border:1px solid rgba(185,28,28,0.3);}
+.qq-text{font-size:13.5px;color:rgba(224,238,255,0.82);line-height:1.7;flex:1;}
+.qq-opts{display:flex;flex-direction:column;gap:5px;padding-left:41px;}
+.qq-opt{display:flex;gap:8px;align-items:flex-start;padding:8px 12px;border-radius:5px;cursor:pointer;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);transition:all 0.17s;font-size:12.5px;color:rgba(224,238,255,0.55);line-height:1.5;}
+.qq-opt:hover{background:rgba(15,85,153,0.1);border-color:rgba(15,85,153,0.3);color:rgba(224,238,255,0.85);}
+.qq-opt.correct{background:rgba(21,128,61,0.15);border-color:rgba(21,128,61,0.4);color:#86efac;}
+.qq-opt.wrong{background:rgba(185,28,28,0.12);border-color:rgba(185,28,28,0.3);color:#fca5a5;}
+.opt-l{font-family:'Roboto Mono',monospace;font-size:10px;color:#93c5fd;min-width:16px;flex-shrink:0;margin-top:1px;}
+.qq-opt.correct .opt-l{color:#4ade80;}
+.qq-opt.wrong .opt-l{color:#f87171;}
+.qq-exp{margin-top:10px;padding:10px 12px;background:rgba(15,85,153,0.08);border-left:3px solid var(--blue);border-radius:0 5px 5px 0;display:none;font-size:12.5px;color:rgba(224,238,255,0.55);line-height:1.7;}
+.qq-exp strong{color:#93c5fd;}
+.qq-exp.show{display:block;}
+.quiz-ctrl{text-align:center;padding:22px 0 0;}
+.btn{padding:10px 26px;border-radius:6px;border:none;cursor:pointer;font-family:'Nunito Sans',sans-serif;font-size:13px;font-weight:700;transition:all 0.18s;}
+.btn-p{background:var(--blue);color:#fff;}
+.btn-p:hover{background:#0c4476;}
+.btn-s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.65);margin-left:8px;}
+.btn-s:hover{background:rgba(255,255,255,0.12);}
+.score-disp{background:rgba(15,85,153,0.15);border:1px solid rgba(15,85,153,0.3);border-radius:8px;padding:16px 26px;margin:16px auto;max-width:340px;display:none;text-align:center;}
+.score-n{font-family:'Fraunces',serif;font-size:46px;font-weight:700;color:#93c5fd;line-height:1;}
+.score-l{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;}
+
+#scrolltop{position:fixed;bottom:22px;right:22px;background:var(--blue);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:16px;cursor:pointer;opacity:0;transition:opacity 0.3s;z-index:200;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,0.4);}
+#scrolltop.visible{opacity:1;}
+@media(max-width:900px){#sb{display:none;}#main{margin-left:0;}.content{padding:0 22px 80px;}.cover{padding:56px 22px;}.quiz-wrap{padding:30px 22px 60px;}.order-grid,.acc-grid{grid-template-columns:1fr;}.cv-stats{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sb">
+  <div class="sbh">
+    <div class="sbp">CIRE · Element 6</div>
+    <div class="sbt">Market Integrity, Trade Execution & Settlement</div>
+    <div class="sbs">12 sections + 45 exam questions</div>
+  </div>
+  <div class="sbpr"><div class="sbpl">Progress</div><div class="sbpt"><div class="sbpf" id="pFill"></div></div></div>
+  <div class="ng">
+    <div class="ngl">Content</div>
+    <a class="nl" onclick="goTo('cover')"><span class="nn">◉</span><span class="nt">Cover</span></a>
+    <a class="nl" onclick="goTo('s61')"><span class="nn">6.1</span><span class="nt">UMIR — Key Rules</span></a>
+    <a class="ns" onclick="goTo('s61-be')">Best Execution</a>
+    <a class="ns" onclick="goTo('s61-mdp')">Manipulative & Deceptive Practices</a>
+    <a class="ns" onclick="goTo('s61-fr')">Front Running</a>
+    <a class="ns" onclick="goTo('s61-dea')">Direct Electronic Access</a>
+    <a class="ns" onclick="goTo('s61-pt')">Principal Trading</a>
+    <a class="nl" onclick="goTo('s62')"><span class="nn">6.2</span><span class="nt">UMIR Gatekeeping Obligations</span></a>
+    <a class="ns" onclick="goTo('s62-app')">Application & Requirements</a>
+    <a class="ns" onclick="goTo('s62-1016')">UMIR 10.16 Reporting</a>
+    <a class="nl" onclick="goTo('s63')"><span class="nn">6.3</span><span class="nt">Gatekeeping in Practice</span></a>
+    <a class="ns" onclick="goTo('s63-susp')">Identifying Suspicious Transactions</a>
+    <a class="ns" onclick="goTo('s63-insider')">Insider Trading</a>
+    <a class="ns" onclick="goTo('s63-wb')">Whistleblower Frameworks</a>
+    <a class="nl" onclick="goTo('s64')"><span class="nn">6.4</span><span class="nt">Investment Banking, Research & Corp Finance</span></a>
+    <a class="nl" onclick="goTo('s65')"><span class="nn">6.5</span><span class="nt">Order Entry, Settlement & Delivery</span></a>
+    <a class="ns" onclick="goTo('s65-desks')">Trading Desks</a>
+    <a class="ns" onclick="goTo('s65-settle')">Settlement Process T+1</a>
+    <a class="ns" onclick="goTo('s65-algo')">Algorithmic Trading</a>
+    <a class="nl" onclick="goTo('s66')"><span class="nn">6.6</span><span class="nt">Types of Orders</span></a>
+    <a class="nl" onclick="goTo('s67')"><span class="nn">6.7</span><span class="nt">Order Variations, Cancellations & Corrections</span></a>
+    <a class="nl" onclick="goTo('s68')"><span class="nn">6.8</span><span class="nt">Order Confirmation Requirements</span></a>
+    <a class="nl" onclick="goTo('s69')"><span class="nn">6.9</span><span class="nt">Types of Accounts</span></a>
+    <a class="nl" onclick="goTo('s610')"><span class="nn">6.10</span><span class="nt">Margin Requirements</span></a>
+    <a class="nl" onclick="goTo('s611')"><span class="nn">6.11</span><span class="nt">Derivative Account Agreements</span></a>
+    <a class="nl" onclick="goTo('s612')"><span class="nn">6.12</span><span class="nt">Reporting Obligations</span></a>
+    <a class="nl" onclick="goTo('summary')"><span class="nn">★</span><span class="nt">Master Summary</span></a>
+  </div>
+  <div class="ng">
+    <div class="ngl">Practice</div>
+    <a class="nl" onclick="goTo('quiz')"><span class="nn">📝</span><span class="nt">45 Practice Questions</span></a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+<div id="cover" class="cover">
+  <div class="cv-grid"></div><div class="cv-glow"></div>
+  <div class="cv-tag" style="position:relative;">CIRE Examination Preparation</div>
+  <h1 class="cv-title">Market <em>Integrity,</em><br>Trade Execution<br>& Settlement</h1>
+  <div class="cv-rule"></div>
+  <p class="cv-desc">Complete coverage of UMIR best execution, manipulative practices, front running, gatekeeping obligations, order types, settlement (T+1), margin requirements, and all account types — with latest 2025 CIRO rule updates and 45 exam-level practice questions.</p>
+  <div class="cv-stats">
+    <div class="cv-stat"><div class="cv-stat-n">T+1</div><div class="cv-stat-l">Equity settlement</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">7</div><div class="cv-stat-l">Order Types</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">50%</div><div class="cv-stat-l">Typical margin rate</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">5</div><div class="cv-stat-l">Account Types</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">45</div><div class="cv-stat-l">Practice Questions</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ═══ 6.1 ═══ -->
+<div id="s61" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">6.1</div><h2 class="sec-title">Universal Market Integrity Rules (UMIR) — Key Provisions</h2></div>
+  <p class="body">The <strong>Universal Market Integrity Rules (UMIR)</strong> are CIRO's trading rules that apply to all registered dealers and their representatives who trade on Canadian marketplaces. They govern the conduct of trading to ensure fair, orderly, and efficient markets. All CIRO member firms are bound by UMIR, and all registered individuals trading on Canadian markets must comply. UMIR currently applies to trading on <em>all recognized Canadian marketplaces</em>, including the TSX, TSX Venture Exchange, NEO Exchange, Alpha Exchange, and all Alternative Trading Systems (ATS).</p>
+
+  <div class="callout blue">
+    <div class="ci">📋</div>
+    <div class="cb"><div class="cl">2025 UMIR Update</div><p>CIRO completed Phase 1 of the UMIR Guidance Update Project in August 2025 — updating 10 guidance notes for clarity and accuracy without introducing new compliance obligations. Phase 2 continues through fiscal 2026. Key 2024 amendment: UMIR 3.3 now requires participants to have a <strong>reasonable expectation to settle</strong> any short sale order prior to entry (effective November 15, 2024).</p></div>
+  </div>
+
+  <div id="s61-be" class="sub">
+    <h3 class="sub-title">Best Execution — UMIR Rule 5.1</h3>
+    <p class="body">The <strong>best execution obligation</strong> under UMIR Rule 5.1 requires that a participant "shall diligently pursue the execution of each client order on the <em>most advantageous execution terms reasonably available under the circumstances</em>." This is not simply about achieving the best price — it encompasses multiple dimensions.</p>
+
+    <div class="subsub">
+      <h4 class="subsub-title">The Five Dimensions of Best Execution</h4>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Price</div><div class="dval">The primary factor. Must achieve the best available price for the client across all accessible venues. Dealers must consider all marketplaces where the security trades — not just the primary exchange. The Order Protection Rule (OPR) under NI 23-101 requires dealers to protect better-priced orders on other venues before trading through them.</div></div>
+        <div class="dr"><div class="dterm">Speed</div><div class="dval">How quickly the order is executed. Time is critical in volatile markets — a delay can result in significant price slippage. Electronic order routing and algorithmic tools are used to achieve rapid execution.</div></div>
+        <div class="dr"><div class="dterm">Certainty of Execution</div><div class="dval">The likelihood that the order will actually be filled at the intended price. A large order on a liquid exchange may be more certain than routing to a less liquid ATS.</div></div>
+        <div class="dr"><div class="dterm">Market Impact</div><div class="dval">Large orders can move the market price against the trader. Breaking large orders into smaller pieces (algorithmic strategies) reduces market impact. The cost of market impact must be weighed against other execution factors.</div></div>
+        <div class="dr"><div class="dterm">Total Cost</div><div class="dval">The all-in cost to the client: explicit costs (commissions, exchange fees) and implicit costs (bid-ask spread, market impact). Best execution considers the net result after all costs.</div></div>
+      </div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Best Execution in OEO Accounts</h4>
+      <p class="body">Importantly, <strong>best execution applies to ALL client accounts</strong>, including Order Execution Only accounts. Even when the dealer provides no advice, it retains a best execution obligation. CIRO has noted that OEO dealers should warn clients about high-risk order types (e.g., stop-loss market orders) and the execution risks in fragmented markets.</p>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Written Policies Required — UMIR 7.1</h4>
+      <p class="body">Under UMIR 7.1, every participant must adopt written policies and procedures reasonably designed to ensure compliance with best execution. These must be regularly reviewed and updated as market structure evolves (e.g., new trading venues, algorithmic routing changes). Payment for order flow — where a dealer receives compensation for routing orders to specific intermediaries — is <strong>prohibited under UMIR 7.5</strong> as it creates conflicts that undermine best execution.</p>
+    </div>
+  </div>
+
+  <div id="s61-mdp" class="sub">
+    <h3 class="sub-title">Manipulative and Deceptive Practices — UMIR Rules 2.1 & 2.2</h3>
+    <p class="body">UMIR Rules 2.1 and 2.2 prohibit all manipulative, deceptive, and fraudulent trading practices. These are among the most serious violations under UMIR — violations can result in criminal prosecution in addition to CIRO disciplinary action.</p>
+
+    <div class="umir-grid">
+      <div class="ucard u21">
+        <div class="ucard-head">🚫 Manipulation — UMIR Rule 2.1<span class="ucard-rule">R.2.1</span></div>
+        <div class="ucard-body">Prohibits any trading that creates or attempts to create <strong>a false or misleading appearance of trading activity or an artificial price</strong> for a security. The key element is intent — trading that has no legitimate purpose other than to affect price/volume artificially. Specific examples include:<br><br>
+        <strong>• Wash trading:</strong> Buying and selling the same securities between related accounts to create the appearance of trading volume without any genuine change in beneficial ownership. Creates a false impression of liquidity and interest.<br>
+        <strong>• Painting the tape / Marking the close:</strong> Executing transactions near the end of the trading day to influence the closing price — particularly harmful when closing prices are used to value positions, calculate index rebalancing, or reset margin requirements.<br>
+        <strong>• Spoofing:</strong> Placing large orders with no intention of execution, purely to move the price, then cancelling them once the price has moved. Now a serious violation under both UMIR and criminal law in Canada.<br>
+        <strong>• Layering:</strong> Placing multiple orders at different price levels to create the appearance of supply or demand pressure, then trading against the artificial movement and cancelling the layered orders.</div>
+      </div>
+      <div class="ucard u22">
+        <div class="ucard-head">🚫 Specific Unacceptable Activities — UMIR Rule 2.2<span class="ucard-rule">R.2.2</span></div>
+        <div class="ucard-body">Rule 2.2 covers a broader set of specific prohibited activities that may not all involve artificial prices but are nonetheless considered detrimental to market integrity:<br><br>
+        <strong>• Entering orders without genuine intention to trade:</strong> Orders entered purely to influence price or test the market, with no real intention of executing at those prices.<br>
+        <strong>• Entering orders for the purpose of delaying execution:</strong> Entering orders to obstruct or slow down other participants' trading.<br>
+        <strong>• Knowingly facilitating a client's manipulative activity:</strong> If a participant knows or suspects their client is engaging in manipulation but processes the orders anyway, they are in violation.<br>
+        <strong>• Short selling without reasonable expectation to settle</strong> (added November 2024): Under the new UMIR 3.3 amendment, a participant must have a reasonable expectation to settle any short sale prior to order entry — not just on delivery date. This closes a gap that allowed "naked short selling."</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s61-fr" class="sub">
+    <h3 class="sub-title">Front Running — UMIR Rule 4.1</h3>
+    <p class="body"><strong>Front running</strong> is one of the most serious breaches of client trust in the securities industry. It occurs when a registered representative or dealer places their own trades (or trades for a preferred client) in a security <em>before</em> executing a large client order that the representative knows will move the market price.</p>
+
+    <div class="subsub">
+      <h4 class="subsub-title">How Front Running Works</h4>
+      <p class="body">Example: An RR receives an order from a large institutional client to buy 500,000 shares of ABC Corp at market. The RR knows this order will push ABC's price up. Before entering the client's order, the RR buys 10,000 shares for their own account (or for a favoured client). After the client's large order pushes the price up, the RR sells their shares at the higher price for a profit. The client's order was used as a "tip" for the RR's own trading — at the expense of the client (who got a worse price because the RR's purchase moved it slightly).</p>
+    </div>
+
+    <div class="chk">
+      <div class="chi"><span class="chico">◆</span><div><strong>UMIR 4.1 prohibits:</strong> Trading in a security, a related security, or a derivative based on knowledge of a pending client order that has not been disclosed to the market</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Also applies to institutional knowledge:</strong> If a firm's proprietary desk knows the firm's retail desk has a large order coming, the proprietary desk must not front-run the retail desk</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Client priority:</strong> Related requirement — UMIR requires that client orders generally have priority over proprietary (firm) orders at the same price</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Criminal dimension:</strong> Front running can also violate the criminal insider trading provisions of the Criminal Code if the pending order constitutes "material non-public information"</div></div>
+    </div>
+
+    <div class="callout red">
+      <div class="ci">🚨</div>
+      <div class="cb"><div class="cl">Recent Enforcement</div><p>In <em>Re Englesby and Nishimura</em> (2024 CIRO 63) and <em>Re Hildebrandt</em> (2025 CIRO 5), CIRO reinforced that gatekeepers have a duty to <strong>actively investigate red flags</strong> even when there is no confirmed violation. The standard has shifted from "react to confirmed violations" to "proactively question suspicious patterns."</p></div>
+    </div>
+  </div>
+
+  <div id="s61-dea" class="sub">
+    <h3 class="sub-title">Direct Electronic Access (DEA) & Routing Arrangements — UMIR Rule 7.13</h3>
+    <p class="body"><strong>Direct Electronic Access (DEA)</strong> is when a dealer provides a client or another dealer with the technical ability to enter orders directly onto a marketplace under the dealer's marketplace identifier (Participant ID), bypassing some or all of the dealer's order management systems. DEA allows sophisticated clients (hedge funds, high-frequency traders) to trade with the dealer's market access.</p>
+
+    <div class="subsub">
+      <h4 class="subsub-title">DEA Risk — Why UMIR 7.13 Exists</h4>
+      <p class="body">When a dealer provides DEA, the <strong>dealer remains responsible</strong> for all orders entered under its Participant ID — even orders entered directly by the client. If the DEA client submits a manipulative or erroneous order, the dealer faces regulatory exposure. UMIR 7.13 therefore requires dealers to implement strict controls when providing DEA.</p>
+    </div>
+
+    <div class="dt">
+      <div class="dr"><div class="dterm">Written Agreement</div><div class="dval">A written agreement between the dealer and the DEA client must be in place before access is granted. The agreement must set out trading standards the client must follow, including compliance with UMIR and applicable securities laws.</div></div>
+      <div class="dr"><div class="dterm">Pre-Trade Controls</div><div class="dval">The dealer must implement pre-trade controls on DEA orders: maximum order size limits, credit/capital limits, trading velocity controls (maximum orders per second), restricted securities list enforcement. These prevent runaway algorithms from causing market disruption.</div></div>
+      <div class="dr"><div class="dterm">Real-Time Monitoring</div><div class="dval">The dealer must monitor DEA orders in real time for compliance violations. Automated surveillance systems must detect unusual patterns — large price deviations, unusual volume, order patterns consistent with manipulation.</div></div>
+      <div class="dr"><div class="dterm">Kill Switch</div><div class="dval">The dealer must maintain the ability to immediately terminate the DEA client's access ("kill switch") if a compliance breach is detected. This must work in real time — not with a delay.</div></div>
+      <div class="dr"><div class="dterm">Gatekeeper Reporting</div><div class="dval">Under UMIR 7.13(6), if a dealer believes there has or may have been a breach of a material provision of the DEA standard or agreement, they must <strong>immediately</strong> notify CIRO. This is the gatekeeper reporting obligation for DEA — it is not optional or discretionary.</div></div>
+    </div>
+  </div>
+
+  <div id="s61-pt" class="sub">
+    <h3 class="sub-title">Principal Trading</h3>
+    <p class="body">As covered in Element 3, <strong>principal trading</strong> occurs when the dealer acts as counterparty in a transaction — buying from or selling to the client from its own inventory, rather than finding a third-party counterparty. This creates a fundamental conflict: the dealer's profit (markup/markdown) directly comes at the client's expense.</p>
+
+    <div class="dt">
+      <div class="dr"><div class="dterm">UMIR Restrictions</div><div class="dval">UMIR contains rules around principal trading to protect clients. A dealer cannot "trade ahead" of a client order using principal capacity. Client priority rules generally require that client orders at the same price take precedence over the dealer's own principal orders.</div></div>
+      <div class="dr"><div class="dterm">Disclosure Required</div><div class="dval">When a dealer acts as principal, this must be disclosed to the client — both in the RDI (upfront) and on the trade confirmation for each specific transaction. The trade confirmation must indicate the dealer was acting as "dealer" (principal) rather than "agent."</div></div>
+      <div class="dr"><div class="dterm">Best Execution Still Applies</div><div class="dval">Even when acting as principal, the dealer still has a best execution obligation. It must offer the client a price at least as good as what is available in the market. The markup/markdown charged must be reasonable.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 6.2 ═══ -->
+<div id="s62" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">6.2</div><h2 class="sec-title">UMIR Gatekeeping Obligations</h2></div>
+  <p class="body">The <strong>gatekeeping obligation</strong> is the duty of investment dealers and their registered persons to act as a first line of defence against market manipulation, fraud, and illegal trading activity. The concept reflects the reality that registered dealers have access to trading systems and information that regulators do not have in real time — they are positioned to detect and prevent misconduct before it causes harm.</p>
+
+  <div class="callout indigo">
+    <div class="ci">🔑</div>
+    <div class="cb"><div class="cl">2025 Evolution — Proactive Standard</div><p>Recent CIRO enforcement (2024–2025) has shifted the gatekeeping standard from reactive (respond after confirmed violations) to <strong>proactive</strong>. Under IDPC Rule 1400, registrants now have a broader duty to question <strong>red flags even absent a confirmed violation</strong> — and to actively investigate and document. The old restrained approach of "I had no proof" is no longer an adequate defence. CCOs and supervisors must be equipped to recognize patterns and escalate promptly.</p></div>
+  </div>
+
+  <div id="s62-app" class="sub">
+    <h3 class="sub-title">Application and Purpose of Gatekeeping</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Who Has the Obligation?</div><div class="dval">Every <strong>Participant</strong> (CIRO member dealer with marketplace access) and every <strong>Access Person</strong> (directors, officers, employees, and other individuals who are permitted to enter orders on a marketplace) have gatekeeping obligations. The scope extends to all individuals with order entry authority, not just compliance staff.</div></div>
+      <div class="dr"><div class="dterm">Purpose</div><div class="dval">To detect, prevent, investigate, and report violations of UMIR and related requirements. The gatekeeper sits between the client/market participant and the marketplace — if they allow prohibited activity to proceed, they enable market harm. The integrity of Canadian markets depends on gatekeepers functioning effectively.</div></div>
+      <div class="dr"><div class="dterm">Written Policies Required</div><div class="dval">UMIR 7.1 requires each participant to develop, implement, and maintain <strong>written policies and procedures</strong> adequate to ensure compliance with UMIR. These must cover: order review and acceptance, suspicious activity identification, escalation processes, investigation procedures, and reporting to CIRO.</div></div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">UMIR 7.1 — Trading Supervision Obligations</h4>
+      <p class="body">UMIR 7.1 is the foundational gatekeeping rule. It requires dealers to:</p>
+      <div class="chk">
+        <div class="chi"><span class="chico">◆</span><div>Adopt adequate written supervisory policies and procedures for detecting and preventing manipulative or deceptive practices</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Conduct pre-order compliance review before orders are entered on a marketplace</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Appoint a <strong>Head of Trading</strong> who is responsible for supervising the firm's trading activity on marketplaces</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Monitor proprietary, employee, and client accounts for trading patterns consistent with manipulation or insider trading</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Maintain grey lists and watch lists for securities where the firm may have material non-public information</div></div>
+        <div class="chi"><span class="chico">◆</span><div>Document all reviews, findings, and corrective actions — retain records for at least 7 years</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s62-1016" class="sub">
+    <h3 class="sub-title">UMIR 10.16 — Gatekeeper Reporting Obligation</h3>
+    <p class="body">UMIR Rule 10.16 is the specific rule that creates the formal <strong>reporting obligation</strong> for gatekeepers. When a participant or access person discovers a potential violation, they must follow a specific process:</p>
+
+    <div class="flow">
+      <div class="fs blue">Suspicious activity identified</div>
+      <div class="fa">→</div>
+      <div class="fs">Internal investigation conducted</div>
+      <div class="fa">→</div>
+      <div class="fs">If violation found:</div>
+      <div class="fa">→</div>
+      <div class="fs amber">File report to CIRO by 15th of following month</div>
+    </div>
+
+    <div class="dt">
+      <div class="dr"><div class="dterm">Investigation Trigger</div><div class="dval">A participant must conduct a formal investigation whenever there is reason to believe a violation of UMIR may have occurred — it does not require confirmed proof. Red flags alone are sufficient to trigger the investigation obligation.</div></div>
+      <div class="dr"><div class="dterm">Reporting Deadline</div><div class="dval">If the investigation finds that a UMIR violation has occurred, the participant must file a written report with CIRO no later than the <strong>15th day of the month following the month in which the findings are made</strong>. This is a hard deadline.</div></div>
+      <div class="dr"><div class="dterm">DEA Gatekeeper — Immediate</div><div class="dval">For DEA-specific violations (UMIR 7.13), the reporting obligation is <strong>immediate</strong> — not waiting for end of month. The participant must notify CIRO "forthwith" upon having knowledge or reason to believe there has been a breach.</div></div>
+      <div class="dr"><div class="dterm">Record Keeping</div><div class="dval">All gatekeeper reports, internal investigation records, and findings must be retained for <strong>7 years</strong>. CIRO can inspect these records at any time during business hours.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 6.3 ═══ -->
+<div id="s63" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">6.3</div><h2 class="sec-title">Applying Gatekeeping — Suspicious Transactions, Insider Trading & Whistleblowers</h2></div>
+
+  <div id="s63-susp" class="sub">
+    <h3 class="sub-title">Identifying Suspicious Transactions — Patterns and Red Flags</h3>
+    <p class="body">Effective gatekeeping requires registered persons to understand their clients' typical trading patterns so that deviations become visible. This is sometimes called the <strong>"know your client for trading purposes"</strong> — separate from the investment suitability KYC, but equally important for market integrity purposes.</p>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Red Flags for Manipulative Activity</h4>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Unusual Volume Patterns</div><div class="dval">A client suddenly placing very large orders in a thinly traded security — especially one the client has no obvious legitimate reason to trade heavily. Volume that dwarfs normal trading in the security.</div></div>
+        <div class="dr"><div class="dterm">Trades Around Announcements</div><div class="dval">Unusually large or well-timed trades just before material announcements (earnings, M&A, major contracts). Buying before positive news or selling before negative news — consistent with insider trading.</div></div>
+        <div class="dr"><div class="dterm">Accounts with Opposite Positions</div><div class="dval">Related accounts (same beneficial owner or associates) holding opposite positions in the same security — suggesting wash trading or an attempt to manipulate price with coordinated buy/sell activity.</div></div>
+        <div class="dr"><div class="dterm">Rapid Reversal of Positions</div><div class="dval">A client buys a large position and immediately (within minutes or hours) reverses it, with no apparent market rationale. This "in and out" pattern can indicate layering or spoofing activity.</div></div>
+        <div class="dr"><div class="dterm">Orders at Market Close</div><div class="dval">Consistent pattern of placing large orders in the final minutes of the trading day, particularly in securities that are thinly traded or on days when index rebalancing is occurring — suggesting marking the close.</div></div>
+        <div class="dr"><div class="dterm">Inconsistency with Client Profile</div><div class="dval">A conservative retail client suddenly trading high-risk speculative securities in very large sizes — inconsistent with their known financial situation and objectives. May signal account takeover, third-party influence, or coordinated activity.</div></div>
+      </div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">How to Identify and Escalate Suspicious Transactions</h4>
+      <div class="chk">
+        <div class="chi"><span class="chico">◆</span><div><strong>Step 1: Detection</strong> — Through automated exception reports (trade surveillance systems) or manual review, identify trades that deviate from established patterns or trigger pre-set alerts</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Step 2: Initial Assessment</strong> — Does there appear to be a legitimate business explanation? Check against: recent news, the client's known investment strategy, market conditions. Is the explanation plausible?</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Step 3: Escalation</strong> — If no satisfactory explanation, escalate to the supervisor / compliance department / Chief Compliance Officer (CCO). Do NOT confront the client directly before consulting compliance</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Step 4: Investigation</strong> — Compliance investigates: reviews account history, contacts the registered representative for context, reviews related accounts, searches for public information that might explain the activity</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Step 5: Reporting Decision</strong> — If the investigation finds or suspects a UMIR violation, file with CIRO under Rule 10.16. If AML suspicious transaction, file an STR with FINTRAC</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Step 6: Documentation</strong> — Document every step: what was detected, what explanation was sought, what was found, what action was taken. Records retained for 7 years</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s63-insider" class="sub">
+    <h3 class="sub-title">Insider Trading — Recognition and UMIR Application</h3>
+    <p class="body"><strong>Insider trading</strong> occurs when a person trades securities while in possession of <em>material non-public information (MNPI)</em> — information that (1) a reasonable investor would consider important to their investment decision, and (2) has not been publicly disclosed. In Canada, insider trading is both a regulatory violation (provincial securities acts) and a criminal offence (Criminal Code s. 382.1).</p>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Grey Lists and Watch Lists</h4>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Watch List</div><div class="dval">Contains names of issuers for which the firm may have MNPI. Trading by firm employees and proprietary accounts in watch-listed securities is <strong>not automatically prohibited</strong> but is subject to <strong>enhanced scrutiny and supervision</strong>. The compliance department monitors and reviews all trades in watch-listed securities.</div></div>
+        <div class="dr"><div class="dterm">Grey List (Restricted List)</div><div class="dval">Contains issuers for which the firm <strong>prohibits</strong> trading by employees, proprietary accounts, and sometimes client accounts (depending on the firm). Placement on the grey list indicates the firm has definitive MNPI — typically because the firm is actively working on a transaction involving the issuer (e.g., acting as advisor on a pending M&A deal). Trading restrictions remain until the information is publicly disclosed (deal announced) or the firm's involvement ends.</div></div>
+        <div class="dr"><div class="dterm">Chinese Walls (Information Barriers)</div><div class="dval">Physical and electronic information barriers that separate different departments within a dealer — particularly between the investment banking / capital markets group (which routinely has MNPI) and the trading/advisory divisions. Information is formally blocked from flowing across the wall. No informal communication about deals in progress is permitted.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s63-wb" class="sub">
+    <h3 class="sub-title">Whistleblower Frameworks</h3>
+    <p class="body">Whistleblower protections are critical for encouraging individuals who witness securities law violations to come forward without fear of retaliation. Canada has established frameworks at both the federal and provincial levels.</p>
+
+    <div class="dt">
+      <div class="dr"><div class="dterm">OSC Whistleblower Program</div><div class="dval">The Ontario Securities Commission (OSC) operates a formal <strong>Whistleblower Program</strong> (launched 2016). It offers: (1) financial awards of 5–15% of sanctions over $1M for original information leading to enforcement; (2) confidentiality protections — the whistleblower's identity is protected; (3) anti-retaliation protections — employers cannot terminate, demote, or harass whistleblowers. Anyone can submit tips to the OSC Whistleblower Office.</div></div>
+      <div class="dr"><div class="dterm">CIRO Internal Escalation</div><div class="dval">CIRO's rules require firms to have internal escalation procedures. An employee who discovers potential misconduct must escalate to compliance without fear of retaliation. Firms cannot penalize employees for making good-faith reports of potential violations to compliance or to CIRO.</div></div>
+      <div class="dr"><div class="dterm">Anti-Retaliation</div><div class="dval">Under the IDPC Rules, retaliation against an employee who reports potential compliance violations is itself a serious violation. A firm that terminates an employee for raising compliance concerns faces both regulatory and civil liability. The IDPC Rules require firms to have written policies protecting good-faith reporters.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 6.4 ═══ -->
+<div id="s64" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">6.4</div><h2 class="sec-title">Investment Banking, Research & Corporate Finance</h2></div>
+
+  <div class="dt">
+    <div class="dr"><div class="dterm">Investment Banking</div><div class="dval">The division of an investment dealer that assists corporations and governments in raising capital and executing strategic transactions. Core activities: <strong>underwriting</strong> equity and debt offerings (IPOs, secondary offerings, bond issuances), <strong>M&A advisory</strong> (buy-side and sell-side), and <strong>restructuring advisory</strong>. The investment banking division routinely has MNPI — it knows about pending deals before announcement. Hence the critical importance of Chinese Walls between banking and trading/sales.</div></div>
+    <div class="dr"><div class="dterm">Research</div><div class="dval">The equity and fixed income research division produces analytical reports on securities and sectors for use by institutional and retail clients. <strong>Independence is critical</strong> — research analysts must be insulated from pressure by investment bankers to produce favourable reports on clients of the firm. CIRO rules and regulatory guidance (NI 31-103) regulate the relationship between research and investment banking to prevent conflicts. Research recommendations (Buy/Hold/Sell) must reflect genuine analytical views, not commercial interests.</div></div>
+    <div class="dr"><div class="dterm">Corporate Finance</div><div class="dval">The corporate finance function works with issuer companies on capital structure, financing strategies, and transaction execution. This includes: advising on the structure of new securities offerings, managing the prospectus and regulatory filing process, coordinating with legal counsel, and handling the mechanics of share issuances, rights offerings, and debt programs. Corporate finance is also the function that executes private placements under prospectus exemptions.</div></div>
+  </div>
+
+  <div class="callout amber">
+    <div class="ci">⚠️</div>
+    <div class="cb"><div class="cl">The Chinese Wall Imperative</div><p>The single most important compliance structural requirement connecting these three functions: <strong>Investment banking must be separated from trading and sales by an information barrier (Chinese Wall)</strong>. Without this wall, traders would routinely have MNPI from pending deals and would face enormous temptation to front-run or trade ahead. Breaching the Chinese Wall is a career-ending and potentially criminal event.</p></div>
+  </div>
+</div>
+
+<!-- ═══ 6.5 ═══ -->
+<div id="s65" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">6.5</div><h2 class="sec-title">Order Entry Process, Settlement & Delivery</h2></div>
+  <p class="body">Understanding the complete trade lifecycle — from order entry to final settlement — is essential for compliance and for the exam.</p>
+
+  <div id="s65-desks" class="sub">
+    <h3 class="sub-title">How an Investment Dealer Manages Trades — Trading Desks</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Retail Trading Desk</div><div class="dval">Processes orders from retail clients, submitted through RRs or the dealer's online platform. Routes orders to appropriate marketplaces based on best execution policies. Handles order confirmation and error management. Also called the "client trading desk" or "execution desk."</div></div>
+      <div class="dr"><div class="dterm">Institutional Trading Desk</div><div class="dval">Handles large block trades for institutional clients (pension funds, mutual funds, hedge funds). Uses sophisticated execution strategies: algorithmic splitting of large orders, dark pool routing, block trading through broker/dealer arrangements. Focuses heavily on minimizing market impact.</div></div>
+      <div class="dr"><div class="dterm">Proprietary Trading Desk</div><div class="dval">The dealer's own account trading — using the firm's capital to generate profit from market activity. This desk must be carefully managed to avoid conflicts with client order flow. Subject to strict Chinese Wall requirements from the client-facing desks. Subject to UMIR client priority rules.</div></div>
+      <div class="dr"><div class="dterm">Fixed Income Desk</div><div class="dval">Trades bonds, debentures, government securities, and structured debt products. Most bond trading is OTC (over-the-counter), not exchange-traded. The fixed income desk typically acts as principal (dealer), buying bonds at bid and selling at ask — earning the spread. Must disclose principal capacity to clients.</div></div>
+      <div class="dr"><div class="dterm">Derivatives Desk</div><div class="dval">Options and futures trading — both exchange-traded (through Montréal Exchange) and OTC derivatives. Requires specialized registered representatives with derivatives trading approval. Risk management is critical — derivatives can create unlimited loss exposure if mismanaged.</div></div>
+    </div>
+  </div>
+
+  <div id="s65-settle" class="sub">
+    <h3 class="sub-title">Settlement and Delivery — T+1</h3>
+    <p class="body">Canada moved to <strong>T+1 settlement</strong> for equity securities on <strong>May 27, 2024</strong> (aligned with the US which made the same change). T+1 means trades must settle (cash and securities change hands) within <strong>one business day</strong> of the trade date.</p>
+
+    <div class="flow">
+      <div class="fs blue">T — Trade Date<br><small style="font-weight:400;font-size:10px;">Buyer & seller agree on price</small></div>
+      <div class="fa">→</div>
+      <div class="fs">T+0 EOD<br><small style="font-weight:400;font-size:10px;">Trade reported, CDS clears</small></div>
+      <div class="fa">→</div>
+      <div class="fs green">T+1 — Settlement<br><small style="font-weight:400;font-size:10px;">Cash & securities transferred</small></div>
+    </div>
+
+    <div class="dt">
+      <div class="dr"><div class="dterm">What Happens on Trade Date (T)</div><div class="dval">Trade is executed on the marketplace. Trade details confirmed between the buyer's dealer and seller's dealer. The trade is reported to CDS (Canadian Depository for Securities) for clearing. Both parties confirm the trade details match (quantity, price, security).</div></div>
+      <div class="dr"><div class="dterm">What Happens on Settlement (T+1)</div><div class="dval">CDS effects the actual transfer: securities are moved from seller's account to buyer's account (book entry — no physical certificates). Cash moves in the opposite direction. The buyer's dealer must have sufficient funds; the seller's dealer must have the securities to deliver. After settlement, the trade is complete.</div></div>
+      <div class="dr"><div class="dterm">Failed Trade / Fail to Deliver</div><div class="dval">If the seller cannot deliver securities on T+1 (e.g., short seller could not locate the securities), a "fail to deliver" (FTD) occurs. UMIR 3.3 (amended November 2024) now requires a reasonable expectation to settle before a short sale order is entered — specifically to reduce FTDs in the short selling context. Repeated or intentional FTDs are a serious compliance violation.</div></div>
+      <div class="dr"><div class="dterm">Other Asset Classes</div><div class="dval">Government bonds: T+1. Corporate bonds (OTC): typically T+2. Listed options on Montréal Exchange: T+1. FX spot: T+2 conventional. Cash management products: same day (T+0).</div></div>
+    </div>
+  </div>
+
+  <div id="s65-algo" class="sub">
+    <h3 class="sub-title">Algorithmic Trading</h3>
+    <p class="body"><strong>Algorithmic trading</strong> (also called "algo trading") uses computer programs to automatically enter, modify, and cancel orders based on pre-programmed rules or real-time market data analysis. Algos can process information and execute orders far faster than humans.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">VWAP Algorithm</div><div class="dval"><strong>Volume-Weighted Average Price</strong> — executes a large order gradually throughout the day in proportion to market volume, targeting the day's VWAP price. Minimizes market impact by blending in with normal volume. Most commonly used benchmark for institutional execution.</div></div>
+      <div class="dr"><div class="dterm">TWAP Algorithm</div><div class="dval"><strong>Time-Weighted Average Price</strong> — splits a large order into equal-sized pieces executed at regular time intervals. Simpler than VWAP; less responsive to volume but avoids concentration in any single period.</div></div>
+      <div class="dr"><div class="dterm">Implementation Shortfall</div><div class="dval">Aims to minimize the difference between the decision price (when the order was determined) and the final execution price. Balances execution speed against market impact — trades faster when market conditions are favorable, slower when impact would be high.</div></div>
+      <div class="dr"><div class="dterm">High-Frequency Trading (HFT)</div><div class="dval">Extremely fast trading that holds positions for milliseconds or seconds. HFT firms provide liquidity through market-making algorithms, arbitrage between exchanges, and statistical pattern trading. Subject to the same UMIR rules as any participant — UMIR prohibits HFT-based manipulation (spoofing, layering).</div></div>
+      <div class="dr"><div class="dterm">Regulatory Requirements for Algos</div><div class="dval">Under UMIR 7.1 and related guidance, dealers must: test algorithms before deployment (pre-trade testing protocols), maintain kill switches, monitor algorithms in real time, and ensure algorithms comply with UMIR at all times. The dealer is responsible for its algorithms' market conduct.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 6.6 ═══ -->
+<div id="s66" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">6.6</div><h2 class="sec-title">Types of Orders — Features and Uses</h2></div>
+  <p class="body">Understanding the features, risks, and appropriate use of each order type is critical for both passing the exam and serving clients. The exam frequently tests order type knowledge with scenario-based questions.</p>
+
+  <div class="order-grid">
+    <div class="oc market">
+      <div class="oc-head">📊 Market Order</div>
+      <div class="oc-body">
+        <strong>Definition:</strong> An order to buy or sell a security immediately at the best available current market price.<br><br>
+        <strong>Priority:</strong> Executes immediately (subject to available liquidity). Has <strong>execution certainty</strong> but <strong>no price certainty</strong>.<br><br>
+        <strong>Risk:</strong> In volatile or illiquid markets, the execution price can be significantly different from the last traded price. A market order for a thinly traded security can move the price substantially. In fragmented markets (multiple venues), "market" price is the national best bid/offer (NBBO).<br><br>
+        <strong>Best for:</strong> Highly liquid securities (e.g., RBC, TD, Apple) where the bid-ask spread is very narrow and the client needs immediate execution. Not suitable for illiquid small-cap stocks or during extreme volatility.
+      </div>
+    </div>
+    <div class="oc limit">
+      <div class="oc-head">📉 Limit Order</div>
+      <div class="oc-body">
+        <strong>Definition:</strong> An order to buy at a maximum specified price or sell at a minimum specified price.<br><br>
+        <strong>Buy limit:</strong> Will only execute at the specified price or lower. <strong>Sell limit:</strong> Will only execute at the specified price or higher.<br><br>
+        <strong>Provides:</strong> Price certainty — the client knows the worst price they will receive. But <strong>no execution certainty</strong> — if the price never reaches the limit, the order will not fill.<br><br>
+        <strong>Best for:</strong> Clients who want price control and can accept the risk of non-execution. Very common for less liquid securities. The majority of orders on exchange are limit orders — they form the "limit order book" that determines the bid and ask.<br><br>
+        <strong>Good-Till-Cancelled (GTC):</strong> A limit order that stays active until filled or cancelled (vs. a day order that expires at end of day).
+      </div>
+    </div>
+    <div class="oc stop">
+      <div class="oc-head">🛑 Stop Order / On-Stop Order</div>
+      <div class="oc-body">
+        <strong>Definition:</strong> An order that becomes active (is "triggered") only when the security's price reaches a specified "stop price."<br><br>
+        <strong>Stop Loss (Sell Stop):</strong> Set below the current market price. If price falls to the stop level, the order is triggered and becomes a market sell order. Used to limit losses on a long position. E.g., if stock is at $50, place a sell stop at $45 — if price drops to $45, automatically sell.<br><br>
+        <strong>Buy Stop:</strong> Set above current price. If price rises to the stop, becomes a market buy. Used by short sellers to limit losses, or by technical traders to "buy on breakout."<br><br>
+        <strong>Risk:</strong> Once triggered, it becomes a market order — execution price may be worse than the stop price in fast-moving markets (gap risk). CIRO requires OEO dealers to warn clients about stop-loss market order execution risks.<br><br>
+        <strong>Stop-Limit Order:</strong> Triggered at stop price but becomes a <em>limit</em> order (not market), providing price protection but risking non-execution if the price gaps past the limit.
+      </div>
+    </div>
+    <div class="oc special">
+      <div class="oc-head">⚡ Immediate or Cancel (IOC)</div>
+      <div class="oc-body">
+        <strong>Definition:</strong> An order that must be executed immediately, in whole or in part. Any portion not immediately filled is automatically cancelled.<br><br>
+        <strong>Key feature:</strong> Time priority — execute whatever is available right now, cancel the rest. No waiting in the queue.<br><br>
+        <strong>Use case:</strong> Institutions executing large orders who want to take available liquidity without leaving residual orders visible in the market (which could signal their trading intentions).<br><br>
+        <strong>Vs Fill or Kill:</strong> IOC accepts partial execution. FOK requires ALL or nothing.
+      </div>
+    </div>
+    <div class="oc special">
+      <div class="oc-head">💀 Fill or Kill (FOK)</div>
+      <div class="oc-body">
+        <strong>Definition:</strong> An order that must be filled entirely and immediately, or it is cancelled in full. No partial fills accepted.<br><br>
+        <strong>Key feature:</strong> All-or-nothing execution. If the entire order cannot be filled immediately, the entire order is cancelled.<br><br>
+        <strong>Use case:</strong> When a buyer or seller <em>must</em> acquire the full quantity — a partial fill is useless or economically unacceptable. Example: an institutional arbitrage strategy that requires buying exactly 100,000 shares to hedge a specific position.<br><br>
+        <strong>Risk:</strong> High probability of non-execution, especially for large orders in less liquid markets.
+      </div>
+    </div>
+    <div class="oc ice">
+      <div class="oc-head">🧊 Iceberg Order</div>
+      <div class="oc-body">
+        <strong>Definition:</strong> A large order that is broken into smaller, visible "slices." Only the small visible portion is shown in the order book at any given time. As each visible slice is filled, another slice automatically becomes visible.<br><br>
+        <strong>Key feature:</strong> Conceals the true size of the order. Like an iceberg — only the tip is visible, most is hidden below the surface.<br><br>
+        <strong>Purpose:</strong> Prevents other market participants from knowing the full order size, which could cause them to trade against it (front-run it) or widen the spread. Used by institutional investors handling large orders.<br><br>
+        <strong>Regulatory note:</strong> Iceberg orders are permitted under UMIR. They must still comply with all price and priority rules. Their use in ATS dark pools is particularly common.
+      </div>
+    </div>
+    <div class="oc short">
+      <div class="oc-head">📉 Short Sale</div>
+      <div class="oc-body">
+        <strong>Definition:</strong> Selling securities that the seller does not currently own, with the obligation to buy them back later (to "cover" the short). The seller profits if the price falls between the sale and the purchase to cover.<br><br>
+        <strong>Mechanics:</strong> Seller borrows the securities (from a prime broker or through a lending arrangement), sells them, then buys them back at a lower price (hopefully) and returns them to the lender. Profit = sale price − purchase price − borrowing fee.<br><br>
+        <strong>Risk:</strong> Theoretically unlimited — there is no cap on how high a price can rise, meaning losses on a short position are theoretically unlimited.<br><br>
+        <strong>UMIR Requirements:</strong> Orders must be marked as "short" when entered. <strong>As of November 2024 (UMIR 3.3 amendment):</strong> Dealer must have a reasonable expectation to settle the short sale on settlement date <em>before</em> entering the order — aimed at preventing naked short selling. Must also comply with short-marking requirements.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 6.7 ═══ -->
+<div id="s67" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">6.7</div><h2 class="sec-title">Order Variations, Cancellations & Corrections</h2></div>
+  <p class="body">Once an order is entered on a marketplace, modifying or cancelling it requires care. Not all modifications are treated the same — some retain the original time priority, while others result in loss of priority.</p>
+
+  <div class="dt">
+    <div class="dr"><div class="dterm">Order Cancellation</div><div class="dval">An unexecuted order can be cancelled by the client (or the dealer on behalf of the client). Once a cancellation request is sent, the order is withdrawn from the marketplace queue. <strong>Cancellations are not guaranteed</strong> — if the order has already been partially or fully executed before the cancellation is processed, the executed portion stands.</div></div>
+    <div class="dr"><div class="dterm">Order Variation (Amendment)</div><div class="dval">Changing order parameters (quantity, price) after submission. The treatment of time priority depends on what is changed:<br>
+    • <strong>Reducing quantity:</strong> Time priority is <em>retained</em> — a seller reducing from 1,000 to 500 shares keeps their place in the queue<br>
+    • <strong>Increasing quantity:</strong> Time priority is <em>lost</em> — the order goes to the back of the queue for the new quantity<br>
+    • <strong>Changing price:</strong> Time priority is <em>lost</em> — a new price effectively creates a new order</div></div>
+    <div class="dr"><div class="dterm">Error Correction</div><div class="dval">When an order is entered incorrectly (wrong security, wrong quantity, wrong side — buy vs sell), the dealer must: immediately identify the error, notify the supervisor, place the erroneous trade in the error account, take corrective action. The client must be made whole — any loss resulting from the error is the dealer's responsibility. <strong>See Element 3 (section 3.2) for the full error correction process.</strong></div></div>
+    <div class="dr"><div class="dterm">Busted Trades</div><div class="dval">In extreme cases of clearly erroneous trades (wrong decimal point, data error causing massively wrong price), the exchange can "bust" (cancel) the trades. Both parties are notified. This is rare and requires meeting exchange criteria for "clearly erroneous" — markets will not bust trades simply because one party regrets the price.</div></div>
+  </div>
+</div>
+
+<!-- ═══ 6.8 ═══ -->
+<div id="s68" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">6.8</div><h2 class="sec-title">Order Confirmation Requirements — Fees & Commissions</h2></div>
+  <p class="body">After an order is executed, dealers must provide clients with a <strong>trade confirmation</strong> (also called a "confirm") promptly. This is a mandatory regulatory requirement, not optional.</p>
+
+  <div class="chk">
+    <div class="chi"><span class="chico">◆</span><div><strong>Timing:</strong> Must be sent by the <strong>end of the next business day</strong> after the trade date (T+1 from trade). For accounts that receive electronic confirms, real-time or same-day delivery is increasingly standard.</div></div>
+    <div class="chi"><span class="chico">◆</span><div><strong>Security identification:</strong> Full name of the security, ticker symbol, CUSIP number</div></div>
+    <div class="chi"><span class="chico">◆</span><div><strong>Transaction details:</strong> Whether it was a buy or sell, number of shares/units, transaction price per unit</div></div>
+    <div class="chi"><span class="chico">◆</span><div><strong>Total consideration:</strong> Total value of the transaction before fees</div></div>
+    <div class="chi"><span class="chico">◆</span><div><strong>Commissions and fees:</strong> All fees charged to the client — commission, exchange fees, foreign exchange charges. Must be itemized. Under CRM2, these must be disclosed in dollar amounts</div></div>
+    <div class="chi"><span class="chico">◆</span><div><strong>Settlement date:</strong> The date by which cash/securities must be delivered (T+1 for equities)</div></div>
+    <div class="chi"><span class="chico">◆</span><div><strong>Capacity:</strong> Whether the dealer acted as agent (on behalf of client) or as principal (dealer was counterparty). Principal trades must be explicitly marked</div></div>
+    <div class="chi"><span class="chico">◆</span><div><strong>Account designation:</strong> Account number the trade was executed for</div></div>
+  </div>
+
+  <div class="callout blue">
+    <div class="ci">💡</div>
+    <div class="cb"><div class="cl">Verbal Orders</div><p>When an order is taken verbally by phone, the dealer must <strong>read back all order details</strong> to the client before submitting (as required for IRs — see Element 3). The confirmation sent after execution serves as the written record. Many dealers now record phone lines, and recording is strongly recommended for compliance purposes.</p></div>
+  </div>
+</div>
+
+<!-- ═══ 6.9 ═══ -->
+<div id="s69" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">6.9</div><h2 class="sec-title">Types of Accounts</h2></div>
+  <p class="body">Each account type has distinct features, regulatory obligations, and suitability considerations. The exam frequently presents scenarios to test whether you can identify the appropriate account type.</p>
+
+  <div class="acc-grid">
+    <div class="acc-card adv">
+      <div class="acc-head">Advisory Account</div>
+      <div class="acc-body">RR provides personalized recommendations. Client retains final decision authority (non-discretionary). Full KYC and suitability obligations apply. RR recommends → client approves → trade executed. Most traditional brokerage accounts. Commission-based or fee-based compensation. RR owes best interest obligation under CFR.</div>
+    </div>
+    <div class="acc-card oeo">
+      <div class="acc-head">Order Execution Only (OEO)</div>
+      <div class="acc-body">No investment advice provided. Client makes all decisions independently. Suitability assessment not required for individual trades, but best execution still applies. IR (not RR) typically handles. Used by self-directed investors (discount brokerages). Lower commissions. Dealer must warn about risky order types.</div>
+    </div>
+    <div class="acc-card man">
+      <div class="acc-head">Managed / Wrap Account</div>
+      <div class="acc-body">Professional Portfolio Manager makes investment decisions within a pre-agreed mandate. Single annual fee ("wrap") covering management, trading, and reporting. Client receives quarterly reports. Minimum investment typically $150K+. All costs wrapped in one fee — no separate commissions per trade. Common in wealth management.</div>
+    </div>
+    <div class="acc-card disc">
+      <div class="acc-head">Discretionary Account</div>
+      <div class="acc-body">Portfolio Manager has full authority to trade without obtaining client approval for each trade. Client sets the Investment Policy Statement (IPS) upfront. PM can buy, sell, rebalance freely within IPS parameters. Full fiduciary duty applies. Requires PM registration. Highest duty of care. Client gives up day-to-day control.</div>
+    </div>
+    <div class="acc-card mar">
+      <div class="acc-head">Margin Account</div>
+      <div class="acc-body">Client borrows money from the dealer to purchase securities, using the securities as collateral. Amplifies both gains and losses. Interest charged on borrowed amount. Margin call triggered if equity falls below minimum. Requires margin agreement signed by client. Specific UMIR and IDPC capital adequacy rules apply. See section 6.10 for full margin rules.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 6.10 ═══ -->
+<div id="s610" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">6.10</div><h2 class="sec-title">Margin Requirements</h2></div>
+  <p class="body">Margin allows investors to purchase more securities than their cash balance would allow — using borrowed money. This amplifies returns but equally amplifies losses. Understanding margin mechanics is critical for the exam.</p>
+
+  <div class="sub">
+    <h3 class="sub-title">Purpose of Margin</h3>
+    <div class="chk">
+      <div class="chi"><span class="chico">◆</span><div><strong>For clients:</strong> Leverage — use borrowed capital to increase the size of their investment positions, potentially amplifying returns</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>For dealers:</strong> Revenue — interest earned on margin loans is a significant revenue source for dealers. Margin loans are collateralized (by the securities) so the credit risk is manageable</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>For market efficiency:</strong> Margin trading increases market liquidity and allows price discovery mechanisms to function more efficiently</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Margin Mechanics — General Application</h3>
+    <p class="body">Canadian margin requirements are set by CIRO (IDPC Rules) and establish minimum equity requirements. Dealers may impose stricter (higher) requirements than the CIRO minimums.</p>
+
+    <div class="margin-example">
+      <div class="me-title">Margin Example — Long Position</div>
+      <div class="me-row"><span class="me-label">Client wants to buy XYZ at $10/share, 1,000 shares</span><span class="me-val neu">$10,000</span></div>
+      <div class="me-row"><span class="me-label">Margin rate (50% for eligible securities)</span><span class="me-val neu">50%</span></div>
+      <div class="me-row"><span class="me-label">Client must deposit (50% of total)</span><span class="me-val pos">$5,000 cash</span></div>
+      <div class="me-row"><span class="me-label">Dealer lends</span><span class="me-val neg">$5,000 loan</span></div>
+      <div class="me-row"><span class="me-label">If price rises to $12: client profit = $2,000 on $5,000 invested</span><span class="me-val pos">40% return</span></div>
+      <div class="me-row"><span class="me-label">If price falls to $8: client loss = $2,000 on $5,000 invested</span><span class="me-val neg">-40% loss</span></div>
+    </div>
+
+    <div class="dt">
+      <div class="dr"><div class="dterm">Margin Rate</div><div class="dval">The percentage of the market value that the client must finance with their own equity. The <strong>loan value</strong> is 100% minus the margin rate. A 50% margin rate means the client provides 50% equity and borrows 50%. CIRO sets minimum margin rates by security type — liquid, well-traded equities typically 30–50%; less liquid or volatile securities require higher margin (or are not marginable at all).</div></div>
+      <div class="dr"><div class="dterm">Minimum Equity</div><div class="dval">The minimum amount of equity the client must maintain in their account at all times. If the value of securities falls and the equity drops below the minimum, a <strong>margin call</strong> is triggered.</div></div>
+      <div class="dr"><div class="dterm">Margin Call</div><div class="dval">When securities decline in value, the client's equity falls as a percentage of the total position. If equity drops below the minimum requirement, the dealer issues a margin call — demanding the client deposit additional funds or securities. If the client does not meet the margin call within a specified time (usually 24–48 hours), the dealer has the right to <strong>liquidate sufficient securities</strong> to restore the required equity level — without needing the client's consent for those liquidation trades.</div></div>
+      <div class="dr"><div class="dterm">Interest on Margin Loans</div><div class="dval">The client pays interest on the borrowed amount at the dealer's margin lending rate — typically the dealer's prime rate plus a spread. Interest accrues daily and is charged monthly. For tax purposes, interest on margin loans used to earn investment income is generally tax-deductible.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Margin Impact of Short Positions</h3>
+    <p class="body">Short selling in a margin account has different mechanics from long positions:</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Short Sale Margin</div><div class="dval">When a client short-sells securities, they receive the proceeds of the sale — but they must also deposit margin as security against the potential unlimited loss. The margin required for a short position is typically <strong>130% of the market value</strong> of the short position — the 100% proceeds plus an additional 30% margin deposit. As the price of the shorted security rises (adverse move), more margin is required.</div></div>
+      <div class="dr"><div class="dterm">Mark-to-Market Daily</div><div class="dval">Margin accounts are marked to market (revalued) daily. If security prices move against the position (long prices fall or short prices rise), the account's equity decreases and may fall below the maintenance margin requirement, triggering a margin call.</div></div>
+      <div class="dr"><div class="dterm">Marginable vs Non-Marginable</div><div class="dval">Not all securities can be used as margin collateral or purchased on margin. CIRO maintains lists of eligible securities. Generally: TSX-listed, liquid securities with market cap above certain thresholds are marginable. Speculative penny stocks, thinly-traded OTC securities, and new issues are typically not marginable.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 6.11 ═══ -->
+<div id="s611" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">6.11</div><h2 class="sec-title">Specialized Trading Agreement for Derivative Accounts</h2></div>
+  <p class="body">Before a client can trade options, futures, or other derivatives, a <strong>specialized trading agreement</strong> must be signed. This is a specific regulatory requirement — separate from the standard account agreement.</p>
+
+  <div class="dt">
+    <div class="dr"><div class="dterm">Options Trading Agreement</div><div class="dval">Before trading options, the client must sign an options agreement that acknowledges: the risks of options trading (including potential total loss of the premium for option buyers, and potentially unlimited losses for naked option writers), the mechanics of how options work, margin requirements for options writing, and assignment risk. The dealer must also assess the client's knowledge and suitability for options before granting approval.</div></div>
+    <div class="dr"><div class="dterm">Futures Trading Agreement</div><div class="dval">For futures contracts (exchange-traded on Montréal Exchange), a separate futures trading agreement is required. Must disclose: that futures can result in losses exceeding the initial deposit (margin), the marking-to-market process and daily settlement, delivery obligations for physical contracts, and rollover procedures.</div></div>
+    <div class="dr"><div class="dterm">OTC Derivatives — ISDA</div><div class="dval">For over-the-counter (OTC) derivatives (interest rate swaps, FX forwards, custom structured products), institutional clients and dealers typically execute an <strong>ISDA Master Agreement</strong> (International Swaps and Derivatives Association). The ISDA governs the entire relationship for all OTC derivative transactions — netting provisions, collateral (CSA — Credit Support Annex), events of default, and close-out mechanics.</div></div>
+    <div class="dr"><div class="dterm">Why Specialized Agreements?</div><div class="dval">Derivatives have features and risks fundamentally different from ordinary equities and bonds: leverage, expiry, the ability to create losses beyond the initial investment, and complex mechanics. The specialized agreement ensures the client has been informed of and acknowledged these unique risks before trading commences.</div></div>
+  </div>
+</div>
+
+<!-- ═══ 6.12 ═══ -->
+<div id="s612" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">6.12</div><h2 class="sec-title">Reporting Obligations to Firms and Regulators</h2></div>
+  <p class="body">Investment dealers and registered individuals have multiple reporting obligations arising from trade execution and market activity. These serve different regulatory purposes.</p>
+
+  <div class="dt">
+    <div class="dr"><div class="dterm">Trade Reporting to Marketplaces</div><div class="dval">All trades executed on exchanges must be reported to the marketplace in real time. OTC trades (off-exchange) must be reported to appropriate trade reporting systems within required timeframes. This creates post-trade transparency — the public can see what trades occurred, at what prices, and in what volume.</div></div>
+    <div class="dr"><div class="dterm">UMIR 10.16 Gatekeeper Reports</div><div class="dval">When a UMIR violation is found during an internal investigation, a report must be filed with CIRO by the 15th of the following month (or immediately for DEA violations). Includes: nature of the potential violation, security(ies) involved, accounts involved, corrective action taken.</div></div>
+    <div class="dr"><div class="dterm">Insider Trading Reports</div><div class="dval">Insiders (directors, officers, 10%+ shareholders) of public companies must file reports of their trades in the company's securities within prescribed timeframes — typically within 5 days of the trade. Filed on Sinsider (Canada's insider reporting system). These are publicly accessible on SEDAR+.</div></div>
+    <div class="dr"><div class="dterm">Short Position Reports</div><div class="dval">CIRO and the exchanges require periodic reporting of short positions. Investment dealers must report their clients' aggregate short positions in each security on a regular basis (twice monthly). This data is publicly published, providing market transparency about short selling activity.</div></div>
+    <div class="dr"><div class="dterm">Large Trader Reports</div><div class="dval">CIRO may require reporting when trading activity in a security reaches certain thresholds — large trades in thinly traded securities can be flagged for review. Provides CIRO with visibility into potentially market-moving activity.</div></div>
+    <div class="dr"><div class="dterm">AML Reports to FINTRAC</div><div class="dval">Parallel to UMIR reporting: suspicious transactions (STRs), large cash transactions (LCTRs), and electronic funds transfer reports (EFTRs) must be filed with FINTRAC as required under PCMLTFA. These exist independently of any UMIR or CIRO reporting obligations.</div></div>
+    <div class="dr"><div class="dterm">Financial Position Reports to CIRO</div><div class="dval">Dealers must file regular financial compliance reports with CIRO — monthly or quarterly, depending on firm size — showing their regulatory capital position, net free capital, and other financial metrics. CIRO uses these to monitor dealer financial health and ensure they maintain the required capital buffers.</div></div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div id="summary" class="section">
+  <div class="sum-box" style="margin-top:60px;">
+    <div class="sum-title">Element 6 — Master Summary</div>
+    <div class="sum-sub">15 exam-critical points</div>
+    <div class="si"><span class="sin">01</span><div><strong>Best Execution (UMIR 5.1):</strong> Must "diligently pursue most advantageous execution terms." 5 dimensions: price, speed, certainty, market impact, total cost. Applies to ALL accounts including OEO. Payment for order flow is prohibited (UMIR 7.5).</div></div>
+    <div class="si"><span class="sin">02</span><div><strong>Manipulation (UMIR 2.1 & 2.2):</strong> 2.1 = creating false/misleading appearance of trading activity or artificial prices (wash trading, spoofing, layering, marking the close). 2.2 = specific prohibited acts including entering orders without intent to trade. November 2024: UMIR 3.3 requires reasonable expectation to settle before short sale entry.</div></div>
+    <div class="si"><span class="sin">03</span><div><strong>Front Running (UMIR 4.1):</strong> Trading in a security based on knowledge of a pending client order before it is executed. Serious violation — both UMIR and potentially criminal. Client orders generally have priority over firm principal orders at the same price.</div></div>
+    <div class="si"><span class="sin">04</span><div><strong>DEA (UMIR 7.13):</strong> Dealer remains responsible for all orders under its Participant ID, including those from DEA clients. Must have: written agreement, pre-trade controls, real-time monitoring, kill switch. DEA violations must be reported to CIRO immediately (not at month end).</div></div>
+    <div class="si"><span class="sin">05</span><div><strong>Gatekeeping Shift (2025):</strong> Under IDPC Rule 1400, the duty has expanded from "react to confirmed violations" to "proactively investigate red flags even without proof." CCOs must document investigation of any suspicious patterns. The "no confirmed violation" defence no longer works.</div></div>
+    <div class="si"><span class="sin">06</span><div><strong>UMIR 10.16 Reporting:</strong> If a UMIR violation is found, report to CIRO by the <strong>15th of the following month</strong>. For DEA: immediately. Records retained 7 years. Investigation required upon "reason to believe" — not only upon confirmed proof.</div></div>
+    <div class="si"><span class="sin">07</span><div><strong>T+1 Settlement:</strong> Equities and government bonds settle T+1 in Canada (effective May 27, 2024). CDS handles clearing. Fail to deliver requires reasonable expectation to settle prior to short sale order entry (UMIR 3.3 amendment).</div></div>
+    <div class="si"><span class="sin">08</span><div><strong>7 Order Types:</strong> Market (immediate, no price certainty). Limit (price certainty, no execution certainty). Stop/On-stop (triggers at stop price, then market). IOC (fill immediately whatever available, cancel rest). FOK (all or nothing immediately). Iceberg (shows only part of order). Short sale (marking + settlement expectation required).</div></div>
+    <div class="si"><span class="sin">09</span><div><strong>Order Variation — Priority Rules:</strong> Reducing quantity = time priority retained. Increasing quantity = time priority LOST. Changing price = time priority LOST.</div></div>
+    <div class="si"><span class="sin">10</span><div><strong>Trade Confirmation:</strong> Must be sent by EOD next business day (T+1 from trade). Must include: security details, buy/sell, quantity, price, total consideration, commissions (in dollars), settlement date, dealer capacity (agent or principal).</div></div>
+    <div class="si"><span class="sin">11</span><div><strong>Margin Mechanics:</strong> Client borrows from dealer secured by securities. If equity falls below minimum, margin call issued. Dealer can liquidate positions without consent if call not met. Short sales: margin = ~130% of position value. Interest on margin loans is generally tax-deductible.</div></div>
+    <div class="si"><span class="sin">12</span><div><strong>Derivative Account Agreements:</strong> Must be signed BEFORE any options or futures trading. Options agreement discloses: total loss of premium, unlimited loss for naked writers. Institutional OTC derivatives use ISDA Master Agreement + Credit Support Annex (CSA).</div></div>
+    <div class="si"><span class="sin">13</span><div><strong>Watch List vs Grey List:</strong> Watch list = possible MNPI, enhanced scrutiny but trading allowed. Grey list/restricted = definite MNPI, trading prohibited. Chinese Wall separates investment banking (MNPI) from trading/sales.</div></div>
+    <div class="si"><span class="sin">14</span><div><strong>Whistleblower Program (OSC):</strong> Financial awards 5–15% of sanctions over $1M. Confidential. Anti-retaliation protection. Firms cannot penalize employees for good-faith compliance reports. CIRO rules require written anti-retaliation policies.</div></div>
+    <div class="si"><span class="sin">15</span><div><strong>5 Account Types:</strong> Advisory (RR recommends, client approves). OEO (client decides, IR executes). Managed/Wrap (PM manages, one annual fee). Discretionary (PM has full authority, fiduciary duty). Margin (borrowed funds, amplified gains/losses, margin call risk).</div></div>
+  </div>
+</div>
+</div><!-- /content -->
+
+<!-- QUIZ -->
+<div id="quiz" class="quiz-wrap">
+  <div class="quiz-h1">Element 6 — Practice Questions</div>
+  <div class="quiz-sub-txt">45 questions · Exam-level difficulty · Click an option to reveal answer & explanation</div>
+  <div class="quiz-stats">
+    <div><div class="qs-n">15</div><div class="qs-l">Easy</div></div>
+    <div><div class="qs-n">20</div><div class="qs-l">Medium</div></div>
+    <div><div class="qs-n">10</div><div class="qs-l">Hard</div></div>
+    <div><div class="qs-n" id="sLbl">0/45</div><div class="qs-l">Score</div></div>
+  </div>
+  <div id="qC"></div>
+  <div class="quiz-ctrl">
+    <div class="score-disp" id="fS"></div>
+    <button class="btn btn-p" onclick="resetQ()">🔄 Reset</button>
+    <button class="btn btn-s" onclick="revealAll()">👁 Reveal All</button>
+  </div>
+</div>
+</div><!-- /main -->
+<button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const Qs=[
+  // EASY 1-15
+  {id:1,d:'e',q:"What is the primary obligation under UMIR Rule 5.1 (Best Execution)?",o:["A. Execute all orders at the national best bid or offer","B. Diligently pursue execution of each client order on the most advantageous terms reasonably available","C. Always execute client orders on the TSX before routing to other venues","D. Minimize commission costs on every client transaction"],a:1,e:"UMIR 5.1 requires participants to <strong>diligently pursue execution of each client order on the most advantageous execution terms reasonably available under the circumstances</strong>. Best execution is multi-dimensional — it includes price, speed, certainty, market impact, and total cost. It is not simply 'best price' alone."},
+  {id:2,d:'e',q:"Canada moved to T+1 equity settlement on which date?",o:["A. January 1, 2024","B. May 27, 2024","C. January 1, 2023","D. March 1, 2025"],a:1,e:"Canada aligned with the US and moved to <strong>T+1 settlement for equities on May 27, 2024</strong>. This means trades settle (cash and securities transfer) within one business day of the trade date, down from the previous T+2 standard."},
+  {id:3,d:'e',q:"What is 'wash trading'?",o:["A. Executing trades to minimize market impact","B. Buying and selling the same securities between related accounts to create false trading volume","C. Routing orders through multiple exchanges to achieve best execution","D. Cancelling limit orders before they are executed"],a:1,e:"<strong>Wash trading</strong> (prohibited under UMIR 2.1) involves buying and selling the same securities between related or coordinated accounts with no genuine change in beneficial ownership. The purpose is to create the artificial appearance of active trading volume and market interest — a classic form of market manipulation."},
+  {id:4,d:'e',q:"What is 'front running' in UMIR terms?",o:["A. Executing client orders before they are approved by compliance","B. Trading in a security based on knowledge of a pending client order before it is executed","C. Entering orders before the market opens to gain early advantage","D. Using high-frequency algorithms to execute ahead of slower market participants"],a:1,e:"<strong>Front running</strong> (UMIR 4.1) is trading in a security (or related security/derivative) based on knowledge of a pending client order that has not yet been disclosed to the market. The trader profits by moving ahead of the client's order, which will move the price — at the client's expense."},
+  {id:5,d:'e',q:"A client wants to buy ABC shares but only if the price does not exceed $45. Which order type should they use?",o:["A. Market order","B. Stop order","C. Limit order","D. Fill or Kill order"],a:2,e:"A <strong>limit order</strong> sets a maximum price for a buy or a minimum price for a sell. A buy limit order at $45 will only execute if ABC shares are available at $45 or less. This provides price certainty — the client will not pay more than $45 — but does not guarantee execution."},
+  {id:6,d:'e',q:"What is the key distinguishing feature of a Fill or Kill (FOK) order compared to an Immediate or Cancel (IOC) order?",o:["A. FOK can only be used for short sales; IOC is used for long trades","B. FOK requires the entire order to be filled immediately or cancelled in full; IOC accepts partial fills","C. FOK works only during extended hours; IOC works during regular market hours","D. FOK has priority over limit orders; IOC does not"],a:1,e:"The key difference: <strong>IOC accepts partial execution</strong> (fills what is available immediately, cancels the rest), while <strong>FOK requires the ENTIRE order to fill immediately or the entire order is cancelled</strong>. FOK is 'all or nothing' — used when a partial fill is economically useless."},
+  {id:7,d:'e',q:"What must an investment dealer do if a client fails to meet a margin call within the specified time?",o:["A. File a report with CIRO immediately","B. Cancel the margin account and convert it to a cash account","C. Liquidate sufficient securities in the account to restore the required equity level","D. Extend the margin call deadline by 10 business days"],a:2,e:"If a client does not meet a margin call, the dealer has the right to <strong>liquidate sufficient securities</strong> in the account to bring the equity back to the required minimum — without needing the client's consent for those specific liquidation trades. This right is established in the margin agreement the client signs when opening the account."},
+  {id:8,d:'e',q:"Which order type executes immediately at any available price, regardless of the price level?",o:["A. Limit order","B. Stop order","C. Market order","D. Iceberg order"],a:2,e:"A <strong>market order</strong> executes immediately at the best available current market price. It offers execution certainty (will fill as long as there is a counterparty) but no price certainty. The client accepts whatever price the market provides at the moment of execution."},
+  {id:9,d:'e',q:"Before a client can trade options, what specialized document must be signed?",o:["A. A separate RDI (Relationship Disclosure Information) specifically for derivatives","B. An options trading agreement acknowledging the risks of options trading","C. A letter from CIRO granting permission to trade options","D. The standard account agreement is sufficient — no additional document is needed"],a:1,e:"Before any options trading can commence, the client must sign an <strong>options trading agreement</strong> that explicitly acknowledges the specific risks of options: total loss of premium for buyers, potentially unlimited losses for naked writers, assignment risk, and margin requirements. This is a separate regulatory requirement from the standard account agreement."},
+  {id:10,d:'e',q:"What is the purpose of an 'iceberg order'?",o:["A. To freeze a security's trading while a large transaction is negotiated","B. To execute orders only in cold weather markets","C. To show only a small portion of a large order in the public order book, concealing the full size","D. To automatically cancel orders that move against the trader's position"],a:2,e:"An <strong>iceberg order</strong> (also called a reserve order) shows only a small visible portion of a large order on the public order book. As each visible tranche is filled, the next tranche becomes visible. This prevents other market participants from seeing the full order size and front-running or trading against it. Like an iceberg — most of it is hidden."},
+  {id:11,d:'e',q:"What happens to a limit order's time priority when a client reduces the order quantity?",o:["A. Time priority is lost — the order moves to the back of the queue","B. Time priority is retained — the order keeps its place in the queue","C. Time priority is split — half the position keeps priority","D. Time priority is determined by the exchange, not the order modification"],a:1,e:"When a client <strong>reduces the quantity</strong> of an existing limit order, <strong>time priority is retained</strong>. The order keeps its place in the queue. Only modifications that increase the order size or change the price result in a loss of time priority (the order moves to the back of the queue)."},
+  {id:12,d:'e',q:"What does the UMIR gatekeeping obligation under Rule 7.1 require dealers to do?",o:["A. Report all suspicious transactions to police immediately","B. Adopt written policies and procedures to detect, prevent, investigate, and report UMIR violations","C. Refuse to execute any order that appears suspicious","D. Hire a dedicated market surveillance officer for each trading desk"],a:1,e:"UMIR 7.1 requires each participant to <strong>adopt, implement, and maintain written policies and procedures adequate to ensure compliance with UMIR</strong>. This includes detecting and preventing manipulative practices, conducting pre-trade compliance review, supervising trading, maintaining grey/watch lists, and documenting all reviews."},
+  {id:13,d:'e',q:"Under UMIR, which type of activity does a 'grey list' (restricted list) indicate?",o:["A. Securities the firm suspects may be manipulated in the market","B. Securities for which the firm has material non-public information and has PROHIBITED trading by its employees and proprietary accounts","C. Securities with enhanced scrutiny but where trading is still permitted","D. Securities that are not marginable"],a:1,e:"The <strong>grey list (restricted list)</strong> contains securities for which the firm has definite MNPI (e.g., actively working on a merger involving the issuer) and <strong>trading is PROHIBITED</strong> by firm employees and proprietary accounts. The watch list (one step below) has possible MNPI — trading is permitted but subject to enhanced scrutiny and supervision."},
+  {id:14,d:'e',q:"A client says 'I want to sell 1,000 ABC shares — but only if I get at least $50 per share.' What order should the RR enter?",o:["A. Market sell order","B. Sell limit order at $50","C. Sell stop order at $50","D. Fill or Kill sell order at $50"],a:1,e:"This is a <strong>sell limit order</strong>. A sell limit order executes only at the specified price or higher — it gives the client price protection on the minimum sale price. If the market price is below $50, the order will not execute. A stop order would trigger at $50 (moving the price downward), which is the opposite of what the client wants."},
+  {id:15,d:'e',q:"What is the OSC Whistleblower Program's financial award range for information leading to enforcement action exceeding $1M in sanctions?",o:["A. 1–5%","B. 5–15%","C. 10–20%","D. 15–30%"],a:1,e:"The OSC Whistleblower Program offers financial awards of <strong>5% to 15%</strong> of monetary sanctions collected above $1M for original, specific, and credible information that leads to a successful enforcement outcome. This is designed to incentivize insiders with knowledge of misconduct to come forward."},
+  // MEDIUM 16-35
+  {id:16,d:'m',q:"A DEA client's algorithm begins placing thousands of small orders and cancellations in rapid succession, consistent with spoofing behavior. What is the dealer's obligation under UMIR 7.13?",o:["A. Wait for end of month to file a routine gatekeeper report","B. Activate the kill switch immediately to terminate the client's access and report to CIRO forthwith","C. Contact the client to ask for an explanation before taking any action","D. File a report with the provincial securities regulator (not CIRO) for algorithmic misconduct"],a:1,e:"Under UMIR 7.13, when a dealer identifies a potential breach of material provisions by a DEA client, it must: (1) <strong>immediately activate the kill switch</strong> to terminate the client's access, and (2) <strong>notify CIRO forthwith</strong> (immediately). The reporting obligation for DEA violations is immediate — not the standard end-of-month timeline. Waiting for an explanation first would be inadequate under the proactive gatekeeping standard."},
+  {id:17,d:'m',q:"What distinguishes 'spoofing' from 'layering' as forms of market manipulation under UMIR 2.1?",o:["A. Spoofing is legal; layering is prohibited","B. Spoofing involves a single large order placed to move price then cancelled; layering involves multiple orders at different prices to create false supply/demand, then cancelled after trading against the movement","C. Spoofing applies only to bonds; layering applies to equities","D. There is no meaningful distinction — they are identical violations"],a:1,e:"Both are manipulation under UMIR 2.1, but mechanically distinct: <strong>Spoofing</strong> = placing one large order with no intention of execution, purely to move price, then cancelling it. <strong>Layering</strong> = placing multiple orders at different price levels to create the appearance of a deep book and price pressure (false supply or demand), trading against the artificial movement, then cancelling all the layered orders. Both are designed to create artificial price conditions."},
+  {id:18,d:'m',q:"Under the 2025 evolution of CIRO's gatekeeping standard (IDPC Rule 1400), a supervisor notices an advisor's client is making consistently well-timed trades in small-cap stocks just before positive announcements. The supervisor has no confirmed evidence of insider trading. What is now required?",o:["A. No action is required until CIRO brings formal enforcement","B. The supervisor should mention it informally to the advisor but take no formal action","C. The supervisor must proactively investigate, document findings, and escalate if the investigation raises further concerns — the absence of confirmed proof does not eliminate the obligation to investigate","D. The supervisor must immediately freeze the client's account pending a CIRO investigation"],a:2,e:"Under the <strong>2025 expanded gatekeeping standard (IDPC Rule 1400)</strong>, registrants have a duty to actively investigate and document red flags even without confirmed proof. The old 'I had no proof' defence is no longer adequate. The supervisor must: document the suspicious pattern, investigate (check for public information that explains it, review account history), escalate to compliance, and if the investigation reveals possible violations, report under UMIR 10.16."},
+  {id:19,d:'m',q:"A client places a stop-loss order on their XYZ shares at $40 (currently trading at $48). XYZ announces bad news overnight and opens at $32 the next morning. At what price will the stop-loss market order execute?",o:["A. $40 — the stop price","B. $48 — the previous closing price","C. Approximately $32 — the opening market price, not the stop price","D. The order will be cancelled since the price gapped below the stop"],a:2,e:"This demonstrates 'gap risk' in stop orders. The stop is triggered when price reaches $40. But because the stock GAPPED DOWN (opened at $32, never actually trading at $40), the stop is triggered at the open and becomes a <strong>market sell order executing at approximately $32</strong> — not $40. Stop orders become market orders when triggered, and market orders execute at whatever price is available. This is why CIRO requires OEO dealers to warn clients about stop-loss market order execution risks."},
+  {id:20,d:'m',q:"An investment dealer's retail desk receives a large institutional sell order for XYZ shares. Before entering this order, the dealer's proprietary desk buys XYZ shares. Which UMIR rules are violated?",o:["A. Only UMIR 2.1 (manipulation)","B. UMIR 4.1 (front running) and the client priority rules — the dealer used knowledge of a pending client order to benefit its own account","C. UMIR 5.1 (best execution) only","D. No violation if the proprietary desk did not know the order was institutional"],a:1,e:"The proprietary desk trading ahead of a client order using knowledge of that pending order is <strong>front running (UMIR 4.1)</strong>. Additionally, client priority rules require that client orders generally have priority over principal orders at the same price. The dealer has used its privileged position (knowing a large sell order is coming, which will push the price down) to benefit its own account at the expense of the client."},
+  {id:21,d:'m',q:"What is the reporting deadline under UMIR 10.16 when an internal investigation finds that a violation HAS occurred?",o:["A. Immediately upon finding the violation","B. Within 5 business days of the finding","C. By the 15th day of the month following the month in which the findings were made","D. Within 30 calendar days of the finding"],a:2,e:"Under UMIR 10.16, when the findings of an investigation determine that a <strong>UMIR violation has occurred</strong>, the participant must file the report with CIRO no later than the <strong>15th day of the month following the month in which the findings are made</strong>. Exception: DEA violations must be reported immediately (forthwith)."},
+  {id:22,d:'m',q:"A client with no investment experience wants to open an account and start trading stock options. What must the dealer do before granting options trading privileges?",o:["A. Simply provide the standard account agreement — options are just another product","B. Assess the client's knowledge and suitability for options trading; if approved, have the client sign a specific options trading agreement disclosing the risks","C. Refer the client to a portfolio manager since options require discretionary management","D. Options are banned for retail clients — only institutional investors can trade options"],a:1,e:"Before any options trading: (1) The dealer must <strong>assess suitability</strong> — does the client have the knowledge and financial capacity to trade options? A client with 'no investment experience' should likely not be approved for options. (2) If approved, the client must sign a <strong>specific options trading agreement</strong> that discloses risks including total loss of premium and unlimited loss potential for options writers. This is a mandatory regulatory requirement separate from the standard account agreement."},
+  {id:23,d:'m',q:"What is the difference between the 'watch list' and the 'grey list' in the context of information barriers?",o:["A. Watch list = certain MNPI, trading prohibited; Grey list = possible MNPI, trading permitted with enhanced scrutiny","B. Watch list = possible MNPI, enhanced scrutiny but trading permitted; Grey list = certain MNPI, trading prohibited","C. Both lists prohibit trading — the difference is the severity of the potential violation","D. Watch list applies to clients; Grey list applies to firm employees only"],a:1,e:"<strong>Watch list</strong> = the firm MAY have MNPI (possible, uncertain). Trading by employees and proprietary accounts is permitted but subject to enhanced scrutiny and supervision. <strong>Grey list (restricted list)</strong> = the firm DOES have MNPI (definite, e.g., actively advising on a pending merger). Trading is PROHIBITED for employees and proprietary accounts in those securities. Clients may also be restricted from trading in grey-listed securities depending on the firm's policies."},
+  {id:24,d:'m',q:"Under UMIR's best execution obligation, does the dealer owe best execution to clients with OEO (discount) accounts?",o:["A. No — OEO accounts are explicitly exempt from best execution requirements","B. Yes — best execution applies to all client accounts including OEO","C. Only if the OEO account has a minimum of $50,000 in assets","D. Only for limit orders, not market orders, in OEO accounts"],a:1,e:"CIRO has explicitly confirmed that <strong>best execution applies to all client accounts, including OEO accounts</strong>. While suitability obligations are modified for OEO accounts, the dealer still has a duty to obtain the best available execution terms for client orders regardless of account type. The dealer must also ensure OEO clients are warned about high-risk order types."},
+  {id:25,d:'m',q:"An institution requires exactly 200,000 shares of XYZ to complete a specific arbitrage hedge. If it cannot get exactly 200,000 shares, the trade makes no economic sense. Which order type should be used?",o:["A. Market order — to ensure immediate execution","B. Limit order with a 200,000 share minimum requirement","C. Fill or Kill (FOK) — requires exactly 200,000 shares immediately or cancels","D. Iceberg order for 200,000 shares"],a:2,e:"A <strong>Fill or Kill (FOK)</strong> order is perfect here because: (1) it requires the ENTIRE 200,000 shares to be filled immediately; (2) if the entire quantity is not available, the order is cancelled in full. This ensures the institution either gets exactly what it needs or gets nothing — preventing a partial fill that would be economically useless for the hedge strategy."},
+  {id:26,d:'m',q:"What happens to an order's time priority when the client changes the order price?",o:["A. Time priority is retained because only the quantity changed","B. Time priority is lost — changing the price creates a new order that goes to the back of the queue","C. Time priority is adjusted proportionally to the price change","D. The exchange automatically grants priority to the new price"],a:1,e:"Changing the <strong>price</strong> of an order results in <strong>loss of time priority</strong>. The modified order is treated as a new order and placed at the back of the queue at the new price level. This is because price is the primary determinant of order priority — a new price level is a fundamentally different order position in the book."},
+  {id:27,d:'m',q:"Which of the following best describes how an ISDA Master Agreement functions for OTC derivative transactions?",o:["A. It is a one-time document required for each individual OTC derivative trade","B. A single governing framework that covers all OTC derivative transactions between two parties — with netting provisions, collateral management (CSA), and default procedures","C. It replaces the need for any margin agreements in OTC derivatives","D. It is only applicable to publicly traded derivatives, not OTC products"],a:1,e:"An <strong>ISDA Master Agreement</strong> is a single governing contract that covers ALL OTC derivative transactions between two parties. It includes: (1) <strong>netting provisions</strong> (in default, obligations are netted to a single net payable/receivable); (2) a <strong>Credit Support Annex (CSA)</strong> for collateral management; (3) events of default and close-out mechanics; (4) applicable law. This provides enormous efficiency — rather than documenting each trade from scratch, parties agree on terms once and apply them to all subsequent transactions."},
+  {id:28,d:'m',q:"What are the key components that must appear on a trade confirmation sent to a client?",o:["A. Only the security name, quantity, and total price are required","B. Security details, buy/sell, quantity, price, total consideration, commissions in dollars, settlement date, and dealer capacity (agent or principal)","C. Confirmation number, account number, and advisor's name only","D. Only required for trades over $10,000"],a:1,e:"A trade confirmation must include: <strong>security identification</strong> (name, ticker, CUSIP), <strong>buy/sell direction</strong>, <strong>quantity</strong>, <strong>execution price</strong>, <strong>total consideration</strong>, <strong>commissions and all fees in dollar amounts</strong> (required under CRM2), <strong>settlement date</strong>, and <strong>dealer capacity</strong> (agent vs principal — required because principal trades are a disclosed conflict of interest)."},
+  {id:29,d:'m',q:"What is the impact of payment for order flow under UMIR?",o:["A. It is permitted as long as it is disclosed to the client in the RDI","B. It is encouraged by CIRO as it reduces trading costs for dealers","C. It is prohibited under UMIR 7.5 because it distorts behavior and undermines best execution","D. It is only prohibited for institutional accounts, not retail accounts"],a:2,e:"<strong>Payment for order flow is prohibited under UMIR 7.5</strong>. When a dealer receives payments for routing orders to a specific intermediary (execution venue), its incentive to achieve best execution is compromised — it may route to whichever venue pays the most rather than whichever offers the best execution. CIRO explicitly recognizes this as a conflict that distorts trading behavior."},
+  {id:30,d:'m',q:"An RR wants to enter a sell order on behalf of a client who doesn't own the security. What additional requirements apply?",o:["A. No additional requirements — selling without ownership is legal in all circumstances","B. The order must be marked as a short sale; the dealer must have a reasonable expectation to settle (UMIR 3.3 since Nov 2024); the security must be borrowable","C. A short sale requires CIRO pre-approval for each transaction","D. Short sales are only permitted in OEO accounts"],a:1,e:"For a <strong>short sale</strong>: (1) The order must be <strong>marked as 'short'</strong> when entered (required marking under UMIR). (2) Since November 2024 (UMIR 3.3 amendment), the dealer must have a <strong>reasonable expectation to settle</strong> the short sale on T+1 before entering the order — this requires confirming the securities can be borrowed. (3) The security must be borrowable (not hard-to-borrow or on a restricted list)."},
+  {id:31,d:'m',q:"A client's margin account has: Securities value $80,000, Margin loan $50,000. The equity is $30,000 (37.5% of total). If the minimum equity requirement is 30%, is there a margin call?",o:["A. Yes — because equity is below $40,000","B. No — because 37.5% exceeds the 30% minimum requirement","C. Yes — because the loan exceeds $45,000","D. No — but the dealer must reduce the margin loan to $30,000"],a:1,e:"Account equity = $80,000 − $50,000 = $30,000. Equity as % of total = $30,000/$80,000 = 37.5%. The minimum requirement is 30%. Since <strong>37.5% > 30%</strong>, the account is <strong>above the minimum and NO margin call is triggered</strong>. A margin call would only occur if equity fell below 30% of total position value ($80,000 × 30% = $24,000 minimum equity)."},
+  {id:32,d:'m',q:"Under the UMIR algorithmic trading requirements, what must dealers ensure about their trading algorithms?",o:["A. Algorithms are exempt from UMIR since they operate automatically","B. Dealers must test algorithms before deployment, maintain kill switches, monitor in real time, and ensure algorithms comply with UMIR at all times — the dealer is responsible for its algorithms' market conduct","C. Only the algorithm developer (not the dealer) is responsible for UMIR compliance","D. Algorithms must be approved by CIRO before deployment on any Canadian marketplace"],a:1,e:"Dealers are <strong>responsible for their algorithms' market conduct</strong> under UMIR 7.1. Requirements include: (1) pre-deployment testing; (2) real-time monitoring; (3) kill switches to terminate algorithms immediately; (4) ensuring algorithms do not violate UMIR (no spoofing, layering, or other manipulation). The automated nature of the activity does not transfer responsibility from the dealer to the technology."},
+  {id:33,d:'m',q:"What separates the investment banking division from the trading and sales division in a full-service dealer, and why is this separation critical?",o:["A. A physical wall between floors — to prevent sound from travelling between departments","B. An information barrier (Chinese Wall) — because investment banking routinely has MNPI about pending transactions that would create insider trading risk if it reached trading desks","C. Separate regulatory licensing — investment banking requires different registration from trading","D. A legal separation — investment banking must be in a separate legal entity from the trading desk"],a:1,e:"The <strong>Chinese Wall (information barrier)</strong> is the critical separation. Investment banking regularly has MNPI — they know about pending mergers, upcoming share issuances, and other corporate events before the public. If this information reached the trading/sales desks, the firm's traders and advisors would face enormous temptation to trade or advise clients based on MNPI. This would be insider trading — a criminal offence. The Chinese Wall is the primary structural safeguard."},
+  {id:34,d:'m',q:"What must a dealer do when its internal investigation of suspicious trading does NOT find a confirmed UMIR violation?",o:["A. Nothing — no action or reporting required if no violation is found","B. File a report with CIRO anyway as a precaution","C. Document the investigation findings thoroughly and retain records for 7 years, even though no violation was confirmed","D. Report to the provincial securities regulator instead of CIRO"],a:2,e:"Even when an investigation does NOT find a violation, the dealer must <strong>document the investigation and its findings thoroughly and retain those records for 7 years</strong>. CIRO can inspect these records and will review them during compliance examinations to assess the quality of the firm's gatekeeper processes. Undocumented investigations — even where no violation was found — are themselves a compliance deficiency."},
+  {id:35,d:'m',q:"An institutional client wants to execute a sell order for 2 million XYZ shares (representing about 5% of the day's typical trading volume). If this order is entered as a single market order, what is the primary concern?",o:["A. The order will be rejected by the exchange for being too large","B. Market impact — the large sell order will push the price down as it executes, resulting in worse average prices for the later-executed portions","C. Settlement risk — a 2 million share transaction cannot settle in T+1","D. The order will automatically be converted to a limit order by the exchange"],a:1,e:"The primary concern is <strong>market impact</strong>. A 2 million share market sell order representing 5% of daily volume will move the market significantly as it executes. Earlier portions may get decent prices, but as the order exhausts available buy interest, prices will fall and later portions execute at progressively worse prices. Algorithmic execution strategies (VWAP, TWAP, implementation shortfall) are used to minimize this market impact by spreading the order over time."},
+  // HARD 36-45
+  {id:36,d:'h',q:"A dealer receives a large buy order for ABC Corp from a pension fund client. Before entering the order, one of the firm's proprietary traders buys ABC shares for the firm's own account. The proprietary trader claims they independently had a buy recommendation from the firm's research team that day. How should this situation be analyzed under UMIR?",o:["A. No violation — the proprietary trader had an independent basis for their trade","B. Potential front running violation (UMIR 4.1) — the firm must prove the proprietary trade was genuinely independent and not based on knowledge of the client order; an information barrier and audit trail are critical","C. Only the research team violated UMIR by creating a conflict","D. No violation because pension funds are institutional clients and front running rules don't apply to institutional order flow"],a:1,e:"This is a classic front running scenario that requires careful analysis. The issue is whether the proprietary trader <strong>had knowledge of the pending client order</strong>. The fact that there was an independent research recommendation creates a possible defence — but the burden is on the firm to demonstrate: (1) the proprietary trade was decided before knowledge of the client order; (2) there are information barriers between the institutional sales desk and the prop desk; (3) there is a documented audit trail showing the prop trade decision predated knowledge of the client order. Without this evidence, the timing alone creates a presumption of front running under UMIR 4.1."},
+  {id:37,d:'h',q:"Client A holds 10,000 XYZ shares bought at $20 (total cost $200,000) in a margin account with a 50% margin rate. The dealer lent $100,000. XYZ falls to $14. Calculate: (1) current equity, (2) current equity as a % of total position, (3) whether a margin call is triggered at 30% minimum.",o:["A. Equity $40,000; 28.6%; margin call triggered","B. Equity $40,000; 20%; no margin call","C. Equity $20,000; 14.3%; margin call triggered","D. Equity $60,000; 42.9%; no margin call"],a:0,e:"At $14/share: Position value = 10,000 × $14 = $140,000. Loan unchanged = $100,000. <strong>Equity = $140,000 − $100,000 = $40,000</strong>. Equity % = $40,000 / $140,000 = <strong>28.6%</strong>. Minimum required = 30% × $140,000 = $42,000. Since $40,000 < $42,000 minimum, a <strong>margin call is triggered</strong>. The client must deposit $2,000 (or sell securities to reduce the loan) to restore equity to at least $42,000."},
+  {id:38,d:'h',q:"What combination of UMIR violations is present when a high-frequency trader (a) places large orders on one exchange to push the price up, (b) buys at the artificially high price from retail investors on another exchange, and (c) immediately cancels the large orders on the first exchange?",o:["A. UMIR 2.1 only (manipulation through artificial price)","B. UMIR 2.1 (creating artificial price through spoofing), UMIR 2.2 (entering orders without intent to trade), and potentially UMIR 4.1 (front running using the artificial price advantage)","C. UMIR 5.1 only (failure to achieve best execution for other market participants)","D. No UMIR violation — HFT activity is explicitly exempt from manipulation provisions"],a:1,e:"This describes a sophisticated cross-exchange manipulation scheme involving multiple violations: (1) <strong>UMIR 2.1</strong> — using the spoofed orders to create an artificial price (false appearance of demand pushing price up). (2) <strong>UMIR 2.2</strong> — entering orders on the first exchange with no genuine intent to trade (placed purely to manipulate price on the other exchange). (3) Potentially <strong>UMIR 4.1</strong> — using knowledge of the artificial price movement to trade ahead of retail investors who are responding to the false signal. HFT is NOT exempt from UMIR — the same rules apply to all market participants regardless of trading speed."},
+  {id:39,d:'h',q:"An investment dealer decides to implement a smart order router (SOR) that always routes orders to the exchange that pays the dealer the highest rebate, regardless of execution quality. Why does this violate UMIR, and what specific rule is breached?",o:["A. It violates UMIR 7.1 because the dealer hasn't filed adequate supervision procedures","B. It violates both UMIR 7.5 (payment for order flow prohibition) and UMIR 5.1 (best execution) because routing for rebates rather than client execution quality creates a conflict that fundamentally undermines best execution","C. It only violates UMIR 5.1 — the payment for order flow itself is acceptable","D. No UMIR violation if the dealer discloses the rebate arrangement to clients"],a:1,e:"This violates two UMIR rules simultaneously: (1) <strong>UMIR 7.5</strong> prohibits payment for order flow — routing in exchange for rebates rather than execution quality is precisely what this rule targets. (2) <strong>UMIR 5.1</strong> requires best execution — routing to maximize dealer rebates rather than client execution quality is the antithesis of best execution. The dealer is prioritizing its own financial interest (rebates) over its duty to achieve the best outcome for clients. Disclosure in the RDI does NOT cure the UMIR violation — it must be eliminated, not just disclosed."},
+  {id:40,d:'h',q:"An RR suspects their institutional client is receiving MNPI from a company contact and trading on it. The RR has no direct evidence but notes: (1) the client consistently buys before positive announcements, (2) position sizes are unusually large before announcements vs normal, (3) the client refuses to explain the source of their thesis. Under the 2025 gatekeeping standard, what must the RR do?",o:["A. Continue executing the orders — the RR has no proof and institutional clients are sophisticated","B. Confront the client directly and ask if they have insider information","C. Escalate to compliance immediately with all observations documented; do not continue executing orders without compliance clearance","D. File directly with CIRO and the OSC without informing compliance first"],a:2,e:"Under the <strong>2025 proactive gatekeeping standard (IDPC Rule 1400 + UMIR 7.1)</strong>: The pattern of consistent pre-announcement trading with unusual position sizes is a clear red flag. The correct response is: (1) <strong>Document all observations</strong> immediately; (2) <strong>Escalate to compliance</strong> (not confront the client — this could alert the client and facilitate evidence destruction); (3) <strong>Do not continue executing orders</strong> without compliance clearance. Compliance will investigate and determine whether to file a UMIR 10.16 report, file an AML STR with FINTRAC, or refer to law enforcement. Executing orders while having these concerns makes the RR complicit."},
+  {id:41,d:'h',q:"A client enters a stop-limit sell order: stop at $45, limit at $43. The stock drops rapidly from $50 to $38 without trading at $45 or $44 on the way down. What happens?",o:["A. The stop is triggered at $45 and executes at $43 or better","B. The stop is triggered as the price falls through $45, becomes a limit sell at $43 — but since market price is now $38, below the $43 limit, the order does NOT execute and the client retains the position","C. The order executes automatically at $38 — the best available price","D. The exchange cancels the order because the gap was too large"],a:1,e:"In a <strong>gap-down scenario</strong>, the stop is triggered as the price crosses through $45. However, because it is a stop-LIMIT (not stop-MARKET), it becomes a <strong>limit sell at $43</strong>. The current market price is $38 — which is below the $43 limit price. A sell limit will only execute at $43 or HIGHER. Since the market is at $38, the order will NOT execute. The client is stuck holding the position at $38. This is the key risk difference between stop-limit (guarantees price floor but risks non-execution) vs stop-market (guarantees execution but risks gap prices)."},
+  {id:42,d:'h',q:"Under UMIR's VWAP algorithmic execution, a large buy order for 1 million shares is being executed using a VWAP algo during the trading day. Halfway through the day, the stock price gaps up 10% on breaking news. The algo continues to purchase at the new higher prices. What should the trading desk do, and is the VWAP execution consistent with best execution?",o:["A. Continue the VWAP execution — algorithms must always be followed to completion","B. The desk should consider halting or modifying the algo — material market changes may require re-evaluation of the execution strategy to meet best execution obligations; rigidly continuing VWAP after a 10% gap may not represent best execution in the changed market environment","C. Cancel the entire order — VWAP algorithms cannot function after 10% price gaps","D. Switch to a market order immediately to complete execution before the price rises further"],a:1,e:"Best execution is not a mechanical process — it requires judgment. A <strong>10% gap on breaking news is a material market change</strong> that fundamentally alters the execution environment. VWAP was designed for normal market conditions. Continuing to mechanically purchase 1 million shares at the post-gap elevated prices may NOT represent best execution if: (1) the news has materially changed the investment thesis; (2) there is significant adverse information content in the price movement. The trading desk should pause, assess the situation with the client, and determine whether continued execution is in the client's best interest. Rigidly following an algorithm through a material market event without reassessment can violate best execution obligations."},
+  {id:43,d:'h',q:"An options trader writes (sells) 100 naked call contracts on XYZ at a $2 premium, strike price $50, when XYZ is trading at $45. XYZ subsequently rises to $80. Calculate the approximate loss to the options writer, and explain why naked call writing carries unlimited loss risk.",o:["A. Loss = $2,000 (premium received) — maximum loss is always the premium","B. Loss = approximately $28,000 (($80−$50) × 100 contracts × 100 shares − $2,000 premium) — unlimited risk because there is no cap on how high a stock price can rise","C. Loss = $5,000 — the difference between the strike ($50) and the original price ($45) × 100 contracts","D. Loss = $0 — the call option expires worthless if the stock is above the strike"],a:1,e:"For a naked call writer: (1) Premium received = $2 × 100 contracts × 100 shares = $20,000 collected. However: (2) At expiry at $80, the calls are exercised. Writer must buy XYZ at $80 to deliver at $50 strike. Loss per share = $80 − $50 = $30. (3) Total loss = $30 × 100 × 100 = $300,000 − $20,000 premium = <strong>$280,000 loss</strong>. This illustrates why naked calls have <strong>unlimited theoretical loss</strong> — a stock can theoretically rise to infinity, and the naked call writer is obligated to deliver at the strike price regardless. This is why the options trading agreement must explicitly disclose unlimited loss potential for naked writers."},
+  {id:44,d:'h',q:"A dealer's trading surveillance system flags that accounts registered to three different clients (X, Y, Z) have been: buying identical volumes of a thinly-traded security on the same days, always at almost identical times, and then collectively selling after the price rises. Each client is unrelated on paper. What manipulation scheme does this suggest, and what are the dealer's obligations?",o:["A. This is coincidence — unrelated clients can have similar strategies","B. This suggests coordinated manipulation (possibly a 'pump and dump' scheme involving related parties using separate accounts to disguise their relationship). The dealer must investigate, treat accounts as potentially related, consider restricting future orders, and file a UMIR 10.16 report if a violation is confirmed","C. This requires only enhanced KYC update for each client","D. The dealer must contact all three clients for an explanation before taking any action"],a:1,e:"The pattern is classic coordinated manipulation — potentially a <strong>'pump and dump' scheme</strong> using apparently unrelated accounts to disguise a coordinated manipulation. The dealer's obligations: (1) <strong>Investigate immediately</strong> — look for connections between X, Y, Z (shared IP addresses, similar account funding sources, related beneficial ownership); (2) <strong>Do not contact the clients</strong> before compliance investigates — tipping them off could facilitate evidence destruction; (3) <strong>Consider restricting order entry</strong> for the involved securities pending investigation; (4) If a violation is found: file <strong>UMIR 10.16 report</strong> to CIRO; also consider filing an <strong>AML STR with FINTRAC</strong>; (5) Document every step with timestamps."},
+  {id:45,d:'h',q:"A dealer provides DEA access to a high-frequency trading firm. The HFT firm's algorithm begins placing and cancelling large numbers of orders in the final 10 minutes of trading in a way that appears to artificially push the closing price of several TSX-listed securities above key benchmark levels. The dealer's compliance officer observes this in real-time. What is the complete sequence of required actions, and under which specific UMIR rules?",o:["A. Wait until the trading day ends, then review the activity and decide whether to report","B. Immediately activate the DEA kill switch (UMIR 7.13); forthwith notify CIRO (UMIR 7.13(6)); preserve all records; conduct internal investigation (UMIR 10.16); file gatekeeper report by 15th of following month if violation confirmed (UMIR 10.16); consider AML reporting if applicable","C. Contact the HFT firm first to obtain an explanation before activating the kill switch","D. Report only to the TSX (not CIRO) since the manipulation is occurring on a TSX-listed security"],a:1,e:"This is a complete multi-rule violation scenario requiring immediate action: (1) <strong>Kill switch (UMIR 7.13)</strong> — immediately terminate the HFT firm's DEA access. This is not discretionary — the compliance officer observes it in real time. (2) <strong>CIRO notification forthwith (UMIR 7.13(6))</strong> — immediately notify CIRO of the DEA breach. Cannot wait for end of month. (3) <strong>Preserve all records</strong> — order logs, timestamps, cancellation data, all communications. (4) <strong>Internal investigation (UMIR 7.1 + 10.16)</strong> — document findings. (5) <strong>File UMIR 10.16 report</strong> by 15th of following month if investigation confirms a violation (UMIR 2.1 manipulation — marking the close). All records retained 7 years. The suspected activity violates UMIR 2.1 (marking the close — creating artificial prices) and UMIR 2.2 (orders without intent to trade)."}
+];
+
+let ans={},cor=0,att=0;
+function build(){
+  const c=document.getElementById('qC');c.innerHTML='';
+  Qs.forEach((q,i)=>{
+    const dc=q.d==='e'?'de':q.d==='m'?'dm':'dh',dl=q.d==='e'?'Easy':q.d==='m'?'Medium':'Hard';
+    const opts=q.o.map((o,oi)=>`<div class="qq-opt" onclick="chk(${i},${oi})" id="o${i}_${oi}"><span class="opt-l">${String.fromCharCode(65+oi)}</span>${o.substring(3)}</div>`).join('');
+    c.innerHTML+=`<div class="qq" id="q${i}"><div class="qq-top"><span class="qq-num">Q${q.id}</span><span class="qq-diff ${dc}">${dl}</span><div class="qq-text">${q.q}</div></div><div class="qq-opts">${opts}</div><div class="qq-exp" id="e${i}">${q.e}</div></div>`;
+  });
+}
+function chk(qi,sel){
+  if(ans[qi]!==undefined)return;
+  ans[qi]=sel;att++;
+  const q=Qs[qi],ok=sel===q.a;if(ok)cor++;
+  for(let i=0;i<q.o.length;i++){const el=document.getElementById(`o${qi}_${i}`);if(i===q.a)el.classList.add('correct');else if(i===sel&&!ok)el.classList.add('wrong');}
+  document.getElementById(`e${qi}`).classList.add('show');
+  document.getElementById('sLbl').textContent=`${cor}/${att}`;
+  if(att===Qs.length){const pct=Math.round(cor/Qs.length*100),fd=document.getElementById('fS');fd.style.display='block';fd.innerHTML=`<div class="score-n">${pct}%</div><div class="score-l">${cor}/${Qs.length} correct — ${pct>=60?'✅ Pass':'❌ Below pass'}</div>`;}
+}
+function revealAll(){Qs.forEach((q,qi)=>{if(ans[qi]!==undefined)return;ans[qi]=q.a;for(let i=0;i<q.o.length;i++){const el=document.getElementById(`o${qi}_${i}`);if(i===q.a)el.classList.add('correct');}document.getElementById(`e${qi}`).classList.add('show');});}
+function resetQ(){ans={};cor=0;att=0;document.getElementById('sLbl').textContent='0/45';document.getElementById('fS').style.display='none';build();}
+function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function updateUI(){
+  const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;
+  const f=document.getElementById('pFill');if(f)f.style.width=Math.min(dh>0?(st/dh)*100:0,100)+'%';
+  const btn=document.getElementById('scrolltop');st>500?btn.classList.add('visible'):btn.classList.remove('visible');
+  const ids=['cover','s61','s62','s63','s64','s65','s66','s67','s68','s69','s610','s611','s612','summary','quiz'];
+  let cur='cover';ids.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<100)cur=id;});
+  document.querySelectorAll('.nl').forEach(l=>{l.classList.remove('active');const fn=l.getAttribute('onclick')||'';if(fn.includes("'"+cur+"'"))l.classList.add('active');});
+}
+window.addEventListener('scroll',updateUI,{passive:true});
+build();updateUI();
+</script>
+</body>
+</html>

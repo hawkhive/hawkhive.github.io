@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIRE Element 2 — Prospective Client Relationships</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --surface: #161b27;
+  --surface2: #1e2538;
+  --border: rgba(255,255,255,0.07);
+  --teal: #00c9a7;
+  --teal-dim: rgba(0,201,167,0.15);
+  --teal-border: rgba(0,201,167,0.3);
+  --gold: #f0b429;
+  --gold-dim: rgba(240,180,41,0.12);
+  --red: #f56565;
+  --red-dim: rgba(245,101,101,0.12);
+  --blue: #63b3ed;
+  --blue-dim: rgba(99,179,237,0.12);
+  --purple: #b794f4;
+  --purple-dim: rgba(183,148,244,0.12);
+  --text: #e2e8f0;
+  --text-muted: #718096;
+  --text-dim: #a0aec0;
+  --sidebar-w: 300px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+#sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-track { background: transparent; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.sidebar-header {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(0,201,167,0.08), transparent);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+
+.sidebar-logo {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: var(--teal);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.sidebar-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.sidebar-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.nav-group { padding: 16px 0; }
+
+.nav-group-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0 24px 8px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  position: relative;
+}
+
+.nav-item:hover {
+  background: rgba(0,201,167,0.05);
+  border-left-color: var(--teal);
+}
+
+.nav-item.active {
+  background: var(--teal-dim);
+  border-left-color: var(--teal);
+}
+
+.nav-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--teal);
+  min-width: 28px;
+  padding-top: 2px;
+  font-weight: 500;
+}
+
+.nav-text {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+
+.nav-item:hover .nav-text,
+.nav-item.active .nav-text { color: var(--text); }
+
+.nav-sub {
+  padding: 4px 24px 4px 62px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text-muted);
+  transition: all 0.2s;
+  display: block;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+}
+.nav-sub:hover { color: var(--text-dim); background: rgba(255,255,255,0.02); border-left-color: rgba(0,201,167,0.3); }
+
+.progress-bar {
+  margin: 0 24px 20px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  height: 4px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  border-radius: 10px;
+  width: 0%;
+  transition: width 0.3s;
+}
+.progress-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin: 0 24px 8px;
+}
+
+/* ── MAIN ── */
+#main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  max-width: 100%;
+}
+
+/* COVER */
+.cover {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0f1e 0%, #0f1a2e 50%, #0a1a18 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 80px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,201,167,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.cover::after {
+  content: '';
+  position: absolute;
+  bottom: -100px; left: 30%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(240,180,41,0.05) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.cover-element-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: var(--teal);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cover-element-tag::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--teal);
+}
+
+.cover-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(100px, 15vw, 180px);
+  font-weight: 700;
+  color: rgba(0,201,167,0.08);
+  line-height: 1;
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.cover-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(38px, 5vw, 62px);
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.15;
+  max-width: 800px;
+  margin-bottom: 20px;
+}
+
+.cover-title em {
+  font-style: italic;
+  color: var(--teal);
+}
+
+.cover-summary {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 720px;
+  line-height: 1.8;
+  margin-bottom: 48px;
+}
+
+.cover-stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.cover-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cover-stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.cover-stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* CONTENT AREA */
+.content {
+  padding: 0 80px 120px;
+  max-width: auto;
+}
+
+/* SECTION */
+.section {
+  padding-top: 80px;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-num-badge {
+  background: var(--teal-dim);
+  border: 1px solid var(--teal-border);
+  color: var(--teal);
+  font-family: 'DM Mono', monospace;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  margin-top: 4px;
+}
+
+.section-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+}
+
+/* BODY TEXT */
+.body-text {
+  font-size: 16px;
+  color: var(--text-dim);
+  line-height: 1.85;
+  margin-bottom: 20px;
+}
+
+.body-text strong { color: var(--text); font-weight: 600; }
+.body-text em { color: var(--teal); font-style: normal; font-weight: 500; }
+
+/* SUBSECTIONS */
+.sub {
+  margin-top: 36px;
+}
+
+.sub-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sub-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 20px;
+  background: var(--gold);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.sub-sub {
+  margin-top: 24px;
+}
+
+.sub-sub-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.3px;
+}
+
+.sub-sub-title::before {
+  content: '◆';
+  font-size: 18px;
+  color: var(--teal);
+}
+
+/* CALLOUTS */
+.callout {
+  margin: 24px 0;
+  padding: 18px 20px;
+  border-radius: 8px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.callout.teal { background: var(--teal-dim); border: 1px solid var(--teal-border); }
+.callout.gold { background: var(--gold-dim); border: 1px solid rgba(240,180,41,0.25); }
+.callout.red { background: var(--red-dim); border: 1px solid rgba(245,101,101,0.25); }
+.callout.blue { background: var(--blue-dim); border: 1px solid rgba(99,179,237,0.25); }
+.callout.purple { background: var(--purple-dim); border: 1px solid rgba(183,148,244,0.25); }
+
+.callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+
+.callout-body {}
+.callout-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.callout.teal .callout-label { color: var(--teal); }
+.callout.gold .callout-label { color: var(--gold); }
+.callout.red .callout-label { color: var(--red); }
+.callout.blue .callout-label { color: var(--blue); }
+.callout.purple .callout-label { color: var(--purple); }
+
+.callout p { font-size: 16px; color: var(--text-dim); line-height: 1.7; }
+.callout p strong { color: var(--text); }
+
+/* DEF TABLE */
+.def-table { margin: 20px 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+
+.def-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+}
+
+.def-row:not(:last-child) { border-bottom: 1px solid var(--border); }
+
+.def-term {
+  background: rgba(0,201,167,0.06);
+  padding: 14px 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  color: var(--teal);
+  display: flex;
+  align-items: flex-start;
+  line-height: 1.5;
+  border-right: 1px solid var(--border);
+  font-weight: 500;
+}
+
+.def-val {
+  padding: 14px 16px;
+  font-size: 16px;
+  color: var(--text-dim);
+  line-height: 1.65;
+  background: var(--surface2);
+}
+
+.def-val strong { color: var(--text); }
+
+/* DATA TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+thead tr {
+  background: rgba(0,201,167,0.1);
+  border-bottom: 1px solid var(--teal-border);
+}
+
+th {
+  padding: 12px 16px;
+  text-align: left;
+  font-family: 'DM Mono', monospace;
+  font-size: 16px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-weight: 500;
+}
+
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  line-height: 1.6;
+  vertical-align: top;
+}
+
+td strong { color: var(--text); }
+
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+
+/* HIGHLIGHT CARDS */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.card:hover {
+  border-color: var(--teal-border);
+  transform: translateY(-2px);
+}
+
+.card-icon { font-size: 50px; margin-bottom: 10px;}
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.card-body { font-size: 16px; color: var(--text-muted); line-height: 1.6; }
+
+/* FLOW CHART */
+.flow-wrap {
+  margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.flow-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.flow-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 18px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  min-width: 130px;
+  line-height: 1.35;
+}
+
+.flow-box.teal { background: var(--teal-dim); border-color: var(--teal-border); color: var(--teal); }
+.flow-box.gold { background: var(--gold-dim); border-color: rgba(240,180,41,0.3); color: var(--gold); }
+.flow-box.red { background: var(--red-dim); border-color: rgba(245,101,101,0.3); color: var(--red); }
+
+.flow-arrow {
+  color: var(--text-muted);
+  font-size: 50px;
+  flex-shrink: 0;
+}
+
+.flow-down {
+  color: var(--text-muted);
+  font-size: 50px;
+  padding: 4px 0;
+}
+
+/* PILL */
+.pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'DM Mono', monospace;
+}
+.pill.teal { background: var(--teal-dim); color: var(--teal); border: 1px solid var(--teal-border); }
+.pill.gold { background: var(--gold-dim); color: var(--gold); }
+.pill.red { background: var(--red-dim); color: var(--red); }
+.pill.blue { background: var(--blue-dim); color: var(--blue); }
+
+.pills { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+
+/* COST IMPACT VISUAL */
+.impact-bar-wrap { margin: 20px 0; }
+.impact-bar-item { margin-bottom: 16px; }
+.impact-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+.impact-bar-track {
+  background: rgba(255,255,255,0.06);
+  border-radius: 6px;
+  height: 10px;
+  overflow: hidden;
+}
+.impact-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 1s ease;
+}
+
+/* RISK MATRIX */
+.risk-matrix {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr 1fr;
+  gap: 2px;
+  margin: 20px 0;
+  font-size: 20px;
+}
+.rm-header {
+  background: rgba(0,201,167,0.12);
+  padding: 10px 12px;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--teal);
+  border-radius: 4px;
+}
+.rm-label {
+  background: rgba(0,201,167,0.06);
+  padding: 10px 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+}
+.rm-cell {
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  text-align: center;
+}
+.rm-green { background: rgba(72,187,120,0.12); color: #68d391; }
+.rm-yellow { background: rgba(240,180,41,0.1); color: var(--gold); }
+.rm-red { background: rgba(245,101,101,0.12); color: var(--red); }
+
+/* CHECKLIST */
+.checklist { margin: 16px 0; }
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  font-size: 16px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.check-item strong { color: var(--text); }
+.check-icon { color: var(--teal); font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+/* SUMMARY TABLE AT END */
+.summary-card {
+  background: linear-gradient(135deg, rgba(0,201,167,0.06) 0%, rgba(240,180,41,0.04) 100%);
+  border: 1px solid var(--teal-border);
+  border-radius: 12px;
+  padding: 32px;
+  margin-top: 60px;
+}
+
+.summary-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.top10 { counter-reset: top; }
+.top10-item {
+  counter-increment: top;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.top10-item:last-child { border-bottom: none; }
+.top10-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  color: var(--teal);
+  min-width: 24px;
+  margin-top: 2px;
+}
+.top10-item::before {
+  content: counter(top, decimal-leading-zero);
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  color: var(--teal);
+  min-width: 24px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.top10-item strong { color: var(--text); }
+
+/* DIVIDER */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 20px 0;
+}
+
+/* SCROLL TO TOP */
+#scrolltop {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: var(--teal);
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 28px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,201,167,0.3);
+}
+#scrolltop.visible { opacity: 1; }
+
+/* MOBILE */
+@media (max-width: 900px) {
+  #sidebar { display: none; }
+  #main { margin-left: 0; }
+  .content { padding: 0 24px 80px; }
+  .cover { padding: 60px 24px; }
+  .cover-num { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">CIRE Exam — Element 2</div>
+    <div class="sidebar-title">Prospective Client Relationships</div>
+    <div class="sidebar-subtitle">11 sections · Click to navigate</div>
+  </div>
+
+  <div style="padding: 16px 0 0;">
+    <div class="progress-label">Reading Progress</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Contents</div>
+
+    <a class="nav-item" onclick="scrollToSection('cover')">
+      <span class="nav-num">◉</span>
+      <span class="nav-text">Cover & Overview</span>
+    </a>
+
+    <a class="nav-item" onclick="scrollToSection('s21')">
+      <span class="nav-num">2.1</span>
+      <span class="nav-text">Client Relationship Model</span>
+    </a>
+    <a class="nav-sub" onclick="scrollToSection('s21-rdi')">Relationship Disclosure</a>
+    <a class="nav-sub" onclick="scrollToSection('s21-coi')">Conflicts of Interest</a>
+    <a class="nav-sub" onclick="scrollToSection('s21-suit')">Suitability Assessment</a>
+    <a class="nav-sub" onclick="scrollToSection('s21-perf')">Performance Reporting</a>
+
+    <a class="nav-item" onclick="scrollToSection('s22')">
+      <span class="nav-num">2.2</span>
+      <span class="nav-text">Institutional Client Criteria</span>
+    </a>
+    <a class="nav-sub" onclick="scrollToSection('s22-cats')">7 Categories Explained</a>
+
+    <a class="nav-item" onclick="scrollToSection('s23')">
+      <span class="nav-num">2.3</span>
+      <span class="nav-text">Retail vs Institutional</span>
+    </a>
+
+    <a class="nav-item" onclick="scrollToSection('s24')">
+      <span class="nav-num">2.4</span>
+      <span class="nav-text">NI 45-106 Exemptions</span>
+    </a>
+    <a class="nav-sub" onclick="scrollToSection('s24-ai')">Accredited Investors</a>
+    <a class="nav-sub" onclick="scrollToSection('s24-other')">Other Exemptions</a>
+
+    <a class="nav-item" onclick="scrollToSection('s25')">
+      <span class="nav-num">2.5</span>
+      <span class="nav-text">Onboarding Process</span>
+    </a>
+    <a class="nav-sub" onclick="scrollToSection('s25-kyc')">KYC Rules</a>
+    <a class="nav-sub" onclick="scrollToSection('s25-inst')">Institutional Exceptions</a>
+    <a class="nav-sub" onclick="scrollToSection('s25-pc')">Permitted Client Waivers</a>
+
+    <a class="nav-item" onclick="scrollToSection('s26')">
+      <span class="nav-num">2.6</span>
+      <span class="nav-text">Retail Client Information</span>
+    </a>
+    <a class="nav-sub" onclick="scrollToSection('s26-fin')">Financial Circumstances</a>
+    <a class="nav-sub" onclick="scrollToSection('s26-per')">Personal Circumstances</a>
+    <a class="nav-sub" onclick="scrollToSection('s26-know')">Investment Knowledge</a>
+    <a class="nav-sub" onclick="scrollToSection('s26-risk')">Risk Profile</a>
+    <a class="nav-sub" onclick="scrollToSection('s26-obj')">Objectives & Time Horizons</a>
+
+    <a class="nav-item" onclick="scrollToSection('s27')">
+      <span class="nav-num">2.7</span>
+      <span class="nav-text">Third Parties & Professionals</span>
+    </a>
+    <a class="nav-sub" onclick="scrollToSection('s27-poa')">Powers of Attorney</a>
+    <a class="nav-sub" onclick="scrollToSection('s27-tcp')">Trusted Contact Person</a>
+
+    <a class="nav-item" onclick="scrollToSection('s28')">
+      <span class="nav-num">2.8</span>
+      <span class="nav-text">Role of Cost in Product Selection</span>
+    </a>
+
+    <a class="nav-item" onclick="scrollToSection('s29')">
+      <span class="nav-num">2.9</span>
+      <span class="nav-text">Fees, Turnover & Taxes</span>
+    </a>
+
+    <a class="nav-item" onclick="scrollToSection('s210')">
+      <span class="nav-num">2.10</span>
+      <span class="nav-text">Account Agreement & Welcome Package</span>
+    </a>
+
+    <a class="nav-item" onclick="scrollToSection('s211')">
+      <span class="nav-num">2.11</span>
+      <span class="nav-text">Record-Keeping Requirements</span>
+    </a>
+
+    <a class="nav-item" onclick="scrollToSection('summary')">
+      <span class="nav-num">★</span>
+      <span class="nav-text">Master Summary & Top 10</span>
+    </a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+
+<!-- COVER -->
+<div id="cover" class="cover">
+  <div class="cover-num">2</div>
+  <div class="cover-element-tag">CIRE Examination — Element 2</div>
+  <h1 class="cover-title">Prospective<br><em>Client Relationships</em></h1>
+  <p class="cover-summary">A complete, exam-ready study guide covering every sub-topic in Element 2 — from the Client Relationship Model and KYC obligations to suitability assessment, institutional client classifications, cost considerations, and documentation requirements.</p>
+  <div class="cover-stats">
+    <div class="cover-stat"><div class="cover-stat-num">11</div><div class="cover-stat-label">Sections Covered</div></div>
+    <div class="cover-stat"><div class="cover-stat-num">7</div><div class="cover-stat-label">Institutional Categories</div></div>
+    <div class="cover-stat"><div class="cover-stat-num">6</div><div class="cover-stat-label">KYC Data Points</div></div>
+    <div class="cover-stat"><div class="cover-stat-num">$10M</div><div class="cover-stat-label">Institutional Threshold</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ══════════════════════════════════════ 2.1 ══════════════════════════════════════ -->
+<div id="s21" class="section">
+  <div class="section-header">
+    <div class="section-num-badge">2.1</div>
+    <h2 class="section-heading">The Client Relationship Model (CRM2 / CRM3)</h2>
+  </div>
+
+  <p class="body-text">The <strong>Client Relationship Model</strong> is the overarching regulatory framework that governs how investment dealers and their registered individuals must interact with their clients. It was introduced in phases (CRM, CRM2) and continues to evolve (CRM3 enhancements). The framework rests on four interconnected pillars, each designed to ensure that the client-dealer relationship is transparent, fair, and in the client's best interest.</p>
+
+  <div class="callout teal">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <div class="callout-label">Context</div>
+      <p>Before CRM was introduced, many Canadians had no idea how much they were paying their advisors or whether their investments were truly suitable. CRM changed this by mandating <strong>disclosure, transparency, and accountability</strong> at every stage of the relationship. CRM2 brought in performance and cost reporting. CRM3 (ongoing) is pushing for even greater transparency.</p>
+    </div>
+  </div>
+
+  <!-- 2.1.1 Relationship Disclosure -->
+  <div id="s21-rdi" class="sub">
+    <h3 class="sub-title">Relationship Disclosure Information (RDI)</h3>
+
+    <p class="body-text">Before opening an account or as soon as practicable after opening it, a dealer must provide the client with <strong>Relationship Disclosure Information (RDI)</strong>. This is a written document that explains the nature of the client-dealer relationship in plain language. It is not a contract — it is a disclosure document.</p>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">What Must be Disclosed in the RDI</h4>
+      <div class="checklist">
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>Products and services offered</strong> — what types of securities and accounts the firm provides, and what services (advice, order execution, portfolio management) are available.</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>Nature and terms of the relationship</strong> — is the firm acting as agent (on behalf of the client) or as principal (trading from its own inventory)? This is a critical distinction clients must understand.</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>Types of accounts available</strong> — cash accounts, margin accounts, registered accounts (RRSP, TFSA), etc.</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>Fees and charges</strong> — how the firm and the advisor are compensated (commissions, trailer fees, advisory fees, management expense ratios). The client must understand how their advisor makes money.</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>KYC obligations</strong> — explaining to the client WHY their information is collected and that they have a responsibility to keep the firm updated.</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>Suitability obligations</strong> — how the firm determines whether investments are suitable for the client.</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>Conflicts of interest</strong> — material conflicts that exist and how they are managed.</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>CIPF coverage</strong> — explaining the protection available if the firm becomes insolvent.</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>Complaint handling procedures</strong> — how the client can escalate concerns and access CIRO/OBSI.</div></div>
+      </div>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">When RDI Must be Updated</h4>
+      <p class="body-text">The RDI must be updated and re-delivered whenever there is a <strong>significant change</strong> to the information previously provided. Examples include: changes to the firm's fee schedule, new types of conflicts arising, changes in services offered, or regulatory changes that affect the client relationship.</p>
+    </div>
+
+    <div class="callout gold">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body">
+        <div class="callout-label">Exam Note</div>
+        <p>RDI must be provided to <strong>retail clients</strong>. Institutional clients have reduced disclosure requirements because they are presumed to be sophisticated enough to protect their own interests. The exam may test this distinction.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.1.2 Conflicts of Interest -->
+  <div id="s21-coi" class="sub">
+    <h3 class="sub-title">Conflicts of Interest Management & Disclosure</h3>
+
+    <p class="body-text">A <strong>conflict of interest</strong> exists when a dealer's or registered individual's personal interests (financial or otherwise) may interfere with, or appear to interfere with, their duty to act in the client's best interest. Conflicts are inevitable in financial services — what matters is how they are identified, disclosed, and managed.</p>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Types of Conflicts</h4>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">💰</div>
+          <div class="card-title">Financial Conflicts</div>
+          <div class="card-body">Advisor receives a higher commission for recommending Product A over Product B. The financial incentive may bias the recommendation away from the client's best interest.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏢</div>
+          <div class="card-title">Corporate Conflicts</div>
+          <div class="card-body">The dealer is the underwriter of a security it also recommends to clients. The firm has a financial interest in selling the securities it helped issue.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔄</div>
+          <div class="card-title">Proprietary Product Conflicts</div>
+          <div class="card-body">A bank-owned dealer recommends the bank's own mutual funds when third-party funds might better serve the client. Revenue flows back to the parent company.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">👥</div>
+          <div class="card-title">Relationship Conflicts</div>
+          <div class="card-body">Recommending investments in companies run by friends or family members of the advisor. Personal relationships can cloud professional judgment.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">The Three-Step Approach to Conflicts</h4>
+      <div class="flow-wrap">
+        <div class="flow-row">
+          <div class="flow-box teal">1. IDENTIFY<br><small style="font-size:14px;opacity:0.8">Find all material conflicts</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box gold">2. DISCLOSE<br><small style="font-size:14px;opacity:0.8">Tell the client clearly</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box" style="border-color:rgba(183,148,244,0.3);background:var(--purple-dim);color:var(--purple);">3. MANAGE / AVOID<br><small style="font-size:14px;opacity:0.8">Control or eliminate</small></div>
+        </div>
+      </div>
+      <p class="body-text">Some conflicts can be managed through disclosure. Others are so severe they must be <strong>avoided entirely</strong>. Under CIRO's enhanced client-focused reforms, the standard has shifted: dealers must now resolve conflicts <strong>in the client's favour</strong>, not merely disclose them.</p>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Material Conflicts Requiring Written Disclosure</h4>
+      <p class="body-text">A conflict is <strong>material</strong> if a reasonable client would consider it important in deciding whether to take a course of action. Material conflicts must be disclosed in writing as part of the RDI. Examples that must be in writing include:</p>
+      <ul style="padding-left:20px;margin:12px 0;">
+        <li style="margin-bottom:8px;font-size:16px;color:var(--text-dim);">Compensation arrangements that could bias recommendations (trailer fees, volume bonuses)</li>
+        <li style="margin-bottom:8px;font-size:16px;color:var(--text-dim);">Principal trading where the firm is on the other side of the client's trade</li>
+        <li style="margin-bottom:8px;font-size:16px;color:var(--text-dim);">Referral fees paid or received</li>
+        <li style="margin-bottom:8px;font-size:16px;color:var(--text-dim);">Relationships between the dealer and issuers of recommended securities</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2.1.3 Suitability -->
+  <div id="s21-suit" class="sub">
+    <h3 class="sub-title">Suitability Assessment</h3>
+
+    <p class="body-text">The <strong>suitability obligation</strong> is one of the most important duties an investment dealer owes to a retail client. Every investment recommendation, or any transaction that the dealer accepts on behalf of a client, must be <em>suitable</em> for that specific client at that point in time. Suitability is not a one-time assessment — it is an ongoing obligation.</p>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">What Triggers a Suitability Assessment?</h4>
+      <div class="checklist">
+        <div class="check-item"><span class="check-icon">✦</span><div>A new account is opened</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>An investment recommendation is made to the client</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>A client instructs the dealer to make a trade (the dealer must assess even for client-directed trades)</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>The client's KYC information is updated — any change may affect suitability of the existing portfolio</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>A material change in a security's characteristics affects its suitability for existing holders</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>At least annually — firms must periodically review all client accounts for suitability</div></div>
+      </div>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">The Suitability Standard — "Best Interest"</h4>
+      <p class="body-text">Under CIRO's Client Focused Reforms (CFR), the suitability standard was enhanced. It is no longer sufficient to recommend something that is merely "suitable" — registered individuals must now put the <strong>client's interests first</strong>. When multiple suitable options exist, the dealer must recommend the one that is <strong>best for the client</strong>, not the one that generates the highest fee for the dealer.</p>
+
+      <div class="callout red">
+        <div class="callout-icon">🚨</div>
+        <div class="callout-body">
+          <div class="callout-label">Critical Rule Change</div>
+          <p>The Client Focused Reforms introduced a <strong>"best interest" standard</strong> for registered advisors (full-service). For order-execution-only (OEO) accounts where no advice is given, the suitability obligation is modified — the firm does not assess each trade but must still warn clients if they appear to be acting against their own interests in certain situations.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Factors Considered in Suitability</h4>
+      <div class="def-table">
+        <div class="def-row">
+          <div class="def-term">Investment Objectives</div>
+          <div class="def-val">Growth, income, capital preservation, speculation — does the investment align with what the client is trying to achieve?</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Risk Tolerance</div>
+          <div class="def-val">Client's psychological comfort with potential losses. A capital-preservation client should not be in high-volatility equities.</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Risk Capacity</div>
+          <div class="def-val">Client's <em>financial</em> ability to absorb losses. A retiree with no income may have low risk tolerance AND low risk capacity even if they say they're comfortable with risk.</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Time Horizon</div>
+          <div class="def-val">A 5-year investment horizon supports more volatility than a 1-year horizon. Short horizons require more conservative positions.</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Investment Knowledge</div>
+          <div class="def-val">A client who doesn't understand derivatives should not be placed in complex derivative products, regardless of their wealth.</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Financial Situation</div>
+          <div class="def-val">Income, net worth, liquidity needs, liabilities. An investment in illiquid private equity is unsuitable for someone who may need the money in 12 months.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2.1.4 Performance Reporting -->
+  <div id="s21-perf" class="sub">
+    <h3 class="sub-title">Account Performance Reporting</h3>
+
+    <p class="body-text">Under CRM2, dealers are required to provide clients with meaningful, standardized reports about their account performance. These were introduced because clients historically received account statements that showed holdings but no clear picture of returns or costs.</p>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Annual Performance Reports — Required Content</h4>
+      <div class="checklist">
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>Opening and closing market value</strong> of the account for the period</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>Total deposits and withdrawals</strong> during the period</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>Percentage return</strong> using money-weighted rate of return (MWRR) — this shows what the client actually earned after accounting for the timing of cash flows</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>1-year, 3-year, 5-year, and since-inception returns</strong> where data is available</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>Benchmark comparison</strong> — comparing performance to a relevant benchmark (e.g., S&P/TSX Composite), required under CRM3 enhancements</div></div>
+      </div>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Annual Cost Reports (Fee Disclosure)</h4>
+      <p class="body-text">Separate from the performance report, dealers must provide an annual cost report disclosing in <strong>dollar terms</strong> (not just percentages) all charges paid by the client and all compensation received by the dealer in respect of the client's account. This includes:</p>
+      <ul style="padding-left:20px;margin:10px 0;">
+        <li style="margin-bottom:8px;font-size:16px;color:var(--text-dim);">Management fees, advisory fees, wrap fees</li>
+        <li style="margin-bottom:8px;font-size:16px;color:var(--text-dim);">Trailing commissions (trailer fees) from fund companies</li>
+        <li style="margin-bottom:8px;font-size:16px;color:var(--text-dim);">Transaction commissions</li>
+        <li style="margin-bottom:8px;font-size:16px;color:var(--text-dim);">Other charges (administration fees, account transfer fees)</li>
+      </ul>
+      <div class="callout teal">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body">
+          <div class="callout-label">Why Dollar Amounts Matter</div>
+          <p>Before CRM2, clients might be told their MER is "2.5%." On a $200,000 portfolio, 2.5% = <strong>$5,000 per year</strong>. Seeing the dollar amount was a revelation for many Canadians and led to much greater scrutiny of investment costs. The exam may test the distinction between percentage and dollar disclosure.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Account Statements (Quarterly / Monthly)</h4>
+      <p class="body-text">In addition to annual reports, dealers must provide account statements at least <strong>quarterly</strong> (or monthly if there was activity). Statements must show: current market value of each security, cost of each security, book value vs. market value comparison, and recent transactions.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 2.2 ══════════════════════════════════════ -->
+<div id="s22" class="section">
+  <div class="section-header">
+    <div class="section-num-badge">2.2</div>
+    <h2 class="section-heading">CIRO's Institutional Client Classification Rules</h2>
+  </div>
+
+  <p class="body-text">Not all clients receive the same level of protection and disclosure. <strong>Institutional clients</strong> are presumed to be sophisticated enough to protect their own interests — they understand markets, have professional resources, and don't require the same hand-holding as retail investors. CIRO defines institutional clients through a precise list of categories. <strong>You must memorize all seven.</strong></p>
+
+  <div id="s22-cats" class="sub">
+    <h3 class="sub-title">The 7 Categories of Institutional Clients</h3>
+
+    <div class="def-table">
+      <div class="def-row">
+        <div class="def-term">1. Accepted Counterparty</div>
+        <div class="def-val">Entities recognized in derivatives markets as sophisticated counterparties — typically large financial institutions, banks, major dealer members, and central counterparties like CDS and CDCC. They participate in markets under separate professional standards (e.g., ISDA agreements for OTC derivatives) and do not need retail protections.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">2. Accepted Institution</div>
+        <div class="def-val">Federally or provincially regulated financial institutions — banks, credit unions, insurance companies, trust companies, pension funds. These entities have their own professional investment departments and regulatory oversight. Examples: RBC acting as a counterparty (not a client), Sun Life managing its own portfolio, a large credit union's treasury department.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">3. Regulated Entity</div>
+        <div class="def-val">Any entity that is regulated or supervised by a government body and is engaged in activities related to its regulated purpose — includes securities dealers, commodity dealers, advisers, and similar entities. If an entity is itself subject to regulatory oversight, it doesn't need the same protective rules that apply to unregulated retail investors.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">4. Registrant under Securities Law (non-individual)</div>
+        <div class="def-val">A firm (not an individual person) that is registered under applicable securities legislation — e.g., a registered portfolio manager firm, an exempt market dealer, or a commodity trading manager. Note: an <em>individual</em> registrant (a person who is registered) does NOT qualify under this category — only corporate registrants count.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">5. Non-individual with $10M+</div>
+        <div class="def-val">A corporation, partnership, trust, or other non-individual entity that has <strong>total securities and precious metals bullion under administration or management exceeding $10 million</strong>. This is an automatic classification — no consent is required. The entity's size demonstrates sophistication. Examples: a mid-size family office structured as a holding company, a private pension plan with $15M in assets.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">6. Individual with $10M+ (with consent)</div>
+        <div class="def-val">An individual (a natural person) who has total securities and precious metals bullion under administration or management exceeding $10 million, <strong>AND who requests and consents</strong> to being classified as institutional. Unlike Category 5, an individual cannot be automatically classified — they must actively opt in. This is because individuals may still benefit from retail protections even if wealthy.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">7. Hedger with Qualifying Activities (with consent)</div>
+        <div class="def-val">A business that uses derivatives to hedge genuine commercial exposures (e.g., an airline hedging jet fuel costs, a wheat farmer hedging grain prices), and that <strong>requests and consents</strong> to institutional classification for those specific hedging accounts. This applies only to the hedging accounts — their other investment accounts may remain retail. The hedger must have qualifying hedge positions that justify the classification.</div>
+      </div>
+    </div>
+
+    <div class="callout gold">
+      <div class="callout-icon">⭐</div>
+      <div class="callout-body">
+        <div class="callout-label">Memory Framework — 2 Auto, 2 Consent, 3 Structural</div>
+        <p><strong>Auto (no consent needed):</strong> Accepted Counterparty, Accepted Institution, Regulated Entity, Non-individual $10M+ registrant. <strong>Consent required:</strong> Individual $10M+, Hedger. <strong>Key rule:</strong> for non-individuals, SIZE alone qualifies them. For individuals, SIZE + CONSENT is required. For hedgers, qualifying activity + consent is required for those specific accounts only.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 2.3 ══════════════════════════════════════ -->
+<div id="s23" class="section">
+  <div class="section-header">
+    <div class="section-num-badge">2.3</div>
+    <h2 class="section-heading">Retail Client vs Institutional Client — Full Comparison</h2>
+  </div>
+
+  <p class="body-text">Understanding the differences between how retail and institutional clients are treated is critical — many exam questions test whether you can identify what applies to which type of client.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th>Retail Client</th>
+        <th>Institutional Client</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Who they are</strong></td>
+        <td>Individual investors, small businesses, any client who doesn't meet institutional criteria</td>
+        <td>Banks, insurance companies, pension funds, large corporations, high-net-worth entities meeting CIRO criteria</td>
+      </tr>
+      <tr>
+        <td><strong>Sophistication assumed?</strong></td>
+        <td>No — needs full education and explanation</td>
+        <td>Yes — presumed to have professional expertise and resources</td>
+      </tr>
+      <tr>
+        <td><strong>KYC obligations</strong></td>
+        <td>Full KYC required: financial situation, risk tolerance, investment knowledge, objectives, time horizon</td>
+        <td>Reduced KYC — must understand trading nature and ability to assume risk and losses; full retail KYC NOT required</td>
+      </tr>
+      <tr>
+        <td><strong>Suitability assessment</strong></td>
+        <td>Full suitability assessment required for all recommendations and transactions</td>
+        <td>Most suitability obligations do not apply (presumed capable of making their own decisions)</td>
+      </tr>
+      <tr>
+        <td><strong>Relationship Disclosure</strong></td>
+        <td>Full RDI required — all items in the welcome package</td>
+        <td>Reduced disclosure requirements</td>
+      </tr>
+      <tr>
+        <td><strong>Performance reporting</strong></td>
+        <td>Annual performance report and cost report required</td>
+        <td>Reduced reporting requirements — negotiated terms</td>
+      </tr>
+      <tr>
+        <td><strong>Complaint handling</strong></td>
+        <td>Full OBSI access; firm must provide formal complaint handling process</td>
+        <td>Access to CIRO but not necessarily OBSI arbitration (institutional clients are expected to use legal means)</td>
+      </tr>
+      <tr>
+        <td><strong>CIPF protection</strong></td>
+        <td>Full CIPF coverage (up to $1M per category)</td>
+        <td>Some institutional clients also get CIPF coverage — depends on client type</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout blue">
+    <div class="callout-icon">🔵</div>
+    <div class="callout-body">
+      <div class="callout-label">Indian Markets Parallel</div>
+      <p>This is similar to the SEBI distinction between <strong>qualified institutional buyers (QIBs)</strong> and retail investors in Indian IPOs. QIBs (mutual funds, FIIs, banks) get different access and have fewer protections because they're assumed to be sophisticated. Retail investors get reservations and more disclosure. Same underlying philosophy — sophistication determines the level of regulatory protection needed.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 2.4 ══════════════════════════════════════ -->
+<div id="s24" class="section">
+  <div class="section-header">
+    <div class="section-num-badge">2.4</div>
+    <h2 class="section-heading">NI 45-106 — Prospectus Exemptions</h2>
+  </div>
+
+  <p class="body-text">Normally, any company wishing to sell securities to the public must file a prospectus — a costly and time-consuming process. <strong>National Instrument 45-106 (Prospectus Exemptions)</strong> provides a set of defined exemptions that allow securities to be sold without a prospectus to investors who meet certain criteria. The rationale: sophisticated or wealthy investors don't need the same level of prospectus protection as ordinary retail investors.</p>
+
+  <div id="s24-ai" class="sub">
+    <h3 class="sub-title">Accredited Investors (AIs) — The Most Important Exemption</h3>
+
+    <p class="body-text">The <strong>accredited investor exemption</strong> is the most widely used prospectus exemption in Canada. An "accredited investor" is someone who meets specific financial thresholds or qualifications that indicate sophistication. Securities can be sold to accredited investors without a prospectus.</p>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Who Qualifies as an Accredited Investor?</h4>
+      <p class="body-text">The full list is in NI 45-106. Key categories for the exam:</p>
+      <div class="def-table">
+        <div class="def-row">
+          <div class="def-term">Individual — Net Income</div>
+          <div class="def-val">Individual (or jointly with spouse) who earned net income exceeding <strong>$200,000</strong> in each of the two most recent calendar years and expects to exceed $200,000 this year. Jointly with spouse: <strong>$300,000</strong>.</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Individual — Net Assets</div>
+          <div class="def-val">Individual (or jointly with spouse) with net assets exceeding <strong>$5 million</strong>. This is total assets minus total liabilities — a high bar.</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Individual — Financial Assets</div>
+          <div class="def-val">Individual (alone or jointly with spouse) with financial assets (cash + securities, excluding real estate) exceeding <strong>$1 million</strong> (before tax). This is the most commonly used AI threshold.</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Registered Adviser/Dealer</div>
+          <div class="def-val">A person registered as an adviser or dealer under securities legislation automatically qualifies as an accredited investor.</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Financial Institutions</div>
+          <div class="def-val">Banks, credit unions, insurance companies, trust companies, pension funds with net assets over $5 million — all qualify.</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Corporations/Entities $5M+</div>
+          <div class="def-val">Any company, partnership, trust or other entity with net assets exceeding $5 million on its most recently prepared financial statements.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Risk Acknowledgement Form</h4>
+      <p class="body-text">When selling to an individual accredited investor (not institutional), dealers must obtain a signed <strong>risk acknowledgement form</strong>. This confirms the investor understands: they are purchasing a security under a prospectus exemption, the security may have restricted resale rights, and there is no continuous disclosure obligation on the issuer (for exempt market securities).</p>
+    </div>
+  </div>
+
+  <div id="s24-other" class="sub">
+    <h3 class="sub-title">Other Common NI 45-106 Exemptions</h3>
+    <div class="def-table">
+      <div class="def-row">
+        <div class="def-term">Minimum Amount Exemption</div>
+        <div class="def-val">Investment of at least <strong>$150,000</strong> in a single transaction by a purchaser (non-individual). The large size of the investment implies sophistication. Note: only applies to non-individuals.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Offering Memorandum (OM) Exemption</div>
+        <div class="def-val">Issuer provides an Offering Memorandum (a less onerous disclosure document than a full prospectus). The OM must meet prescribed requirements. Investment limits apply for certain investor types.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Private Issuer Exemption</div>
+        <div class="def-val">Private companies (not reporting issuers) can sell securities to family members, close personal friends, close business associates, and accredited investors without a prospectus.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Employee Exemption</div>
+        <div class="def-val">Issuers can sell securities to their employees, directors, officers, and certain consultants without a prospectus. Used for stock option plans and employee share purchase plans.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Crowd Funding Exemption</div>
+        <div class="def-val">Allows small businesses to raise limited amounts of capital through registered crowdfunding portals. Investment limits apply per investor (typically $2,500 per issuer, $10,000 total per calendar year for non-AIs).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 2.5 ══════════════════════════════════════ -->
+<div id="s25" class="section">
+  <div class="section-header">
+    <div class="section-num-badge">2.5</div>
+    <h2 class="section-heading">The Investment Dealer Onboarding Process</h2>
+  </div>
+
+  <p class="body-text">Onboarding is the process of accepting a new client and opening their account. It is a highly regulated process designed to ensure the dealer knows who the client is, understands their needs, and has documented the relationship properly before any trading begins.</p>
+
+  <div class="flow-wrap" style="margin:24px 0;">
+    <div class="flow-row">
+      <div class="flow-box teal">1. Client Inquiry / Referral</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">2. New Account Application</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">3. AML Identity Verification</div>
+    </div>
+    <div class="flow-down">↓</div>
+    <div class="flow-row">
+      <div class="flow-box gold">6. Account Active</div>
+      <div class="flow-arrow">←</div>
+      <div class="flow-box">5. Client Signs & Returns</div>
+      <div class="flow-arrow">←</div>
+      <div class="flow-box">4. KYC Collected &amp; RDI Delivered</div>
+    </div>
+  </div>
+
+  <div id="s25-kyc" class="sub">
+    <h3 class="sub-title">Know Your Client (KYC) Rules — Application</h3>
+
+    <p class="body-text">KYC is the foundation of the client relationship. Before making any recommendation or accepting any trade instruction, the dealer must collect sufficient information to understand the client. KYC has two components: the <strong>legal/AML component</strong> (identity verification, source of funds — see Element 1, PCMLTFA) and the <strong>investment suitability component</strong> (financial situation, objectives, risk tolerance, etc.).</p>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">KYC Must be Kept Current</h4>
+      <p class="body-text">KYC is not a one-time collection at account opening. CIRO requires that KYC information be kept <strong>current and accurate</strong>. Dealers must:</p>
+      <div class="checklist">
+        <div class="check-item"><span class="check-icon">✦</span><div>Update KYC whenever the client reports a significant life event (marriage, divorce, retirement, inheritance, job loss)</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>Conduct a KYC review at least every <strong>36 months</strong> for retail clients (or more frequently if events warrant)</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>Reassess suitability of the entire portfolio whenever KYC changes — a change in financial situation might make previously suitable investments unsuitable</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>Document all KYC updates with date, method of collection, and what changed</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s25-inst" class="sub">
+    <h3 class="sub-title">Exceptions for Institutional Investors</h3>
+
+    <p class="body-text">When dealing with institutional clients, the onboarding requirements are significantly reduced. The key differences:</p>
+    <div class="def-table">
+      <div class="def-row">
+        <div class="def-term">Reduced KYC</div>
+        <div class="def-val">Dealers dealing with institutional clients need only understand the nature of the trading relationship, the institution's ability to assume risk and losses, and any specific restrictions. They do NOT need the full retail KYC questionnaire.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">No Suitability</div>
+        <div class="def-val">The dealer is generally not required to assess whether specific investments are suitable for the institution — the institution is presumed capable of making its own investment decisions.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">No RDI Requirement</div>
+        <div class="def-val">The full Relationship Disclosure Information document is not required for institutional clients. Key terms are typically set out in a professional counterparty agreement.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Reduced Reporting</div>
+        <div class="def-val">Annual performance and cost reports as required for retail clients are not mandated in the same way — terms are negotiated between the parties.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s25-pc" class="sub">
+    <h3 class="sub-title">'Permitted Client' Waivers and Exemptions</h3>
+
+    <p class="body-text">A <strong>Permitted Client</strong> is a defined category under NI 31-103. The list overlaps significantly with accredited investors but generally represents a higher threshold of sophistication. Permitted client status allows certain regulatory requirements to be waived upon request.</p>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Key Permitted Client Categories (NI 31-103)</h4>
+      <div class="pills">
+        <span class="pill teal">Registered dealer / adviser</span>
+        <span class="pill teal">Pension fund with $100M+ assets</span>
+        <span class="pill teal">Investment fund</span>
+        <span class="pill teal">Bank / credit union / insurance co</span>
+        <span class="pill teal">Individual with $5M+ financial assets</span>
+        <span class="pill teal">Person with net assets $25M+ (entity)</span>
+      </div>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">What Can a Permitted Client Waive?</h4>
+      <p class="body-text">A permitted client can waive specific protections that exist for their benefit. Key waivers available:</p>
+      <div class="checklist">
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>Suitability waiver</strong> — a permitted client may waive the dealer's obligation to assess suitability on their trades. They are telling the dealer: "I understand my own needs, don't second-guess my investment decisions."</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div><strong>KYC waiver</strong> — a permitted client may waive certain KYC obligations (not identity verification — that's AML related and cannot be waived).</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>The waiver must be in writing and signed by the client</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>The client can revoke the waiver at any time by giving written notice</div></div>
+      </div>
+    </div>
+
+    <div class="callout gold">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body">
+        <div class="callout-label">Important Distinction — Permitted Client vs Accredited Investor</div>
+        <p><strong>Accredited Investor</strong> = can buy securities sold under a prospectus exemption (NI 45-106). <strong>Permitted Client</strong> = can waive certain ongoing regulatory protections (NI 31-103). They are different instruments with different purposes. A person can be one, both, or neither.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 2.6 ══════════════════════════════════════ -->
+<div id="s26" class="section">
+  <div class="section-header">
+    <div class="section-num-badge">2.6</div>
+    <h2 class="section-heading">Retail Client Information — The 6 KYC Dimensions</h2>
+  </div>
+
+  <p class="body-text">When onboarding a retail client, the dealer must collect detailed information across six key dimensions. Together, these paint a complete picture of the client that enables proper suitability assessment. Think of these six dimensions as the building blocks of a client's investment profile.</p>
+
+  <!-- Financial Circumstances -->
+  <div id="s26-fin" class="sub">
+    <h3 class="sub-title">1. Financial Circumstances</h3>
+    <p class="body-text">Understanding the client's financial position is fundamental. This includes:</p>
+    <div class="def-table">
+      <div class="def-row">
+        <div class="def-term">Income</div>
+        <div class="def-val">Annual income from all sources: employment, business, rental income, pension, government benefits (CPP, OAS). Higher income = greater ability to absorb losses and invest regularly.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Liquid Net Worth</div>
+        <div class="def-val">Financial assets that can be quickly converted to cash (savings, stocks, bonds, GICs). Liquid net worth determines what's available for investment and emergency reserves.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Fixed Assets / Net Worth</div>
+        <div class="def-val">Real estate, business interests, vehicles minus liabilities (mortgages, loans, credit card debt). Total net worth = assets − liabilities. This gives the big picture of wealth.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Liabilities</div>
+        <div class="def-val">Outstanding debts including mortgage, car loans, student loans, credit cards. High debt load may reduce risk capacity even if income is high.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Liquidity Needs</div>
+        <div class="def-val">Does the client need access to their investment funds in the short term (emergency fund, planned purchase, upcoming retirement)? Liquidity needs constrain the types of investments that are suitable.</div>
+      </div>
+    </div>
+    <div class="callout teal">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <div class="callout-label">Risk Capacity vs Risk Tolerance</div>
+        <p><strong>Risk capacity</strong> is determined by financial circumstances — can the client <em>afford</em> to lose money? A retiree living on fixed income has LOW risk capacity regardless of how they feel about risk. <strong>Risk tolerance</strong> is psychological — how does the client <em>feel</em> about potential losses? These two can conflict, and when they do, the lower of the two should guide the suitability assessment.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Personal Circumstances -->
+  <div id="s26-per" class="sub">
+    <h3 class="sub-title">2. Personal Circumstances</h3>
+    <p class="body-text">Personal factors significantly influence appropriate investment strategy. Key items to collect:</p>
+    <div class="checklist">
+      <div class="check-item"><span class="check-icon">✦</span><div><strong>Age</strong> — affects time horizon and risk capacity. A 30-year-old has decades to recover from losses; a 70-year-old may not.</div></div>
+      <div class="check-item"><span class="check-icon">✦</span><div><strong>Employment status and stability</strong> — a government employee with a defined benefit pension has more financial security than a commission-based salesperson.</div></div>
+      <div class="check-item"><span class="check-icon">✦</span><div><strong>Family situation</strong> — dependents (children, elderly parents) create financial obligations that reduce risk capacity. Spousal income affects household financial resilience.</div></div>
+      <div class="check-item"><span class="check-icon">✦</span><div><strong>Tax situation</strong> — marginal tax rate affects whether registered (RRSP, TFSA) or non-registered accounts are more beneficial, and whether dividend income, capital gains, or interest income is preferred.</div></div>
+      <div class="check-item"><span class="check-icon">✦</span><div><strong>Health and life expectancy considerations</strong> — serious illness may dramatically shorten time horizon and change investment objectives.</div></div>
+    </div>
+  </div>
+
+  <!-- Investment Knowledge -->
+  <div id="s26-know" class="sub">
+    <h3 class="sub-title">3. Investment Knowledge</h3>
+    <p class="body-text">A client cannot give informed consent to investments they don't understand. CIRO requires dealers to assess the client's knowledge level and use it in suitability assessments.</p>
+    <table>
+      <thead>
+        <tr><th>Knowledge Level</th><th>Description</th><th>Implications for Suitability</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>None / Novice</strong></td>
+          <td>No prior investment experience. Doesn't understand basic concepts like diversification, risk, or compound returns.</td>
+          <td>Should not be placed in complex products. Simple products (GICs, balanced mutual funds, blue-chip ETFs) appropriate.</td>
+        </tr>
+        <tr>
+          <td><strong>Limited</strong></td>
+          <td>Some experience with basic products (savings bonds, term deposits, simple mutual funds). Understands general concept of markets.</td>
+          <td>Can hold diversified equity funds. Not suitable for individual stocks, options, or complex structured products.</td>
+        </tr>
+        <tr>
+          <td><strong>Good</strong></td>
+          <td>Familiar with stocks, bonds, mutual funds. Has invested before. Understands market cycles and risk/return tradeoffs.</td>
+          <td>Can hold individual equities, ETFs, bonds. Complex options strategies and leveraged products still require more knowledge.</td>
+        </tr>
+        <tr>
+          <td><strong>Sophisticated</strong></td>
+          <td>Deep understanding of markets, products, strategies. May have professional training or extensive experience.</td>
+          <td>May be appropriate for options, futures, alternative investments, leveraged strategies — subject to other KYC factors.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout red">
+      <div class="callout-icon">🚨</div>
+      <div class="callout-body">
+        <div class="callout-label">Key Point</div>
+        <p>A wealthy client with $5M in assets but <strong>no investment knowledge</strong> should NOT be placed in complex derivatives or alternative investments — <strong>wealth does not substitute for knowledge</strong>. Knowledge level is an independent suitability factor. This is a common exam trap.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risk Profile -->
+  <div id="s26-risk" class="sub">
+    <h3 class="sub-title">4. Risk Profile — Tolerance AND Capacity</h3>
+    <p class="body-text">The risk profile combines two distinct concepts that must both be assessed:</p>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Risk Tolerance (Psychological Willingness)</h4>
+      <p class="body-text">How much volatility and potential loss the client is <em>psychologically willing</em> to accept. Assessed through questions like: "If your portfolio dropped 20%, what would you do?" or "How would you feel about a temporary loss of $50,000 if it meant higher long-term returns?" Common categories: <strong>Conservative, Moderate, Balanced, Growth, Aggressive</strong>.</p>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Risk Capacity (Financial Ability)</h4>
+      <p class="body-text">The client's <em>financial ability</em> to absorb losses without it affecting their lifestyle or financial plan. Determined by: income stability, time horizon, liquidity needs, existing debts, and overall net worth. Someone who says they're comfortable with high risk (high tolerance) but retires in 2 years and needs the money for income (low capacity) has a mismatch. <strong>The lower of the two must take precedence.</strong></p>
+    </div>
+
+    <div class="risk-matrix">
+      <div class="rm-header"></div>
+      <div class="rm-header">Low Risk Capacity</div>
+      <div class="rm-header">Medium Risk Capacity</div>
+      <div class="rm-header">High Risk Capacity</div>
+      <div class="rm-label">Low Tolerance</div>
+      <div class="rm-cell rm-green">Conservative portfolio<br><small>Capital preservation</small></div>
+      <div class="rm-cell rm-green">Conservative portfolio<br><small>Tolerance is the constraint</small></div>
+      <div class="rm-cell rm-green">Conservative portfolio<br><small>Tolerance is the constraint</small></div>
+      <div class="rm-label">Med Tolerance</div>
+      <div class="rm-cell rm-green">Conservative<br><small>Capacity is the constraint</small></div>
+      <div class="rm-cell rm-yellow">Balanced portfolio</div>
+      <div class="rm-cell rm-yellow">Moderate-growth</div>
+      <div class="rm-label">High Tolerance</div>
+      <div class="rm-cell rm-green">Conservative<br><small>Capacity is the constraint</small></div>
+      <div class="rm-cell rm-yellow">Balanced-growth</div>
+      <div class="rm-cell rm-red">Growth / Aggressive portfolio</div>
+    </div>
+  </div>
+
+  <!-- Objectives -->
+  <div id="s26-obj" class="sub">
+    <h3 class="sub-title">5 & 6. Investment Objectives and Time Horizon</h3>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Investment Objectives</h4>
+      <div class="def-table">
+        <div class="def-row">
+          <div class="def-term">Capital Preservation</div>
+          <div class="def-val">Primary goal is to not lose money. Client accepts low returns in exchange for safety. Appropriate for: retirees needing income, short time horizons, clients who cannot tolerate losses. Products: GICs, government bonds, money market funds.</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Income</div>
+          <div class="def-val">Generate regular cash flow from investments. Typical for retirees or clients needing supplemental income. Products: dividend stocks, bond ladders, REITs, income-focused ETFs.</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Growth</div>
+          <div class="def-val">Increase the value of capital over time. Client accepts more volatility for higher expected returns. Typical for younger investors with long time horizons. Products: equities, equity ETFs, equity mutual funds.</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Speculation</div>
+          <div class="def-val">High-risk, high-potential-return investments. Client accepts possibility of total loss. Products: options, small-cap stocks, crypto, leveraged ETFs. ONLY appropriate for a small portion of a well-funded portfolio and clients with high knowledge and capacity.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Investment Time Horizon</h4>
+      <p class="body-text">Time horizon is how long the client intends to hold investments before needing the money. It is one of the most important suitability factors because it determines how much volatility is acceptable — short horizons require more conservative investments since there's no time to recover from a market downturn.</p>
+      <div class="def-table">
+        <div class="def-row"><div class="def-term">Short-term (0-3 years)</div><div class="def-val">Conservative investments only — GICs, T-bills, short-term bonds. Cannot risk market volatility erasing the capital needed soon.</div></div>
+        <div class="def-row"><div class="def-term">Medium-term (3–10 years)</div><div class="def-val">Balanced approach — mix of equities and fixed income. Can accept some volatility but needs protection against large drawdowns.</div></div>
+        <div class="def-row"><div class="def-term">Long-term (10+ years)</div><div class="def-val">Can hold higher equity exposure — long time horizon allows recovery from market downturns. Historical equity returns reward patience.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 2.7 ══════════════════════════════════════ -->
+<div id="s27" class="section">
+  <div class="section-header">
+    <div class="section-num-badge">2.7</div>
+    <h2 class="section-heading">Third Parties & Other Professionals in the Client's Life</h2>
+  </div>
+
+  <p class="body-text">A client's investment decisions are rarely made in isolation. Other professionals — lawyers, accountants, insurance agents — and trusted contacts play important roles. Dealers must identify and document these relationships to ensure proper communication and to protect vulnerable clients.</p>
+
+  <div id="s27-poa" class="sub">
+    <h3 class="sub-title">Powers of Attorney (POA)</h3>
+
+    <p class="body-text">A <strong>Power of Attorney</strong> is a legal document that grants one person (the <em>attorney</em> or <em>agent</em>) the right to make decisions on behalf of another person (the <em>grantor</em> or <em>donor</em>). In the investment context, a POA allows someone to trade, instruct, and manage an investment account on behalf of the account holder.</p>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Types of POA Relevant to Investment Accounts</h4>
+      <div class="def-table">
+        <div class="def-row">
+          <div class="def-term">General POA</div>
+          <div class="def-val">Broad authority to act on the grantor's behalf across financial matters. Automatically <strong>terminates</strong> if the grantor becomes mentally incapacitated (unless it's an enduring/continuing POA).</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Continuing / Enduring POA</div>
+          <div class="def-val">Remains valid even if the grantor becomes mentally incapacitated. Most relevant for elderly clients who may develop dementia. Critical for estate planning. Also called "durable POA."</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Limited / Specific POA</div>
+          <div class="def-val">Grants authority only for specific actions (e.g., "authority to trade only in account #12345 until December 31"). Automatically expires when the specified transaction or date is reached.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Dealer's Obligations When a POA is Presented</h4>
+      <div class="checklist">
+        <div class="check-item"><span class="check-icon">✦</span><div>Obtain and review the original or certified copy of the POA document</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>Verify the POA is valid, not revoked, and covers the specific account and actions requested</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>Verify the identity of the attorney acting under the POA</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>Document the POA on the account and note its scope and any limitations</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>Continue to watch for signs of financial exploitation (elder abuse) — the existence of a POA does not eliminate the duty of care to the account holder</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Other Professionals</h3>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Lawyers</h4>
+      <p class="body-text">Lawyers may be relevant in estate planning, corporate restructuring, or trust arrangements that affect investment accounts. When a client's lawyer has authority over certain decisions (e.g., as executor of an estate), the dealer should have the relevant legal documents on file. Confidentiality is critical — dealers should not share client information with a client's lawyer without explicit client consent (subject to legal exceptions).</p>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Accountants</h4>
+      <p class="body-text">Accountants (CPAs) manage the tax implications of investment decisions. A client's accountant may advise on optimal account types (RRSP vs TFSA vs non-registered), tax-loss harvesting strategies, or timing of withdrawals. Dealers often coordinate with accountants when preparing tax documents (T3, T5, T5008 slips). Again, information sharing requires client consent.</p>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Insurance Agents</h4>
+      <p class="body-text">Insurance (life, disability, critical illness) is closely linked to financial planning. A client's insurance picture affects how much risk they can take in their investment portfolio — a client with comprehensive disability insurance has more financial security than one without. Some products (segregated funds, annuities) sit at the intersection of insurance and investments.</p>
+    </div>
+
+    <div id="s27-tcp" class="sub-sub">
+      <h4 class="sub-sub-title">Trusted Contact Person (TCP) — Important New Requirement</h4>
+      <p class="body-text">One of the most significant recent additions to the onboarding framework. <strong>Dealers are required to ask retail clients to designate a Trusted Contact Person (TCP)</strong>. This is someone the dealer can contact if:</p>
+      <div class="checklist">
+        <div class="check-item"><span class="check-icon">✦</span><div>The dealer has concerns about possible <strong>financial exploitation</strong> of the client</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>The dealer has concerns about the client's <strong>mental capacity</strong> to make financial decisions (e.g., signs of cognitive decline, dementia)</div></div>
+        <div class="check-item"><span class="check-icon">✦</span><div>The dealer cannot reach the client and there is a concern about the client's well-being</div></div>
+      </div>
+
+      <div class="callout red">
+        <div class="callout-icon">🚨</div>
+        <div class="callout-body">
+          <div class="callout-label">Critical Rules about the TCP</div>
+          <p>The TCP <strong>does NOT have authority over the account</strong> — they are not an authorized agent or attorney. The dealer can only <em>contact</em> the TCP to ask questions and share concerns. The TCP cannot give instructions or make trades. The client does NOT need to name a TCP — it must be <em>offered</em>, but the client can decline. If a TCP is named, their contact information must be documented in the account file.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 2.8 ══════════════════════════════════════ -->
+<div id="s28" class="section">
+  <div class="section-header">
+    <div class="section-num-badge">2.8</div>
+    <h2 class="section-heading">The Role of Cost in Product Selection</h2>
+  </div>
+
+  <p class="body-text">Under CIRO's Client Focused Reforms, the <strong>cost of an investment is explicitly part of the suitability assessment</strong>. This was a significant change from the previous regime, where cost was somewhat secondary to other suitability factors. Now, when recommending between two otherwise suitable products, the dealer must consider cost as a factor — and cannot recommend a more expensive product without a client-specific reason.</p>
+
+  <div class="sub">
+    <h3 class="sub-title">Why Cost Matters in Product Selection</h3>
+    <p class="body-text">Consider two ETFs that both track the S&P 500 index. If ETF A has a Management Expense Ratio (MER) of 0.20% and ETF B has an MER of 0.60%, and they provide essentially the same exposure, recommending ETF B without justification would be hard to defend as being in the client's best interest. The higher cost directly and measurably erodes the client's return.</p>
+    <div class="def-table">
+      <div class="def-row">
+        <div class="def-term">Management Expense Ratio (MER)</div>
+        <div class="def-val">Total annual cost of operating a mutual fund or ETF, expressed as a percentage of assets. Includes management fees, operating expenses, and taxes. A 2% MER means the client pays $2,000 per year on a $100,000 investment regardless of returns. The biggest drag on long-term returns.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Trading Expense Ratio (TER)</div>
+        <div class="def-val">The cost of trading within a fund (brokerage commissions paid by the fund on its own portfolio transactions). Added to MER to get the total cost of ownership. Relevant for active funds that trade frequently.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Trailer Fees / Trailing Commissions</div>
+        <div class="def-val">Ongoing fee paid by the fund company to the dealer (and the advisor) as long as the client holds the fund. Typically 0.5%–1% annually, included in the MER. A significant conflict of interest — the advisor has a financial incentive to keep clients in funds that pay high trailers.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Sales Charges (Front-end / Back-end)</div>
+        <div class="def-val">Front-end (initial sales charge): % deducted when buying. Back-end (deferred sales charge / DSC): fee charged when selling within a set period. DSC funds are now banned in Canada — as of June 2022, DSC mutual funds cannot be sold to new investors.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Commission / Transaction Fees</div>
+        <div class="def-val">Per-trade fees charged by the dealer for executing transactions. For active traders, these can be significant. For buy-and-hold investors, commission costs are a one-time factor.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Cost as a Suitability Factor — The Standard</h3>
+    <p class="body-text">When selecting between products:</p>
+    <div class="checklist">
+      <div class="check-item"><span class="check-icon">✦</span><div>If two products are otherwise equal in suitability, the <strong>lower-cost option should be recommended</strong></div></div>
+      <div class="check-item"><span class="check-icon">✦</span><div>If recommending a higher-cost product, the dealer must have a <strong>client-specific reason</strong> that justifies the additional cost (e.g., the higher-cost product provides a service or feature the client specifically values)</div></div>
+      <div class="check-item"><span class="check-icon">✦</span><div>This applies to account type selection too — if a client would be better served by a lower-cost fee-based account vs. a commission account, the dealer should recommend the better option even if it means lower revenue</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 2.9 ══════════════════════════════════════ -->
+<div id="s29" class="section">
+  <div class="section-header">
+    <div class="section-num-badge">2.9</div>
+    <h2 class="section-heading">Impact of Fees, Turnover, and Taxes on Investment Returns</h2>
+  </div>
+
+  <p class="body-text">Understanding how fees, portfolio turnover, and taxes erode investment returns is critical knowledge for serving clients. These are the three "silent killers" of long-term wealth. An investment that appears to offer an 8% return may actually deliver 4–5% after accounting for all three factors.</p>
+
+  <div class="sub">
+    <h3 class="sub-title">Impact of Fees</h3>
+    <p class="body-text">The compounding effect of fees over time is dramatically underestimated by most investors. Consider this example:</p>
+    <div class="callout teal">
+      <div class="callout-icon">📊</div>
+      <div class="callout-body">
+        <div class="callout-label">Compound Fee Impact Example</div>
+        <p>$100,000 invested for 25 years at 7% gross return: <br>
+        At <strong>0% fees (theoretical)</strong>: $542,743<br>
+        At <strong>1% total fees</strong>: $439,785 (lost $102,958 to fees)<br>
+        At <strong>2.5% total fees</strong>: $296,880 (lost $245,863 to fees — 45% of potential wealth!)<br>
+        <strong>Fee drag compounds just like returns do — but in reverse.</strong></p>
+      </div>
+    </div>
+    <div class="impact-bar-wrap">
+      <div class="impact-bar-item">
+        <div class="impact-bar-label"><span>Low-cost ETF (0.2% MER)</span><span style="color:var(--teal);">High impact on wealth</span></div>
+        <div class="impact-bar-track"><div class="impact-bar-fill" style="width:92%;background:var(--teal);"></div></div>
+      </div>
+      <div class="impact-bar-item">
+        <div class="impact-bar-label"><span>Active mutual fund (1.5% MER)</span><span style="color:var(--gold);">Moderate drag</span></div>
+        <div class="impact-bar-track"><div class="impact-bar-fill" style="width:75%;background:var(--gold);"></div></div>
+      </div>
+      <div class="impact-bar-item">
+        <div class="impact-bar-label"><span>High-MER fund (2.5% MER)</span><span style="color:var(--red);">Significant wealth erosion</span></div>
+        <div class="impact-bar-track"><div class="impact-bar-fill" style="width:55%;background:var(--red);"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Impact of Portfolio Turnover</h3>
+    <p class="body-text"><strong>Turnover</strong> refers to how frequently securities within a portfolio are bought and sold. High turnover has two negative effects on returns:</p>
+    <div class="def-table">
+      <div class="def-row">
+        <div class="def-term">Transaction Costs</div>
+        <div class="def-val">Every trade incurs bid-ask spread costs and potentially commissions. High-turnover active funds and frequent trading strategies generate significant transaction costs that directly reduce returns. The Trading Expense Ratio (TER) captures this.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Tax Trigger on Capital Gains</div>
+        <div class="def-val">Each time a gain is realized (a security is sold at a profit), it creates a taxable event. High-turnover strategies force the investor to pay capital gains tax earlier. In a tax-deferred account (RRSP), this doesn't matter. In a non-registered account, it significantly reduces after-tax returns.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Market Impact</div>
+        <div class="def-val">For large institutional portfolios, frequent large trades can move the market against the trader (slippage). This is less relevant for most retail clients but important for institutional clients.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Impact of Taxes</h3>
+    <p class="body-text">Canada's tax system treats different types of investment income differently, and choosing the right account type and investment type can make a large difference in after-tax returns.</p>
+    <table>
+      <thead>
+        <tr><th>Income Type</th><th>Tax Treatment</th><th>Best Account Location</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Interest Income</strong></td>
+          <td>Taxed as ordinary income at the full marginal rate (most punitive). Example: a client in the 46% Ontario top bracket pays 46¢ on every $1 of bond interest.</td>
+          <td>Hold bonds/GICs <strong>inside RRSP/TFSA</strong> to shelter interest income.</td>
+        </tr>
+        <tr>
+          <td><strong>Canadian Dividends</strong></td>
+          <td>Eligible for the dividend tax credit — taxed at a preferential rate. Effective rate is significantly lower than interest income at the same marginal rate.</td>
+          <td>Efficient in non-registered accounts due to dividend tax credit. Less beneficial inside RRSP (loses the credit).</td>
+        </tr>
+        <tr>
+          <td><strong>Capital Gains</strong></td>
+          <td>Only 50% of capital gains are included in income (inclusion rate). The other 50% is tax-free. Very tax-efficient. Note: 2024 budget proposed increasing inclusion rate to 2/3 for gains over $250K — this is evolving.</td>
+          <td>Can be held in non-registered accounts efficiently. Tax deferred until sale.</td>
+        </tr>
+        <tr>
+          <td><strong>Foreign Income / Dividends</strong></td>
+          <td>Foreign dividends are taxed as ordinary income in Canada (no dividend tax credit). Foreign withholding taxes may apply but can be credited.</td>
+          <td>Hold foreign dividend-paying stocks <strong>inside RRSP</strong> — US dividends paid to RRSPs are exempt from US withholding tax under the tax treaty.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout blue">
+      <div class="callout-icon">🔵</div>
+      <div class="callout-body">
+        <div class="callout-label">Account Optimization Strategy</div>
+        <p>Advisors should consider <strong>asset location</strong> — placing different types of investments in the most tax-efficient account type. The optimal order: <strong>Interest-bearing assets → RRSP/TFSA</strong> (highest tax rate, shelter first). <strong>Growth equity (capital gains)</strong> → Non-registered or TFSA (low tax, deferred). <strong>US stocks → RRSP</strong> (no withholding tax under treaty).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 2.10 ══════════════════════════════════════ -->
+<div id="s210" class="section">
+  <div class="section-header">
+    <div class="section-num-badge">2.10</div>
+    <h2 class="section-heading">Account Agreement & Firm Welcome Package</h2>
+  </div>
+
+  <p class="body-text">When a new client account is opened, the dealer must provide a comprehensive welcome package containing specific documents mandated by CIRO. These documents ensure the client is fully informed about the terms of their relationship with the dealer before any investing begins.</p>
+
+  <div class="sub">
+    <h3 class="sub-title">Required Documents in the Welcome Package</h3>
+
+    <div class="def-table">
+      <div class="def-row">
+        <div class="def-term">New Account Application Form (NAAF)</div>
+        <div class="def-val">The central onboarding document. Contains all collected KYC information: personal details, employment, financial situation, investment knowledge, risk tolerance/capacity, investment objectives, time horizon. The NAAF is a legal record — the client signs it confirming accuracy. Must be retained by the firm.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Fee Schedule</div>
+        <div class="def-val">A clear, written disclosure of all fees and charges the client may incur: commission rates (flat or tiered by trade size), account administration fees, annual maintenance fees, transfer fees, management fees if applicable. Must be in plain language. Under CRM2, this is now in dollar amounts for annual costs, not just percentages.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">CIRO Account Opening Brochure</div>
+        <div class="def-val">A standardized CIRO-produced document that explains to the client: what CIRO is and does, what being a client of a CIRO member means, how to file a complaint with CIRO, how CIPF protects them, and their rights and responsibilities as an investor. This ensures all clients receive consistent baseline information regardless of which firm they use.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Relationship Disclosure Information (RDI)</div>
+        <div class="def-val">The comprehensive relationship disclosure document covering nature of the relationship, services offered, conflicts, suitability, KYC obligations, and CIPF coverage (as detailed in Section 2.1 above). One of the most important documents in the package.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Conflicts of Interest Disclosures</div>
+        <div class="def-val">A specific disclosure of all material conflicts of interest that the dealer has identified. Must be in writing, in plain language. Examples: "We may receive trailing commissions from fund companies whose products we recommend," or "Our firm may act as principal (dealer) when executing your trades, which creates a conflict of interest."</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Complaint Handling Procedures & Brochure</div>
+        <div class="def-val">Must clearly explain: how to make a complaint to the firm (internal escalation process), the timeline for response (acknowledge within 5 days, resolve within 90 days), who the designated Compliance department is, how to escalate to CIRO if unsatisfied, and how to access OBSI for independent dispute resolution if the internal process fails to resolve the complaint.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Account Agreement (Terms & Conditions)</div>
+        <div class="def-val">The legal contract between the client and the dealer. Covers: authorization to execute trades, margin agreement (if applicable), lending of securities (if applicable), authorization to hold securities in street name, privacy policy, and other legal terms governing the account.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Risk Acknowledgement Forms</div>
+        <div class="def-val">Required for specific high-risk products or accounts: options trading agreement (explains risks of options), margin account risk disclosure, short selling risk disclosure, foreign currency risk disclosure. Client must sign these before engaging in the relevant activities.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 2.11 ══════════════════════════════════════ -->
+<div id="s211" class="section">
+  <div class="section-header">
+    <div class="section-num-badge">2.11</div>
+    <h2 class="section-heading">Documenting, Filing & Maintaining Client Records</h2>
+  </div>
+
+  <p class="body-text">Proper record-keeping is not just good practice — it is a regulatory obligation under CIRO rules and the PCMLTFA. Records serve multiple purposes: they enable suitability assessments, provide evidence in regulatory reviews and litigation, and allow continuity if an advisor changes or leaves the firm.</p>
+
+  <div class="sub">
+    <h3 class="sub-title">Types of Records and Retention Periods</h3>
+    <table>
+      <thead>
+        <tr><th>Record Type</th><th>Content</th><th>Retention Period</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Client Account Records (KYC)</strong></td>
+          <td>New Account Application, KYC updates, suitability assessments</td>
+          <td><strong>7 years</strong> after account is closed</td>
+        </tr>
+        <tr>
+          <td><strong>Transaction Records</strong></td>
+          <td>Order tickets, trade confirmations, blotters</td>
+          <td><strong>7 years</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Account Statements</strong></td>
+          <td>Monthly/quarterly statements provided to clients</td>
+          <td><strong>7 years</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Client Correspondence</strong></td>
+          <td>Emails, letters, notes of client conversations</td>
+          <td><strong>7 years</strong></td>
+        </tr>
+        <tr>
+          <td><strong>AML/Identity Verification Records</strong></td>
+          <td>ID verification documents, beneficial ownership records, suspicious transaction notes</td>
+          <td><strong>5 years</strong> from end of business relationship (PCMLTFA)</td>
+        </tr>
+        <tr>
+          <td><strong>Complaint Records</strong></td>
+          <td>Written record of complaint, actions taken, resolution</td>
+          <td><strong>7 years</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Requirements for Documentation</h3>
+    <div class="checklist">
+      <div class="check-item"><span class="check-icon">✦</span><div><strong>Timeliness</strong> — records must be created promptly. Trade records must be created at the time of the transaction; KYC updates must be documented when the information is collected, not weeks later.</div></div>
+      <div class="check-item"><span class="check-icon">✦</span><div><strong>Accuracy</strong> — records must accurately reflect what actually happened. Altering records (even to correct a mistake after the fact without proper notation) is a serious violation.</div></div>
+      <div class="check-item"><span class="check-icon">✦</span><div><strong>Completeness</strong> — all required information must be present. A KYC form missing the risk tolerance or investment objective sections is non-compliant.</div></div>
+      <div class="check-item"><span class="check-icon">✦</span><div><strong>Accessibility</strong> — records must be retrievable quickly. CIRO examiners can request records within short timeframes during inspections.</div></div>
+      <div class="check-item"><span class="check-icon">✦</span><div><strong>Security</strong> — records containing personal information must be stored securely (PIPEDA obligation) with access controls limiting who can view client data.</div></div>
+      <div class="check-item"><span class="check-icon">✦</span><div><strong>Non-alteration</strong> — original records must be preserved. If corrections are needed, they must be made with a notation showing what was changed, by whom, and when — the original entry must remain visible.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Documenting Suitability Determinations</h3>
+    <p class="body-text">This is increasingly important under the Client Focused Reforms. Whenever a suitability assessment is performed (recommendation, trade, account review), the dealer must <strong>document the basis for the suitability determination</strong>. This means the file should show:</p>
+    <ul style="padding-left:20px;margin:12px 0;">
+      <li style="margin-bottom:8px;font-size:16px;color:var(--text-dim);">The specific KYC information relied upon</li>
+      <li style="margin-bottom:8px;font-size:16px;color:var(--text-dim);">How the recommended product aligns with the client's objectives, risk profile, time horizon, and knowledge</li>
+      <li style="margin-bottom:8px;font-size:16px;color:var(--text-dim);">Why the specific product was selected over alternatives (particularly if a higher-cost option was chosen)</li>
+      <li style="margin-bottom:8px;font-size:16px;color:var(--text-dim);">For client-directed trades where the client overrode the advisor's recommendation: documentation of the discussion and the client's explicit instruction to proceed</li>
+    </ul>
+    <div class="callout red">
+      <div class="callout-icon">🚨</div>
+      <div class="callout-body">
+        <div class="callout-label">Regulatory Audit Trail</div>
+        <p>In a CIRO compliance examination or enforcement proceeding, the first thing regulators look at is the paper trail. A well-documented suitability rationale provides a strong defence. An undocumented recommendation — even if actually suitable — is difficult to defend. <strong>"If it wasn't documented, it didn't happen"</strong> is the regulatory mindset.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ SUMMARY ══════════════════════════════════════ -->
+<div id="summary" class="section">
+  <div class="summary-card">
+    <div class="summary-title">🏆 Element 2 — Master Summary & Top 12 Exam Points</div>
+    <div class="top10">
+      <div class="top10-item"><strong>CRM has 4 pillars:</strong> Relationship Disclosure (RDI), Conflicts of Interest management, Suitability Assessment, and Account Performance Reporting. Know what each requires.</div>
+      <div class="top10-item"><strong>7 institutional client categories</strong> — memorize all 7. Key trigger: non-individuals auto-qualify at $10M+. Individuals need $10M+ AND written consent to opt in. Hedgers need qualifying activities AND consent for those specific accounts only.</div>
+      <div class="top10-item"><strong>Retail vs institutional</strong> — retail gets full KYC, suitability, RDI, performance reports. Institutional gets reduced obligations because they're presumed sophisticated.</div>
+      <div class="top10-item"><strong>Accredited investor thresholds (NI 45-106):</strong> $1M financial assets OR $200K income (or $300K joint) for 2 years OR $5M net assets. Memorize these numbers — they're directly tested.</div>
+      <div class="top10-item"><strong>Permitted client ≠ accredited investor</strong> — different instruments, different purposes. AI = can buy exempt market securities. Permitted client = can waive suitability/KYC obligations. Must know the distinction.</div>
+      <div class="top10-item"><strong>6 KYC dimensions for retail clients:</strong> Financial circumstances, Personal circumstances, Investment knowledge, Risk profile (tolerance AND capacity), Investment objectives, Time horizon. Both risk tolerance AND risk capacity matter — the lower drives suitability.</div>
+      <div class="top10-item"><strong>Trusted Contact Person (TCP):</strong> Dealer MUST offer to collect a TCP. TCP cannot give instructions. TCP is contacted only if dealer suspects exploitation or incapacity. Client can decline to name one.</div>
+      <div class="top10-item"><strong>Cost is now a suitability factor</strong> under Client Focused Reforms. When two products are equally suitable, recommend the lower-cost one. Must have client-specific reason to recommend higher cost.</div>
+      <div class="top10-item"><strong>Tax hierarchy:</strong> Interest = highest tax (shelter in RRSP/TFSA first). Canadian dividends = tax credit (OK in non-registered). Capital gains = 50% inclusion (efficient in non-registered, deferred until sale). US dividends in RRSP = no withholding tax.</div>
+      <div class="top10-item"><strong>Welcome package must include:</strong> Fee schedule, CIRO account opening brochure, Conflicts of interest disclosures, Complaint handling procedures and brochure — plus NAAF, RDI, and account agreement.</div>
+      <div class="top10-item"><strong>Record retention:</strong> Most client and transaction records = 7 years. AML records = 5 years (PCMLTFA). Documentation must be timely, accurate, complete, secure, and non-alterable.</div>
+      <div class="top10-item"><strong>DSC funds are banned</strong> in Canada as of June 2022. Front-end loads still exist but must be disclosed. Trailer fees exist but are a disclosed conflict of interest.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+
+<button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// Smooth scroll to section
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Update active nav
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    // Find matching nav item
+    const items = document.querySelectorAll('.nav-item');
+    items.forEach(item => {
+      if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(id)) {
+        item.classList.add('active');
+      }
+    });
+  }
+}
+
+// Progress bar
+function updateProgress() {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  const fill = document.getElementById('progressFill');
+  if (fill) fill.style.width = Math.min(progress, 100) + '%';
+
+  // Scroll to top button
+  const btn = document.getElementById('scrolltop');
+  if (scrollTop > 600) btn.classList.add('visible');
+  else btn.classList.remove('visible');
+
+  // Update active nav based on scroll position
+  const sections = ['cover','s21','s22','s23','s24','s25','s26','s27','s28','s29','s210','s211','summary'];
+  let current = 'cover';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 120) current = id;
+  });
+
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('active');
+    const onclick = item.getAttribute('onclick') || '';
+    if (onclick.includes("'" + current + "'")) item.classList.add('active');
+  });
+}
+
+window.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+</script>
+
+</body>
+</html>

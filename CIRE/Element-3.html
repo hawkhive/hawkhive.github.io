@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIRE Element 3 — Scope of Client Relationships</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #fdf8f0;
+  --warm: #f5ede0;
+  --warm2: #ede3d4;
+  --ink: #1c1409;
+  --ink2: #3d2f1f;
+  --ink3: #6b5744;
+  --muted: #9c8878;
+  --border: #d9cbbf;
+  --amber: #c47b1a;
+  --amber-bg: #fef3e2;
+  --amber-border: #f0c070;
+  --rust: #b84c2a;
+  --rust-bg: #fdf0eb;
+  --rust-border: #e8a090;
+  --forest: #2a5c3a;
+  --forest-bg: #edf5f0;
+  --forest-border: #90c4a0;
+  --navy: #1e3560;
+  --navy-bg: #edf1f9;
+  --navy-border: #90aad8;
+  --sidebar-w: 290px;
+  --accent: #c47b1a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: #2b2018;
+  font-family: 'Outfit', sans-serif;
+  color: var(--ink);
+  display: flex;
+}
+
+/* ─── SIDEBAR ─── */
+#sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--ink2);
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+#sidebar::-webkit-scrollbar { width: 3px; }
+#sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+
+.sb-head {
+  padding: 28px 22px 22px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.sb-badge {
+  font-family: 'Fira Code', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--amber);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sb-badge::after { content:''; flex:1; height:1px; background:rgba(196,123,26,0.3); }
+
+.sb-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 17px;
+  color: #f5ede0;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.sb-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+}
+
+/* Progress */
+.sb-progress { padding: 14px 22px 4px; }
+.sb-progress-label { font-size: 10px; color: rgba(255,255,255,0.3); margin-bottom: 6px; font-family: 'Fira Code', monospace; }
+.sb-progress-track { background: rgba(255,255,255,0.07); border-radius: 4px; height: 3px; }
+.sb-progress-fill { height: 100%; background: linear-gradient(90deg, var(--amber), #e8a040); border-radius: 4px; width: 0%; transition: width 0.3s; }
+
+/* Nav */
+.nav-section { padding: 10px 0; }
+.nav-section-label {
+  padding: 6px 22px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.25);
+  text-transform: uppercase;
+  font-family: 'Fira Code', monospace;
+}
+
+.nav-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 22px;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all 0.18s;
+  text-decoration: none;
+}
+.nav-link:hover { background: rgba(255,255,255,0.04); border-left-color: rgba(196,123,26,0.5); }
+.nav-link.active { background: rgba(196,123,26,0.12); border-left-color: var(--amber); }
+
+.nav-num {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  color: var(--amber);
+  min-width: 30px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.nav-text { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.4; transition: color 0.18s; }
+.nav-link:hover .nav-text, .nav-link.active .nav-text { color: rgba(255,255,255,0.85); }
+
+.nav-sub-link {
+  display: block;
+  padding: 4px 22px 4px 62px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all 0.18s;
+  text-decoration: none;
+  line-height: 1.4;
+}
+.nav-sub-link:hover { color: rgba(255,255,255,0.55); border-left-color: rgba(196,123,26,0.3); }
+
+/* ─── MAIN ─── */
+#main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  background: var(--cream);
+  min-height: 100vh;
+}
+
+/* COVER */
+.cover {
+  background: var(--ink2);
+  min-height: 100vh;
+  padding: 80px 80px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.cover-texture {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(196,123,26,0.03) 30px, rgba(196,123,26,0.03) 31px),
+    repeating-linear-gradient(-45deg, transparent, transparent 30px, rgba(196,123,26,0.03) 30px, rgba(196,123,26,0.03) 31px);
+}
+.cover-glow {
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(196,123,26,0.12) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.cover-glow2 {
+  position: absolute;
+  bottom: -50px; left: 20%;
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(184,76,42,0.07) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.cover-eyebrow {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--amber);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+}
+.cover-eyebrow::before { content: '§'; font-size: 18px; }
+
+.cover-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(40px, 5.5vw, 68px);
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.1;
+  max-width: 650px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.cover-title em { color: var(--amber); font-style: italic; }
+
+.cover-divider {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--amber), transparent);
+  margin: 24px 0;
+  position: relative;
+}
+
+.cover-desc {
+  font-size: 16px;
+  color: rgba(245,237,224,0.6);
+  max-width: 560px;
+  line-height: 1.85;
+  margin-bottom: 52px;
+  position: relative;
+}
+
+.cover-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  max-width: 600px;
+  border: 1px solid rgba(196,123,26,0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+.cover-stat {
+  padding: 20px;
+  background: rgba(255,255,255,0.03);
+  border-right: 1px solid rgba(196,123,26,0.15);
+}
+.cover-stat:last-child { border-right: none; }
+.cover-stat-n {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--amber);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.cover-stat-l { font-size: 10px; color: rgba(255,255,255,0.3); line-height: 1.3; }
+
+/* ─── CONTENT ─── */
+.content {
+  max-width: 840px;
+  padding: 0 72px 120px;
+}
+
+/* SECTION */
+.section {
+  padding-top: 80px;
+}
+.section-rule {
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+  margin-bottom: 32px;
+}
+
+.sec-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.sec-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  color: var(--amber);
+  padding: 5px 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+.sec-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+/* BODY */
+.body { font-size: 15px; color: var(--ink3); line-height: 1.85; margin-bottom: 18px; }
+.body strong { color: var(--ink); font-weight: 600; }
+.body em { color: var(--amber); font-style: normal; font-weight: 500; }
+
+/* SUBSECTION */
+.sub { margin-top: 34px; }
+.sub-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink2);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--warm2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sub-title-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--amber);
+  flex-shrink: 0;
+}
+
+.sub-sub { margin-top: 22px; }
+.sub-sub-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink2);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: 0.2px;
+}
+.sub-sub-title::before { content: '▸'; color: var(--amber); font-size: 12px; }
+
+/* CALLOUTS */
+.callout {
+  margin: 22px 0;
+  padding: 16px 20px;
+  border-radius: 6px;
+  border-left: 3px solid;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.callout.amber { background: var(--amber-bg); border-color: var(--amber); }
+.callout.rust { background: var(--rust-bg); border-color: var(--rust); }
+.callout.forest { background: var(--forest-bg); border-color: var(--forest); }
+.callout.navy { background: var(--navy-bg); border-color: var(--navy); }
+
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.callout-inner {}
+.callout-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+.callout.amber .callout-label { color: var(--amber); }
+.callout.rust .callout-label { color: var(--rust); }
+.callout.forest .callout-label { color: var(--forest); }
+.callout.navy .callout-label { color: var(--navy); }
+.callout p { font-size: 13.5px; color: var(--ink3); line-height: 1.7; }
+.callout p strong { color: var(--ink); }
+
+/* DEF TABLE */
+.def-table { margin: 18px 0; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+.def-row { display: grid; grid-template-columns: 200px 1fr; }
+.def-row:not(:last-child) { border-bottom: 1px solid var(--border); }
+.def-term {
+  background: var(--warm);
+  padding: 12px 15px;
+  font-family: 'Fira Code', monospace;
+  font-size: 11.5px;
+  color: var(--amber);
+  border-right: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  line-height: 1.5;
+  font-weight: 500;
+}
+.def-val {
+  background: var(--cream);
+  padding: 12px 15px;
+  font-size: 13.5px;
+  color: var(--ink3);
+  line-height: 1.65;
+}
+.def-val strong { color: var(--ink); }
+
+/* TABLE */
+table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 13.5px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+thead tr { background: var(--ink2); }
+th { padding: 11px 14px; text-align: left; font-family: 'Fira Code', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--amber); font-weight: 500; }
+td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--ink3); line-height: 1.6; vertical-align: top; }
+td strong { color: var(--ink); }
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: var(--warm); }
+
+/* COMPARISON CARD */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 22px 0; }
+.compare-card {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.compare-header {
+  padding: 14px 18px;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.compare-card.rr .compare-header { background: var(--navy); color: #fff; }
+.compare-card.ir .compare-header { background: var(--forest); color: #fff; }
+.compare-body { background: var(--cream); padding: 16px 18px; }
+.compare-item {
+  font-size: 13px;
+  color: var(--ink3);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--warm2);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.5;
+}
+.compare-item:last-child { border-bottom: none; }
+.compare-item::before { content: '✓'; color: var(--forest); font-weight: 700; flex-shrink: 0; font-size: 12px; margin-top: 1px; }
+.compare-card.ir .compare-item::before { color: var(--navy); }
+.compare-item.no::before { content: '✗'; color: var(--rust); }
+
+/* CHECKLIST */
+.checklist { margin: 14px 0; }
+.chk {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 14px;
+  border-radius: 5px;
+  margin-bottom: 4px;
+  background: var(--warm);
+  border: 1px solid var(--border);
+  font-size: 13.5px;
+  color: var(--ink3);
+  line-height: 1.55;
+}
+.chk strong { color: var(--ink); }
+.chk-icon { color: var(--amber); font-size: 12px; flex-shrink: 0; margin-top: 2px; }
+
+/* FLOW */
+.flow { display: flex; align-items: stretch; gap: 4px; flex-wrap: wrap; margin: 22px 0; }
+.flow-step {
+  flex: 1;
+  min-width: 110px;
+  background: var(--ink2);
+  color: var(--cream);
+  padding: 14px 16px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.flow-step.amber { background: var(--amber); color: var(--ink); }
+.flow-step.rust { background: var(--rust); color: #fff; }
+.flow-arrow { display: flex; align-items: center; color: var(--muted); font-size: 18px; padding: 0 4px; flex-shrink: 0; }
+
+/* PILL TAGS */
+.pills { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+.pill {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 500;
+  font-family: 'Fira Code', monospace;
+  border: 1px solid;
+}
+.pill.amber { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-border); }
+.pill.rust { background: var(--rust-bg); color: var(--rust); border-color: var(--rust-border); }
+.pill.forest { background: var(--forest-bg); color: var(--forest); border-color: var(--forest-border); }
+.pill.navy { background: var(--navy-bg); color: var(--navy); border-color: var(--navy-border); }
+
+/* HIGHLIGHT BOX */
+.highlight-box {
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: 8px;
+  padding: 24px 28px;
+  margin: 22px 0;
+}
+.highlight-box-title {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--amber);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.highlight-box p { font-size: 14px; color: rgba(245,237,224,0.75); line-height: 1.75; }
+.highlight-box p strong { color: var(--amber); }
+
+/* STRATEGY CARDS */
+.strat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 22px 0; }
+.strat-card {
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.strat-header {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 13px;
+}
+.strat-card.active .strat-header { background: var(--rust-bg); color: var(--rust); border-bottom: 1px solid var(--rust-border); }
+.strat-card.passive .strat-header { background: var(--forest-bg); color: var(--forest); border-bottom: 1px solid var(--forest-border); }
+.strat-body { background: var(--cream); padding: 14px 16px; font-size: 13px; color: var(--ink3); line-height: 1.65; }
+
+/* SUMMARY */
+.summary-section {
+  background: var(--ink);
+  border-radius: 10px;
+  padding: 36px;
+  margin-top: 60px;
+}
+.summary-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+.summary-sub { font-size: 12px; color: rgba(255,255,255,0.3); font-family: 'Fira Code', monospace; letter-spacing: 1px; margin-bottom: 28px; }
+.top-item {
+  display: flex;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-size: 14px;
+  color: rgba(245,237,224,0.65);
+  line-height: 1.65;
+  align-items: flex-start;
+}
+.top-item:last-child { border-bottom: none; }
+.top-item strong { color: var(--amber); }
+.top-n {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: rgba(196,123,26,0.6);
+  min-width: 26px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* SCROLL TOP */
+#scrolltop {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  background: var(--amber);
+  color: var(--ink);
+  border: none;
+  border-radius: 50%;
+  width: 42px; height: 42px;
+  font-size: 18px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+#scrolltop.visible { opacity: 1; }
+
+@media (max-width: 900px) {
+  #sidebar { display: none; }
+  #main { margin-left: 0; }
+  .content { padding: 0 24px 80px; }
+  .cover { padding: 60px 24px; }
+  .compare-grid, .strat-grid { grid-template-columns: 1fr; }
+  .def-row { grid-template-columns: 1fr; }
+  .cover-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sb-head">
+    <div class="sb-badge">CIRE Exam · Element 3</div>
+    <div class="sb-title">Scope of Client Relationships</div>
+    <div class="sb-sub">17 sections · Click to jump</div>
+  </div>
+  <div class="sb-progress">
+    <div class="sb-progress-label">Progress</div>
+    <div class="sb-progress-track"><div class="sb-progress-fill" id="pFill"></div></div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Overview</div>
+    <a class="nav-link" onclick="goTo('cover')"><span class="nav-num">◉</span><span class="nav-text">Cover & Introduction</span></a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Roles & Duties</div>
+    <a class="nav-link" onclick="goTo('s31')"><span class="nav-num">3.1</span><span class="nav-text">Registered Representative (RR)</span></a>
+    <a class="nav-sub-link" onclick="goTo('s31-retail')">Retail vs Institutional</a>
+    <a class="nav-sub-link" onclick="goTo('s31-rec')">Recommendations</a>
+    <a class="nav-sub-link" onclick="goTo('s31-port')">Portfolio Management</a>
+
+    <a class="nav-link" onclick="goTo('s32')"><span class="nav-num">3.2</span><span class="nav-text">Investment Representative (IR)</span></a>
+    <a class="nav-sub-link" onclick="goTo('s32-orders')">Taking & Entering Orders</a>
+    <a class="nav-sub-link" onclick="goTo('s32-errors')">Error Correction</a>
+    <a class="nav-sub-link" onclick="goTo('s32-prohib')">Prohibition on Advice</a>
+
+    <a class="nav-link" onclick="goTo('s33')"><span class="nav-num">3.3</span><span class="nav-text">Trust, Agency & Fiduciary Duty</span></a>
+    <a class="nav-sub-link" onclick="goTo('s33-trust')">Trust</a>
+    <a class="nav-sub-link" onclick="goTo('s33-agency')">Agency</a>
+    <a class="nav-sub-link" onclick="goTo('s33-fid')">Fiduciary Duty</a>
+
+    <a class="nav-link" onclick="goTo('s34')"><span class="nav-num">3.4</span><span class="nav-text">Relationship Disclosure</span></a>
+    <a class="nav-link" onclick="goTo('s35')"><span class="nav-num">3.5</span><span class="nav-text">Retail Dealer Services</span></a>
+    <a class="nav-link" onclick="goTo('s36')"><span class="nav-num">3.6</span><span class="nav-text">Institutional Dealer Services</span></a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Obligations</div>
+    <a class="nav-link" onclick="goTo('s37')"><span class="nav-num">3.7</span><span class="nav-text">Account Appropriateness</span></a>
+    <a class="nav-link" onclick="goTo('s38')"><span class="nav-num">3.8</span><span class="nav-text">Product Due Diligence</span></a>
+    <a class="nav-link" onclick="goTo('s39')"><span class="nav-num">3.9</span><span class="nav-text">Know-Your-Product (KYP)</span></a>
+    <a class="nav-sub-link" onclick="goTo('s39-struct')">Structure & Features</a>
+    <a class="nav-sub-link" onclick="goTo('s39-risk')">Risks & Costs</a>
+    <a class="nav-link" onclick="goTo('s310')"><span class="nav-num">3.10</span><span class="nav-text">Appropriateness vs Suitability</span></a>
+    <a class="nav-link" onclick="goTo('s311')"><span class="nav-num">3.11</span><span class="nav-text">Suitability — Retail Clients</span></a>
+    <a class="nav-link" onclick="goTo('s312')"><span class="nav-num">3.12</span><span class="nav-text">Suitability — Institutional</span></a>
+    <a class="nav-link" onclick="goTo('s313')"><span class="nav-num">3.13</span><span class="nav-text">Suitability Exemptions</span></a>
+    <a class="nav-link" onclick="goTo('s314')"><span class="nav-num">3.14</span><span class="nav-text">Internal Escalation</span></a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Strategy & Benchmarks</div>
+    <a class="nav-link" onclick="goTo('s315')"><span class="nav-num">3.15</span><span class="nav-text">Investment Management Styles</span></a>
+    <a class="nav-sub-link" onclick="goTo('s315-bond')">Active vs Passive Bonds</a>
+    <a class="nav-sub-link" onclick="goTo('s315-eq')">Active vs Passive Equity</a>
+    <a class="nav-link" onclick="goTo('s316')"><span class="nav-num">3.16</span><span class="nav-text">Performance Benchmarks</span></a>
+    <a class="nav-link" onclick="goTo('s317')"><span class="nav-num">3.17</span><span class="nav-text">US & Foreign Clients</span></a>
+    <a class="nav-link" onclick="goTo('summary')"><span class="nav-num">★</span><span class="nav-text">Master Summary</span></a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+
+<!-- COVER -->
+<div id="cover" class="cover">
+  <div class="cover-texture"></div>
+  <div class="cover-glow"></div>
+  <div class="cover-glow2"></div>
+  <div class="cover-eyebrow" style="position:relative;">CIRE Examination Preparation</div>
+  <h1 class="cover-title" style="position:relative;">
+    Scope of<br><em>Client Relationships</em>
+  </h1>
+  <div class="cover-divider"></div>
+  <p class="cover-desc" style="position:relative;">A complete, exam-ready guide covering RR vs IR roles, trust and fiduciary duty, account appropriateness, product due diligence, KYP obligations, suitability determinations, investment styles, benchmarks, and cross-border client rules.</p>
+  <div class="cover-grid" style="position:relative;">
+    <div class="cover-stat"><div class="cover-stat-n">17</div><div class="cover-stat-l">Sections Covered</div></div>
+    <div class="cover-stat"><div class="cover-stat-n">RR<br>vs IR</div><div class="cover-stat-l">Key Role Distinction</div></div>
+    <div class="cover-stat"><div class="cover-stat-n">KYP</div><div class="cover-stat-l">Know-Your-Product</div></div>
+    <div class="cover-stat"><div class="cover-stat-n">4</div><div class="cover-stat-l">Retail Service Types</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ════════════ 3.1 RR ════════════ -->
+<div id="s31" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.1</div>
+    <h2 class="sec-title">The Registered Representative (RR)</h2>
+  </div>
+
+  <p class="body">The <strong>Registered Representative (RR)</strong> — also called an investment advisor or wealth advisor — is the most senior client-facing role at an investment dealer. An RR holds the broadest scope of authority and the highest level of responsibility within the firm's hierarchy of registered individuals. They are registered under both the provincial securities legislation <em>and</em> approved by CIRO.</p>
+
+  <div class="callout amber">
+    <div class="callout-icon">§</div>
+    <div class="callout-inner">
+      <div class="callout-label">Exam Context — The Core Distinction</div>
+      <p>The single most tested concept in this element is the difference between an <strong>RR</strong> (can give advice and manage portfolios) and an <strong>IR</strong> (can only take orders, cannot give advice). Every sub-question in 3.1 and 3.2 flows from this fundamental divide.</p>
+    </div>
+  </div>
+
+  <div id="s31-retail" class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>RR with Retail vs Institutional Clients</h3>
+    <p class="body">An RR can serve both retail and institutional clients, but the nature of service differs significantly:</p>
+    <div class="def-table">
+      <div class="def-row">
+        <div class="def-term">Retail Clients</div>
+        <div class="def-val"><strong>Full scope</strong> of RR duties applies. Must collect complete KYC, make formal suitability assessments on every recommendation, provide RDI, maintain performance reports, manage conflicts. The RR is a trusted advisor with a high duty of care. Client relies on RR's expertise and judgment.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-term">Institutional Clients</div>
+        <div class="def-val">Reduced obligations. The institution is presumed sophisticated. RR still must understand the institution's mandate and constraints, but does not need to perform retail-style suitability on every trade. The relationship is more transactional and professional — closer to a business-to-business interaction than a trusted advisor relationship.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s31-rec" class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Providing Recommendations</h3>
+    <p class="body">The right to make <strong>investment recommendations</strong> is the defining privilege of the RR role. A recommendation is a suggestion that a specific client take a specific investment action — buy, sell, hold, or switch a specific security or product. This is distinct from providing general market information.</p>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">What constitutes a "recommendation"?</h4>
+      <p class="body">Not every communication is a recommendation. The following are <em>not</em> recommendations: providing factual information about a security upon request, explaining how a product works, quoting a price, providing a research report without comment. A recommendation involves <strong>personalized advice</strong> — "based on your situation, I think you should buy this."</p>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Obligations when making a recommendation</h4>
+      <div class="checklist">
+        <div class="chk"><span class="chk-icon">◆</span><div>The recommendation must be <strong>suitable</strong> for the specific client based on their KYC profile (objectives, risk tolerance, time horizon, knowledge, financial situation)</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div>Under Client Focused Reforms, the recommendation must represent the <strong>best interest of the client</strong> — if multiple suitable options exist, the best one for the client must be recommended</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div>The RR must have <strong>Know-Your-Product</strong> (KYP) knowledge — must understand the product being recommended (structure, risks, costs, features)</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div>The recommendation and its rationale must be <strong>documented</strong> in the client file</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div>Any conflicts of interest related to the recommendation must be disclosed</div></div>
+      </div>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Unsolicited vs Solicited Trades</h4>
+      <p class="body">When an RR recommends a trade, it is <strong>solicited</strong>. When a client calls in and instructs the RR to make a specific trade without a recommendation from the RR, it is <strong>unsolicited</strong>. This distinction matters:</p>
+      <div class="def-table">
+        <div class="def-row">
+          <div class="def-term">Solicited Trade</div>
+          <div class="def-val">RR initiated or recommended the trade. Full suitability obligation applies. RR is responsible for the recommendation being suitable. Must be documented as solicited.</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Unsolicited Trade</div>
+          <div class="def-val">Client directed the trade without advice from RR. RR still has a <em>duty to flag</em> if the trade appears inconsistent with the client's profile ("this trade seems inconsistent with your conservative risk profile — are you sure you want to proceed?"). Must be documented as unsolicited. The client's decision overrides the RR's concern, but the flag must be noted.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s31-port" class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Managing a Client's Portfolio</h3>
+    <p class="body">An RR can manage a client's portfolio in a <strong>non-discretionary</strong> capacity — meaning the RR recommends actions but the client must approve each transaction before it is executed. The RR cannot independently buy or sell without client consent (that would be discretionary management, which requires a portfolio manager registration).</p>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Non-Discretionary Portfolio Management by an RR</h4>
+      <div class="checklist">
+        <div class="chk"><span class="chk-icon">◆</span><div><strong>Regular portfolio reviews</strong> — the RR must periodically review the client's portfolio for suitability, looking at whether holdings still align with KYC and whether rebalancing is needed</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div><strong>Proactive outreach</strong> — if market conditions change or a product in the portfolio changes materially, the RR should reach out to the client</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div><strong>Rebalancing recommendations</strong> — if the portfolio drifts from the intended asset allocation, the RR recommends (but does not execute without consent) rebalancing trades</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div><strong>Household-level suitability</strong> — for clients with multiple accounts, the RR should consider the overall household portfolio when assessing suitability of individual trades</div></div>
+      </div>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Collecting and Maintaining KYC</h4>
+      <p class="body">The RR is directly responsible for collecting, verifying, and maintaining the client's KYC information. This is an ongoing obligation, not a one-time form. The RR must update KYC whenever there is a significant life event (retirement, divorce, inheritance, health change) and conduct a formal KYC review at least every 36 months.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ 3.2 IR ════════════ -->
+<div id="s32" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.2</div>
+    <h2 class="sec-title">The Investment Representative (IR)</h2>
+  </div>
+
+  <p class="body">The <strong>Investment Representative (IR)</strong> — formerly called an "Investment Representative" or "order taker" — operates in an <strong>Order Execution Only (OEO)</strong> or limited-advice capacity. The IR role exists primarily in discount brokerage operations where clients place their own trades and the firm does not provide personalized investment advice.</p>
+
+  <div class="callout rust">
+    <div class="callout-icon">🚫</div>
+    <div class="callout-inner">
+      <div class="callout-label">The Defining Limitation</div>
+      <p>An IR is <strong>strictly prohibited from providing investment recommendations</strong>. They cannot say "I think you should buy X" or "based on your situation, Y would be a good investment." If an IR crosses into advice territory, they are violating their registration conditions — a serious compliance breach that exposes both the individual and the firm to regulatory action.</p>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Full Scope of the IR's Permitted Activities</h3>
+
+    <div class="compare-grid">
+      <div class="compare-card rr">
+        <div class="compare-header">✦ RR Can Do All This</div>
+        <div class="compare-body">
+          <div class="compare-item">Give personalized investment advice</div>
+          <div class="compare-item">Recommend specific securities</div>
+          <div class="compare-item">Manage client portfolios (non-discretionary)</div>
+          <div class="compare-item">Collect KYC and assess suitability</div>
+          <div class="compare-item">Serve retail AND institutional clients</div>
+          <div class="compare-item">Open all account types including margin</div>
+        </div>
+      </div>
+      <div class="compare-card ir">
+        <div class="compare-header">✦ IR's Permitted Scope</div>
+        <div class="compare-body">
+          <div class="compare-item">Respond to client enquiries (factual only)</div>
+          <div class="compare-item">Provide security quotes and market data</div>
+          <div class="compare-item">Take and enter client-directed orders</div>
+          <div class="compare-item">Report on trade execution and status</div>
+          <div class="compare-item">Correct order entry errors</div>
+          <div class="compare-item no">Cannot give investment recommendations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s32-orders" class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Information Required Before Taking Orders</h3>
+    <p class="body">Even in an OEO environment, the IR must collect certain baseline information before taking an order. This is NOT full KYC — it is the minimum needed to properly process the order and identify obvious red flags:</p>
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">Client Identity</div><div class="def-val">Verify who is calling — confirm account number, password, security questions. Cannot accept instructions from someone who cannot be identified as the account holder or authorized agent.</div></div>
+      <div class="def-row"><div class="def-term">Account Number</div><div class="def-val">Which account should the trade be executed in? The IR must ensure the order goes to the correct account.</div></div>
+      <div class="def-row"><div class="def-term">Security Details</div><div class="def-val">What security, how many shares/units, buy or sell? The IR must capture all order parameters accurately: symbol, quantity, order type (market or limit), time in force (day, GTC).</div></div>
+      <div class="def-row"><div class="def-term">Buying Power</div><div class="def-val">For purchases, confirm the account has sufficient cash or margin available. Cannot accept an order the account cannot settle.</div></div>
+      <div class="def-row"><div class="def-term">Repeat Order Back</div><div class="def-val">Before confirming, the IR must <strong>read back</strong> the full order details to the client and obtain verbal confirmation. This prevents order entry errors and is a key regulatory requirement.</div></div>
+    </div>
+  </div>
+
+  <div id="s32-errors" class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Correcting Errors</h3>
+    <p class="body">Order entry errors happen — transposing digits, wrong side (buy vs sell), wrong quantity. Proper error correction procedures are critical:</p>
+    <div class="checklist">
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Identify the error immediately</strong> — as soon as the error is discovered, it must be flagged. Delaying error correction is a compliance violation.</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Notify the supervisor/branch manager immediately</strong> — errors must be escalated. The IR cannot independently decide how to fix the error without supervisor approval.</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Error trades go to an error account</strong> — the firm maintains a dedicated "error account" (also called a "suspense account"). If a wrong trade was executed, it goes to this error account while the correction is worked out. The error account must be kept flat (no net speculative position).</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>The client must be made whole</strong> — if the error caused harm to the client (missed execution at a better price, unnecessary commission), the firm, not the client, bears the cost of the error.</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Document everything</strong> — create a written record of: what the error was, when it was discovered, what steps were taken, and the outcome. Must be maintained in the compliance file.</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>No "trading out" of errors</strong> — the firm cannot try to recover the error loss by taking additional speculative positions in the error account. This would constitute unauthorized trading for the firm's own account.</div></div>
+    </div>
+  </div>
+
+  <div id="s32-prohib" class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>The Prohibition on Investment Recommendations</h3>
+    <p class="body">This prohibition deserves deep examination. An IR working in an OEO setting can provide <strong>information</strong> but not <strong>advice</strong>. The line between the two is sometimes fine:</p>
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">PERMITTED (Information)</div><div class="def-val">"The current bid for XYZ is $45.20 and the ask is $45.25." / "XYZ's P/E ratio is 18." / "The last trade for XYZ was at $45.22." / Explaining what a limit order is. Providing a research report that was published by the firm without adding personal commentary.</div></div>
+      <div class="def-row"><div class="def-term">PROHIBITED (Advice)</div><div class="def-val">"XYZ looks cheap at this level." / "I think you should buy XYZ." / "Given your portfolio, this ETF would be a good fit." / "This sector is hot right now, you should consider it." / "You're too concentrated in tech, you should diversify."</div></div>
+    </div>
+
+    <div class="callout amber">
+      <div class="callout-icon">💡</div>
+      <div class="callout-inner">
+        <div class="callout-label">The Key Test</div>
+        <p>Ask: is the communication personalized to <em>this specific client's situation</em> and does it suggest a specific course of action? If yes — it's advice, and an IR cannot give it. An IR can describe a product; they cannot say "this product is right for you."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Reporting on Trades</h3>
+    <p class="body">After an order is executed, the IR (or the system) must provide the client with a <strong>trade confirmation</strong>. This confirms:</p>
+    <div class="pills">
+      <span class="pill amber">Security name & symbol</span>
+      <span class="pill amber">Buy or sell</span>
+      <span class="pill amber">Quantity</span>
+      <span class="pill amber">Price</span>
+      <span class="pill amber">Total consideration</span>
+      <span class="pill amber">Commission charged</span>
+      <span class="pill amber">Settlement date</span>
+      <span class="pill amber">Account number</span>
+    </div>
+    <p class="body">Trade confirmations must be sent to the client promptly — typically by the end of the next business day after the trade date. Clients must be able to verify that what was executed matches what they instructed.</p>
+  </div>
+</div>
+
+<!-- ════════════ 3.3 TRUST / AGENCY / FIDUCIARY ════════════ -->
+<div id="s33" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.3</div>
+    <h2 class="sec-title">Trust, Agency & Fiduciary Duty</h2>
+  </div>
+
+  <p class="body">These three legal concepts define the nature and depth of the obligations an investment dealer and its representatives owe to their clients. Understanding each concept and when it applies is fundamental to understanding why certain rules exist.</p>
+
+  <div id="s33-trust" class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Trust</h3>
+    <p class="body">In a legal sense, <strong>trust</strong> refers to a relationship where one party (the <em>trustee</em>) holds assets for the benefit of another party (the <em>beneficiary</em>). In everyday use, it also refers to the general confidence and reliance a client places in their dealer and advisor.</p>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Trust Accounts in Investment Dealing</h4>
+      <p class="body">When a dealer holds client funds and securities, it holds them in trust. This means:</p>
+      <div class="checklist">
+        <div class="chk"><span class="chk-icon">◆</span><div>Client assets must be held <strong>segregated</strong> from the firm's own assets — they cannot be commingled</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div>The dealer cannot use client assets for its own purposes — these assets belong to the clients, not the firm</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div>In a bankruptcy, client assets held in trust are protected and have priority over the firm's general creditors (under Part XII BIA)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s33-agency" class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Agency</h3>
+    <p class="body">An <strong>agency relationship</strong> exists when one party (the <em>agent</em>) acts on behalf of another (the <em>principal</em>), with the authority to create legal obligations binding on the principal. In securities, the dealer typically acts as the client's agent when executing trades.</p>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Agent vs Principal in Trade Execution</h4>
+      <div class="def-table">
+        <div class="def-row">
+          <div class="def-term">Acting as Agent</div>
+          <div class="def-val">The dealer finds a counterparty in the market and executes the trade on the client's behalf. The dealer earns a commission. The client buys from (or sells to) a third party — the dealer just facilitates. Most common execution method for exchange-listed equities.</div>
+        </div>
+        <div class="def-row">
+          <div class="def-term">Acting as Principal</div>
+          <div class="def-val">The dealer is on the <em>other side</em> of the trade — the dealer sells from its own inventory to the client (or buys from the client for its own inventory). The dealer earns a markup/markdown rather than a commission. Must be disclosed to the client — this is a material conflict of interest. Common in bond markets and OTC transactions.</div>
+        </div>
+      </div>
+      <div class="callout rust">
+        <div class="callout-icon">⚠️</div>
+        <div class="callout-inner">
+          <div class="callout-label">Principal Trading — Conflict of Interest</div>
+          <p>When the dealer acts as principal, its interests conflict directly with the client's — the dealer profits more when it sells at a higher price to the client. This <strong>must be disclosed</strong> in the RDI and on the trade confirmation. Clients must know they are not getting an independent marketplace price but a price set by the dealer.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Duties of an Agent to Their Principal</h4>
+      <div class="checklist">
+        <div class="chk"><span class="chk-icon">◆</span><div><strong>Duty of obedience</strong> — carry out the principal's (client's) lawful instructions</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div><strong>Duty of care</strong> — act with reasonable skill and diligence in executing those instructions</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div><strong>Duty of loyalty</strong> — act in the principal's interests, not the agent's own interests</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div><strong>Duty to account</strong> — keep accurate records and report to the principal on all actions taken on their behalf</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div><strong>Duty of confidentiality</strong> — keep the principal's information confidential</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s33-fid" class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Fiduciary Duty</h3>
+    <p class="body">A <strong>fiduciary duty</strong> is the highest legal duty of care that can exist in a relationship. A fiduciary must act with <em>undivided loyalty</em> to the beneficiary's interests — putting the beneficiary's interests entirely ahead of their own. It is stronger than ordinary duty of care and stronger than agency obligations.</p>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">When Does Fiduciary Duty Arise in Securities?</h4>
+      <p class="body">Fiduciary duty does <strong>not</strong> automatically apply to all dealer-client relationships. It arises in specific circumstances:</p>
+      <table>
+        <thead><tr><th>Relationship Type</th><th>Fiduciary Duty?</th><th>Why?</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Portfolio Manager (discretionary)</strong></td><td>✅ Yes — clearly</td><td>Client gives complete control to the manager. Full trust placed in manager's judgment. Manager has unfettered discretion over client's assets.</td></tr>
+          <tr><td><strong>RR with long-term advisory relationship</strong></td><td>✅ Often — courts have found fiduciary duty where client relied fully on RR's judgment and RR exercised dominance over decisions</td><td>Power imbalance + reliance + vulnerability = courts impose fiduciary obligations even without formal discretion</td></tr>
+          <tr><td><strong>OEO / IR executing client instructions</strong></td><td>❌ Generally not</td><td>Client retains full decision-making power. No reliance on dealer's judgment. Relationship is transactional, not advisory.</td></tr>
+          <tr><td><strong>Trustee of a trust account</strong></td><td>✅ Yes — by law</td><td>A trustee is by definition a fiduciary — must act in the best interest of the beneficiaries.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sub-sub">
+      <h4 class="sub-sub-title">Core Fiduciary Obligations</h4>
+      <div class="checklist">
+        <div class="chk"><span class="chk-icon">◆</span><div><strong>Duty of loyalty</strong> — must act solely in the client's best interests; no self-dealing</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div><strong>Duty of care</strong> — must exercise the standard of skill and diligence of a reasonable professional in the same position</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div><strong>No self-dealing</strong> — cannot profit from the relationship in a way the client has not consented to; no using client information for personal gain</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div><strong>Full disclosure</strong> — all conflicts of interest must be disclosed and managed; the fiduciary cannot put their own interests ahead of the client's</div></div>
+        <div class="chk"><span class="chk-icon">◆</span><div><strong>Duty not to delegate</strong> — a fiduciary cannot delegate their core responsibilities without the beneficiary's consent</div></div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <div class="highlight-box-title">CIRE Exam — Trust vs Agency vs Fiduciary</div>
+      <p><strong>Trust:</strong> legal framework for holding assets on behalf of another. <strong>Agency:</strong> authority to act on behalf of another and bind them legally. <strong>Fiduciary:</strong> the highest duty — complete loyalty, no self-interest. All three can apply simultaneously. A portfolio manager is an agent (executes trades on client's behalf), holds assets in trust (client securities), and owes fiduciary duty (must act solely in client's interest). An OEO dealer is an agent and holds in trust — but typically not a fiduciary because the client retains decision-making power.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ 3.4 RELATIONSHIP DISCLOSURE ════════════ -->
+<div id="s34" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.4</div>
+    <h2 class="sec-title">Purpose & Content of Relationship Disclosure</h2>
+  </div>
+
+  <p class="body">Element 3's treatment of relationship disclosure focuses on the <em>content</em> of the RDI from an operational perspective — what specific information must be in it and why. This builds on Element 2's overview of the RDI.</p>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Products, Services, and Account Types — Full Disclosure</h3>
+    <p class="body">The RDI must describe <em>every</em> product, service, and account type the client can access, including their limitations. Key elements:</p>
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">Fee-Based Accounts</div><div class="def-val">Accounts where the client pays an <strong>annual advisory fee</strong> (e.g., 1.0% of assets under management) instead of per-trade commissions. The fee is charged regardless of trading activity. Benefit: no commission conflict — advisor doesn't earn more by trading more. Disclosure must explain how the fee is calculated and when it is charged.</div></div>
+      <div class="def-row"><div class="def-term">Leverage Accounts</div><div class="def-val">Accounts where the client borrows money to invest. Leverage amplifies both gains AND losses. RDI must clearly disclose: that borrowed money must be repaid regardless of investment performance, that market value can fall below the loan amount, and that the client remains liable for the full loan. Specific risk disclosure documents required.</div></div>
+      <div class="def-row"><div class="def-term">Margin Accounts</div><div class="def-val">A specific type of leverage — client borrows from the dealer to purchase securities. The securities serve as collateral. If the value of collateral falls below the minimum required (margin call), the client must deposit more funds or have positions sold. Must disclose: margin rates charged on borrowed money, minimum equity requirements, margin call procedures.</div></div>
+      <div class="def-row"><div class="def-term">OEO Accounts</div><div class="def-val">Order Execution Only — no advice provided. Disclosure must make clear: no suitability obligation applies (the client is on their own), the dealer will not assess whether trades are appropriate, and the client bears full responsibility for their investment decisions.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Charges, Fees, and Compensation</h3>
+    <p class="body">The RDI must fully disclose all charges, fees, and compensation structures, including how the firm and the advisor are compensated. This includes:</p>
+    <div class="checklist">
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Commissions</strong> — per-trade fees for buying/selling securities. May be flat (e.g., $9.99 per trade) or tiered (e.g., lower per-unit rate for large trades)</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Trailing commissions</strong> — ongoing payments from fund companies to the dealer and advisor as long as the client holds the fund. Must be disclosed as a conflict of interest.</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Advisory fees</strong> — for fee-based accounts, the annual percentage charged on assets</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Administration fees</strong> — annual account fees, transfer fees, foreign exchange fees</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Referral fees</strong> — if the dealer pays or receives fees for referring clients to other professionals, this must be disclosed</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Suitability Process — How It Will Be Applied</h3>
+    <p class="body">The RDI must explain exactly how suitability will be assessed. Under the CIRO Client Focused Reforms, suitability must be assessed at three levels:</p>
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">Account Level</div><div class="def-val">Is each individual security or investment in the account suitable for the client? This is the most granular level — every specific holding must be appropriate on its own for the client's profile.</div></div>
+      <div class="def-row"><div class="def-term">Portfolio Level</div><div class="def-val">Is the overall composition of the account — the mix of asset classes, risk levels, and product types — appropriate for the client? Even if each individual holding is suitable, the overall portfolio might be too concentrated or misaligned with the client's overall objectives.</div></div>
+      <div class="def-row"><div class="def-term">Household Level</div><div class="def-val">For clients with multiple accounts at the same firm (e.g., personal account + RRSP + spouse's account), the RR should consider the <em>total household picture</em> when assessing suitability. A high-risk speculative stock in an RRSP might be suitable if the household has significant conservative assets elsewhere that provide balance.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ 3.5 RETAIL SERVICES ════════════ -->
+<div id="s35" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.5</div>
+    <h2 class="sec-title">Typical Services — Retail Investment Dealers</h2>
+  </div>
+
+  <p class="body">Retail investment dealers offer a spectrum of services ranging from pure order execution to full discretionary portfolio management. Understanding each service type is critical for the exam.</p>
+
+  <div class="def-table">
+    <div class="def-row">
+      <div class="def-term">Order Execution Only (OEO)</div>
+      <div class="def-val">
+        <strong>What it is:</strong> The client makes all investment decisions independently. The dealer only processes the orders — no advice, no recommendations, no suitability obligation (in the traditional sense).<br><br>
+        <strong>Who uses it:</strong> Self-directed, experienced investors who are confident in their own investment decisions. Common in discount brokerage platforms (e.g., TD Direct Investing, Questrade).<br><br>
+        <strong>Cost:</strong> Lowest cost — no advisory fee, typically low per-trade commissions or flat subscription fees.<br><br>
+        <strong>Key regulatory point:</strong> While the full suitability obligation is reduced, the firm must still warn clients if it becomes apparent the client is making decisions that are significantly irrational or harmful (e.g., concentrating entire savings in one penny stock with a very short time horizon). The "order execution only" label does not mean the firm abandons the client entirely.
+      </div>
+    </div>
+    <div class="def-row">
+      <div class="def-term">Advisory Service</div>
+      <div class="def-val">
+        <strong>What it is:</strong> A Registered Representative provides personalized investment advice and recommendations. The client retains final decision-making authority — they can accept or reject recommendations. This is non-discretionary advisory.<br><br>
+        <strong>Who uses it:</strong> Most traditional investment brokerage clients who want guidance but want to remain in control of their final decisions.<br><br>
+        <strong>Cost:</strong> Higher than OEO — commissions per trade and/or advisory fees. More expensive but provides personalized guidance.<br><br>
+        <strong>Full suitability obligation applies:</strong> The RR must assess suitability on every recommendation, maintain current KYC, provide full RDI, and resolve conflicts of interest in the client's favour.
+      </div>
+    </div>
+    <div class="def-row">
+      <div class="def-term">Managed / Wrap Accounts</div>
+      <div class="def-val">
+        <strong>What it is:</strong> A professional investment manager (portfolio manager or investment counsellor) manages the client's portfolio according to a pre-agreed investment mandate. The client gives the manager discretion to buy and sell without needing to approve each individual trade.<br><br>
+        <strong>"Wrap" structure:</strong> Named because all costs (management, trading, custody, reporting) are "wrapped" into a single annual fee, typically expressed as a percentage of AUM (e.g., 1.5–2.5% per year).<br><br>
+        <strong>Who manages it:</strong> Requires a Portfolio Manager (PM) registration. The PM owes fiduciary duty to the client because they have full discretion.<br><br>
+        <strong>Minimum investment:</strong> Typically $150,000–$500,000+ to access managed/wrap services.
+      </div>
+    </div>
+    <div class="def-row">
+      <div class="def-term">Discretionary Management</div>
+      <div class="def-val">
+        <strong>What it is:</strong> Full discretionary authority given to the portfolio manager — they can buy, sell, and rebalance the portfolio entirely without client approval on individual trades. Client sets the investment policy statement (IPS) upfront (objectives, constraints, risk tolerance) and then the manager executes within those parameters.<br><br>
+        <strong>Highest duty of care:</strong> Full fiduciary duty applies. The PM must always act in the client's best interest as defined by the IPS.<br><br>
+        <strong>Distinction from managed/wrap:</strong> "Managed" and "discretionary" are often used interchangeably. Technically, discretionary management is the authority to trade without approval; managed/wrap describes the fee structure. In practice they usually go together.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ 3.6 INSTITUTIONAL SERVICES ════════════ -->
+<div id="s36" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.6</div>
+    <h2 class="sec-title">Typical Services — Institutional Investment Dealers</h2>
+  </div>
+
+  <p class="body">Institutional dealers serve pension funds, mutual funds, insurance companies, governments, hedge funds, and other large sophisticated entities. Their services are fundamentally different from retail — oriented around capital markets, research, and sophisticated financial transactions rather than personal financial planning.</p>
+
+  <div class="def-table">
+    <div class="def-row">
+      <div class="def-term">Trading</div>
+      <div class="def-val">Executing large-scale buy and sell orders for institutional clients in equity, fixed income, derivatives, and FX markets. Institutional trading involves block trades (large single transactions that can move the market), algorithmic trading, and dark pool routing to minimize market impact. Dealers provide market-making, agency trading, and principal risk as required by the client.</div>
+    </div>
+    <div class="def-row">
+      <div class="def-term">Research</div>
+      <div class="def-val">Institutional dealers employ large teams of equity and fixed income analysts who produce in-depth research reports on companies, sectors, and macro themes. This research is distributed to institutional clients to inform their investment decisions. It is a core service — clients pay for it through commissions (soft dollars). The dealer's research capability directly influences which institutional broker gets the trading business.</div>
+    </div>
+    <div class="def-row">
+      <div class="def-term">Underwriting</div>
+      <div class="def-val">When a company or government wants to issue new securities (IPO, follow-on equity offering, bond issuance), the institutional dealer acts as underwriter. The underwriter purchases the securities from the issuer (taking on the risk) and then resells them to investors. The dealer earns an underwriting spread — the difference between what it pays the issuer and what it sells to investors. This is also called "investment banking" or the "capital markets" business.</div>
+    </div>
+    <div class="def-row">
+      <div class="def-term">Merger & Acquisition (M&A) Service</div>
+      <div class="def-val">Institutional dealers provide advisory services on corporate mergers, acquisitions, divestitures, and restructurings. Services include: valuation of target companies, deal structuring advice, fairness opinions, negotiation support, and financing the transaction. M&A advisory earns very large fees (success fees as a % of deal value). This is pure advisory — the dealer advises the client corporation, not investors.</div>
+    </div>
+    <div class="def-row">
+      <div class="def-term">Prime Brokerage</div>
+      <div class="def-val">A bundled set of services provided to hedge funds and other sophisticated leveraged investors. Includes: securities lending (lend securities to short sellers), margin financing, trade clearing and settlement, custody, and reporting. The prime broker is the hedge fund's operational backbone. Large banks like TD, RBC, BMO offer prime brokerage in Canada alongside international banks.</div>
+    </div>
+    <div class="def-row">
+      <div class="def-term">Securities Lending</div>
+      <div class="def-val">Lending securities (typically to short sellers) in exchange for collateral (cash or other securities) plus a lending fee. The securities lender (typically a pension fund or insurance company with large holdings) earns additional income. The borrower (short seller) can sell the borrowed securities and attempt to profit if the price falls. The dealer acts as agent/intermediary between lender and borrower, earning a spread.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ 3.7 ACCOUNT APPROPRIATENESS ════════════ -->
+<div id="s37" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.7</div>
+    <h2 class="sec-title">Account Appropriateness Obligation</h2>
+  </div>
+
+  <p class="body">The <strong>account appropriateness</strong> obligation requires a dealer to assess whether a particular <em>account type</em> is appropriate for a client before opening it. This is a pre-trading obligation that is distinct from (and logically prior to) suitability of individual investments within the account.</p>
+
+  <p class="body">Think of it in two steps: First, is this account type right for this client? Second (separately), is this investment right for this client within that account?</p>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>When Account Appropriateness Must be Assessed</h3>
+    <div class="checklist">
+      <div class="chk"><span class="chk-icon">◆</span><div>When opening any new account — each account type has different features, risks, costs, and requirements</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div>When a client wishes to add margin privileges to an existing account</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div>When a client requests options trading privileges</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div>When the client's circumstances change significantly (retirement, major loss of income) such that a previously appropriate account type may no longer fit</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Examples of Account Appropriateness Assessments</h3>
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">Margin Account</div><div class="def-val">Is margin appropriate for this client? Margin amplifies losses. A client with low income, high debt, no emergency fund, and short investment horizon should generally NOT be approved for margin — regardless of whether their investment objectives include growth.</div></div>
+      <div class="def-row"><div class="def-term">Options Account</div><div class="def-val">Options involve complex strategies and can result in total loss of premium and unlimited losses on certain strategies (e.g., naked calls). Client must demonstrate sufficient knowledge and financial resources to understand and absorb potential losses. Novice investors should not be approved for options.</div></div>
+      <div class="def-row"><div class="def-term">OEO Account</div><div class="def-val">Is it appropriate for this client to invest without advice? If the client has limited knowledge and is relying on the firm for guidance, an OEO account may not be appropriate — they may need an advisory relationship. The client may underestimate their need for support.</div></div>
+      <div class="def-row"><div class="def-term">Short Selling</div><div class="def-val">Short selling has theoretically unlimited loss potential (a stock can rise indefinitely). Requires significant knowledge, appropriate risk capacity, and specific account approval. Not appropriate for most retail investors.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ 3.8 PRODUCT DUE DILIGENCE ════════════ -->
+<div id="s38" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.8</div>
+    <h2 class="sec-title">Product Due Diligence Obligation</h2>
+  </div>
+
+  <p class="body"><strong>Product due diligence</strong> is the obligation to thoroughly investigate and evaluate any product before it is offered, recommended, or made available to clients. This is separate from KYP (which is the advisor's ongoing obligation to understand products they recommend). Due diligence is a firm-level and advisor-level obligation.</p>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Due Diligence Obligation on the Investment Dealer (Firm)</h3>
+    <p class="body">The firm must conduct due diligence on any product it makes available to clients. This means the firm cannot simply take a product issuer's word for a product's characteristics — it must independently evaluate:</p>
+    <div class="checklist">
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Product legitimacy</strong> — is the product registered/approved as required? Is the issuer a reputable, regulated entity?</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Structure and features</strong> — how does the product actually work? What are the underlying assets, how are returns generated, what is the distribution mechanism?</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Risks</strong> — what are the specific risks? Credit risk, liquidity risk, market risk, counterparty risk, concentration risk?</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Costs</strong> — what are all fees? MER, trailer fees, DSC schedules (now banned but historical), performance fees?</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Client suitability range</strong> — for what types of clients (risk tolerance, time horizon, knowledge level) is this product appropriate? Dealers should establish a "target market" for each product.</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Ongoing monitoring</strong> — due diligence doesn't end at onboarding. The firm must continue monitoring products on the shelf for any material changes (e.g., a fund changes its investment mandate, a structured product's issuer gets downgraded).</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Due Diligence Obligation on the Approved Person (Advisor)</h3>
+    <p class="body">Individual registered persons (RRs) have their own product due diligence obligation at the individual level. Even if the firm has approved a product for the shelf, the individual advisor must independently satisfy themselves that the product is appropriate before recommending it to any specific client:</p>
+    <div class="checklist">
+      <div class="chk"><span class="chk-icon">◆</span><div>Read and understand all available disclosure documents (prospectus, fund facts, information statements)</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div>Understand the product well enough to explain it clearly to the client in plain language</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div>If the RR doesn't understand a product well enough to explain it, they should escalate to an expert or not recommend it</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div>Maintain ongoing awareness of material changes to products already held by clients</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ 3.9 KYP ════════════ -->
+<div id="s39" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.9</div>
+    <h2 class="sec-title">Know-Your-Product (KYP) Obligation</h2>
+  </div>
+
+  <p class="body">The <strong>Know-Your-Product (KYP)</strong> obligation is one of the three pillars of the Client Focused Reforms (alongside KYC and suitability). An RR must have a thorough understanding of any investment they purchase, sell, or recommend for a client. KYP is a continuous obligation — you must know the product before recommending it <em>and</em> continue to monitor it after clients hold it.</p>
+
+  <div class="callout forest">
+    <div class="callout-icon">🌲</div>
+    <div class="callout-inner">
+      <div class="callout-label">The CFR Triangle</div>
+      <p>Under the Client Focused Reforms: <strong>KYC + KYP = Suitability</strong>. You cannot assess whether an investment is suitable for a client without knowing both the client (KYC) and the product (KYP). KYP is the product side of the equation. Both are mandatory and equally important.</p>
+    </div>
+  </div>
+
+  <div id="s39-struct" class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Structure and Features of the Investment</h3>
+    <p class="body">The RR must understand:</p>
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">Legal Structure</div><div class="def-val">Is it a corporation, trust, partnership, or government entity? A mutual fund trust is different from a corporate class fund. A ETF is different from a closed-end fund. Structure affects taxation, governance, and investor rights.</div></div>
+      <div class="def-row"><div class="def-term">Investment Mandate</div><div class="def-val">What is the fund/product trying to achieve? What does it invest in? Active stock-picking, index replication, fixed income, alternative strategies (long/short, market neutral)? The mandate determines how the product behaves.</div></div>
+      <div class="def-row"><div class="def-term">Liquidity</div><div class="def-val">Can the client exit easily? Public equities and ETFs have daily liquidity. Mutual funds typically settle in T+2. Some alternative funds have redemption restrictions (quarterly redemption with 90-day notice). Illiquid products are unsuitable for clients who may need their money.</div></div>
+      <div class="def-row"><div class="def-term">Return Drivers</div><div class="def-val">How does this product generate returns? Dividends, capital appreciation, interest income, option premiums, commodity exposure? Understanding return drivers is essential to explaining the product to clients and assessing its role in the portfolio.</div></div>
+      <div class="def-row"><div class="def-term">Unique Features</div><div class="def-val">Does the product have special features? Principal protection (GIC, structured note)? Leverage built in? Currency hedging? Automatic rebalancing? Maturity date? Each feature changes the risk/return profile and suitability.</div></div>
+    </div>
+  </div>
+
+  <div id="s39-risk" class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Risks of the Investment</h3>
+    <p class="body">The RR must understand all material risks specific to the product:</p>
+    <div class="pills" style="margin-bottom:16px;">
+      <span class="pill amber">Market Risk</span>
+      <span class="pill rust">Credit Risk</span>
+      <span class="pill forest">Liquidity Risk</span>
+      <span class="pill navy">Currency Risk</span>
+      <span class="pill amber">Concentration Risk</span>
+      <span class="pill rust">Counterparty Risk</span>
+      <span class="pill forest">Leverage Risk</span>
+      <span class="pill navy">Regulatory Risk</span>
+    </div>
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">Market Risk</div><div class="def-val">The risk that the market price of the investment declines. All equity products have market risk. The extent depends on volatility of the underlying.</div></div>
+      <div class="def-row"><div class="def-term">Credit Risk</div><div class="def-val">Risk that an issuer defaults on payments. Key for bonds and credit-linked products. Higher-yield = higher credit risk. The RR must understand the credit quality of the issuer.</div></div>
+      <div class="def-row"><div class="def-term">Liquidity Risk</div><div class="def-val">Risk that the client cannot sell the investment at a fair price when needed. Illiquid small-cap stocks, private equity, alternative funds. Client may be forced to accept a steep discount to exit.</div></div>
+      <div class="def-row"><div class="def-term">Currency Risk</div><div class="def-val">Investments denominated in foreign currencies expose the client to exchange rate fluctuations. A US stock might rise 5% in USD but if the CAD appreciates 7% against USD, the return in CAD is negative.</div></div>
+      <div class="def-row"><div class="def-term">Counterparty Risk</div><div class="def-val">In derivatives and OTC transactions, the risk that the counterparty defaults before fulfilling their obligation. This is why clearing houses (CDS, CDCC) are so important — they eliminate counterparty risk for exchange-traded products.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Initial and Ongoing Costs — and Their Impact</h3>
+    <p class="body">The KYP obligation specifically includes understanding ALL costs associated with a product — initial and ongoing — and how those costs affect the client's investment returns. This is part of the reason cost became a suitability factor under CFR.</p>
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">Initial Costs</div><div class="def-val">Front-end commissions, sales charges, advisory fees paid at purchase. These immediately reduce the amount invested. A 2% front-end load on a $100,000 investment means only $98,000 is actually invested — the investment must earn 2.04% before the client breaks even.</div></div>
+      <div class="def-row"><div class="def-term">Ongoing Costs</div><div class="def-val">MER (annual management and operating expenses), trailing commissions, performance fees (for hedge funds and some alternative funds). These are charged continuously and compound against returns. Even a 1% ongoing cost difference significantly impacts long-term wealth accumulation.</div></div>
+      <div class="def-row"><div class="def-term">Exit Costs</div><div class="def-val">Back-end loads (DSC — now banned), redemption fees, early withdrawal penalties on structured products. The RR must ensure the client understands what it will cost to exit the investment before entering.</div></div>
+      <div class="def-row"><div class="def-term">Tax Costs</div><div class="def-val">High portfolio turnover in actively managed funds triggers capital gains distributions. The client pays tax even if they didn't personally sell. The after-tax cost of ownership for a high-turnover fund may be significantly higher than the stated MER.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ 3.10 APPROPRIATENESS vs SUITABILITY ════════════ -->
+<div id="s310" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.10</div>
+    <h2 class="sec-title">Account Appropriateness vs Suitability — The Critical Distinction</h2>
+  </div>
+
+  <p class="body">This is one of the highest-yield distinctions in Element 3. The exam will test whether you can correctly identify which obligation applies in a given scenario.</p>
+
+  <div class="highlight-box">
+    <div class="highlight-box-title">The Core Distinction</div>
+    <p><strong>Account Appropriateness</strong> = Is this <em>type of account</em> right for this client? (Assessed before or at account opening — a threshold question about the relationship itself.)<br><br>
+    <strong>Suitability</strong> = Is this specific <em>investment or transaction</em> right for this client within a given account? (Assessed at the time of each recommendation or transaction.)<br><br>
+    Appropriateness comes first. Suitability comes second. A client can have an appropriate account but still receive unsuitable individual recommendations within it.</p>
+  </div>
+
+  <table>
+    <thead><tr><th>Dimension</th><th>Account Appropriateness</th><th>Suitability</th></tr></thead>
+    <tbody>
+      <tr><td><strong>What is assessed</strong></td><td>The account type (margin, OEO, options, etc.)</td><td>A specific investment, security, or trade</td></tr>
+      <tr><td><strong>When assessed</strong></td><td>At account opening; when account features change</td><td>At recommendation; at trade execution; periodically</td></tr>
+      <tr><td><strong>Who triggers it</strong></td><td>Opening or upgrading an account</td><td>Making a recommendation or accepting a trade</td></tr>
+      <tr><td><strong>Key factors</strong></td><td>Client's overall sophistication, financial capacity, understanding of account risks</td><td>Full KYC including objectives, time horizon, risk tolerance, knowledge</td></tr>
+      <tr><td><strong>Example failure</strong></td><td>Approving a 70-year-old retiree with no investment knowledge for a full options account</td><td>Recommending a speculative small-cap stock to a conservative-income client</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ════════════ 3.11 SUITABILITY RETAIL ════════════ -->
+<div id="s311" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.11</div>
+    <h2 class="sec-title">Suitability Determination — Retail Clients</h2>
+  </div>
+
+  <p class="body">For retail clients, the suitability obligation is comprehensive and applies to every recommendation and every trade accepted. Under the Client Focused Reforms, the standard is now "best interest" — not merely "suitable." The full suitability assessment integrates KYC + KYP:</p>
+
+  <div class="flow">
+    <div class="flow-step amber">Collect/Update KYC</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Understand the Product (KYP)</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Match Client to Product</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Select Best Option</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step rust">Document Rationale</div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Suitability at the Household Level</h3>
+    <p class="body">Under CIRO's Client Focused Reforms, firms are encouraged (and in some circumstances required) to consider the <strong>household-level view</strong> of a client's financial situation when assessing suitability. For example:</p>
+    <div class="checklist">
+      <div class="chk"><span class="chk-icon">◆</span><div>A client's RRSP might be 100% in equities, which looks aggressive in isolation — but if they also have a defined benefit pension that provides guaranteed income, the overall household picture may support an equity-heavy RRSP</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div>Conversely, a speculative investment in one account may be unsuitable even if the client's overall net worth is high, if that specific account holds funds the client will need for retirement next year</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ 3.12 SUITABILITY INSTITUTIONAL ════════════ -->
+<div id="s312" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.12</div>
+    <h2 class="sec-title">Sophistication Assessment — Institutional Clients & Suitability Exemptions</h2>
+  </div>
+
+  <p class="body">For institutional clients, the suitability framework is replaced by a <strong>sophistication assessment</strong>. Rather than assessing whether each trade is suitable for the institution (as would be done for a retail client), the dealer assesses the institution's overall capacity to understand risks and protect itself.</p>
+
+  <div class="def-table">
+    <div class="def-row"><div class="def-term">Sophistication Assessment</div><div class="def-val">The dealer must assess: Does the institutional client have professional investment staff? Do they have their own investment mandate and policies? Do they understand the types of transactions they're requesting? Can they independently evaluate the risks and pricing of products?</div></div>
+    <div class="def-row"><div class="def-term">Nature of Transaction</div><div class="def-val">For institutional clients, the dealer must understand the nature of the transaction and that the client has the ability to assume the risks and losses from it — but doesn't need to do a full retail-style suitability analysis matching objectives, time horizons, etc.</div></div>
+    <div class="def-row"><div class="def-term">CIRO Suitability Exemptions</div><div class="def-val">Institutional clients are generally exempt from the suitability determination requirements that apply to retail clients. The dealer's obligation is reduced to ensuring the institution is sophisticated enough to protect its own interests.</div></div>
+  </div>
+</div>
+
+<!-- ════════════ 3.13 EXEMPTIONS ════════════ -->
+<div id="s313" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.13</div>
+    <h2 class="sec-title">Exemptions from Suitability Determination Requirements</h2>
+  </div>
+
+  <p class="body">Not every client, account, or service type requires a full suitability assessment on every transaction. CIRO provides specific exemptions. Knowing these exemptions is key for the exam.</p>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Exemptions by Account Type</h3>
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">Order Execution Only (OEO) Accounts</div><div class="def-val">In OEO accounts where no advice is given, the dealer is <strong>not required</strong> to assess the suitability of each client-directed trade. However, the OEO exemption does NOT eliminate all obligations — the dealer must still flag obvious situations where the client appears to be making a significant error (e.g., depositing all savings in a single high-risk stock at retirement).</div></div>
+      <div class="def-row"><div class="def-term">Accounts with Discretionary Managers</div><div class="def-val">If the client's account is managed by a registered portfolio manager with discretionary authority, the dealer executing the trades on the PM's instructions does not need to independently assess suitability — the PM has already done so. The PM bears the suitability obligation, not the executing dealer.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Exemptions by Service Type</h3>
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">Execution-Only Service</div><div class="def-val">When the dealer provides only trade execution (no advice), it is generally exempt from the suitability assessment requirement for individual trades. The client must have been informed of this limitation clearly in the RDI.</div></div>
+      <div class="def-row"><div class="def-term">Automated/Robo-Advisory</div><div class="def-val">Technology-based advisory platforms that collect KYC electronically and automatically construct and rebalance portfolios are held to a suitability standard, but the manner of assessment differs from human advisors. CIRO has issued guidance on digital advice suitability.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Exemptions by Client Type</h3>
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">Institutional Clients</div><div class="def-val">As covered in 3.12 — institutional clients are generally exempt from the retail suitability assessment. The dealer's obligation is sophistication-based, not suitability-based.</div></div>
+      <div class="def-row"><div class="def-term">Permitted Clients (with waiver)</div><div class="def-val">As covered in Element 2 — permitted clients can waive the suitability obligation. Once waived in writing, the dealer is not required to assess suitability on individual trades for that client. The client can revoke the waiver at any time.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ 3.14 ESCALATION ════════════ -->
+<div id="s314" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.14</div>
+    <h2 class="sec-title">Internal Escalation to Subject Matter Experts</h2>
+  </div>
+
+  <p class="body">Not every situation or product can be handled by a generalist RR or IR. Dealers maintain internal specialists in complex products and client situations, and registered persons must know when to escalate.</p>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Escalation for Specific Products</h3>
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">Derivatives</div><div class="def-val">Options, futures, swaps, and structured products require specialized knowledge. An RR who is not registered and approved for options trading cannot recommend option strategies. When a client asks about complex derivatives, the RR must escalate to a derivatives specialist. This is also a registration requirement — the RR must hold specific options/derivatives approvals to recommend these products.</div></div>
+      <div class="def-row"><div class="def-term">Alternative Investments</div><div class="def-val">Hedge funds, private equity, commodities, infrastructure funds — complex products with unique risk profiles, lock-up periods, and valuation methods. Firms typically have dedicated alternative investment specialists who conduct due diligence and advise on suitability for these products.</div></div>
+      <div class="def-row"><div class="def-term">Tax-Sensitive Situations</div><div class="def-val">When a client's tax situation is complex (significant capital gains, estate planning, corporate account, trust), the RR should refer to the firm's tax or estate planning specialists rather than attempt to provide tax advice beyond their expertise. Tax advice requires different professional qualifications (CPA).</div></div>
+      <div class="def-row"><div class="def-term">Specific Equity Situations</div><div class="def-val">Corporate actions (mergers, spin-offs, rights offerings), concentrated positions in restricted or control block shares, and new issue (IPO) participation may require escalation to the firm's equity capital markets desk or compliance department for approval.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Escalation for Specific Client Situations</h3>
+    <div class="checklist">
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Suspected financial abuse or exploitation</strong> — if the RR suspects a client (especially elderly) is being financially exploited by a family member, the Trusted Contact Person protocol must be activated and compliance escalated</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Signs of cognitive decline</strong> — if a client seems confused, is making irrational decisions, or family members raise concerns, the RR must escalate to compliance and possibly contact the Trusted Contact Person</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Suspected money laundering</strong> — unusual transaction patterns, large cash movements, or client behaviour inconsistent with their profile must be escalated to the AML Compliance Officer for potential STR filing</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Estate situations</strong> — when a client dies, dealing with the estate requires specific procedures and often legal/estate specialist involvement</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div><strong>Client complaints</strong> — formal complaints must be escalated to the compliance department following the firm's complaint handling procedures</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ 3.15 INVESTMENT STYLES ════════════ -->
+<div id="s315" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.15</div>
+    <h2 class="sec-title">Systematic Approaches — Active vs Passive Investment Styles</h2>
+  </div>
+
+  <p class="body">Understanding the fundamental distinction between active and passive investment management is essential for both serving clients and for the exam. These approaches apply to both equity and fixed income investing.</p>
+
+  <div id="s315-bond" class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Active vs Passive Bond Investment Styles</h3>
+
+    <div class="strat-grid">
+      <div class="strat-card active">
+        <div class="strat-header">🔴 Active Bond Management</div>
+        <div class="strat-body">
+          <p><strong>Goal:</strong> Outperform the bond market benchmark through skilled selection and timing.</p>
+          <p style="margin-top:10px;"><strong>Strategies used:</strong></p>
+          <ul style="margin-top:6px;padding-left:16px;line-height:1.8;">
+            <li><strong>Duration management</strong> — actively adjusting average maturity of portfolio based on interest rate outlook (shorten duration before rate rises, lengthen before rate falls)</li>
+            <li><strong>Credit quality rotation</strong> — shifting between investment grade and high yield based on credit cycle outlook</li>
+            <li><strong>Sector rotation</strong> — moving between government, corporate, and structured credit bonds based on relative value</li>
+            <li><strong>Yield curve positioning</strong> — overweighting certain maturities (flattener, steepener, barbell, bullet strategies)</li>
+          </ul>
+          <p style="margin-top:10px;"><strong>Costs:</strong> Higher MER. More portfolio turnover = more trading costs and potential tax inefficiency.</p>
+          <p style="margin-top:8px;"><strong>Performance:</strong> Empirical evidence shows most active bond managers underperform their benchmark after fees over long periods, though the fixed income market has more inefficiencies than equities, making some active management more defensible.</p>
+        </div>
+      </div>
+      <div class="strat-card passive">
+        <div class="strat-header">🟢 Passive Bond Management</div>
+        <div class="strat-body">
+          <p><strong>Goal:</strong> Replicate the performance of a bond market index (e.g., FTSE Canada Universe Bond Index) at the lowest possible cost.</p>
+          <p style="margin-top:10px;"><strong>Approaches:</strong></p>
+          <ul style="margin-top:6px;padding-left:16px;line-height:1.8;">
+            <li><strong>Index replication</strong> — holding all bonds in the index in proportion to their weight</li>
+            <li><strong>Sampling</strong> — holding a representative sample of bonds that mimics the index characteristics (duration, credit quality, sector)</li>
+            <li><strong>Bond ETFs</strong> — most accessible passive bond exposure for retail investors (e.g., ZAG, VAB, XBB)</li>
+            <li><strong>Bond laddering</strong> — buying bonds maturing at regular intervals (e.g., every 1 year for 10 years) to manage interest rate risk systematically</li>
+          </ul>
+          <p style="margin-top:10px;"><strong>Costs:</strong> Very low MER (0.10–0.25% for bond ETFs). Minimal turnover = low trading costs and minimal tax events.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s315-eq" class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Active vs Passive Equity Investment Styles</h3>
+
+    <div class="strat-grid">
+      <div class="strat-card active">
+        <div class="strat-header">🔴 Active Equity Management</div>
+        <div class="strat-body">
+          <p><strong>Goal:</strong> Outperform the equity market index through stock selection and timing.</p>
+          <p style="margin-top:10px;"><strong>Active equity styles:</strong></p>
+          <ul style="margin-top:6px;padding-left:16px;line-height:1.8;">
+            <li><strong>Value investing</strong> — buying stocks trading below their intrinsic value (low P/E, P/B ratios). Popularized by Benjamin Graham, Warren Buffett.</li>
+            <li><strong>Growth investing</strong> — buying companies with high earnings growth potential, often at premium valuations. Focus on future earnings power.</li>
+            <li><strong>GARP</strong> — Growth at a Reasonable Price. Hybrid of value and growth.</li>
+            <li><strong>Momentum investing</strong> — buying stocks that have been rising, selling those that have been falling. Based on trend continuation.</li>
+            <li><strong>Quality investing</strong> — focusing on high-quality companies with strong balance sheets, high ROE, and durable competitive advantages.</li>
+            <li><strong>Market-cap weighted concentration</strong> — active managers often hold fewer stocks (20–50) than the index, creating concentrated exposure to their highest-conviction ideas.</li>
+          </ul>
+          <p style="margin-top:10px;"><strong>The challenge:</strong> Most active equity managers underperform their benchmark after fees over long periods (SPIVA Canada scorecard documents this consistently). Markets are broadly efficient for large-cap equities.</p>
+        </div>
+      </div>
+      <div class="strat-card passive">
+        <div class="strat-header">🟢 Passive Equity Management</div>
+        <div class="strat-body">
+          <p><strong>Goal:</strong> Replicate the performance of a market index (e.g., S&P/TSX Composite, S&P 500) at minimal cost.</p>
+          <p style="margin-top:10px;"><strong>Approaches:</strong></p>
+          <ul style="margin-top:6px;padding-left:16px;line-height:1.8;">
+            <li><strong>Market-cap weighted index ETFs</strong> — most common. Holdings weighted by market cap (larger companies get bigger weights). Examples: XIU (S&P/TSX 60), VFV (S&P 500)</li>
+            <li><strong>Equal-weight indexing</strong> — each stock gets an equal weight, giving more exposure to smaller companies</li>
+            <li><strong>Factor/smart beta</strong> — passive rule-based strategies that tilt toward specific factors (value, low volatility, dividend growth, quality) — somewhere between pure passive and active</li>
+            <li><strong>Index mutual funds</strong> — older passive vehicle, higher MER than ETFs but still far cheaper than active funds</li>
+          </ul>
+          <p style="margin-top:10px;"><strong>Advantages:</strong> Low cost, broad diversification, tax efficiency, simplicity, and historically strong performance relative to active managers after fees.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout amber">
+      <div class="callout-icon">💡</div>
+      <div class="callout-inner">
+        <div class="callout-label">Suitability Connection</div>
+        <p>When recommending active vs passive, the RR must consider: <strong>client's cost sensitivity</strong> (active funds cost more), <strong>time horizon</strong> (active management has higher short-term variance), <strong>investment knowledge</strong> (complex active strategies require more client understanding), and <strong>objectives</strong> (a client wanting "market returns" is best served by passive; a client believing in manager skill may prefer active). Cost must always be considered under KYP and CFR.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ 3.16 BENCHMARKS ════════════ -->
+<div id="s316" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.16</div>
+    <h2 class="sec-title">Investment Performance Benchmarks</h2>
+  </div>
+
+  <p class="body">A <strong>benchmark</strong> is a standard against which investment performance is measured. For both active and passive investing, benchmarks are essential tools for evaluating whether a manager or strategy is delivering value.</p>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>What Makes a Good Benchmark?</h3>
+    <p class="body">A valid benchmark must be <strong>SAMURAI</strong> — a useful memory device:</p>
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">Specified in Advance</div><div class="def-val">The benchmark must be chosen before the performance period, not after. Choosing it after performance is known introduces selection bias.</div></div>
+      <div class="def-row"><div class="def-term">Appropriate</div><div class="def-val">The benchmark must reflect the investment universe and style of the portfolio. Comparing a Canadian small-cap fund to the S&P 500 is meaningless.</div></div>
+      <div class="def-row"><div class="def-term">Measurable</div><div class="def-val">The benchmark return must be calculable and publicly available.</div></div>
+      <div class="def-row"><div class="def-term">Unambiguous</div><div class="def-val">The securities in the benchmark must be clearly defined with known weights.</div></div>
+      <div class="def-row"><div class="def-term">Reflective of Manager's Opportunity Set</div><div class="def-val">The benchmark should represent what the manager could have invested in.</div></div>
+      <div class="def-row"><div class="def-term">Accountable</div><div class="def-val">Manager should accept the benchmark as appropriate for their strategy.</div></div>
+      <div class="def-row"><div class="def-term">Investable</div><div class="def-val">It should be possible to replicate the benchmark passively as an alternative to active management.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Key Canadian and International Benchmarks</h3>
+    <table>
+      <thead><tr><th>Asset Class</th><th>Benchmark</th><th>What It Measures</th></tr></thead>
+      <tbody>
+        <tr><td>Canadian Equities (Large Cap)</td><td><strong>S&P/TSX Composite Index</strong></td><td>~225 largest companies listed on the TSX; market-cap weighted</td></tr>
+        <tr><td>Canadian Equities (Blue Chip)</td><td><strong>S&P/TSX 60</strong></td><td>60 largest, most liquid TSX companies</td></tr>
+        <tr><td>US Equities</td><td><strong>S&P 500</strong></td><td>500 largest US companies; the most widely followed equity index globally</td></tr>
+        <tr><td>US Equities (Broad)</td><td><strong>Russell 2000</strong></td><td>2000 small-cap US companies; benchmark for small-cap managers</td></tr>
+        <tr><td>Global Equities</td><td><strong>MSCI World</strong></td><td>Large and mid-cap stocks across 23 developed markets</td></tr>
+        <tr><td>Canadian Fixed Income</td><td><strong>FTSE Canada Universe Bond Index</strong></td><td>Investment-grade Canadian bonds; the primary Canadian bond benchmark</td></tr>
+        <tr><td>Canadian Gov't Bonds</td><td><strong>FTSE Canada Government Bond Index</strong></td><td>Federal and provincial government bonds</td></tr>
+        <tr><td>Canadian Short-term Bonds</td><td><strong>FTSE Canada Short Term Bond Index</strong></td><td>Bonds with 1–5 year maturities</td></tr>
+        <tr><td>Cash/Short-term</td><td><strong>CORRA (Overnight Rate)</strong></td><td>Bank of Canada overnight rate; benchmark for cash returns</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Benchmark in Client Reporting</h3>
+    <p class="body">Under CRM3 enhancements (now implemented), dealers must provide <strong>benchmark comparison</strong> in client performance reports. The benchmark must be appropriate for the client's specific portfolio. A 100% equity portfolio should be compared to an equity benchmark, not a blended benchmark that includes bonds. This gives the client meaningful context — was their manager's performance good, bad, or average relative to what the market delivered?</p>
+    <p class="body"><strong>Alpha</strong> = return above the benchmark (after fees). <strong>Beta</strong> = sensitivity of portfolio to market movements. A fund with consistently positive alpha after fees is generating genuine value. Most active managers produce negative alpha after fees.</p>
+  </div>
+</div>
+
+<!-- ════════════ 3.17 FOREIGN CLIENTS ════════════ -->
+<div id="s317" class="section">
+  <div class="section-rule"></div>
+  <div class="sec-header">
+    <div class="sec-tag">3.17</div>
+    <h2 class="sec-title">Working with US and Foreign Jurisdiction Clients</h2>
+  </div>
+
+  <p class="body">Serving clients who reside outside Canada introduces complex cross-border regulatory requirements. This is especially important for clients in the <strong>United States</strong>, given the extensive reach of US securities laws.</p>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>US Residents — Why They're Complex</h3>
+    <p class="body">The US Securities and Exchange Commission (SEC) and Financial Industry Regulatory Authority (FINRA) have <strong>extraterritorial reach</strong> — they regulate the activities of advisors who deal with US residents, even if the advisor is based in Canada. A Canadian RR who advises US residents without proper US registration is violating US law.</p>
+
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">SEC Registration</div><div class="def-val">Canadian advisors who regularly advise US residents on US securities must register with the SEC as an Investment Adviser, or qualify for an exemption. Most Canadian dealers do not want to deal with US resident clients precisely because of this registration requirement and its ongoing compliance costs.</div></div>
+      <div class="def-row"><div class="def-term">FINRA Registration</div><div class="def-val">Dealers engaging in trading activities with US counterparts may also need FINRA registration depending on the activity. Broker-dealer activities touching the US must comply with FINRA rules.</div></div>
+      <div class="def-row"><div class="def-term">State Registration</div><div class="def-val">In addition to federal (SEC/FINRA) registration, many US states require separate registration of investment advisors dealing with their residents. 50 states = 50 potential registration requirements.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>The "Rule 15a-6" Exemption</h3>
+    <p class="body">SEC Rule 15a-6 provides a limited exemption allowing foreign broker-dealers (including Canadian dealers) to deal with certain US persons without registering with the SEC, provided the activities are limited and supervised through a registered US dealer. Key conditions:</p>
+    <div class="checklist">
+      <div class="chk"><span class="chk-icon">◆</span><div>The Canadian dealer must work through a <strong>registered US broker-dealer intermediary</strong> for most activities</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div>The exemption permits dealing with <strong>major US institutional investors</strong> more freely than with retail US residents</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div>Unsolicited contacts from US residents can be accommodated under limited circumstances</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Canadian Client Moves Abroad — Practical Scenario</h3>
+    <p class="body">A very common situation: an existing Canadian client informs their RR that they're moving to Florida. The RR must:</p>
+    <div class="checklist">
+      <div class="chk"><span class="chk-icon">◆</span><div>Immediately notify compliance of the change in client's jurisdiction of residence</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div>Determine whether the firm can legally continue serving the client in their new jurisdiction — most Canadian dealers will NOT continue managing accounts for US residents due to registration requirements</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div>If the firm cannot serve the client, give the client notice to transfer the account to a US-registered dealer. The client must not be disadvantaged — the firm must provide reasonable notice and time to transfer</div></div>
+      <div class="chk"><span class="chk-icon">◆</span><div>While the client is transitioning, the dealer should only execute liquidation trades or trades specifically to facilitate the transfer — not new investment recommendations</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title"><span class="sub-title-dot"></span>Other Foreign Jurisdictions</h3>
+    <p class="body">While the US is the most complex and most tested foreign jurisdiction, the same principles apply to other countries:</p>
+    <div class="def-table">
+      <div class="def-row"><div class="def-term">UK Residents</div><div class="def-val">UK's Financial Conduct Authority (FCA) regulates activity with UK residents. Post-Brexit, the UK has its own regulatory framework separate from the EU. Canadian dealers dealing with UK residents may need FCA authorization.</div></div>
+      <div class="def-row"><div class="def-term">EU Residents</div><div class="def-val">MiFID II (Markets in Financial Instruments Directive) is the EU's comprehensive regulatory framework. Dealing with EU residents involves compliance with MiFID II requirements which include extensive disclosure, best execution, and suitability obligations.</div></div>
+      <div class="def-row"><div class="def-term">General Principle</div><div class="def-val">Before servicing any client residing outside Canada, the dealer must seek legal advice on whether the activity is permitted in the client's jurisdiction of residence, and what local registration or compliance requirements apply. When in doubt, do not service the foreign client without proper legal authorization.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SUMMARY ════════════ -->
+<div id="summary" class="section">
+  <div class="summary-section">
+    <div class="summary-title">Element 3 — Master Summary</div>
+    <div class="summary-sub">Top 14 exam-critical points to know cold</div>
+
+    <div class="top-item"><span class="top-n">01</span><div><strong>RR vs IR — The Foundational Divide:</strong> RR can give advice, recommendations, and manage portfolios. IR can ONLY take orders — strictly prohibited from providing investment recommendations. Know concrete examples of the line between information (permitted) and advice (prohibited for IR).</div></div>
+
+    <div class="top-item"><span class="top-n">02</span><div><strong>Unsolicited vs Solicited Trades:</strong> Solicited = RR recommended it (full suitability required). Unsolicited = client directed it (RR must flag if inconsistent with profile, but client decision overrides). Both must be documented with the correct designation.</div></div>
+
+    <div class="top-item"><span class="top-n">03</span><div><strong>Error Correction:</strong> Errors go to the error account. Must notify supervisor immediately. Client must be made whole. Firm bears the cost. Cannot trade out of errors. Must document everything.</div></div>
+
+    <div class="top-item"><span class="top-n">04</span><div><strong>Trust, Agency, Fiduciary — Three Distinct Legal Concepts:</strong> Trust = holding assets for another. Agency = acting on behalf of another with authority to bind them. Fiduciary = highest duty, undivided loyalty. Fiduciary applies to discretionary portfolio managers; not automatically to all dealer relationships.</div></div>
+
+    <div class="top-item"><span class="top-n">05</span><div><strong>Agent vs Principal:</strong> Agent = dealer finds counterparty, earns commission. Principal = dealer is the counterparty, earns markup/markdown. Principal trading is a material conflict — must be disclosed in RDI and on trade confirmation.</div></div>
+
+    <div class="top-item"><span class="top-n">06</span><div><strong>Four Retail Service Types:</strong> OEO (no advice, client decides), Advisory (RR recommends, client approves), Managed/Wrap (PM manages, all fees wrapped), Discretionary (PM has full authority, no approval needed per trade). Each has different suitability obligations and fee structures.</div></div>
+
+    <div class="top-item"><span class="top-n">07</span><div><strong>Six Institutional Dealer Services:</strong> Trading, Research, Underwriting, M&A Advisory, Prime Brokerage, Securities Lending. Know what each involves at a conceptual level.</div></div>
+
+    <div class="top-item"><span class="top-n">08</span><div><strong>Account Appropriateness ≠ Suitability:</strong> Appropriateness = is this account type right for the client? (assessed at opening). Suitability = is this specific investment right for the client? (assessed at each recommendation/trade). Appropriateness is the prerequisite; suitability is ongoing.</div></div>
+
+    <div class="top-item"><span class="top-n">09</span><div><strong>KYP — The 5 Dimensions:</strong> Must understand a product's Structure, Features, Risks, Initial and ongoing costs, and the Impact of those costs. You cannot recommend what you don't understand. KYC + KYP = Suitability (the CFR triangle).</div></div>
+
+    <div class="top-item"><span class="top-n">10</span><div><strong>Suitability Exemptions:</strong> OEO accounts (no advice given), Discretionary accounts (PM bears suitability, not executing dealer), Institutional clients (sophistication-based, not suitability-based), Permitted clients with written waivers.</div></div>
+
+    <div class="top-item"><span class="top-n">11</span><div><strong>Internal Escalation Triggers:</strong> Derivatives (requires specific approval), suspected elder financial abuse (TCP protocol + compliance), suspected money laundering (AML Officer + FINTRAC), complex tax/estate situations (internal specialists), formal client complaints (compliance department).</div></div>
+
+    <div class="top-item"><span class="top-n">12</span><div><strong>Active vs Passive:</strong> Active = manager tries to beat the index through skill (higher cost, most underperform after fees). Passive = replicate the index at lowest cost (ETFs, index funds). Both strategies apply to bonds and equities. Active bond management has more defensible track record than active equity due to fixed income market inefficiencies.</div></div>
+
+    <div class="top-item"><span class="top-n">13</span><div><strong>Key Canadian Benchmarks:</strong> S&P/TSX Composite (Canadian equities), S&P/TSX 60 (large-cap), S&P 500 (US equities), FTSE Canada Universe Bond Index (Canadian bonds). Benchmark must be appropriate, specified in advance, investable, and measurable. Alpha = return above benchmark after fees.</div></div>
+
+    <div class="top-item"><span class="top-n">14</span><div><strong>US/Foreign Client Rule:</strong> Canadian dealers generally cannot serve US residents without SEC/FINRA registration. When a client moves to the US, notify compliance immediately, determine if firm can continue serving, give notice to transfer if not. Rule 15a-6 provides limited exemptions for institutional US investors.</div></div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+
+<button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function goTo(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function updateUI() {
+  const scrollTop = window.scrollY;
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docH > 0 ? (scrollTop / docH) * 100 : 0;
+  const fill = document.getElementById('pFill');
+  if (fill) fill.style.width = Math.min(pct, 100) + '%';
+
+  const btn = document.getElementById('scrolltop');
+  if (scrollTop > 500) btn.classList.add('visible');
+  else btn.classList.remove('visible');
+
+  const ids = ['cover','s31','s32','s33','s34','s35','s36','s37','s38','s39','s310','s311','s312','s313','s314','s315','s316','s317','summary'];
+  let current = 'cover';
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 100) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.remove('active');
+    const fn = link.getAttribute('onclick') || '';
+    if (fn.includes("'" + current + "'")) link.classList.add('active');
+  });
+}
+
+window.addEventListener('scroll', updateUI, { passive: true });
+updateUI();
+</script>
+
+</body>
+</html>

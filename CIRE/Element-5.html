@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIRE Element 5 — Market & Company Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f2f4f0; --paper:#ffffff; --warm:#f7f9f5; --border:#dde3d8;
+  --ink:#141a10; --ink2:#2d3828; --ink3:#5a6b52; --muted:#8a9e82;
+  --sb-bg:#141a10; --sb-border:rgba(255,255,255,0.07);
+  --green:#2e7d32; --green-bg:#e8f5e9; --green-border:#a5d6a7;
+  --blue:#1565c0; --blue-bg:#e3f2fd; --blue-border:#90caf9;
+  --amber:#e65100; --amber-bg:#fff3e0; --amber-border:#ffcc02;
+  --red:#b71c1c; --red-bg:#ffebee; --red-border:#ef9a9a;
+  --teal:#00695c; --teal-bg:#e0f2f1; --teal-border:#80cbc4;
+  --sidebar-w:288px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#1a2210;font-family:'Plus Jakarta Sans',sans-serif;color:var(--ink);display:flex;}
+
+/* ─ SIDEBAR ─ */
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--sb-bg);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;}
+#sidebar::-webkit-scrollbar{width:3px;}
+#sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);}
+.sb-head{padding:24px 20px 18px;border-bottom:1px solid var(--sb-border);background:rgba(0,0,0,0.3);position:sticky;top:0;z-index:5;}
+.sb-pill{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:#a5d6a7;text-transform:uppercase;margin-bottom:8px;background:rgba(46,125,50,0.2);border:1px solid rgba(46,125,50,0.3);display:inline-block;padding:2px 8px;border-radius:10px;}
+.sb-title{font-family:'Lora',serif;font-size:16px;font-weight:700;color:#e8f5e9;line-height:1.3;margin-bottom:3px;}
+.sb-sub{font-size:10px;color:rgba(255,255,255,0.28);}
+.sb-prog{padding:12px 20px 4px;}
+.sb-prog-lbl{font-size:9px;color:rgba(255,255,255,0.25);font-family:'JetBrains Mono',monospace;margin-bottom:5px;}
+.sb-prog-t{height:3px;background:rgba(255,255,255,0.07);border-radius:3px;}
+.sb-prog-f{height:100%;background:linear-gradient(90deg,var(--green),#66bb6a);border-radius:3px;width:0%;transition:width 0.3s;}
+.nav-grp{padding:8px 0;}
+.nav-grp-lbl{padding:6px 20px;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,0.22);text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+.nl{display:flex;align-items:flex-start;gap:8px;padding:6px 20px;cursor:pointer;border-left:2px solid transparent;transition:all 0.17s;text-decoration:none;}
+.nl:hover{background:rgba(255,255,255,0.04);border-left-color:rgba(46,125,50,0.5);}
+.nl.active{background:rgba(46,125,50,0.12);border-left-color:var(--green);}
+.nl-n{font-family:'JetBrains Mono',monospace;font-size:10px;color:#a5d6a7;min-width:28px;margin-top:2px;flex-shrink:0;}
+.nl-t{font-size:11.5px;color:rgba(255,255,255,0.43);line-height:1.4;transition:color 0.17s;}
+.nl:hover .nl-t,.nl.active .nl-t{color:rgba(255,255,255,0.82);}
+.ns{display:block;padding:3px 20px 3px 56px;font-size:10.5px;color:rgba(255,255,255,0.27);cursor:pointer;border-left:2px solid transparent;transition:all 0.17s;text-decoration:none;}
+.ns:hover{color:rgba(255,255,255,0.5);border-left-color:rgba(46,125,50,0.3);}
+
+/* ─ MAIN ─ */
+#main{margin-left:var(--sidebar-w);flex:1;background:var(--bg);min-height:100vh;}
+
+/* COVER */
+.cover{min-height:100vh;background:linear-gradient(150deg,#0a1a08 0%,#0d2010 40%,#0a1a14 100%);padding:80px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
+.cv-grid-bg{position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(46,125,50,0.04) 0,rgba(46,125,50,0.04) 1px,transparent 1px,transparent 50px),repeating-linear-gradient(0deg,rgba(46,125,50,0.04) 0,rgba(46,125,50,0.04) 1px,transparent 1px,transparent 50px);}
+.cv-glow{position:absolute;top:-50px;right:-50px;width:500px;height:500px;background:radial-gradient(circle,rgba(46,125,50,0.1),transparent 70%);border-radius:50%;}
+.cv-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:4px;color:#a5d6a7;text-transform:uppercase;margin-bottom:20px;position:relative;display:flex;align-items:center;gap:12px;}
+.cv-tag::before{content:'';display:inline-block;width:24px;height:1px;background:#a5d6a7;}
+.cv-title{font-family:'Lora',serif;font-size:clamp(36px,5.5vw,66px);font-weight:700;color:#e8f5e9;line-height:1.1;max-width:620px;margin-bottom:12px;position:relative;}
+.cv-title em{color:#a5d6a7;font-style:italic;}
+.cv-rule{width:64px;height:2px;background:linear-gradient(90deg,var(--green),transparent);margin:20px 0;position:relative;}
+.cv-desc{font-size:14.5px;color:rgba(232,245,233,0.5);max-width:520px;line-height:1.9;margin-bottom:48px;position:relative;}
+.cv-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;max-width:620px;border:1px solid rgba(46,125,50,0.2);border-radius:8px;overflow:hidden;position:relative;}
+.cv-stat{padding:16px 14px;background:rgba(255,255,255,0.02);}
+.cv-stat-n{font-family:'Lora',serif;font-size:26px;font-weight:700;color:#a5d6a7;line-height:1;margin-bottom:4px;}
+.cv-stat-l{font-size:9.5px;color:rgba(255,255,255,0.25);line-height:1.3;}
+
+/* ─ CONTENT ─ */
+.content{max-width:840px;padding:0 64px 120px;}
+.sec{padding-top:72px;}
+.sec-rule{height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:26px;}
+.sec-hdr{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px;}
+.sec-badge{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--green-bg);border:1px solid var(--green-border);color:var(--green);padding:5px 11px;border-radius:4px;white-space:nowrap;margin-top:5px;flex-shrink:0;}
+.sec-title{font-family:'Lora',serif;font-size:28px;font-weight:700;color:var(--ink);line-height:1.2;}
+
+.body{font-size:14.5px;color:var(--ink3);line-height:1.9;margin-bottom:16px;}
+.body strong{color:var(--ink);font-weight:600;}
+.body em{color:var(--green);font-style:normal;font-weight:600;}
+
+.sub{margin-top:30px;}
+.sub-title{font-family:'Lora',serif;font-size:19px;font-weight:700;color:var(--ink2);margin-bottom:12px;padding-left:12px;border-left:3px solid var(--green);}
+.subsub{margin-top:18px;}
+.subsub-title{font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:8px;display:flex;align-items:center;gap:6px;letter-spacing:0.2px;}
+.subsub-title::before{content:'▶';font-size:9px;color:var(--green);}
+
+/* CALLOUTS */
+.callout{margin:18px 0;padding:14px 17px;border-radius:6px;border-left:3px solid;display:flex;gap:11px;align-items:flex-start;}
+.callout.green{background:var(--green-bg);border-color:var(--green);}
+.callout.blue{background:var(--blue-bg);border-color:var(--blue);}
+.callout.amber{background:var(--amber-bg);border-color:var(--amber);}
+.callout.red{background:var(--red-bg);border-color:var(--red);}
+.callout.teal{background:var(--teal-bg);border-color:var(--teal);}
+.ci{font-size:15px;flex-shrink:0;margin-top:1px;}
+.cl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.callout.green .cl{color:var(--green);}
+.callout.blue .cl{color:var(--blue);}
+.callout.amber .cl{color:var(--amber);}
+.callout.red .cl{color:var(--red);}
+.callout.teal .cl{color:var(--teal);}
+.callout p{font-size:13.5px;color:var(--ink3);line-height:1.7;}
+.callout p strong{color:var(--ink);}
+
+/* DEF TABLE */
+.dt{margin:14px 0;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+.dr{display:grid;grid-template-columns:185px 1fr;}
+.dr:not(:last-child){border-bottom:1px solid var(--border);}
+.dterm{background:var(--warm);padding:11px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);border-right:1px solid var(--border);display:flex;align-items:flex-start;line-height:1.5;font-weight:500;}
+.dval{background:var(--paper);padding:11px 14px;font-size:13.5px;color:var(--ink3);line-height:1.65;}
+.dval strong{color:var(--ink);}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+thead tr{background:var(--sb-bg);}
+th{padding:10px 13px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:#a5d6a7;font-weight:500;}
+td{padding:10px 13px;border-bottom:1px solid var(--border);color:var(--ink3);line-height:1.6;vertical-align:top;}
+td strong{color:var(--ink);}
+tr:last-child td{border-bottom:none;}
+tr:nth-child(even) td{background:var(--warm);}
+
+/* CHECKLIST */
+.chk{margin:12px 0;}
+.chi{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;border-radius:5px;margin-bottom:3px;background:var(--warm);border:1px solid var(--border);font-size:13.5px;color:var(--ink3);line-height:1.55;}
+.chi strong{color:var(--ink);}
+.chico{color:var(--green);font-size:11px;flex-shrink:0;margin-top:2px;}
+
+/* BUSINESS CYCLE VISUAL */
+.cycle-visual{margin:20px 0;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.cycle-header{background:var(--sb-bg);padding:10px 16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:#a5d6a7;text-transform:uppercase;}
+.cycle-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+.cg-item{padding:16px;border-right:1px solid var(--border);}
+.cg-item:last-child{border-right:none;}
+.cg-title{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.cg-desc{font-size:12.5px;color:var(--ink3);line-height:1.6;}
+.cg-item.exp{background:var(--green-bg);}
+.cg-item.peak{background:var(--amber-bg);}
+.cg-item.cont{background:var(--red-bg);}
+.cg-item.trough{background:var(--blue-bg);}
+
+/* THEORY COMPARE */
+.theory-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0;}
+.tcard{border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.tcard-head{padding:12px 14px;font-weight:700;font-size:13px;}
+.tcard-body{padding:13px 14px;font-size:12.5px;color:var(--ink3);line-height:1.65;background:var(--paper);}
+.tcard-body strong{color:var(--ink);}
+.tcard.key{border-top:3px solid var(--green);}
+.tcard.mon{border-top:3px solid var(--blue);}
+.tcard.sup{border-top:3px solid var(--amber);}
+.tcard.key .tcard-head{background:var(--green-bg);color:var(--green);}
+.tcard.mon .tcard-head{background:var(--blue-bg);color:var(--blue);}
+.tcard.sup .tcard-head{background:var(--amber-bg);color:var(--amber);}
+
+/* INDICATOR CARDS */
+.ind-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+.ind-card{background:var(--paper);border:1px solid var(--border);border-radius:7px;padding:14px;}
+.ind-card-type{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.ind-card-type.lead{color:var(--green);}
+.ind-card-type.lag{color:var(--amber);}
+.ind-card-type.coin{color:var(--blue);}
+.ind-card-name{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:6px;}
+.ind-card-desc{font-size:12px;color:var(--ink3);line-height:1.55;}
+
+/* ANALYSIS COMPARE */
+.anal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0;}
+.acard{border-radius:8px;border:1px solid var(--border);overflow:hidden;}
+.acard-head{padding:12px 14px;font-weight:800;font-size:13px;display:flex;align-items:center;gap:8px;}
+.acard.fund .acard-head{background:var(--green-bg);color:var(--green);}
+.acard.quant .acard-head{background:var(--blue-bg);color:var(--blue);}
+.acard.tech .acard-head{background:var(--amber-bg);color:var(--amber);}
+.acard-body{padding:13px 14px;font-size:12.5px;color:var(--ink3);line-height:1.65;background:var(--paper);}
+
+/* HIGHLIGHT BOX */
+.hlbox{background:var(--sb-bg);border-radius:8px;padding:20px 24px;margin:18px 0;}
+.hlbox-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:#a5d6a7;text-transform:uppercase;margin-bottom:10px;}
+.hlbox p{font-size:13.5px;color:rgba(232,245,233,0.65);line-height:1.8;}
+.hlbox p strong{color:#a5d6a7;}
+
+/* FINANCIAL RATIOS */
+.ratio-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
+.ratio-card{background:var(--warm);border:1px solid var(--border);border-radius:6px;padding:13px 15px;}
+.ratio-name{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);font-weight:600;margin-bottom:4px;}
+.ratio-formula{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--amber);background:var(--amber-bg);padding:4px 8px;border-radius:3px;margin-bottom:6px;display:inline-block;}
+.ratio-desc{font-size:12.5px;color:var(--ink3);line-height:1.55;}
+
+/* SUMMARY */
+.sum-box{background:var(--sb-bg);border-radius:10px;padding:30px;margin-top:60px;}
+.sum-title{font-family:'Lora',serif;font-size:24px;font-weight:700;color:#e8f5e9;margin-bottom:4px;}
+.sum-sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,0.22);margin-bottom:22px;text-transform:uppercase;}
+.si{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13px;color:rgba(232,245,233,0.6);line-height:1.65;align-items:flex-start;}
+.si:last-child{border-bottom:none;}
+.si strong{color:#a5d6a7;}
+.sin{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(165,214,167,0.45);min-width:22px;flex-shrink:0;margin-top:2px;}
+
+/* ─ QUIZ ─ */
+.quiz-wrap{background:var(--sb-bg);padding:48px 64px 80px;margin-top:0;}
+.quiz-head{text-align:center;padding-bottom:36px;}
+.quiz-h1{font-family:'Lora',serif;font-size:34px;font-weight:700;color:#e8f5e9;margin-bottom:6px;}
+.quiz-sub-txt{font-size:12px;color:rgba(255,255,255,0.3);font-family:'JetBrains Mono',monospace;letter-spacing:1px;}
+.quiz-stats{display:flex;justify-content:center;gap:30px;margin-top:18px;flex-wrap:wrap;}
+.qs-n{font-family:'Lora',serif;font-size:28px;font-weight:700;color:#a5d6a7;}
+.qs-l{font-size:10px;color:rgba(255,255,255,0.28);}
+
+.qq{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:22px;margin-bottom:12px;transition:border-color 0.2s;}
+.qq:hover{border-color:rgba(46,125,50,0.35);}
+.qq-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;}
+.qq-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:#a5d6a7;min-width:32px;flex-shrink:0;margin-top:2px;}
+.qq-diff{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+.de{background:rgba(46,125,50,0.2);color:#81c784;border:1px solid rgba(46,125,50,0.3);}
+.dm{background:rgba(230,81,0,0.18);color:#ffb74d;border:1px solid rgba(230,81,0,0.3);}
+.dh{background:rgba(183,28,28,0.18);color:#ef9a9a;border:1px solid rgba(183,28,28,0.3);}
+.qq-text{font-size:13.5px;color:rgba(255,255,255,0.82);line-height:1.7;flex:1;}
+.qq-opts{display:flex;flex-direction:column;gap:5px;padding-left:44px;}
+.qq-opt{display:flex;gap:9px;align-items:flex-start;padding:8px 12px;border-radius:5px;cursor:pointer;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);transition:all 0.17s;font-size:12.5px;color:rgba(255,255,255,0.55);line-height:1.5;}
+.qq-opt:hover{background:rgba(46,125,50,0.1);border-color:rgba(46,125,50,0.3);color:rgba(255,255,255,0.85);}
+.qq-opt.correct{background:rgba(46,125,50,0.15);border-color:rgba(46,125,50,0.4);color:#a5d6a7;}
+.qq-opt.wrong{background:rgba(183,28,28,0.12);border-color:rgba(183,28,28,0.3);color:#ef9a9a;}
+.opt-l{font-family:'JetBrains Mono',monospace;font-size:10px;color:#a5d6a7;min-width:16px;flex-shrink:0;margin-top:1px;}
+.qq-opt.correct .opt-l{color:#66bb6a;}
+.qq-opt.wrong .opt-l{color:#ef5350;}
+.qq-exp{margin-top:10px;padding:11px 13px;background:rgba(46,125,50,0.08);border-left:3px solid var(--green);border-radius:0 5px 5px 0;display:none;font-size:12.5px;color:rgba(255,255,255,0.55);line-height:1.7;}
+.qq-exp strong{color:#a5d6a7;}
+.qq-exp.show{display:block;}
+.quiz-ctrl{text-align:center;padding:24px 0 0;}
+.btn{padding:11px 28px;border-radius:6px;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;transition:all 0.18s;}
+.btn-p{background:var(--green);color:#fff;}
+.btn-p:hover{background:#1b5e20;}
+.btn-s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.65);margin-left:8px;}
+.btn-s:hover{background:rgba(255,255,255,0.12);}
+.score-disp{background:rgba(46,125,50,0.15);border:1px solid rgba(46,125,50,0.3);border-radius:8px;padding:18px 28px;margin:18px auto;max-width:360px;display:none;text-align:center;}
+.score-n{font-family:'Lora',serif;font-size:48px;font-weight:700;color:#a5d6a7;line-height:1;}
+.score-l{font-size:12px;color:rgba(255,255,255,0.45);margin-top:5px;}
+
+#scrolltop{position:fixed;bottom:24px;right:24px;background:var(--green);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:16px;cursor:pointer;opacity:0;transition:opacity 0.3s;z-index:200;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,0.3);}
+#scrolltop.visible{opacity:1;}
+@media(max-width:900px){#sidebar{display:none;}#main{margin-left:0;}.content{padding:0 24px 80px;}.cover{padding:60px 24px;}.quiz-wrap{padding:32px 24px 60px;}.theory-grid,.anal-grid{grid-template-columns:1fr;}.cycle-grid{grid-template-columns:1fr 1fr;}.ratio-grid{grid-template-columns:1fr;}.cv-grid{grid-template-columns:repeat(2,1fr);}.ind-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sb-head">
+    <div class="sb-pill">CIRE · Element 5</div>
+    <div class="sb-title">Market & Company Analysis</div>
+    <div class="sb-sub">9 sections + 45 exam questions</div>
+  </div>
+  <div class="sb-prog"><div class="sb-prog-lbl">Progress</div><div class="sb-prog-t"><div class="sb-prog-f" id="pFill"></div></div></div>
+  <div class="nav-grp">
+    <div class="nav-grp-lbl">Content</div>
+    <a class="nl" onclick="goTo('cover')"><span class="nl-n">◉</span><span class="nl-t">Cover</span></a>
+    <a class="nl" onclick="goTo('s51')"><span class="nl-n">5.1</span><span class="nl-t">Basic Economic Theories</span></a>
+    <a class="ns" onclick="goTo('s51-theories')">Keynesian / Monetarist / Supply-Side</a>
+    <a class="ns" onclick="goTo('s51-fiscal')">Fiscal & Monetary Policy</a>
+    <a class="ns" onclick="goTo('s51-rates')">Interest Rates & Inflation</a>
+    <a class="ns" onclick="goTo('s51-cycle')">Business Cycle</a>
+    <a class="ns" onclick="goTo('s51-trade')">International Trade & FX</a>
+    <a class="nl" onclick="goTo('s52')"><span class="nl-n">5.2</span><span class="nl-t">Macroeconomic Influences</span></a>
+    <a class="ns" onclick="goTo('s52-boc')">Bank of Canada & Monetary Policy</a>
+    <a class="ns" onclick="goTo('s52-fiscal')">Fiscal Policy & Government</a>
+    <a class="nl" onclick="goTo('s53')"><span class="nl-n">5.3</span><span class="nl-t">Economic Indicators</span></a>
+    <a class="ns" onclick="goTo('s53-bus')">Business Conditions</a>
+    <a class="ns" onclick="goTo('s53-labour')">Labour Market</a>
+    <a class="ns" onclick="goTo('s53-inf')">Inflation & CPI</a>
+    <a class="nl" onclick="goTo('s54')"><span class="nl-n">5.4</span><span class="nl-t">Macro Factors & Financial Markets</span></a>
+    <a class="ns" onclick="goTo('s54-val')">Valuation & Expectations</a>
+    <a class="nl" onclick="goTo('s55')"><span class="nl-n">5.5</span><span class="nl-t">Industry Analysis</span></a>
+    <a class="nl" onclick="goTo('s56')"><span class="nl-n">5.6</span><span class="nl-t">Company Analysis Tools</span></a>
+    <a class="ns" onclick="goTo('s56-fs')">Financial Statements</a>
+    <a class="ns" onclick="goTo('s56-ratios')">Key Ratios</a>
+    <a class="nl" onclick="goTo('s57')"><span class="nl-n">5.7</span><span class="nl-t">Corporate Rules & Regulations</span></a>
+    <a class="ns" onclick="goTo('s57-takeover')">Takeover Rules</a>
+    <a class="ns" onclick="goTo('s57-rights')">Investor Rights</a>
+    <a class="nl" onclick="goTo('s58')"><span class="nl-n">5.8</span><span class="nl-t">Market Theories & Analysis Types</span></a>
+    <a class="nl" onclick="goTo('s59')"><span class="nl-n">5.9</span><span class="nl-t">Technical Analysis Tools</span></a>
+    <a class="nl" onclick="goTo('summary')"><span class="nl-n">★</span><span class="nl-t">Master Summary</span></a>
+  </div>
+  <div class="nav-grp">
+    <div class="nav-grp-lbl">Practice</div>
+    <a class="nl" onclick="goTo('quiz')"><span class="nl-n">📝</span><span class="nl-t">45 Practice Questions</span></a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+<div id="cover" class="cover">
+  <div class="cv-grid-bg"></div><div class="cv-glow"></div>
+  <div class="cv-tag" style="position:relative;">CIRE Examination Preparation</div>
+  <h1 class="cv-title">Market & <em>Company Analysis</em></h1>
+  <div class="cv-rule"></div>
+  <p class="cv-desc">Complete coverage of macroeconomic theory, central bank policy, economic indicators, industry and company analysis, corporate regulations, and all three analytical frameworks — with current Canadian data and 45 exam-level practice questions.</p>
+  <div class="cv-grid">
+    <div class="cv-stat"><div class="cv-stat-n">2.25%</div><div class="cv-stat-l">BoC Rate (Mar 2026)</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">1.8%</div><div class="cv-stat-l">CPI Feb 2026</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">3</div><div class="cv-stat-l">Economic Theories</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">4</div><div class="cv-stat-l">Business Cycle Phases</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">45</div><div class="cv-stat-l">Practice Questions</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ═══ 5.1 ═══ -->
+<div id="s51" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">5.1</div><h2 class="sec-title">Basic Economic Theories</h2></div>
+  <p class="body">Economics provides the theoretical foundation for understanding why markets behave as they do. Three major schools of economic thought underpin modern policy-making: Keynesian, Monetarist, and Supply-Side. Each has different prescriptions for how governments should respond to recessions, inflation, and economic growth challenges.</p>
+
+  <div id="s51-theories" class="sub">
+    <h3 class="sub-title">Keynesian, Monetarist & Supply-Side Theories</h3>
+    <div class="theory-grid">
+      <div class="tcard key">
+        <div class="tcard-head">📈 Keynesian Economics</div>
+        <div class="tcard-body">
+          <strong>Origin:</strong> John Maynard Keynes, 1930s (Great Depression era).<br><br>
+          <strong>Core belief:</strong> Markets are not self-correcting in the short run. In recessions, private demand falls, causing prolonged unemployment. Government must step in with fiscal stimulus.<br><br>
+          <strong>Policy prescription:</strong> Increase government <em>spending</em> during downturns (deficit spending). Use fiscal policy actively. The "multiplier effect" — $1 of government spending generates more than $1 of economic activity.<br><br>
+          <strong>Weakness:</strong> Risk of government crowding out private investment. Deficits accumulate debt. Time lags mean stimulus arrives late.<br><br>
+          <strong>Canadian relevance:</strong> The 2008–09 and 2020 COVID stimulus packages were Keynesian responses.
+        </div>
+      </div>
+      <div class="tcard mon">
+        <div class="tcard-head">💵 Monetarist Economics</div>
+        <div class="tcard-body">
+          <strong>Origin:</strong> Milton Friedman, 1960s–70s.<br><br>
+          <strong>Core belief:</strong> Inflation is "always and everywhere a monetary phenomenon." The money supply drives nominal economic activity. Markets are generally efficient and self-correcting if left alone.<br><br>
+          <strong>Policy prescription:</strong> Control the <em>money supply</em> at a steady, predictable rate. Avoid erratic fiscal policy. Let markets adjust. Central banks should follow rules, not discretion.<br><br>
+          <strong>Weakness:</strong> Assumes stable velocity of money (V in MV=PQ). Fails to account for credit creation by banks and non-bank lenders.<br><br>
+          <strong>Canadian relevance:</strong> The Bank of Canada's inflation targeting framework reflects monetarist influence.
+        </div>
+      </div>
+      <div class="tcard sup">
+        <div class="tcard-head">⚙️ Supply-Side Economics</div>
+        <div class="tcard-body">
+          <strong>Origin:</strong> 1980s (Reagan "Reaganomics," UK Thatcherism).<br><br>
+          <strong>Core belief:</strong> Economic growth is driven by increasing the <em>productive capacity</em> of the economy. Stimulate the supply side, not demand. High taxes reduce incentives to invest and work.<br><br>
+          <strong>Policy prescription:</strong> Cut taxes (especially business/capital gains taxes), reduce regulation, privatize state enterprises. "Trickle-down" economics — benefits flow from producers to workers/consumers.<br><br>
+          <strong>Weakness:</strong> Tax cuts often increase inequality. Benefits may not "trickle down" as expected. Can result in large deficits.<br><br>
+          <strong>Relevance:</strong> Corporate tax cuts in the US (2017 Tax Cuts and Jobs Act) were supply-side measures.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s51-fiscal" class="sub">
+    <h3 class="sub-title">How Fiscal and Monetary Policies Interact</h3>
+    <p class="body"><strong>Fiscal policy</strong> is controlled by the government (Ministry of Finance) — taxes and spending. <strong>Monetary policy</strong> is controlled by the central bank (Bank of Canada) — interest rates and money supply. Both affect aggregate demand, but through different channels.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Policy Mix</div><div class="dval">The combination of fiscal and monetary policy at any given time is called the <strong>policy mix</strong>. Both can be expansionary (stimulative) or contractionary (restrictive). The mix matters — tight monetary policy (high rates) combined with loose fiscal policy (deficit spending) can result in higher interest rates as the government borrows more, potentially crowding out private investment.</div></div>
+      <div class="dr"><div class="dterm">Crowding Out</div><div class="dval">When the government borrows heavily, it competes with private borrowers for available capital, pushing up interest rates and <em>crowding out</em> private investment. This is why some economists argue Keynesian stimulus can be self-defeating in practice.</div></div>
+      <div class="dr"><div class="dterm">Policy Coordination</div><div class="dval">In Canada, the Bank of Canada operates independently but the government and central bank coordinate their policy outlooks. For example, during COVID, both the government (massive spending) and the Bank (zero interest rates + QE) acted simultaneously in the same expansionary direction.</div></div>
+      <div class="dr"><div class="dterm">Automatic Stabilizers</div><div class="dval">Built-in fiscal mechanisms that automatically stimulate the economy in downturns without legislative action. Key examples: unemployment insurance (payments rise automatically in recessions), progressive income tax (tax revenues fall automatically as incomes decline). These dampen the business cycle without requiring active policy decisions.</div></div>
+    </div>
+  </div>
+
+  <div id="s51-rates" class="sub">
+    <h3 class="sub-title">How Interest Rates Are Determined & How They Affect Inflation</h3>
+    <p class="body">Interest rates are the price of borrowing money. In Canada, the key short-term rate is the <strong>Bank of Canada's overnight rate</strong> — currently held at <em>2.25%</em> as of March 2026. This rate directly influences all other short-term rates in the economy.</p>
+
+    <div class="subsub">
+      <h4 class="subsub-title">The Loanable Funds Theory</h4>
+      <p class="body">Interest rates are determined by the supply of and demand for loanable funds (savings). When <strong>savings supply increases</strong>, rates fall. When <strong>investment demand increases</strong>, rates rise. Central banks influence rates by adjusting the supply of reserves in the banking system.</p>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">The Yield Curve — Normal, Flat, Inverted</h4>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Normal Yield Curve</div><div class="dval">Long-term rates exceed short-term rates. Investors demand a premium for holding longer-term securities (time value, uncertainty). Signals positive economic expectations. Most common state.</div></div>
+        <div class="dr"><div class="dterm">Flat Yield Curve</div><div class="dval">Short and long-term rates are approximately equal. Signals uncertainty or transition — market is unsure about economic direction. Can precede inversion.</div></div>
+        <div class="dr"><div class="dterm">Inverted Yield Curve</div><div class="dval">Short-term rates exceed long-term rates. Historically one of the strongest predictors of recession. Signals that markets expect the central bank to cut rates significantly in the future (i.e., the economy will weaken). Canada experienced an inverted yield curve in 2022–23 before the Bank began cutting rates.</div></div>
+      </div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Interest Rates and Inflation — The Relationship</h4>
+      <p class="body">Higher interest rates reduce inflation by:</p>
+      <div class="chk">
+        <div class="chi"><span class="chico">◆</span><div><strong>Reducing borrowing and spending</strong> — mortgages, car loans, business credit all become more expensive, reducing aggregate demand</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Strengthening the currency</strong> — higher rates attract foreign capital seeking yield, pushing up the exchange rate, making imports cheaper</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Reducing asset prices</strong> — higher discount rates reduce the present value of future cash flows (stocks, real estate), reducing the "wealth effect" on consumer spending</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Signalling credibility</strong> — markets trust the central bank will keep inflation low, so inflation expectations stay anchored</div></div>
+      </div>
+      <div class="callout amber">
+        <div class="ci">⚠️</div>
+        <div class="cb"><div class="cl">Current Context</div><p>The Bank of Canada cut its overnight rate from 5.00% (June 2024) to <strong>2.25%</strong> (October 2025) — 275 basis points of cuts — in response to slowing inflation and economic weakness. As of March 2026, the rate remains at 2.25% amid global trade uncertainty. CPI inflation was 1.8% in February 2026 — below the 2% target.</p></div>
+      </div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Market Equilibrium</h4>
+      <p class="body">Market equilibrium is the price at which the quantity of a good or service demanded equals the quantity supplied. At equilibrium, there is no tendency for the price to change. Key concepts:</p>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Supply & Demand</div><div class="dval">Prices rise when demand exceeds supply (shortage). Prices fall when supply exceeds demand (surplus). The equilibrium price clears the market. In securities markets, equilibrium price is the market price where buyers and sellers agree.</div></div>
+        <div class="dr"><div class="dterm">Shifts vs Movements</div><div class="dval">A <em>movement</em> along the demand curve occurs when price changes. A <em>shift</em> of the entire demand curve occurs when a non-price factor changes (income, expectations, preferences). The exam may test whether a scenario describes a shift or a movement.</div></div>
+        <div class="dr"><div class="dterm">Price Mechanism</div><div class="dval">The price mechanism allocates resources in a market economy. Rising prices signal producers to produce more; falling prices signal consumers to demand more. This is how supply and demand equilibrate without central direction.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s51-cycle" class="sub">
+    <h3 class="sub-title">The Business Cycle / Economic Cycle</h3>
+    <p class="body">The business cycle describes the recurring pattern of expansion and contraction in economic activity. It has four phases. Understanding each phase is critical for investment strategy and industry analysis (section 5.5).</p>
+    <div class="cycle-visual">
+      <div class="cycle-header">THE FOUR PHASES OF THE BUSINESS CYCLE</div>
+      <div class="cycle-grid">
+        <div class="cg-item exp">
+          <div class="cg-title">🟢 Expansion / Recovery</div>
+          <div class="cg-desc"><strong>GDP:</strong> Rising<br><strong>Unemployment:</strong> Falling<br><strong>Inflation:</strong> Moderate, rising<br><strong>Interest rates:</strong> Low to moderate<br><strong>Markets:</strong> Bull market, equities rise<br><strong>Best sectors:</strong> Consumer discretionary, technology, financials</div>
+        </div>
+        <div class="cg-item peak">
+          <div class="cg-title">🟡 Peak</div>
+          <div class="cg-desc"><strong>GDP:</strong> Maximum<br><strong>Unemployment:</strong> Minimum<br><strong>Inflation:</strong> High<br><strong>Interest rates:</strong> Rising (central bank tightening)<br><strong>Markets:</strong> Topping out<br><strong>Best sectors:</strong> Energy, materials, commodities</div>
+        </div>
+        <div class="cg-item cont">
+          <div class="cg-title">🔴 Contraction / Recession</div>
+          <div class="cg-desc"><strong>GDP:</strong> Falling<br><strong>Unemployment:</strong> Rising<br><strong>Inflation:</strong> Falling<br><strong>Interest rates:</strong> Central bank cuts<br><strong>Markets:</strong> Bear market, equities fall<br><strong>Best sectors:</strong> Consumer staples, utilities, healthcare (defensive)</div>
+        </div>
+        <div class="cg-item trough">
+          <div class="cg-title">🔵 Trough</div>
+          <div class="cg-desc"><strong>GDP:</strong> Minimum<br><strong>Unemployment:</strong> Maximum<br><strong>Inflation:</strong> Low<br><strong>Interest rates:</strong> Lowest<br><strong>Markets:</strong> Bottoming out, recovery starting<br><strong>Best sectors:</strong> Begin rotating back to cyclicals as recovery approaches</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout green">
+      <div class="ci">💡</div>
+      <div class="cb"><div class="cl">Technical Definition of Recession</div><p>A <strong>recession</strong> is technically defined as <strong>two consecutive quarters of negative real GDP growth</strong>. However, in Canada, the C.D. Howe Institute's Business Cycle Council provides the official recession dating, which considers multiple economic indicators beyond just GDP. The COVID recession of 2020 was severe but brief (two quarters); Canada experienced a mild contraction in 2022–23 due to rate hikes.</p></div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Determinants of Long-Term Economic Growth</h4>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Labour Force Growth</div><div class="dval">More workers = more output, assuming other factors constant. Canada's immigration policy is explicitly designed to grow the labour force to counteract an aging population and maintain economic growth.</div></div>
+        <div class="dr"><div class="dterm">Capital Accumulation</div><div class="dval">Investment in physical capital (machinery, equipment, infrastructure, buildings) increases the productive capacity of the economy. Higher savings rates support more capital investment.</div></div>
+        <div class="dr"><div class="dterm">Technological Progress</div><div class="dval">The most powerful long-term driver of growth. Productivity improvements allow more output from the same inputs. R&D, education, innovation, and digital transformation all contribute.</div></div>
+        <div class="dr"><div class="dterm">Human Capital</div><div class="dval">Education, skills, and health of the workforce. More educated workers are more productive. Canada's investment in post-secondary education contributes to human capital development.</div></div>
+        <div class="dr"><div class="dterm">Institutions & Rule of Law</div><div class="dval">Stable legal institutions, property rights, contract enforcement, and low corruption enable economic activity. Countries with weak institutions consistently underperform economically.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s51-trade" class="sub">
+    <h3 class="sub-title">International Trade, Balance of Payments & Exchange Rates</h3>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Balance of Payments (BoP)</h4>
+      <p class="body">The balance of payments is a record of all economic transactions between residents of a country and the rest of the world in a given period. It has two main components:</p>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Current Account</div><div class="dval">Records trade in goods and services, plus net income (dividends, interest) and current transfers. A <strong>current account deficit</strong> means the country is importing more than it exports — the country is a net borrower from abroad. Canada typically runs a current account deficit. The US runs a large chronic current account deficit.</div></div>
+        <div class="dr"><div class="dterm">Capital & Financial Account</div><div class="dval">Records investment flows — foreign direct investment (FDI), portfolio investment (stocks, bonds), and other capital movements. When Canada runs a current account deficit, the capital account must be in surplus — foreigners are net investors in Canadian assets to finance the deficit.</div></div>
+        <div class="dr"><div class="dterm">BoP Must Balance</div><div class="dval">By accounting identity, the current account + capital account = 0 (plus statistical discrepancy). A deficit in one must be offset by a surplus in the other.</div></div>
+      </div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Exchange Rates</h4>
+      <p class="body">The exchange rate is the price of one currency in terms of another. For Canada, the CAD/USD rate is the most important — the US accounts for ~75% of Canadian trade.</p>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Factors that Strengthen CAD</div><div class="dval">Rising commodity prices (Canada is a commodity exporter — oil, metals, grains). Higher interest rates (attract foreign capital). Stronger Canadian economic growth relative to US. Narrowing current account deficit. Positive risk sentiment.</div></div>
+        <div class="dr"><div class="dterm">Factors that Weaken CAD</div><div class="dval">Falling oil prices. Lower Canadian interest rates relative to US. US dollar strength (safe haven flows). Canadian economic weakness. Trade deficits. Risk-off market sentiment (CAD is a risk currency).</div></div>
+        <div class="dr"><div class="dterm">Impact on Investments</div><div class="dval">A stronger CAD reduces returns from US/foreign investments when converted back to CAD. Currency risk is a key consideration for portfolio management. Hedged vs unhedged ETFs differ in their currency exposure.</div></div>
+        <div class="dr"><div class="dterm">Purchasing Power Parity (PPP)</div><div class="dval">Long-run theory that exchange rates adjust so that the same goods cost the same in both countries (when converted). The Big Mac Index is a famous (informal) PPP measure. Useful for long-term analysis but rates can deviate from PPP for extended periods.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 5.2 ═══ -->
+<div id="s52" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">5.2</div><h2 class="sec-title">Factors that Influence the Macroeconomy</h2></div>
+
+  <div id="s52-boc" class="sub">
+    <h3 class="sub-title">Bank of Canada — Monetary Policy</h3>
+    <p class="body">The <strong>Bank of Canada (BoC)</strong> is Canada's central bank, established in 1935. It operates independently from the federal government but works within the framework of a joint <em>Inflation Control Agreement</em> with the government, renewed every 5 years. The current target is <strong>2% CPI inflation</strong>, with a 1–3% control range.</p>
+
+    <div class="subsub">
+      <h4 class="subsub-title">The Bank of Canada's Primary Tools</h4>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Overnight Rate Target</div><div class="dval">The <strong>primary tool</strong>. The Bank sets the target for the overnight interest rate — the rate at which major financial institutions lend to each other overnight. Currently <strong>2.25%</strong> (March 2026). The Bank Rate (charged on overnight loans to financial institutions) is set at the target + 0.25%. Changes announced on <strong>8 fixed dates per year</strong>.</div></div>
+        <div class="dr"><div class="dterm">Open Market Operations</div><div class="dval">The Bank buys and sells government securities to manage liquidity in the banking system. Buying securities injects money (expansionary); selling withdraws money (contractionary). Primary mechanism for hitting the overnight rate target.</div></div>
+        <div class="dr"><div class="dterm">Quantitative Easing (QE)</div><div class="dval">Used when conventional rate cuts are insufficient (rates near zero). The Bank purchased government bonds and other securities directly, expanding the money supply and pushing down long-term rates. Canada used QE extensively in 2020–21 during COVID. The Bank began quantitative tightening (QT) — allowing bonds to mature without replacement — in 2022.</div></div>
+        <div class="dr"><div class="dterm">Forward Guidance</div><div class="dval">The Bank communicates its future policy intentions through speeches, Monetary Policy Reports (MPR — published 4 times/year), and press conferences. Forward guidance shapes market expectations, affecting bond yields and the exchange rate even without actual rate changes.</div></div>
+        <div class="dr"><div class="dterm">CORRA — Canadian Overnight Repo Rate Average</div><div class="dval">The benchmark overnight rate that replaced CDOR (Canadian Dollar Offered Rate) as of July 2024. CORRA is the risk-free overnight reference rate for Canadian dollars, used for pricing floating-rate securities and derivatives.</div></div>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <div class="ci">🍁</div>
+      <div class="cb"><div class="cl">2024–2026 Rate Cycle Context</div><p>The Bank of Canada cut rates <strong>7 times between June 2024 and October 2025</strong> — 275 basis points total — from 5.00% to 2.25%. This was a response to inflation falling back to the 2% target and economic softness. Since October 2025 the rate has been <strong>held at 2.25%</strong> (3 consecutive holds). As of March 2026, CPI inflation was 1.8% and GDP contracted 0.6% in Q4 2025.</p></div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Monetary Policy Transmission Mechanism</h4>
+      <p class="body">How does changing the overnight rate affect the real economy? There are multiple channels:</p>
+      <div class="chk">
+        <div class="chi"><span class="chico">◆</span><div><strong>Interest rate channel:</strong> Higher rates → higher borrowing costs → less consumer/business borrowing → lower spending → lower inflation</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Exchange rate channel:</strong> Higher rates → stronger CAD → cheaper imports → lower inflation; weaker exports</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Asset price channel:</strong> Higher rates → lower equity and real estate values → negative wealth effect → reduced consumer spending</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Credit channel:</strong> Higher rates → tighter lending standards → less credit available → reduced economic activity</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Expectations channel:</strong> Credible inflation targeting → anchored inflation expectations → self-fulfilling price stability</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s52-fiscal" class="sub">
+    <h3 class="sub-title">Government Fiscal Policy & Intervention</h3>
+    <p class="body">Fiscal policy is the use of government <strong>spending and taxation</strong> to influence economic activity. It is the domain of the federal and provincial governments, not the central bank.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Expansionary Fiscal Policy</div><div class="dval">Increase government spending and/or cut taxes → increases aggregate demand → stimulates GDP growth → appropriate during recessions. Risk: increases fiscal deficit and government debt. Canada's debt-to-GDP ratio rose significantly during COVID (from ~31% to ~48%) due to emergency spending.</div></div>
+      <div class="dr"><div class="dterm">Contractionary Fiscal Policy</div><div class="dval">Decrease government spending and/or raise taxes → reduces aggregate demand → appropriate when economy is overheating. Risk: can tip a slowing economy into recession if poorly timed.</div></div>
+      <div class="dr"><div class="dterm">Government Intervention Types</div><div class="dval"><strong>Direct:</strong> Crown corporations, public ownership of industries. <strong>Regulatory:</strong> Setting prices, standards, operating rules for private firms. <strong>Tax incentives:</strong> SR&ED credits for R&D, flow-through shares for mining. <strong>Subsidies:</strong> Supporting strategic industries. <strong>Trade policy:</strong> Tariffs, quotas, free trade agreements (CUSMA/USMCA).</div></div>
+      <div class="dr"><div class="dterm">Federal Budget</div><div class="dval">Canada's federal budget is presented annually (typically March/April) by the Minister of Finance. It outlines expected revenues (taxes), expenditures (programs, transfers), and the resulting surplus/deficit. Bond markets react to budget announcements — large deficits can push up government bond yields.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 5.3 ═══ -->
+<div id="s53" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">5.3</div><h2 class="sec-title">Economic Indicators</h2></div>
+  <p class="body">Economic indicators are statistics that provide information about the current state and direction of the economy. They fall into three categories based on their timing relative to the business cycle.</p>
+
+  <div class="dt" style="margin-bottom:18px;">
+    <div class="dr"><div class="dterm">Leading Indicators</div><div class="dval">Change <strong>before</strong> the economy changes — used to predict future economic direction. Examples: stock market, building permits, new manufacturing orders, consumer confidence, yield curve slope, money supply (M2).</div></div>
+    <div class="dr"><div class="dterm">Coincident Indicators</div><div class="dval">Change <strong>at the same time</strong> as the economy. Provide current status. Examples: GDP, employment levels, personal income, retail sales, industrial production.</div></div>
+    <div class="dr"><div class="dterm">Lagging Indicators</div><div class="dval">Change <strong>after</strong> the economy changes — confirm trends already underway. Examples: unemployment rate, CPI inflation, prime lending rate, outstanding loans, average duration of unemployment.</div></div>
+  </div>
+
+  <div id="s53-bus" class="sub">
+    <h3 class="sub-title">Business Conditions Indicators</h3>
+    <div class="ind-grid">
+      <div class="ind-card"><div class="ind-card-type lead">Leading</div><div class="ind-card-name">Building Permits</div><div class="ind-card-desc">New permits for construction indicate future economic activity. A rise signals business and residential investment expansion is coming.</div></div>
+      <div class="ind-card"><div class="ind-card-type lead">Leading</div><div class="ind-card-name">Manufacturing Orders</div><div class="ind-card-desc">New orders for durable goods signal future manufacturing activity. Released by Statistics Canada as part of Survey of Manufacturing.</div></div>
+      <div class="ind-card"><div class="ind-card-type lead">Leading</div><div class="ind-card-name">Consumer Confidence</div><div class="ind-card-desc">The Conference Board of Canada Consumer Confidence Index measures households' optimism about economic conditions and future spending intentions.</div></div>
+      <div class="ind-card"><div class="ind-card-type coin">Coincident</div><div class="ind-card-name">GDP Growth Rate</div><div class="ind-card-desc">The most comprehensive measure of economic activity. Statistics Canada releases GDP data monthly (unique globally) and quarterly. Canada's GDP contracted 0.6% in Q4 2025.</div></div>
+      <div class="ind-card"><div class="ind-card-type coin">Coincident</div><div class="ind-card-name">Retail Sales</div><div class="ind-card-desc">Monthly data showing consumer spending on goods. A key indicator of consumer confidence and economic health. Canada retail sales data is released by Statistics Canada.</div></div>
+      <div class="ind-card"><div class="ind-card-type lag">Lagging</div><div class="ind-card-name">Business Investment</div><div class="ind-card-desc">Capital expenditures by businesses on machinery, equipment, and structures. Lags the cycle because companies invest after they're confident in the expansion.</div></div>
+    </div>
+  </div>
+
+  <div id="s53-labour" class="sub">
+    <h3 class="sub-title">Labour Market & Unemployment</h3>
+    <p class="body">Canada's Labour Force Survey (LFS) is released monthly by Statistics Canada. It is one of the most closely watched economic indicators.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Unemployment Rate</div><div class="dval">Percentage of the labour force that is unemployed and actively seeking work. Canada's unemployment rate was <strong>6.7%</strong> in March 2026. Note: it is a <em>lagging</em> indicator — it peaks after the recession has already ended.</div></div>
+      <div class="dr"><div class="dterm">Frictional Unemployment</div><div class="dval">Temporary unemployment from workers transitioning between jobs. Normal and unavoidable in a dynamic economy. Part of the "natural rate" of unemployment.</div></div>
+      <div class="dr"><div class="dterm">Structural Unemployment</div><div class="dval">Mismatch between worker skills and available jobs, often due to technological change (automation) or geographic mismatch. More persistent than frictional unemployment. Addressed through retraining programs.</div></div>
+      <div class="dr"><div class="dterm">Cyclical Unemployment</div><div class="dval">Unemployment caused by the business cycle (economic downturns). Rises during recessions, falls during expansions. The primary focus of monetary and fiscal policy responses.</div></div>
+      <div class="dr"><div class="dterm">Natural Rate of Unemployment (NAIRU)</div><div class="dval">The rate of unemployment consistent with stable inflation — also called the "Non-Accelerating Inflation Rate of Unemployment." In Canada, estimated at approximately 5–6%. When unemployment is <em>below</em> the NAIRU, inflation tends to rise (labour market overheating).</div></div>
+      <div class="dr"><div class="dterm">Labour Force Participation Rate</div><div class="dval">The percentage of the working-age population that is either employed or actively seeking work. A declining participation rate can mask the true weakness of the labour market (discouraged workers drop out of the labour force, reducing the headline unemployment rate).</div></div>
+    </div>
+  </div>
+
+  <div id="s53-inf" class="sub">
+    <h3 class="sub-title">Inflation & the Consumer Price Index (CPI)</h3>
+    <p class="body"><strong>Inflation</strong> is the general, sustained increase in the price level of goods and services over time. It erodes purchasing power and is the primary target of monetary policy.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">CPI</div><div class="dval">The <strong>Consumer Price Index</strong> measures the change in prices of a fixed basket of goods and services purchased by typical Canadian households. Statistics Canada publishes CPI monthly. <strong>Canada's CPI inflation was 1.8% in February 2026</strong> — below the Bank of Canada's 2% target. The basket includes food, shelter, transportation, health, clothing, recreation, and other categories.</div></div>
+      <div class="dr"><div class="dterm">Core CPI</div><div class="dval">Inflation measures that exclude volatile components. The Bank of Canada focuses on <strong>three measures of core inflation</strong>: CPI-trim (trims extreme price changes), CPI-median (the median price change), and CPI-common (tracks common price changes across categories). Core inflation was approximately 2.5–3% in late 2025.</div></div>
+      <div class="dr"><div class="dterm">Headline vs Core</div><div class="dval">Headline CPI includes all goods including food and energy (volatile). Core excludes volatile items to give a cleaner signal of underlying inflation trends. Policy-makers focus on core, but headline affects consumer expectations.</div></div>
+      <div class="dr"><div class="dterm">Demand-Pull Inflation</div><div class="dval">Inflation caused by excess demand — "too much money chasing too few goods." Occurs when the economy is growing above potential. The primary inflation type targeted by monetary policy.</div></div>
+      <div class="dr"><div class="dterm">Cost-Push Inflation</div><div class="dval">Inflation caused by rising production costs (wages, commodity prices, supply chain disruptions). Can create "stagflation" — simultaneous inflation and economic weakness. The 1970s oil shocks caused cost-push stagflation. COVID supply chain disruptions caused a cost-push element in the 2021–23 inflation episode.</div></div>
+      <div class="dr"><div class="dterm">Deflation / Disinflation</div><div class="dval">Deflation: negative inflation (prices falling). Very dangerous — encourages postponing purchases, causing debt deflation spirals (Japan's "lost decade"). Disinflation: falling rate of inflation (still positive but slowing). Canada experienced disinflation through 2023–2025 as the Bank's rate hikes took effect.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 5.4 ═══ -->
+<div id="s54" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">5.4</div><h2 class="sec-title">How Macroeconomic Factors Affect Financial Markets</h2></div>
+
+  <div id="s54-val" class="sub">
+    <h3 class="sub-title">Investor Expectations & the Price of Securities</h3>
+    <p class="body">Security prices are forward-looking — they reflect <em>expectations</em> about future earnings, interest rates, and economic conditions. This is why markets often "sell on the news" even when news is positive (already priced in). Key relationships:</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Interest Rates ↑ → Equities ↓</div><div class="dval">Higher rates increase the discount rate applied to future earnings, reducing the present value of stocks. Also makes bonds relatively more attractive. Higher borrowing costs reduce corporate profitability. <em>This is the most tested relationship in 5.4.</em></div></div>
+      <div class="dr"><div class="dterm">Interest Rates ↑ → Bond Prices ↓</div><div class="dval">Bond prices move inversely to yields. When new bonds offer higher yields, existing bonds with lower fixed coupons become less attractive and fall in price to equate their yield to the new rate. Duration determines the sensitivity.</div></div>
+      <div class="dr"><div class="dterm">Economic Growth ↑ → Equities ↑</div><div class="dval">Strong GDP growth → higher corporate earnings → higher share prices. Cyclical stocks (consumer discretionary, industrials, financials) benefit most from economic expansion.</div></div>
+      <div class="dr"><div class="dterm">Inflation ↑ (unexpected)</div><div class="dval">Hurts bonds (real return erodes). Hurts long-duration growth stocks. May initially help some equities if they can pass costs to consumers. Real assets (real estate, commodities, TIPS/RRBs) typically benefit from inflation.</div></div>
+      <div class="dr"><div class="dterm">CAD Strengthens</div><div class="dval">Hurts Canadian exporters (oil, mining, manufacturing) as their products become more expensive for foreign buyers. Reduces returns from US/foreign investments when converted back to CAD. Positive for importers (cheaper imports).</div></div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Valuation Techniques and Models</h4>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Discounted Cash Flow (DCF)</div><div class="dval">Intrinsic value = sum of all future cash flows discounted back to present value at the required rate of return. Most theoretically rigorous. Highly sensitive to the discount rate (required return) and terminal growth rate assumptions.</div></div>
+        <div class="dr"><div class="dterm">Dividend Discount Model (DDM)</div><div class="dval">Special case of DCF for dividend-paying stocks: <strong>P = D₁ / (r – g)</strong> where P = current price, D₁ = next year's dividend, r = required return, g = dividend growth rate. The Gordon Growth Model. Useful for mature, stable dividend payers.</div></div>
+        <div class="dr"><div class="dterm">Price-to-Earnings (P/E)</div><div class="dval">Market price per share ÷ Earnings per share. The most widely used relative valuation metric. Compare to historical average, sector peers, or market index. A high P/E signals growth expectations or potential overvaluation.</div></div>
+        <div class="dr"><div class="dterm">Price-to-Book (P/B)</div><div class="dval">Market price per share ÷ Book value per share. P/B < 1 suggests market values the firm below its accounting net assets. Used especially for financial institutions (banks, insurance companies).</div></div>
+        <div class="dr"><div class="dterm">EV/EBITDA</div><div class="dval">Enterprise Value ÷ EBITDA. Capital-structure-neutral valuation metric used extensively in M&A and leveraged buyout analysis. Removes distortions from financing choices and depreciation accounting.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 5.5 ═══ -->
+<div id="s55" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">5.5</div><h2 class="sec-title">Industry Analysis</h2></div>
+  <p class="body">Industry analysis sits between macroeconomic analysis (top-down) and company analysis (bottom-up). It helps identify which sectors are attractive at a given point in the business cycle and competitive landscape.</p>
+
+  <div class="sub">
+    <h3 class="sub-title">Industry Classification Systems</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">GICS</div><div class="dval">The <strong>Global Industry Classification Standard</strong> — developed by MSCI and S&P. The most widely used system in investment management globally. 11 sectors → 24 industry groups → 69 industries → 158 sub-industries. Used to classify companies in the S&P/TSX Composite. The 11 GICS sectors: Energy, Materials, Industrials, Consumer Discretionary, Consumer Staples, Health Care, Financials, Information Technology, Communication Services, Utilities, Real Estate.</div></div>
+      <div class="dr"><div class="dterm">NAICS</div><div class="dval">The <strong>North American Industry Classification System</strong> — used for government statistical purposes (Statistics Canada, Census Bureau). More granular than GICS. Used in economic reports and GDP sector breakdowns.</div></div>
+      <div class="dr"><div class="dterm">SIC</div><div class="dval">The older <strong>Standard Industrial Classification</strong> system — now largely replaced by NAICS for North American use. Still encountered in some older data sources.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Industry Performance Across the Business Cycle</h3>
+    <p class="body">Different industries perform better at different points in the business cycle. This sector rotation framework is a core concept for the exam:</p>
+    <table>
+      <thead><tr><th>Business Cycle Phase</th><th>Outperforming Sectors</th><th>Underperforming Sectors</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Early Expansion</strong></td><td>Financials, Consumer Discretionary, Real Estate</td><td>Utilities, Staples</td><td>Low rates boost lending, consumers start spending on non-essentials, real estate revives</td></tr>
+        <tr><td><strong>Mid Expansion</strong></td><td>Technology, Industrials</td><td>Utilities</td><td>Business investment picks up, tech adoption accelerates</td></tr>
+        <tr><td><strong>Late Expansion / Peak</strong></td><td>Energy, Materials, Commodities</td><td>Bonds, long duration assets</td><td>Rising inflation boosts commodity prices; inflation pressures build</td></tr>
+        <tr><td><strong>Contraction / Recession</strong></td><td>Consumer Staples, Healthcare, Utilities</td><td>Consumer Discretionary, Financials, Industrials</td><td>Defensive sectors — demand for food, medicine, electricity is inelastic</td></tr>
+      </tbody>
+    </table>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Porter's Five Forces — Industry Competitive Analysis</h4>
+      <p class="body">Michael Porter's framework assesses the attractiveness of an industry by analyzing five competitive forces that determine industry profitability:</p>
+      <div class="chk">
+        <div class="chi"><span class="chico">◆</span><div><strong>Threat of new entrants</strong> — high barriers to entry protect incumbents (economies of scale, capital requirements, regulatory approvals, brand loyalty). Banks in Canada have very high barriers to entry.</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Bargaining power of suppliers</strong> — if suppliers are concentrated or switching costs are high, they can squeeze industry margins. OPEC's pricing power over oil supply is an example.</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Bargaining power of buyers</strong> — large concentrated buyers (Walmart, major retailers) can force down prices and squeeze supplier margins.</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Threat of substitutes</strong> — products or services that can replace the industry's output. Netflix was a substitute for DVD rentals. Electric vehicles are a substitute for gasoline-powered cars.</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Rivalry among existing competitors</strong> — the intensity of competition within the industry. Highly competitive industries (airlines, commodities) have compressed margins; oligopolies (Canadian banking) have wider margins.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 5.6 ═══ -->
+<div id="s56" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">5.6</div><h2 class="sec-title">Company Analysis Tools</h2></div>
+
+  <div id="s56-fs" class="sub">
+    <h3 class="sub-title">Financial Statements</h3>
+    <p class="body">Public companies in Canada report under <strong>IFRS (International Financial Reporting Standards)</strong> — adopted by all Canadian publicly accountable enterprises in 2011. Private enterprises may use ASPE (Accounting Standards for Private Enterprises). There are four primary financial statements:</p>
+
+    <div class="dt">
+      <div class="dr"><div class="dterm">Statement of Financial Position (Balance Sheet)</div><div class="dval"><strong>What it shows:</strong> A snapshot of the company's financial position at a point in time. <strong>Assets = Liabilities + Shareholders' Equity.</strong><br><strong>Key sections:</strong> Current assets (cash, receivables, inventory), non-current assets (PP&E, goodwill, intangibles), current liabilities (accounts payable, short-term debt), non-current liabilities (long-term debt, deferred tax), shareholders' equity (share capital, retained earnings).<br><strong>What to look for:</strong> Liquidity (current ratio), leverage (debt/equity), asset quality (goodwill as % of assets).</div></div>
+      <div class="dr"><div class="dterm">Statement of Comprehensive Income (Income Statement)</div><div class="dval"><strong>What it shows:</strong> Revenue, expenses, and profitability over a period (quarter or year). <strong>Structure:</strong> Revenue → Gross Profit (after COGS) → EBIT (after operating expenses) → EBT (after interest) → Net Income (after tax) → Earnings Per Share (EPS).<br><strong>Also includes:</strong> Other Comprehensive Income (OCI) — gains/losses not recognized in net income (translation differences, unrealized hedging gains).<br><strong>Key metrics:</strong> Revenue growth rate, gross margin, EBITDA margin, net margin, EPS growth.</div></div>
+      <div class="dr"><div class="dterm">Statement of Changes in Equity</div><div class="dval"><strong>What it shows:</strong> How shareholders' equity changed during the period. Includes: net income, dividends paid, share issuances/buybacks (repurchases), other comprehensive income items. Bridges the balance sheet equity from beginning to end of period.</div></div>
+      <div class="dr"><div class="dterm">Statement of Cash Flows</div><div class="dval"><strong>What it shows:</strong> Actual cash generated and used, divided into three sections:<br><strong>Operating activities:</strong> Cash from running the business (net income adjusted for non-cash items and working capital changes). This is the most important — it shows if the business actually generates cash.<br><strong>Investing activities:</strong> Cash spent on capital expenditures, acquisitions, and disposals of assets. Typically negative for growing companies.<br><strong>Financing activities:</strong> Cash from issuing/repaying debt and equity; dividends paid.<br><strong>Free Cash Flow = Operating CF − Capital Expenditures.</strong> The most important metric for valuation.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Notes to Financial Statements & Auditor's Report</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Notes to Financial Statements</div><div class="dval">Equally important as the statements themselves. Notes disclose: accounting policies used, detailed breakdowns of line items, contingent liabilities (lawsuits, guarantees), off-balance-sheet items, related party transactions, segment information, and subsequent events. Analysts read notes carefully — management can use accounting choices to flatter the headline numbers while disclosing the real picture only in the notes.</div></div>
+      <div class="dr"><div class="dterm">Auditor's Report</div><div class="dval">An independent auditor (CPA firm) provides an opinion on whether financial statements are presented fairly in accordance with IFRS. <strong>Unqualified (clean) opinion:</strong> No material misstatements found. <strong>Qualified opinion:</strong> Statements are fair except for a specific issue. <strong>Adverse opinion:</strong> Statements do not present fairly — very rare and very serious. <strong>Disclaimer of opinion:</strong> Auditor unable to form an opinion (scope limitation). Investors should always read the auditor's report first.</div></div>
+    </div>
+    <div class="callout amber">
+      <div class="ci">⚠️</div>
+      <div class="cb"><div class="cl">Going Concern</div><p>If auditors have significant doubt about a company's ability to continue as a going concern (stay in business for the next 12 months), they must include an <strong>Emphasis of Matter paragraph</strong> in their report. This is a red flag for investors — it signals potential insolvency risk. The company's stock will typically fall sharply on such a disclosure.</p></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Continuous Disclosure</h3>
+    <p class="body">Canadian public companies (reporting issuers) have ongoing disclosure obligations to keep the market informed. These are enforced by provincial securities regulators (CSA) and the relevant stock exchange.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Annual Information Form (AIF)</div><div class="dval">Comprehensive annual document describing the company's business, risk factors, operations, and capital structure. Filed within 90 days of fiscal year end for most companies.</div></div>
+      <div class="dr"><div class="dterm">Management Discussion & Analysis (MD&A)</div><div class="dval">Management's narrative explanation of financial results — context for the numbers. Discusses business performance, material changes, risks, and outlook. Filed with annual and quarterly financials.</div></div>
+      <div class="dr"><div class="dterm">Material Change Reports</div><div class="dval">Any change in a company's business or affairs that a reasonable investor would expect to significantly affect the market price must be disclosed promptly — typically within 2 business days. Examples: major acquisition, loss of key customer, CEO departure, significant lawsuit.</div></div>
+      <div class="dr"><div class="dterm">Quarterly Reports</div><div class="dval">Financial statements and MD&A filed within 45 days of quarter end. Allows investors to track performance between annual reports.</div></div>
+    </div>
+  </div>
+
+  <div id="s56-ratios" class="sub">
+    <h3 class="sub-title">Key Financial Ratios</h3>
+    <div class="ratio-grid">
+      <div class="ratio-card"><div class="ratio-name">Current Ratio</div><div class="ratio-formula">Current Assets ÷ Current Liabilities</div><div class="ratio-desc">Measures short-term liquidity. Ratio > 1 means current assets exceed current liabilities. Ratio < 1 signals potential liquidity risk.</div></div>
+      <div class="ratio-card"><div class="ratio-name">Quick Ratio</div><div class="ratio-formula">(Cash + Receivables) ÷ Current Liabilities</div><div class="ratio-desc">More conservative liquidity measure — excludes inventory (may be hard to liquidate). Also called "acid test."</div></div>
+      <div class="ratio-card"><div class="ratio-name">Debt-to-Equity</div><div class="ratio-formula">Total Debt ÷ Shareholders' Equity</div><div class="ratio-desc">Leverage measure. High D/E = more financial risk (higher fixed interest obligations). Capital-intensive industries (utilities) typically carry higher D/E.</div></div>
+      <div class="ratio-card"><div class="ratio-name">Interest Coverage</div><div class="ratio-formula">EBIT ÷ Interest Expense</div><div class="ratio-desc">Ability to service debt from operating earnings. Coverage < 1.5× signals financial distress risk. Credit analysts focus heavily on this ratio.</div></div>
+      <div class="ratio-card"><div class="ratio-name">Return on Equity (ROE)</div><div class="ratio-formula">Net Income ÷ Shareholders' Equity</div><div class="ratio-desc">Profitability from the equity holders' perspective. DuPont analysis decomposes ROE into: Profit Margin × Asset Turnover × Leverage.</div></div>
+      <div class="ratio-card"><div class="ratio-name">Return on Assets (ROA)</div><div class="ratio-formula">Net Income ÷ Total Assets</div><div class="ratio-desc">Efficiency of asset use. Comparable across companies with different capital structures. Lower than ROE because it includes debt-financed assets.</div></div>
+      <div class="ratio-card"><div class="ratio-name">Price-to-Earnings (P/E)</div><div class="ratio-formula">Market Price ÷ EPS</div><div class="ratio-desc">Most common valuation multiple. Forward P/E uses estimated next year's EPS. TSX average P/E is typically 14–18×. S&P 500 averages 20–25×.</div></div>
+      <div class="ratio-card"><div class="ratio-name">Dividend Yield</div><div class="ratio-formula">Annual Dividend ÷ Market Price</div><div class="ratio-desc">Income return from holding a stock. Canadian dividend payers in utilities/telecom/banks typically yield 3–6%. High yield can signal either generous dividend or depressed stock price.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 5.7 ═══ -->
+<div id="s57" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">5.7</div><h2 class="sec-title">Corporate Rules & Regulations</h2></div>
+
+  <div id="s57-takeover" class="sub">
+    <h3 class="sub-title">Takeover Process & Legislation</h3>
+    <p class="body">A <strong>takeover bid</strong> (governed primarily by <strong>NI 62-104</strong> — Take-Over Bids and Issuer Bids) is an offer to purchase a sufficient number of securities to acquire control of a corporation. Canadian takeover rules protect the rights of target company shareholders.</p>
+
+    <div class="subsub">
+      <h4 class="subsub-title">When a Formal Takeover Bid is Required</h4>
+      <p class="body">A formal take-over bid is required when a person (or group) acquires or proposes to acquire 20% or more of a class of voting or equity securities. The formal bid rules include:</p>
+      <div class="chk">
+        <div class="chi"><span class="chico">◆</span><div>The bid must be open for a <strong>minimum of 105 days</strong> (unless the target's board supports the bid, in which case a minimum of 35 days applies)</div></div>
+        <div class="chi"><span class="chico">◆</span><div>The bid must be made to <strong>all security holders</strong> of the class (equal treatment principle)</div></div>
+        <div class="chi"><span class="chico">◆</span><div>At least <strong>50% of the target's securities</strong> not held by the bidder must be deposited before any can be taken up (mandatory minimum tender condition)</div></div>
+        <div class="chi"><span class="chico">◆</span><div>After satisfying the minimum tender condition, the bid must be extended for an additional <strong>10 days</strong> to allow remaining shareholders to tender</div></div>
+        <div class="chi"><span class="chico">◆</span><div>The bidder must offer the same price to all holders of the same class (equal consideration)</div></div>
+        <div class="chi"><span class="chico">◆</span><div>A formal bid circular must be filed and delivered to all shareholders</div></div>
+      </div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Insider Bid</h4>
+      <p class="body">An <strong>insider bid</strong> occurs when a person who is already an "insider" (director, officer, significant shareholder) of the target company makes a bid to acquire its remaining shares (going-private transaction). Because of the obvious conflict of interest, insider bids require special protections:</p>
+      <div class="chk">
+        <div class="chi"><span class="chico">◆</span><div>A <strong>formal valuation</strong> by an independent valuator must be prepared and delivered to shareholders</div></div>
+        <div class="chi"><span class="chico">◆</span><div>The bid price must be at least equal to the valuator's determined fair market value</div></div>
+        <div class="chi"><span class="chico">◆</span><div>The bid must be approved by a <strong>majority of the minority</strong> — majority of shareholders other than the insider and their associates must approve</div></div>
+      </div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Issuer Bid</h4>
+      <p class="body">An <strong>issuer bid</strong> is when a company purchases its own shares in the market (share buyback/repurchase). Requires regulatory approval and filing. Two forms:</p>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Normal Course Issuer Bid (NCIB)</div><div class="dval">The most common form. A company can repurchase up to 10% of its public float over a 12-month period through the stock exchange. Must file a notice with the exchange and announces publicly. Typically used when management believes shares are undervalued.</div></div>
+        <div class="dr"><div class="dterm">Substantial Issuer Bid (SIB)</div><div class="dval">A formal bid to repurchase a larger percentage of shares (more than 10% of outstanding). Treated similarly to a formal take-over bid — requires a formal bid circular, equal treatment of all shareholders, and a minimum open period.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s57-rights" class="sub">
+    <h3 class="sub-title">Rules of Company Disclosure & Statutory Rights of Investors</h3>
+    <p class="body">All public companies must meet continuous disclosure obligations (see 5.6). Beyond reporting, shareholders have specific statutory rights under corporate law and securities legislation:</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Right of Rescission</div><div class="dval">If a prospectus or offering memorandum contained a misrepresentation, a purchaser of securities can rescind (cancel) the purchase and get their money back. This right must be exercised within a specified limitation period (typically 2 years from purchase or 180 days from discovery).</div></div>
+      <div class="dr"><div class="dterm">Right of Action for Damages</div><div class="dval">If a securities document contained a misrepresentation that caused the investor to suffer a loss (but they cannot or choose not to rescind), they can sue for damages. This creates a powerful incentive for issuers to ensure accurate disclosure.</div></div>
+      <div class="dr"><div class="dterm">Voting Rights</div><div class="dval">Common shareholders vote on: election of directors, appointment of auditors, major corporate changes (mergers, amendments to articles, new share classes), and any other matters requiring shareholder approval under the corporation's constating documents or statute.</div></div>
+      <div class="dr"><div class="dterm">Dissent Rights</div><div class="dval">In fundamental corporate changes (amalgamations, continuances, certain asset sales), a dissenting shareholder can require the corporation to buy back their shares at "fair value" — as determined by agreement or court. Provides an exit right for shareholders who disagree with major corporate changes.</div></div>
+      <div class="dr"><div class="dterm">Pre-emptive Rights</div><div class="dval">Some corporations grant existing shareholders the right to purchase new shares before they are offered to the public (rights offerings), allowing them to maintain their proportional ownership. This protects against dilution.</div></div>
+      <div class="dr"><div class="dterm">Derivative Action</div><div class="dval">A shareholder can bring a lawsuit on behalf of the corporation against directors or officers who have caused harm to the company. The proceeds go to the corporation, not the individual shareholder. Requires court approval to proceed.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 5.8 ═══ -->
+<div id="s58" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">5.8</div><h2 class="sec-title">Basic Market Theories — Three Analytical Frameworks</h2></div>
+  <p class="body">Investment analysis can be approached from three distinct but complementary perspectives. Understanding the purpose, tools, and limitations of each is essential for the exam.</p>
+
+  <div class="anal-grid">
+    <div class="acard fund">
+      <div class="acard-head">📊 Fundamental Analysis</div>
+      <div class="acard-body">
+        <strong>What it is:</strong> Evaluating the intrinsic value of a security by examining the underlying economic, financial, and qualitative factors that determine the company's value.<br><br>
+        <strong>Approach:</strong> Top-down (macro → sector → company) or bottom-up (start with company, ignore macro).<br><br>
+        <strong>Tools:</strong> Financial statements, earnings models, DCF valuation, P/E ratios, industry analysis, management assessment, competitive analysis.<br><br>
+        <strong>Core belief:</strong> The market occasionally misprices securities. By determining intrinsic value and comparing to market price, analysts find buy/sell opportunities.<br><br>
+        <strong>Time horizon:</strong> Medium to long-term (months to years).<br><br>
+        <strong>Limitation:</strong> Time-consuming. Intrinsic value calculations require many assumptions. Markets can stay "wrong" for long periods.
+      </div>
+    </div>
+    <div class="acard quant">
+      <div class="acard-head">🔢 Quantitative Analysis</div>
+      <div class="acard-body">
+        <strong>What it is:</strong> Using mathematical, statistical, and algorithmic models to identify investment opportunities and manage risk.<br><br>
+        <strong>Approach:</strong> Data-driven, systematic, rules-based. Removes emotional and behavioral biases from decision-making.<br><br>
+        <strong>Tools:</strong> Statistical factor models (value, momentum, quality, low volatility factors), mean-variance optimization (Markowitz), regression analysis, machine learning, algorithmic trading strategies.<br><br>
+        <strong>Core belief:</strong> Persistent patterns exist in market data that can be systematically exploited. Empirical research can identify factors that predict returns.<br><br>
+        <strong>Time horizon:</strong> Varies — can be very short (high-frequency trading) to long (factor investing).<br><br>
+        <strong>Limitation:</strong> Models are based on historical data and may not predict future behavior. "Quant crowding" — many similar models can fail simultaneously.
+      </div>
+    </div>
+    <div class="acard tech">
+      <div class="acard-head">📈 Technical / Statistical Analysis</div>
+      <div class="acard-body">
+        <strong>What it is:</strong> Analyzing historical price and volume data to forecast future price movements, without reference to the underlying business fundamentals.<br><br>
+        <strong>Core belief:</strong> All information is reflected in price. Historical price patterns repeat. Price moves in trends.<br><br>
+        <strong>Tools:</strong> Charts, trend lines, moving averages, RSI, MACD, Bollinger Bands, support and resistance levels, volume analysis.<br><br>
+        <strong>Core assumption:</strong> Three tenets of technical analysis — (1) market discounts everything; (2) prices move in trends; (3) history repeats itself.<br><br>
+        <strong>Time horizon:</strong> Short to medium-term. Widely used for entry/exit timing even by fundamental analysts.<br><br>
+        <strong>Limitation:</strong> Self-fulfilling to a degree (when many follow the same signals). Doesn't explain WHY price moves, only what it might do next.
+      </div>
+    </div>
+  </div>
+
+  <div class="callout teal">
+    <div class="ci">💡</div>
+    <div class="cb"><div class="cl">Efficient Market Hypothesis (EMH) — Connection</div><p>The Efficient Market Hypothesis (Eugene Fama) states that market prices reflect all available information, making it impossible to consistently beat the market through analysis. Three forms: <strong>Weak form</strong> (price history reflected — undermines technical analysis). <strong>Semi-strong form</strong> (all public info reflected — undermines fundamental analysis). <strong>Strong form</strong> (all info including insider info reflected — undermines even insider trading). Most evidence supports semi-strong efficiency in developed markets, which is why most active managers fail to outperform consistently after fees.</p></div>
+  </div>
+</div>
+
+<!-- ═══ 5.9 ═══ -->
+<div id="s59" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">5.9</div><h2 class="sec-title">Technical Analysis Tools & Sources</h2></div>
+  <p class="body">Technical analysis relies on specific tools and chart patterns to generate buy/sell signals. The exam expects familiarity with the most common tools and their purposes.</p>
+
+  <div class="sub">
+    <h3 class="sub-title">Price Charts — Types</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Line Chart</div><div class="dval">Connects closing prices over time. Simplest chart type. Shows the trend clearly but loses intraday information. Most useful for long-term trend identification.</div></div>
+      <div class="dr"><div class="dterm">Bar Chart (OHLC)</div><div class="dval">Shows Open, High, Low, and Close for each period. Each "bar" shows the range of trading for that period. More informative than line charts. Widely used by technical analysts.</div></div>
+      <div class="dr"><div class="dterm">Candlestick Chart</div><div class="dval">Japanese origin. Each "candle" shows OHLC with the body filled (bearish — close below open) or hollow/green (bullish — close above open). Very popular. Specific candlestick patterns (Doji, Hammer, Engulfing) signal potential reversals.</div></div>
+      <div class="dr"><div class="dterm">Point and Figure Chart</div><div class="dval">Filters out time and minor price movements, recording only significant price changes. Focuses purely on supply/demand dynamics. Used to identify support and resistance levels.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Key Technical Indicators</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Moving Averages</div><div class="dval"><strong>Simple Moving Average (SMA):</strong> Average closing price over N periods (e.g., 50-day SMA, 200-day SMA). Smooths volatility to show the trend. <strong>Golden Cross:</strong> Short-term MA crosses above long-term MA → bullish signal. <strong>Death Cross:</strong> Short-term MA crosses below long-term MA → bearish signal. <strong>Exponential Moving Average (EMA):</strong> Gives more weight to recent prices; more responsive to new information.</div></div>
+      <div class="dr"><div class="dterm">Relative Strength Index (RSI)</div><div class="dval">Oscillator measuring the speed and change of price movements. Range 0–100. <strong>RSI > 70 = overbought</strong> (potential sell signal). <strong>RSI < 30 = oversold</strong> (potential buy signal). Developed by J. Welles Wilder. One of the most used momentum indicators.</div></div>
+      <div class="dr"><div class="dterm">MACD (Moving Average Convergence-Divergence)</div><div class="dval">Difference between 12-day and 26-day EMAs, plotted against a 9-day signal line. When MACD crosses above signal line → buy signal. When MACD crosses below → sell signal. Also shows momentum divergence from price trends.</div></div>
+      <div class="dr"><div class="dterm">Bollinger Bands</div><div class="dval">A 20-day SMA with bands set 2 standard deviations above and below. Price touching the upper band signals overbought; lower band signals oversold. Bands widen in volatile markets, narrow in calm periods. "Squeeze" (very narrow bands) often precedes a major price breakout.</div></div>
+      <div class="dr"><div class="dterm">Volume Analysis</div><div class="dval">Volume confirms price movements. A price breakout accompanied by high volume is more reliable than one on low volume. <strong>On-Balance Volume (OBV):</strong> Cumulative indicator that adds volume on up days and subtracts on down days — divergence from price can signal reversals.</div></div>
+      <div class="dr"><div class="dterm">Support & Resistance</div><div class="dval"><strong>Support:</strong> Price level where buying interest is strong enough to prevent further decline — a "floor." <strong>Resistance:</strong> Price level where selling interest prevents further advance — a "ceiling." When price breaks through resistance, it often becomes new support (and vice versa). These levels are derived from historical price data.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Technical Research Reports & Other Sources</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Research Reports</div><div class="dval">Investment dealers publish equity research reports covering both fundamental (earnings estimates, target price, recommendation) and technical (charts, support/resistance, momentum signals) analysis. Technical reports focus on price-based analysis, often used for short-term trading recommendations.</div></div>
+      <div class="dr"><div class="dterm">Market Data Terminals</div><div class="dval">Bloomberg Terminal, Refinitiv Eikon — provide real-time and historical price/volume data, news, charts, economic data, and analytical tools. Used by institutional investors and professional traders.</div></div>
+      <div class="dr"><div class="dterm">SEDAR+ / EDGAR</div><div class="dval">SEDAR+ (Canada) and EDGAR (US) are the official databases of regulatory filings — prospectuses, annual reports, material change reports, insider trading reports. Primary source for fundamental analysis documents.</div></div>
+      <div class="dr"><div class="dterm">Statistics Canada</div><div class="dval">Primary source for Canadian economic data: GDP, CPI, Labour Force Survey, retail sales, trade data. Monthly and quarterly releases drive market movements.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div id="summary" class="section">
+  <div class="sum-box" style="margin-top:70px;">
+    <div class="sum-title">Element 5 — Master Summary</div>
+    <div class="sum-sub">15 exam-critical points</div>
+    <div class="si"><span class="sin">01</span><div><strong>3 Economic Theories:</strong> Keynesian = government spending to stimulate demand. Monetarist = control money supply, markets self-correct. Supply-side = cut taxes/regulation to increase productive capacity. Know the policy prescription of each.</div></div>
+    <div class="si"><span class="sin">02</span><div><strong>Business Cycle — 4 Phases:</strong> Expansion → Peak → Contraction → Trough. Know which sectors outperform at each phase. Defensive sectors (staples, utilities, healthcare) outperform during contractions. Cyclicals outperform during expansions.</div></div>
+    <div class="si"><span class="sin">03</span><div><strong>Interest rates and asset prices:</strong> Rates ↑ → Bond prices ↓ (always). Rates ↑ → Equities typically ↓ (higher discount rate). Rates ↓ → CAD weakens relative to USD. This is the most tested macro-market relationship.</div></div>
+    <div class="si"><span class="sin">04</span><div><strong>Bank of Canada:</strong> Targets 2% CPI inflation (1–3% range). Current rate 2.25% (March 2026, held after 275bps of cuts). 8 fixed announcement dates/year. Primary tool = overnight rate target.</div></div>
+    <div class="si"><span class="sin">05</span><div><strong>CPI vs Core CPI:</strong> Headline CPI includes food and energy. Core CPI excludes volatile items — BoC focuses on 3 core measures (CPI-trim, CPI-median, CPI-common). Canada CPI = 1.8% Feb 2026.</div></div>
+    <div class="si"><span class="sin">06</span><div><strong>Yield Curve:</strong> Normal = long > short rates (positive economic outlook). Inverted = short > long rates (recession predictor — historically very reliable). Flat = transition state.</div></div>
+    <div class="si"><span class="sin">07</span><div><strong>Leading vs Lagging Indicators:</strong> Leading (predict future): stock market, building permits, consumer confidence, yield curve. Lagging (confirm past): unemployment rate, CPI, prime rate. Coincident (current state): GDP, retail sales, employment levels.</div></div>
+    <div class="si"><span class="sin">08</span><div><strong>3 Types of Unemployment:</strong> Frictional (between jobs, normal). Structural (skills mismatch, technology-driven). Cyclical (recession-driven, target of policy). NAIRU = natural rate, consistent with stable inflation (~5-6% in Canada).</div></div>
+    <div class="si"><span class="sin">09</span><div><strong>4 Financial Statements (IFRS):</strong> Statement of Financial Position (balance sheet, snapshot). Statement of Comprehensive Income (income statement, period). Statement of Changes in Equity. Statement of Cash Flows (operating/investing/financing). FCF = Operating CF − CapEx.</div></div>
+    <div class="si"><span class="sin">10</span><div><strong>Auditor's Report:</strong> Unqualified = clean opinion. Qualified = fair except for specific issue. Adverse = does not present fairly. Disclaimer = unable to form opinion. Going concern emphasis = serious warning.</div></div>
+    <div class="si"><span class="sin">11</span><div><strong>Takeover Bid Rules (NI 62-104):</strong> Triggered at 20%+ of voting shares. Must be open 105 days (35 if board supports). 50% minimum tender condition. 10-day extension after minimum met. Equal treatment of all shareholders.</div></div>
+    <div class="si"><span class="sin">12</span><div><strong>Insider Bid vs Issuer Bid:</strong> Insider bid = insider buys out remaining shareholders (needs formal valuation + majority of minority approval). Issuer bid = company buys own shares (NCIB = up to 10% of float; SIB = formal bid for more).</div></div>
+    <div class="si"><span class="sin">13</span><div><strong>3 Analysis Types:</strong> Fundamental (intrinsic value, financial statements). Quantitative (mathematical models, factor analysis). Technical (price/volume charts, patterns, indicators). All three are used in practice — not mutually exclusive.</div></div>
+    <div class="si"><span class="sin">14</span><div><strong>Key Technical Tools:</strong> RSI: >70 overbought, <30 oversold. Golden Cross: short MA crosses above long MA (bullish). Death Cross: opposite (bearish). MACD: crossing signal line = buy/sell signal. Support = price floor. Resistance = price ceiling.</div></div>
+    <div class="si"><span class="sin">15</span><div><strong>Key Valuation Metrics:</strong> P/E = price/EPS (most common). P/B = price/book (banks). EV/EBITDA (M&A). DDM: P = D1/(r-g) for dividend stocks. DCF = sum of discounted future cash flows. All are relative — compare to peers and history.</div></div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<!-- ═══ QUIZ ═══ -->
+<div id="quiz" class="quiz-wrap">
+  <div class="quiz-head">
+    <div class="quiz-h1">Element 5 — Practice Questions</div>
+    <div class="quiz-sub-txt">45 questions · Exam-level difficulty · Click an option to reveal answer & explanation</div>
+    <div class="quiz-stats">
+      <div><div class="qs-n">15</div><div class="qs-l">Easy</div></div>
+      <div><div class="qs-n">20</div><div class="qs-l">Medium</div></div>
+      <div><div class="qs-n">10</div><div class="qs-l">Hard</div></div>
+      <div><div class="qs-n" id="scoreLbl">0/45</div><div class="qs-l">Your Score</div></div>
+    </div>
+  </div>
+  <div id="qContainer"></div>
+  <div class="quiz-ctrl">
+    <div class="score-disp" id="fScore"></div>
+    <button class="btn btn-p" onclick="resetQ()">🔄 Reset</button>
+    <button class="btn btn-s" onclick="revealAll()">👁 Reveal All</button>
+  </div>
+</div>
+
+</div><!-- /main -->
+<button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const Qs = [
+  // EASY 1-15
+  {id:1,d:'e',q:"Which economic theory argues that government spending is needed to stimulate the economy during recessions, due to the failure of markets to self-correct in the short run?",o:["A. Supply-side economics","B. Monetarist economics","C. Keynesian economics","D. Classical economics"],a:2,e:"<strong>Keynesian economics</strong>, developed by John Maynard Keynes during the Great Depression, argues that aggregate demand drives economic activity and that government spending is necessary to fill the gap when private demand collapses during recessions."},
+  {id:2,d:'e',q:"What is the Bank of Canada's current inflation target?",o:["A. 1% CPI","B. 2% CPI with a 1–3% control range","C. 3% CPI","D. 0.5% core CPI"],a:1,e:"The Bank of Canada targets <strong>2% CPI inflation</strong>, with an acceptable range of 1% to 3%. This target is set out in the joint Inflation Control Agreement with the federal government, renewed every 5 years."},
+  {id:3,d:'e',q:"What are the four phases of the business cycle in order?",o:["A. Peak → Expansion → Trough → Contraction","B. Expansion → Peak → Contraction → Trough","C. Trough → Contraction → Peak → Expansion","D. Contraction → Peak → Trough → Expansion"],a:1,e:"The correct sequence is <strong>Expansion → Peak → Contraction → Trough</strong>. After the trough, recovery begins and the cycle repeats. Economic activity rises through expansion, peaks, declines through contraction, and reaches its lowest point at the trough."},
+  {id:4,d:'e',q:"What happens to bond prices when interest rates rise?",o:["A. Bond prices rise","B. Bond prices are unaffected","C. Bond prices fall","D. Bond prices only change for new issues"],a:2,e:"Bond prices move <strong>inversely</strong> to interest rates. When rates rise, newly issued bonds offer higher yields, making existing bonds with lower fixed coupons less attractive — so their prices fall to make their effective yield competitive with new bonds."},
+  {id:5,d:'e',q:"Which type of indicator changes BEFORE the overall economy changes?",o:["A. Lagging indicator","B. Coincident indicator","C. Leading indicator","D. Structural indicator"],a:2,e:"<strong>Leading indicators</strong> change before the economy changes, making them useful for predicting future economic direction. Examples include: stock market performance, building permits, consumer confidence, and the yield curve slope."},
+  {id:6,d:'e',q:"What is a 'technical recession' formally defined as?",o:["A. When unemployment rises above 8%","B. When GDP growth slows below 1%","C. Two consecutive quarters of negative real GDP growth","D. When the central bank raises interest rates twice"],a:2,e:"A technical recession is defined as <strong>two consecutive quarters of negative real GDP growth</strong>. In Canada, the C.D. Howe Institute Business Cycle Council provides the official recession dating, which considers multiple indicators beyond just GDP."},
+  {id:7,d:'e',q:"Which sectors typically OUTPERFORM during an economic contraction/recession?",o:["A. Consumer discretionary, technology, financials","B. Consumer staples, healthcare, utilities","C. Energy, materials, commodities","D. Real estate, industrials, consumer discretionary"],a:1,e:"<strong>Consumer staples, healthcare, and utilities</strong> are defensive sectors — demand for food, medicine, and electricity is relatively inelastic (doesn't decline much in recessions). They outperform cyclical sectors during contractions because their revenues remain stable."},
+  {id:8,d:'e',q:"What does RSI measure in technical analysis, and what level signals 'overbought'?",o:["A. Trading volume; overbought at 80","B. Price momentum; overbought at RSI > 70","C. Moving average crossover; overbought at 50","D. Volatility; overbought at 30"],a:1,e:"The <strong>Relative Strength Index (RSI)</strong> measures the speed and change of price movements on a scale of 0–100. An RSI above <strong>70 signals overbought</strong> conditions (potential sell signal) and below 30 signals oversold conditions (potential buy signal)."},
+  {id:9,d:'e',q:"What does the Statement of Cash Flows measure that the income statement does not?",o:["A. Total revenues earned","B. Actual cash generated and used, showing operating, investing, and financing cash flows","C. The book value of assets","D. Earnings per share and dividends paid"],a:1,e:"The Statement of Cash Flows shows <strong>actual cash movements</strong>, divided into operating, investing, and financing activities. Unlike the income statement (which uses accrual accounting and includes non-cash items), cash flows show the real cash position of the business. Free Cash Flow = Operating CF − CapEx."},
+  {id:10,d:'e',q:"What is the most common valuation metric used to evaluate equities?",o:["A. Price-to-Book (P/B)","B. EV/EBITDA","C. Price-to-Earnings (P/E)","D. Dividend Yield"],a:2,e:"The <strong>Price-to-Earnings (P/E) ratio</strong> is the most widely used equity valuation metric. It compares market price per share to earnings per share, showing how much investors are willing to pay for each dollar of earnings. It can be compared to historical averages, sector peers, and the overall market."},
+  {id:11,d:'e',q:"What is 'demand-pull inflation'?",o:["A. Inflation caused by rising production costs","B. Inflation caused by excess demand — too much money chasing too few goods","C. Inflation caused by supply chain disruptions","D. Inflation caused by currency depreciation only"],a:1,e:"<strong>Demand-pull inflation</strong> occurs when aggregate demand exceeds the economy's productive capacity — too much money chasing too few goods. It is the primary type of inflation targeted by monetary policy (raising interest rates reduces demand)."},
+  {id:12,d:'e',q:"Which financial statement provides a snapshot of a company's financial position at a specific point in time?",o:["A. Statement of Comprehensive Income","B. Statement of Cash Flows","C. Statement of Financial Position (Balance Sheet)","D. Statement of Changes in Equity"],a:2,e:"The <strong>Statement of Financial Position (Balance Sheet)</strong> provides a snapshot at a single point in time: Assets = Liabilities + Shareholders' Equity. The income statement and cash flow statement cover a period of time, not a single moment."},
+  {id:13,d:'e',q:"What does a 'Golden Cross' signal in technical analysis?",o:["A. A long-term moving average crossing above a short-term moving average — bearish signal","B. A short-term moving average crossing above a long-term moving average — bullish signal","C. When the RSI reaches 50 — neutral signal","D. When volume doubles on a down day — bearish signal"],a:1,e:"A <strong>Golden Cross</strong> occurs when a short-term moving average (e.g., 50-day) crosses above a long-term moving average (e.g., 200-day). It is considered a <strong>bullish signal</strong>. The opposite — short-term crossing below long-term — is called a Death Cross (bearish)."},
+  {id:14,d:'e',q:"What does the Dividend Discount Model (Gordon Growth Model) formula P = D₁/(r-g) represent?",o:["A. P = book value, D = depreciation, r = risk, g = growth in revenue","B. P = current stock price, D₁ = next year's expected dividend, r = required return, g = constant dividend growth rate","C. P = P/E ratio, D = debt, r = retention rate, g = GDP growth","D. P = portfolio value, D = duration, r = real rate, g = gamma"],a:1,e:"The Gordon Growth Model states: <strong>P = D₁ / (r – g)</strong> where P is the intrinsic value of the stock, D₁ is the expected dividend next year, r is the required rate of return, and g is the constant growth rate of dividends. It works for stable, dividend-paying companies where dividends grow at a constant rate indefinitely."},
+  {id:15,d:'e',q:"What is 'structural unemployment'?",o:["A. Unemployment caused by economic recessions","B. Temporary unemployment while workers move between jobs","C. Unemployment caused by a mismatch between worker skills and available jobs","D. Unemployment that rises automatically with inflation"],a:2,e:"<strong>Structural unemployment</strong> results from a mismatch between the skills workers have and the skills demanded by employers — often caused by technological change, industry shifts, or geographic mismatch. It is more persistent than frictional unemployment and is addressed through retraining programs, not monetary/fiscal policy."},
+  // MEDIUM 16-35
+  {id:16,d:'m',q:"A portfolio manager is overweighting consumer staples, utilities, and healthcare in client portfolios. Which phase of the business cycle does this suggest the manager believes the economy is entering?",o:["A. Early expansion","B. Mid-cycle expansion","C. Late cycle / peak","D. Contraction / recession"],a:3,e:"Consumer staples, utilities, and healthcare are <strong>defensive sectors</strong> that outperform during economic <strong>contractions/recessions</strong>. A manager overweighting these sectors is positioning for economic weakness — they believe the economy is entering or already in a contraction phase. This is a classic sector rotation strategy."},
+  {id:17,d:'m',q:"The Bank of Canada raises the overnight rate from 2.25% to 2.50%. Which of the following best describes the expected impact on Canadian financial markets?",o:["A. Bond prices rise; equities rise; CAD weakens","B. Bond prices fall; equities typically fall; CAD strengthens","C. Bond prices rise; equities fall; CAD weakens","D. Bond prices fall; equities rise; CAD weakens"],a:1,e:"When the BoC raises rates: <strong>Bond prices fall</strong> (inverse relationship). <strong>Equities typically fall</strong> (higher discount rates reduce present value of future earnings; borrowing costs rise). <strong>CAD typically strengthens</strong> (higher rates attract foreign capital seeking yield). All three effects flow from the rate increase."},
+  {id:18,d:'m',q:"Which economic theory would prescribe cutting corporate taxes and reducing business regulation as the primary solution to a slowing economy?",o:["A. Keynesian economics","B. Monetarist economics","C. Supply-side economics","D. Modern Monetary Theory"],a:2,e:"<strong>Supply-side economics</strong> (developed in the 1980s under Reaganomics) prescribes cutting taxes — especially business and capital gains taxes — and reducing regulation to stimulate the supply side of the economy. The idea is that reducing the cost of production encourages investment, job creation, and economic growth."},
+  {id:19,d:'m',q:"An analyst observes an inverted yield curve in Canada. What does this typically signal?",o:["A. Strong economic growth ahead","B. Low inflation is expected","C. An increased probability of recession","D. The Bank of Canada is about to raise rates"],a:2,e:"An <strong>inverted yield curve</strong> (short-term rates > long-term rates) is historically one of the strongest predictors of recession. It signals that markets expect the central bank will need to cut rates significantly in the future — implying economic weakness ahead. Canada's yield curve inverted in 2022–23, preceding the Bank's subsequent rate cuts."},
+  {id:20,d:'m',q:"Which of the following is an example of a LAGGING economic indicator?",o:["A. Consumer confidence index","B. Building permits","C. Unemployment rate","D. Stock market index"],a:2,e:"The <strong>unemployment rate is a lagging indicator</strong> — it peaks after the recession has already ended. Employers don't hire until they're confident in the recovery, so unemployment falls after GDP starts improving. In contrast, stock markets (leading) and consumer confidence (leading) move ahead of the economy."},
+  {id:21,d:'m',q:"What does 'crowding out' mean in the context of government fiscal policy?",o:["A. Monetary policy preventing fiscal policy from working","B. Government borrowing competing with private borrowers, pushing up interest rates and reducing private investment","C. Central bank reducing money supply to offset government spending","D. High inflation preventing real economic growth"],a:1,e:"<strong>Crowding out</strong> occurs when large government borrowing increases demand for capital, pushing up interest rates, which in turn discourages (crowds out) private investment. This is a key critique of Keynesian deficit spending — by borrowing heavily, the government may undermine private sector capital formation."},
+  {id:22,d:'m',q:"A company's current ratio is 0.8. What does this indicate?",o:["A. The company is highly profitable","B. Current liabilities exceed current assets — potential short-term liquidity risk","C. The company has very low debt","D. The company's assets are undervalued"],a:1,e:"A current ratio below 1.0 means <strong>current liabilities exceed current assets</strong>, suggesting the company may struggle to meet its short-term obligations. This signals potential liquidity risk. Note: a ratio just below 1.0 is not always fatal — it depends on the industry, the nature of the liabilities, and access to credit facilities."},
+  {id:23,d:'m',q:"An auditor's report contains an 'Emphasis of Matter' paragraph regarding going concern. What should an investor understand from this?",o:["A. The company received an exceptional financial performance award","B. The auditor has significant doubt about the company's ability to continue operating for the next 12 months","C. The company has changed its accounting policies this year","D. The audit was conducted under enhanced scrutiny procedures"],a:1,e:"A <strong>going concern Emphasis of Matter</strong> means the auditor has significant doubt about whether the company can continue as a going concern (remain solvent and operational) for the next 12 months. This is a serious red flag — stock prices typically fall sharply on such a disclosure."},
+  {id:24,d:'m',q:"Under NI 62-104, at what ownership threshold does a formal take-over bid become required in Canada?",o:["A. 10% of voting shares","B. 15% of voting shares","C. 20% of voting shares","D. 33% of voting shares"],a:2,e:"Under <strong>NI 62-104</strong>, a formal take-over bid is required when a person proposes to acquire <strong>20% or more</strong> of a class of voting or equity securities. Below 20%, securities can be accumulated without a formal bid."},
+  {id:25,d:'m',q:"What is the primary difference between a Normal Course Issuer Bid (NCIB) and a Substantial Issuer Bid (SIB)?",o:["A. NCIBs are used to acquire another company; SIBs repurchase own shares","B. NCIBs repurchase up to 10% of the public float through the exchange; SIBs repurchase larger amounts through a formal bid process","C. NCIBs require shareholder approval; SIBs do not","D. NCIBs are completed in one day; SIBs occur over a year"],a:1,e:"An <strong>NCIB</strong> is the most common form — it allows a company to repurchase up to 10% of its public float over 12 months through normal exchange trading. A <strong>SIB</strong> is a formal bid process for repurchasing larger amounts (similar procedurally to a take-over bid — must be offered to all shareholders equally with a formal bid circular)."},
+  {id:26,d:'m',q:"Which three core inflation measures does the Bank of Canada primarily monitor?",o:["A. CPI-all, CPI-food, CPI-shelter","B. CPI-trim, CPI-median, CPI-common","C. CPI-headline, CPI-core, CPI-adjusted","D. CPI-energy, CPI-goods, CPI-services"],a:1,e:"The Bank of Canada monitors three preferred measures of core inflation: <strong>CPI-trim</strong> (trims the most extreme price changes), <strong>CPI-median</strong> (the median price change across all categories), and <strong>CPI-common</strong> (tracks components that move together). These provide a cleaner signal of underlying inflation trends than headline CPI."},
+  {id:27,d:'m',q:"What does Free Cash Flow (FCF) represent, and why is it important for valuation?",o:["A. Total revenue minus operating expenses — important as a measure of accounting profit","B. Cash generated from operations minus capital expenditures — important as it represents cash available to shareholders and creditors","C. Net income minus dividends paid — important to show reinvested earnings","D. Total assets minus total liabilities — important as a measure of net worth"],a:1,e:"<strong>Free Cash Flow = Operating Cash Flow − Capital Expenditures</strong>. FCF represents the cash actually generated by the business after maintaining and expanding its asset base — it is the cash theoretically available to service debt, pay dividends, and fund buybacks. DCF valuation models discount FCF to determine intrinsic value."},
+  {id:28,d:'m',q:"According to Porter's Five Forces, which condition would give a firm in an industry the HIGHEST profit potential?",o:["A. Low barriers to entry, many substitutes, strong buyers","B. High barriers to entry, few substitutes, weak buyers and suppliers","C. Many competitors, commodity products, strong suppliers","D. Rapidly growing market with many entrants"],a:1,e:"<strong>High barriers to entry</strong> (limits new competition), <strong>few substitutes</strong> (customers can't easily switch), <strong>weak buyers</strong> (can't force down prices), and <strong>weak suppliers</strong> (can't extract value). This is the ideal industry structure for profit — like the Canadian banking oligopoly. High rivalry and strong buyer/supplier power erode profits."},
+  {id:29,d:'m',q:"What is the GICS system, and how many sectors does it have at the top level?",o:["A. Government Investment Classification System; 8 sectors","B. Global Industry Classification Standard; 11 sectors","C. Generally Issued Common Stocks system; 9 sectors","D. General Investment Categorization System; 15 sectors"],a:1,e:"GICS stands for <strong>Global Industry Classification Standard</strong>, developed by MSCI and S&P. It has <strong>11 sectors</strong> at the top level: Energy, Materials, Industrials, Consumer Discretionary, Consumer Staples, Health Care, Financials, Information Technology, Communication Services, Utilities, and Real Estate."},
+  {id:30,d:'m',q:"A company's Return on Equity (ROE) is 15% while its Return on Assets (ROA) is 7%. What does the difference indicate?",o:["A. The company has no debt and is using equity efficiently","B. The company is using financial leverage — debt is amplifying returns to equity holders","C. The company's assets are declining in value","D. The company's equity is overvalued relative to its assets"],a:1,e:"ROE > ROA indicates the company is using <strong>financial leverage (debt)</strong>. Debt amplifies returns to equity holders — if assets earn 7% and the company funds some assets with debt costing less than 7%, the excess accrues to shareholders, pushing ROE above ROA. This is the leverage effect in the DuPont analysis."},
+  {id:31,d:'m',q:"Canada has a current account deficit. According to balance of payments accounting, what must be true about the capital and financial account?",o:["A. The capital account must also be in deficit","B. The capital account must be in surplus to offset the current account deficit","C. The capital account is irrelevant to the current account","D. The government must print money to fund the deficit"],a:1,e:"The <strong>balance of payments must balance to zero</strong> (by accounting identity). A current account deficit means more money flows out (for imports, income payments) than comes in. This must be financed by an <strong>equivalent surplus in the capital/financial account</strong> — foreigners are net buyers of Canadian assets (bonds, stocks, real estate, FDI)."},
+  {id:32,d:'m',q:"What are 'automatic stabilizers' in fiscal policy?",o:["A. Rules requiring balanced government budgets in all economic conditions","B. Built-in mechanisms like unemployment insurance and progressive taxes that automatically dampen economic cycles without legislative action","C. The central bank automatically adjusting interest rates in response to GDP changes","D. Stock market circuit breakers that halt trading during extreme volatility"],a:1,e:"<strong>Automatic stabilizers</strong> are fiscal mechanisms that automatically stimulate the economy during downturns and dampen it during booms without requiring new legislation. Key examples: unemployment insurance (payments rise automatically in recessions) and progressive income taxes (tax revenues fall automatically as incomes decline in recessions)."},
+  {id:33,d:'m',q:"An analyst uses the EV/EBITDA ratio instead of P/E for comparing two companies. Why might EV/EBITDA be preferred?",o:["A. EV/EBITDA is simpler to calculate than P/E","B. EV/EBITDA is capital-structure-neutral and removes distortions from different financing choices and depreciation accounting","C. EV/EBITDA only applies to unprofitable companies","D. P/E is only valid for companies that pay dividends"],a:1,e:"<strong>EV/EBITDA</strong> is preferred for cross-company comparisons because: (1) Enterprise Value is <strong>capital-structure-neutral</strong> (includes debt and equity), so companies with different financing choices can be compared fairly; (2) EBITDA removes depreciation and amortization differences that vary by accounting policy; (3) it works even when net income is distorted by interest expense or unusual tax rates."},
+  {id:34,d:'m',q:"What is the difference between a 'material change' and a 'material fact' in Canadian securities law?",o:["A. There is no difference — they are synonymous","B. A material change is a change in the business/affairs of an issuer; a material fact is information that would affect the price of a security","C. Material changes only apply to debt issuers; material facts only apply to equity issuers","D. A material fact triggers continuous disclosure; a material change triggers prospectus requirements"],a:1,e:"Under Canadian securities law: A <strong>material change</strong> is a change in the business, operations, or capital of a reporting issuer that a reasonable investor would expect to significantly affect the price — triggers immediate disclosure (material change report). A <strong>material fact</strong> is information that would reasonably be expected to have a significant effect on the market price — broader, and relevant to prospectus accuracy and insider trading laws."},
+  {id:35,d:'m',q:"What is 'cost-push inflation' and which event in Canadian economic history is a classic example?",o:["A. Inflation from excess demand; example: 1990s housing bubble","B. Inflation from rising production costs; example: 1970s oil price shocks","C. Inflation from excessive money printing; example: post-WWI Weimar Republic","D. Inflation from speculative bubbles; example: Dot-com crash"],a:1,e:"<strong>Cost-push inflation</strong> occurs when rising production costs (wages, commodity prices, supply chain disruptions) force producers to raise prices. The <strong>1970s oil shocks</strong> — when OPEC dramatically raised oil prices — are the classic example. They caused stagflation (simultaneous inflation and economic weakness), which was very difficult for monetary policy to address."},
+  // HARD 36-45
+  {id:36,d:'h',q:"An investor holds a 10-year Government of Canada bond with a 3% coupon, purchased at par ($1,000). The Bank of Canada suddenly raises rates by 150 basis points. Which statement best describes the impact?",o:["A. The bond price increases because government bonds are guaranteed","B. The bond price falls significantly because new bonds now offer higher yields, making the 3% coupon less competitive; the longer the duration, the larger the price decline","C. The bond price falls slightly because only the coupon is affected, not the principal","D. The bond price is unaffected until the next BoC announcement"],a:1,e:"A 150bps rate increase causes <strong>significant bond price decline</strong> for a 10-year bond. The price must fall so that its yield rises to match the new market rate. The relationship: duration determines sensitivity — a 10-year bond has ~8-9 years of modified duration, meaning each 1% rate rise causes approximately an 8-9% price decline. A 150bps rise would cause roughly a 12-14% price decline on a 10-year bond."},
+  {id:37,d:'h',q:"A company has: Revenue $100M, COGS $60M, Operating Expenses $15M, Depreciation $5M, Interest Expense $3M, Tax Rate 25%. What is the EBITDA and EBIT?",o:["A. EBITDA = $25M; EBIT = $20M","B. EBITDA = $25M; EBIT = $25M","C. EBITDA = $20M; EBIT = $15M","D. EBITDA = $30M; EBIT = $15M"],a:0,e:"<strong>Gross Profit</strong> = $100M − $60M = $40M. <strong>EBIT</strong> = Gross Profit − Operating Expenses − Depreciation = $40M − $15M − $5M = <strong>$20M</strong>. <strong>EBITDA</strong> = EBIT + Depreciation = $20M + $5M = <strong>$25M</strong>. Net Income = ($20M − $3M interest) × (1 − 25% tax) = $17M × 0.75 = $12.75M."},
+  {id:38,d:'h',q:"Using the Gordon Growth Model, a stock pays a $2 dividend, which grows at 4% annually. The required return is 8%. What is the intrinsic value of the stock?",o:["A. $25.00","B. $50.00","C. $52.00","D. $48.08"],a:2,e:"Using P = D₁/(r − g): D₁ = $2 × 1.04 = $2.08 (next year's dividend). P = $2.08 / (0.08 − 0.04) = $2.08 / 0.04 = <strong>$52.00</strong>. Note: the model requires D₁ (next period's dividend), not D₀. Always grow the current dividend by one period first. If current market price < $52, the stock is undervalued according to the DDM."},
+  {id:39,d:'h',q:"An analyst observes that a company has a very high ROE of 25% but a very low ROA of 3%. What is the most likely explanation, and what additional analysis is required?",o:["A. The company is highly profitable with no debt — no further analysis needed","B. The high ROE is being driven primarily by financial leverage (high debt); the analyst should examine interest coverage, debt-to-equity ratio, and sustainability of the leverage","C. The ROA is calculated incorrectly — ROA should always exceed ROE","D. The company is in the technology sector, which naturally has high ROE and low ROA"],a:1,e:"An ROE of 25% vs ROA of 3% indicates <strong>extreme financial leverage</strong>. The DuPont formula: ROE = ROA × Equity Multiplier = 3% × 8.3× = 25%. This high leverage amplifies returns but also amplifies risk. The analyst must examine: interest coverage ratio (can they service the debt?), debt maturity profile, cash flow generation vs debt service requirements, and whether the business can sustain this leverage through a downturn."},
+  {id:40,d:'h',q:"Under Canadian take-over bid rules (NI 62-104), what are the requirements for an insider bid (going-private transaction)?",o:["A. The same rules as any take-over bid — no special requirements for insiders","B. A formal independent valuation is required; the bid price must equal at least the valuated fair market value; and the transaction must be approved by a majority of the minority shareholders","C. Only board approval is required; shareholder vote is not needed for insider bids","D. A 90-day minimum open period applies (longer than the normal 105-day period for arm's length bids)"],a:1,e:"Insider bids (where a company insider buys out remaining shareholders) have <strong>extra protective requirements</strong> due to the obvious conflict: (1) <strong>Independent formal valuation</strong> by a qualified valuator not connected to the insider; (2) <strong>Bid price must equal at least the fair market value</strong> determined by the valuator; (3) <strong>Majority of the minority approval</strong> — the transaction must be approved by the majority of shareholders excluding the insider and their associates. These protect minority shareholders from being unfairly coerced into selling at below-fair prices."},
+  {id:41,d:'h',q:"An investor is analyzing a company with strong EBITDA and revenue growth but consistently negative free cash flow. What does this indicate, and what should the investor investigate?",o:["A. This is normal for all companies and indicates healthy reinvestment","B. EBITDA and FCF must always equal — the numbers must be wrong","C. The company is heavily investing in capital expenditures or has significant working capital needs; the investor should investigate CapEx intensity, working capital trends, and whether the investment will generate future returns","D. Negative FCF always signals the company will go bankrupt soon"],a:2,e:"Positive EBITDA but negative FCF means <strong>capital expenditures (or working capital build) exceed operating cash flows</strong>. This is common in capital-intensive growth companies (e.g., pipeline construction, manufacturing scale-up). The investor must investigate: (1) Is CapEx growth or maintenance? Growth CapEx is more acceptable; (2) Are returns on capital investment adequate? (3) Is there a clear path to FCF generation? (4) Does the company have sufficient financing to fund the deficit until FCF turns positive?"},
+  {id:42,d:'h',q:"The Bank of Canada implements Quantitative Easing (QE) by purchasing long-term government bonds. What is the intended transmission mechanism, and how does it differ from conventional monetary policy?",o:["A. QE reduces short-term rates; conventional policy reduces long-term rates","B. QE directly influences long-term interest rates and risk assets by injecting reserves into the banking system when the short-term rate is already near zero; conventional policy works through adjusting the overnight rate","C. QE and conventional policy are identical in their impact — both affect only the overnight rate","D. QE is illegal under the Bank of Canada Act and has never been used"],a:1,e:"<strong>QE</strong> is used when the overnight rate is already near zero (conventional policy exhausted). By purchasing long-term bonds, the BoC: (1) pushes down long-term yields directly; (2) injects reserves into the banking system, encouraging lending; (3) pushes investors into riskier assets (search for yield), boosting equity prices. Canada used extensive QE during COVID (2020-21). It differs from conventional policy which only targets the overnight rate."},
+  {id:43,d:'h',q:"An analyst applies Purchasing Power Parity (PPP) theory to determine the CAD/USD rate. Canadian CPI = 140, US CPI = 120, base period rate was $0.80 CAD per USD. What does PPP predict the exchange rate should be today?",o:["A. $0.80 USD/CAD (unchanged)","B. Approximately $0.933 CAD/USD (CAD has weakened)","C. Approximately $0.686 CAD/USD (CAD has strengthened)","D. $1.00 CAD/USD (parity, since both are at base)"],a:1,e:"PPP formula: New rate = Base rate × (Domestic CPI / Foreign CPI) = $0.80 × (140/120) = $0.80 × 1.167 = approximately <strong>$0.933 CAD/USD</strong>. Since Canadian prices have risen more (140 vs 120), the CAD should have weakened (more CAD needed per USD). This reflects that Canada's higher inflation eroded the CAD's purchasing power relative to USD."},
+  {id:44,d:'h',q:"A fundamental analyst values a company at $50/share but the market price is $70. A technical analyst observes that the stock has been in a strong uptrend with rising volume, trading above all major moving averages. How should these conflicting signals be reconciled?",o:["A. The fundamental analyst is always correct — technical analysis is unreliable","B. The technical analyst is correct — price action always overrides fundamental value","C. Both frameworks provide useful but different information; the stock may be fundamentally overvalued but technically strong in the short term — the analyst must determine their investment horizon and risk tolerance","D. The discrepancy is impossible since efficient markets prevent such divergences"],a:2,e:"This tests the understanding that <strong>fundamental and technical analysis serve different purposes and time horizons</strong>. Fundamental analysis determines intrinsic value (what the stock is worth) — the stock appears overvalued at $70 vs $50 intrinsic value. Technical analysis assesses current price momentum — the uptrend suggests near-term strength. Resolution: (1) A long-term investor might avoid or sell the overvalued stock; (2) A momentum trader might continue riding the trend until it breaks; (3) Efficient market theory would say the $70 is the right price and the analyst is wrong. No single framework has a monopoly on truth."},
+  {id:45,d:'h',q:"Canada's GDP growth is at 3.5%, unemployment is at 4.5% (below NAIRU of ~5.5%), CPI inflation is 3.8% and rising. The yield curve is steep (normal). Using economic theory and the Bank of Canada's mandate, what should the Bank likely do, and what will be the impact on equity markets?",o:["A. Cut rates aggressively to prevent a future recession; equities will rise","B. Raise rates to reduce demand and bring inflation back to 2%; bond prices will fall; equities will likely decline, especially growth stocks with high P/E ratios","C. Keep rates unchanged to maintain employment; equities will be unaffected","D. Print money (QE) to fund government spending; equities will benefit from liquidity"],a:1,e:"Classic overheating scenario: GDP above potential, unemployment below NAIRU (inflation-accelerating), and CPI well above 2% target. The Bank's mandate requires action. Answer: <strong>Raise rates</strong> to cool the economy and return inflation to 2%. Market impacts: (1) Bond prices fall (rates up); (2) Equities likely fall — higher discount rates reduce present values, especially for high-P/E growth stocks; (3) CAD likely strengthens; (4) Yield curve may flatten as short rates rise faster than long rates. This is precisely what happened in Canada in 2022 when the Bank raised rates from 0.25% to 5.00%."}
+];
+
+let ans={},cor=0,att=0;
+function build(){
+  const c=document.getElementById('qContainer');c.innerHTML='';
+  Qs.forEach((q,i)=>{
+    const dc=q.d==='e'?'de':q.d==='m'?'dm':'dh';
+    const dl=q.d==='e'?'Easy':q.d==='m'?'Medium':'Hard';
+    const opts=q.o.map((o,oi)=>{
+      const L=String.fromCharCode(65+oi);
+      return `<div class="qq-opt" onclick="chk(${i},${oi})" id="o${i}_${oi}"><span class="opt-l">${L}</span>${o.substring(3)}</div>`;
+    }).join('');
+    c.innerHTML+=`<div class="qq" id="q${i}">
+      <div class="qq-top"><span class="qq-num">Q${q.id}</span><span class="qq-diff ${dc}">${dl}</span><div class="qq-text">${q.q}</div></div>
+      <div class="qq-opts">${opts}</div>
+      <div class="qq-exp" id="e${i}">${q.e}</div>
+    </div>`;
+  });
+}
+function chk(qi,sel){
+  if(ans[qi]!==undefined)return;
+  ans[qi]=sel;att++;
+  const q=Qs[qi];const ok=sel===q.a;if(ok)cor++;
+  for(let i=0;i<q.o.length;i++){
+    const el=document.getElementById(`o${qi}_${i}`);
+    if(i===q.a)el.classList.add('correct');
+    else if(i===sel&&!ok)el.classList.add('wrong');
+  }
+  document.getElementById(`e${qi}`).classList.add('show');
+  document.getElementById('scoreLbl').textContent=`${cor}/${att}`;
+  if(att===Qs.length){
+    const pct=Math.round(cor/Qs.length*100);
+    const fd=document.getElementById('fScore');fd.style.display='block';
+    fd.innerHTML=`<div class="score-n">${pct}%</div><div class="score-l">${cor}/${Qs.length} correct — ${pct>=60?'✅ Passing':'❌ Below pass mark'}</div>`;
+  }
+}
+function revealAll(){Qs.forEach((q,qi)=>{if(ans[qi]!==undefined)return;ans[qi]=q.a;for(let i=0;i<q.o.length;i++){const el=document.getElementById(`o${qi}_${i}`);if(i===q.a)el.classList.add('correct');}document.getElementById(`e${qi}`).classList.add('show');});}
+function resetQ(){ans={};cor=0;att=0;document.getElementById('scoreLbl').textContent='0/45';document.getElementById('fScore').style.display='none';build();}
+function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function updateUI(){
+  const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;
+  const pct=dh>0?(st/dh)*100:0;
+  const f=document.getElementById('pFill');if(f)f.style.width=Math.min(pct,100)+'%';
+  const btn=document.getElementById('scrolltop');
+  if(st>500)btn.classList.add('visible');else btn.classList.remove('visible');
+  const ids=['cover','s51','s52','s53','s54','s55','s56','s57','s58','s59','summary','quiz'];
+  let cur='cover';
+  ids.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<100)cur=id;});
+  document.querySelectorAll('.nl').forEach(l=>{l.classList.remove('active');const fn=l.getAttribute('onclick')||'';if(fn.includes("'"+cur+"'"))l.classList.add('active');});
+}
+window.addEventListener('scroll',updateUI,{passive:true});
+build();updateUI();
+</script>
+</body>
+</html>

@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIRE Element 8 Part 2 — Strategies, Admin & Practice Questions</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#faf8f4;--paper:#fff;--warm:#f4f1eb;--border:#e2ddd4;
+  --ink:#1a1510;--ink2:#2d2419;--ink3:#5c4f3d;--muted:#9a8a78;
+  --sb:#1a1510;
+  --amber:#c47a00;--amber-bg:#fff9ec;--amber-bd:#f5d080;
+  --teal:#006666;--teal-bg:#e8f5f5;--teal-bd:#80c8c8;
+  --red:#8b1a1a;--red-bg:#fef0f0;--red-bd:#f0a0a0;
+  --green:#1a5c2a;--green-bg:#eef8f0;--green-bd:#80c898;
+  --indigo:#1e3a8a;--indigo-bg:#eef2ff;--indigo-bd:#93aff0;
+  --rose:#8b1a3a;--rose-bg:#fef0f4;--rose-bd:#f0a0b8;
+  --sidebar-w:280px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#0f0c08;font-family:'Source Sans 3',sans-serif;color:var(--ink);display:flex;}
+
+#sb{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--sb);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:1px solid rgba(255,255,255,0.04);}
+#sb::-webkit-scrollbar{width:2px;}#sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);}
+.sbhead{padding:24px 18px 18px;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;background:#1a1510;z-index:5;}
+.sbtag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;color:#f5d080;text-transform:uppercase;background:rgba(196,122,0,0.15);border:1px solid rgba(196,122,0,0.3);padding:2px 8px;border-radius:2px;display:inline-block;margin-bottom:10px;}
+.sbtitle{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#fdf5e6;line-height:1.35;margin-bottom:3px;}
+.sbsub{font-size:10px;color:rgba(255,255,255,0.25);}
+.sbprog{padding:10px 18px 4px;}
+.sbprogl{font-size:9px;color:rgba(255,255,255,0.2);font-family:'JetBrains Mono',monospace;margin-bottom:5px;}
+.sbprogt{height:2px;background:rgba(255,255,255,0.06);border-radius:2px;}
+.sbprogf{height:100%;background:linear-gradient(90deg,var(--amber),#f5d080);border-radius:2px;width:0%;transition:width 0.3s;}
+.ng{padding:8px 0;}
+.ngl{padding:6px 18px;font-size:8.5px;letter-spacing:3px;color:rgba(255,255,255,0.18);text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+.nl{display:flex;align-items:flex-start;gap:9px;padding:5px 18px;cursor:pointer;border-left:2px solid transparent;transition:all 0.15s;text-decoration:none;}
+.nl:hover{background:rgba(255,255,255,0.03);border-left-color:rgba(196,122,0,0.4);}
+.nl.active{background:rgba(196,122,0,0.12);border-left-color:var(--amber);}
+.nn{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#f5d080;min-width:26px;flex-shrink:0;margin-top:2px;}
+.nt{font-size:11px;color:rgba(255,255,255,0.38);line-height:1.45;transition:color 0.15s;}
+.nl:hover .nt,.nl.active .nt{color:rgba(255,255,255,0.78);}
+.ns{display:block;padding:3px 18px 3px 50px;font-size:10.5px;color:rgba(255,255,255,0.22);cursor:pointer;border-left:2px solid transparent;transition:all 0.15s;}
+.ns:hover{color:rgba(255,255,255,0.48);border-left-color:rgba(196,122,0,0.25);}
+
+#main{margin-left:var(--sidebar-w);flex:1;background:var(--bg);min-height:100vh;}
+
+.cover{background:linear-gradient(140deg,#0f0c08 0%,#1a1005 50%,#0c0f14 100%);padding:88px 80px;min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
+.cov-tex{position:absolute;inset:0;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c47a00' fill-opacity='1'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");}
+.cov-g1{position:absolute;bottom:-80px;right:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(196,122,0,0.1),transparent 65%);border-radius:50%;}
+.cov-g2{position:absolute;top:100px;left:-50px;width:300px;height:300px;background:radial-gradient(circle,rgba(26,92,42,0.06),transparent 65%);border-radius:50%;}
+.cov-part{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:4px;color:#f5d080;text-transform:uppercase;margin-bottom:12px;position:relative;display:flex;align-items:center;gap:14px;}
+.cov-part::before{content:'';width:28px;height:1px;background:#f5d080;}
+.cov-h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5.5vw,68px);font-weight:900;color:#fdf5e6;line-height:1.06;max-width:680px;margin-bottom:10px;position:relative;}
+.cov-h1 em{color:#f5d080;font-style:italic;}
+.cov-rule{width:54px;height:2px;background:linear-gradient(90deg,var(--amber),transparent);margin:20px 0;}
+.cov-desc{font-size:15px;color:rgba(253,245,230,0.48);max-width:540px;line-height:1.9;margin-bottom:48px;position:relative;}
+.cov-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;max-width:560px;border:1px solid rgba(196,122,0,0.18);border-radius:6px;overflow:hidden;position:relative;}
+.cov-stat{padding:16px 14px;background:rgba(255,255,255,0.015);}
+.cov-stat-n{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#f5d080;line-height:1;margin-bottom:4px;}
+.cov-stat-l{font-size:9px;color:rgba(255,255,255,0.22);line-height:1.35;}
+
+.content{max-width:820px;padding:0 72px 140px;}
+.sec{padding-top:76px;}
+.secrule{height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:26px;}
+.sechead{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px;}
+.secbadge{font-family:'JetBrains Mono',monospace;font-size:10.5px;background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber);padding:4px 12px;border-radius:3px;white-space:nowrap;margin-top:6px;flex-shrink:0;}
+.sectitle{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--ink);line-height:1.2;}
+.body{font-size:15px;color:var(--ink3);line-height:1.88;margin-bottom:15px;}
+.body strong{color:var(--ink);font-weight:700;}
+.body em{color:var(--amber);font-style:normal;font-weight:600;}
+.sub{margin-top:34px;}
+.subtit{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:var(--ink2);margin-bottom:12px;padding-left:13px;border-left:3px solid var(--amber);}
+.subsub{margin-top:22px;}
+.subsubtit{font-size:13.5px;font-weight:700;color:var(--ink2);margin-bottom:9px;display:flex;align-items:center;gap:7px;}
+.subsubtit::before{content:'▸';font-size:10px;color:var(--amber);}
+
+.callout{margin:18px 0;padding:14px 18px;border-radius:5px;border-left:3px solid;display:flex;gap:13px;align-items:flex-start;}
+.callout.amber{background:var(--amber-bg);border-color:var(--amber);}
+.callout.teal{background:var(--teal-bg);border-color:var(--teal);}
+.callout.red{background:var(--red-bg);border-color:var(--red);}
+.callout.green{background:var(--green-bg);border-color:var(--green);}
+.callout.indigo{background:var(--indigo-bg);border-color:var(--indigo);}
+.callout.rose{background:var(--rose-bg);border-color:var(--rose);}
+.ci{font-size:17px;flex-shrink:0;margin-top:1px;}
+.cl{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+.callout.amber .cl{color:var(--amber);}
+.callout.teal .cl{color:var(--teal);}
+.callout.red .cl{color:var(--red);}
+.callout.green .cl{color:var(--green);}
+.callout.indigo .cl{color:var(--indigo);}
+.callout.rose .cl{color:var(--rose);}
+.callout p{font-size:13.5px;color:var(--ink3);line-height:1.72;}
+.callout p strong{color:var(--ink);}
+
+.dt{margin:15px 0;border-radius:5px;overflow:hidden;border:1px solid var(--border);}
+.dr{display:grid;grid-template-columns:175px 1fr;}
+.dr:not(:last-child){border-bottom:1px solid var(--border);}
+.dterm{background:var(--warm);padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--amber);border-right:1px solid var(--border);display:flex;align-items:flex-start;line-height:1.5;}
+.dval{background:var(--paper);padding:12px 14px;font-size:13.5px;color:var(--ink3);line-height:1.68;}
+.dval strong{color:var(--ink);}
+
+.scene{background:linear-gradient(135deg,rgba(196,122,0,0.05),rgba(0,102,102,0.05));border:1px solid var(--amber-bd);border-radius:7px;padding:20px;margin:18px 0;}
+.scene-title{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--amber);margin-bottom:14px;}
+.scene-body{font-size:14px;color:var(--ink3);line-height:1.85;}
+.scene-body strong{color:var(--ink);}
+.person{font-weight:700;color:var(--amber);}
+.scene-math{background:var(--paper);border:1px solid var(--border);border-radius:5px;padding:12px 14px;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink);line-height:1.75;}
+.math-good{color:var(--green);}
+.math-bad{color:var(--red);}
+.math-neu{color:var(--indigo);}
+
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+thead tr{background:var(--sb);}
+th{padding:10px 13px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:#f5d080;font-weight:400;}
+td{padding:10px 13px;border-bottom:1px solid var(--border);color:var(--ink3);line-height:1.6;vertical-align:top;}
+td strong{color:var(--ink);}
+tr:last-child td{border-bottom:none;}
+tr:nth-child(even) td{background:var(--warm);}
+
+.hlbox{background:var(--sb);border-radius:7px;padding:22px 26px;margin:18px 0;}
+.hlbox-t{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2.5px;color:#f5d080;text-transform:uppercase;margin-bottom:10px;}
+.hlbox p{font-size:14px;color:rgba(253,245,230,0.62);line-height:1.85;}
+.hlbox p strong{color:#f5d080;}
+
+/* STRATEGY CARDS */
+.strat-section{margin:20px 0;}
+.strat-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;border-radius:4px 4px 0 0;font-weight:700;}
+.strat-label.bull{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);}
+.strat-label.bear{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);}
+.strat-label.neut{background:var(--indigo-bg);color:var(--indigo);border:1px solid var(--indigo-bd);}
+.strat-label.vol{background:var(--rose-bg);color:var(--rose);border:1px solid var(--rose-bd);}
+.strat-body{border:1px solid var(--border);border-top:none;border-radius:0 0 5px 5px;overflow:hidden;}
+.srow{display:grid;grid-template-columns:150px 80px 1fr;border-bottom:1px solid var(--border);}
+.srow:last-child{border-bottom:none;}
+.srow:nth-child(even){background:var(--warm);}
+.srow-name{padding:12px 13px;font-weight:700;font-size:13px;color:var(--ink);background:var(--paper);display:flex;align-items:flex-start;}
+.srow-view{padding:12px 10px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--amber);display:flex;align-items:flex-start;background:var(--warm);border-left:1px solid var(--border);border-right:1px solid var(--border);}
+.srow-desc{padding:12px 13px;font-size:13px;color:var(--ink3);line-height:1.65;background:var(--paper);}
+.srow-desc strong{color:var(--ink);}
+.srow-desc .fm{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--amber);background:var(--amber-bg);padding:3px 7px;border-radius:3px;display:inline-block;margin:3px 0;}
+
+/* LISTED VS OTC TABLE */
+.cmp2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+.ccard{border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+.ccard-head{padding:12px 15px;font-weight:700;font-size:13px;border-bottom:1px solid var(--border);}
+.ccard.lst .ccard-head{background:var(--green-bg);color:var(--green);}
+.ccard.otc .ccard-head{background:var(--indigo-bg);color:var(--indigo);}
+.ccard-body{padding:13px 15px;font-size:13px;color:var(--ink3);line-height:1.7;background:var(--paper);}
+.ccard-body strong{color:var(--ink);}
+.ccard-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
+.ccard-row:last-child{border-bottom:none;}
+.crow-label{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;}
+.crow-val{color:var(--ink3);font-weight:600;}
+
+/* DOCS */
+.doc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
+.doc-card{background:var(--paper);border:1px solid var(--border);border-radius:6px;padding:14px;display:flex;gap:10px;align-items:flex-start;}
+.doc-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--amber);background:var(--amber-bg);border:1px solid var(--amber-bd);padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:2px;}
+.doc-title{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:4px;}
+.doc-desc{font-size:12.5px;color:var(--ink3);line-height:1.6;}
+
+/* PROHIBITED */
+.prohib-card{background:var(--red-bg);border:1px solid var(--red-bd);border-radius:7px;padding:18px;margin:12px 0;}
+.prohib-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.prohib-body{font-size:14px;color:var(--ink3);line-height:1.8;}
+.prohib-body strong{color:var(--ink);}
+
+/* SUMMARY */
+.sumbox{background:var(--sb);border-radius:8px;padding:30px;margin-top:60px;}
+.sum-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#fdf5e6;margin-bottom:4px;}
+.sum-sub{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;color:rgba(255,255,255,0.2);margin-bottom:24px;text-transform:uppercase;}
+.si{display:flex;gap:13px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;color:rgba(253,245,230,0.55);line-height:1.65;align-items:flex-start;}
+.si:last-child{border-bottom:none;}
+.si strong{color:#f5d080;}
+.sin{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:rgba(245,208,128,0.35);min-width:22px;flex-shrink:0;margin-top:2px;}
+
+/* QUIZ */
+.quizwrap{background:var(--sb);padding:50px 72px 90px;}
+.quiz-h1{font-family:'Playfair Display',serif;font-size:34px;font-weight:900;color:#fdf5e6;margin-bottom:8px;text-align:center;}
+.quiz-sub{font-size:12px;color:rgba(255,255,255,0.28);font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-align:center;}
+.quiz-stats{display:flex;justify-content:center;gap:32px;margin:20px 0 36px;flex-wrap:wrap;}
+.qsn{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#f5d080;}
+.qsl{font-size:10px;color:rgba(255,255,255,0.28);text-align:center;}
+.qq{background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:20px;margin-bottom:10px;transition:border-color 0.15s;}
+.qq:hover{border-color:rgba(196,122,0,0.3);}
+.qqtop{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;}
+.qqnum{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#f5d080;min-width:30px;flex-shrink:0;margin-top:2px;}
+.qqdiff{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:1px;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+.de{background:rgba(26,92,42,0.2);color:#7dd898;border:1px solid rgba(26,92,42,0.3);}
+.dm{background:rgba(196,122,0,0.2);color:#f5d080;border:1px solid rgba(196,122,0,0.3);}
+.dh{background:rgba(139,26,26,0.2);color:#f08080;border:1px solid rgba(139,26,26,0.3);}
+.qqtext{font-size:13.5px;color:rgba(253,245,230,0.82);line-height:1.72;flex:1;}
+.qqopts{display:flex;flex-direction:column;gap:6px;padding-left:42px;}
+.qqopt{display:flex;gap:9px;align-items:flex-start;padding:9px 13px;border-radius:5px;cursor:pointer;border:1px solid rgba(255,255,255,0.055);background:rgba(255,255,255,0.018);transition:all 0.15s;font-size:13px;color:rgba(253,245,230,0.5);line-height:1.55;}
+.qqopt:hover{background:rgba(196,122,0,0.08);border-color:rgba(196,122,0,0.28);color:rgba(253,245,230,0.85);}
+.qqopt.correct{background:rgba(26,92,42,0.14);border-color:rgba(26,92,42,0.38);color:#a0e0b0;}
+.qqopt.wrong{background:rgba(139,26,26,0.1);border-color:rgba(139,26,26,0.28);color:#f0a0a0;}
+.optl{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#f5d080;min-width:16px;flex-shrink:0;margin-top:1px;}
+.qqopt.correct .optl{color:#7dd898;}
+.qqopt.wrong .optl{color:#f08080;}
+.qqexp{margin-top:11px;padding:11px 13px;background:rgba(196,122,0,0.07);border-left:3px solid var(--amber);border-radius:0 5px 5px 0;display:none;font-size:12.5px;color:rgba(253,245,230,0.52);line-height:1.72;}
+.qqexp strong{color:#f5d080;}
+.qqexp.show{display:block;}
+.quiz-ctrl{text-align:center;padding:26px 0 0;}
+.btn{padding:11px 28px;border-radius:5px;border:none;cursor:pointer;font-family:'Source Sans 3',sans-serif;font-size:13.5px;font-weight:700;transition:all 0.15s;}
+.btnp{background:var(--amber);color:#fff;}
+.btnp:hover{background:#8a5500;}
+.btns{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);margin-left:10px;}
+.scoredisp{background:rgba(196,122,0,0.14);border:1px solid rgba(196,122,0,0.28);border-radius:7px;padding:18px 28px;margin:18px auto;max-width:360px;display:none;text-align:center;}
+.scoren{font-family:'Playfair Display',serif;font-size:50px;font-weight:700;color:#f5d080;line-height:1;}
+.scorel{font-size:12px;color:rgba(255,255,255,0.38);margin-top:5px;}
+
+#scrolltop{position:fixed;bottom:24px;right:24px;background:var(--amber);color:#fff;border:none;border-radius:50%;width:42px;height:42px;font-size:17px;cursor:pointer;opacity:0;transition:opacity 0.3s;z-index:200;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 4px 18px rgba(0,0,0,0.35);}
+#scrolltop.vis{opacity:1;}
+
+@media(max-width:900px){#sb{display:none;}#main{margin-left:0;}.content{padding:0 22px 80px;}.cover{padding:56px 22px;}.quizwrap{padding:30px 22px 70px;}.cmp2,.doc-grid{grid-template-columns:1fr;}.cov-stats{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<nav id="sb">
+  <div class="sbhead">
+    <div class="sbtag">CIRE · Element 8 · Part 2</div>
+    <div class="sbtitle">Strategies, Admin & Practice</div>
+    <div class="sbsub">Sections 8.5 – 8.8 · 45 questions</div>
+  </div>
+  <div class="sbprog"><div class="sbprogl">Reading progress</div><div class="sbprogt"><div class="sbprogf" id="pFill"></div></div></div>
+  <div class="ng">
+    <div class="ngl">Content</div>
+    <a class="nl" onclick="goTo('cover')"><span class="nn">◉</span><span class="nt">Cover</span></a>
+    <a class="nl" onclick="goTo('s85')"><span class="nn">8.5</span><span class="nt">Listed vs OTC Markets</span></a>
+    <a class="nl" onclick="goTo('s86')"><span class="nn">8.6</span><span class="nt">Trading Strategies</span></a>
+    <a class="ns" onclick="goTo('bull')">Bullish Strategies</a>
+    <a class="ns" onclick="goTo('bear')">Bearish Strategies</a>
+    <a class="ns" onclick="goTo('neut')">Neutral / Income Strategies</a>
+    <a class="ns" onclick="goTo('vol')">Volatility Strategies</a>
+    <a class="ns" onclick="goTo('strat-summary')">Strategy Quick-Reference</a>
+    <a class="nl" onclick="goTo('s87')"><span class="nn">8.7</span><span class="nt">Administrative Requirements</span></a>
+    <a class="nl" onclick="goTo('s88')"><span class="nn">8.8</span><span class="nt">Prohibited Practices</span></a>
+    <a class="nl" onclick="goTo('summary')"><span class="nn">★</span><span class="nt">Master Summary (16 points)</span></a>
+  </div>
+  <div class="ng">
+    <div class="ngl">Practice</div>
+    <a class="nl" onclick="goTo('quiz')"><span class="nn">📝</span><span class="nt">45 Scenario Questions</span></a>
+  </div>
+</nav>
+
+<div id="main">
+<div id="cover" class="cover">
+  <div class="cov-tex"></div><div class="cov-g1"></div><div class="cov-g2"></div>
+  <div class="cov-part" style="position:relative;">Element 8 of 9 · Part 2 of 2</div>
+  <h1 class="cov-h1" style="position:relative;"><em>Derivatives</em><br>Part Two</h1>
+  <div class="cov-rule"></div>
+  <p class="cov-desc" style="position:relative;">All trading strategies explained with real scenarios and payoff logic. Complete administrative requirements. The three prohibited practices. A 16-point master summary. And 45 scenario-based exam questions with balanced answer options and detailed explanations.</p>
+  <div class="cov-stats" style="position:relative;">
+    <div class="cov-stat"><div class="cov-stat-n">12+</div><div class="cov-stat-l">Strategies explained</div></div>
+    <div class="cov-stat"><div class="cov-stat-n">8</div><div class="cov-stat-l">Admin documents</div></div>
+    <div class="cov-stat"><div class="cov-stat-n">3</div><div class="cov-stat-l">Prohibited practices</div></div>
+    <div class="cov-stat"><div class="cov-stat-n">45</div><div class="cov-stat-l">Practice questions</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- 8.5 LISTED VS OTC -->
+<div id="s85" class="sec">
+  <div class="secrule"></div>
+  <div class="sechead"><div class="secbadge">8.5</div><h2 class="sectitle">Listed vs Over-the-Counter Derivative Markets</h2></div>
+  <p class="body">Derivatives trade in two fundamentally different environments. Understanding the distinction matters for the exam — and for advising clients on the right instrument for their situation.</p>
+  <div class="cmp2">
+    <div class="ccard lst">
+      <div class="ccard-head">📋 Listed (Exchange-Traded) Derivatives</div>
+      <div class="ccard-body">
+        <div class="ccard-row"><span class="crow-label">WHERE</span><span class="crow-val">Montréal Exchange (MX), CME, CBOE</span></div>
+        <div class="ccard-row"><span class="crow-label">TERMS</span><span class="crow-val">Fully standardized — fixed by the exchange</span></div>
+        <div class="ccard-row"><span class="crow-label">TRANSPARENCY</span><span class="crow-val">Real-time public pricing, bid/ask, volume</span></div>
+        <div class="ccard-row"><span class="crow-label">COUNTERPARTY RISK</span><span class="crow-val">None — CDCC clearing house is counterparty</span></div>
+        <div class="ccard-row"><span class="crow-label">SETTLEMENT</span><span class="crow-val">Daily mark-to-market (futures)</span></div>
+        <div class="ccard-row"><span class="crow-label">MARGIN</span><span class="crow-val">Initial + maintenance, called daily</span></div>
+        <div class="ccard-row"><span class="crow-label">FLEXIBILITY</span><span class="crow-val">Low — one size for all users</span></div>
+        <div class="ccard-row"><span class="crow-label">WHO USES</span><span class="crow-val">Retail, hedge funds, commodity producers, institutions</span></div>
+        <div style="margin-top:10px;font-size:12.5px;color:var(--ink3);line-height:1.65;">
+          <strong>Examples:</strong> TSX equity options, S&P/TSX 60 index futures (SXF), GoC bond futures, Banker's Acceptance futures, crude oil futures (NYMEX), gold futures (COMEX).<br><br>
+          <strong>Key advantage:</strong> The CDCC (Canadian Derivatives Clearing Corporation) becomes the legal counterparty to every trade — if one party defaults, CDCC covers the obligation. This completely eliminates counterparty risk from the perspective of each trader.
+        </div>
+      </div>
+    </div>
+    <div class="ccard otc">
+      <div class="ccard-head">🤝 OTC (Over-The-Counter) Derivatives</div>
+      <div class="ccard-body">
+        <div class="ccard-row"><span class="crow-label">WHERE</span><span class="crow-val">Directly between two parties (bank + client)</span></div>
+        <div class="ccard-row"><span class="crow-label">TERMS</span><span class="crow-val">Fully customizable — any terms negotiated</span></div>
+        <div class="ccard-row"><span class="crow-label">TRANSPARENCY</span><span class="crow-val">Limited — prices negotiated privately</span></div>
+        <div class="ccard-row"><span class="crow-label">COUNTERPARTY RISK</span><span class="crow-val">Yes — if counterparty fails, you may lose</span></div>
+        <div class="ccard-row"><span class="crow-label">SETTLEMENT</span><span class="crow-val">Single settlement at maturity (typically)</span></div>
+        <div class="ccard-row"><span class="crow-label">MARGIN</span><span class="crow-val">Negotiated via CSA (Credit Support Annex)</span></div>
+        <div class="ccard-row"><span class="crow-label">FLEXIBILITY</span><span class="crow-val">Maximum — tailored to exact commercial need</span></div>
+        <div class="ccard-row"><span class="crow-label">WHO USES</span><span class="crow-val">Banks, large corporations, pension funds, hedge funds</span></div>
+        <div style="margin-top:10px;font-size:12.5px;color:var(--ink3);line-height:1.65;">
+          <strong>Examples:</strong> FX forwards, interest rate swaps, credit default swaps (CDS), equity total return swaps (TRS), custom structured products, bespoke options.<br><br>
+          <strong>Documentation:</strong> All OTC derivatives between institutional counterparties are governed by an <strong>ISDA Master Agreement</strong> — the industry-standard contract that establishes netting, collateral (via the Credit Support Annex), events of default, and close-out mechanics for all transactions between the two parties.<br><br>
+          <strong>Post-2008 reform:</strong> G20 mandated that standardized OTC derivatives (mainly interest rate swaps) be centrally cleared. Canada's securities regulations now require OTC trade reporting to trade repositories.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>Feature</th><th>Listed</th><th>OTC</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Standardization</strong></td><td>Fixed contract terms</td><td>Fully negotiable</td></tr>
+      <tr><td><strong>Counterparty Risk</strong></td><td>None (clearing house)</td><td>Yes (bilateral)</td></tr>
+      <tr><td><strong>Price Discovery</strong></td><td>Public, real-time</td><td>Private, negotiated</td></tr>
+      <tr><td><strong>Daily Settlement</strong></td><td>Yes (futures)</td><td>Usually no</td></tr>
+      <tr><td><strong>Regulation</strong></td><td>Heavily regulated (CIRO, exchange)</td><td>Less prescriptive (ISDA, trade repositories)</td></tr>
+      <tr><td><strong>Accessibility</strong></td><td>Broad (retail + institutional)</td><td>Institutional primarily</td></tr>
+      <tr><td><strong>Customization</strong></td><td>None</td><td>Unlimited</td></tr>
+      <tr><td><strong>Basis Risk</strong></td><td>Can exist (standard contract ≠ exact hedge)</td><td>None (tailored to exact need)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 8.6 STRATEGIES -->
+<div id="s86" class="sec">
+  <div class="secrule"></div>
+  <div class="sechead"><div class="secbadge">8.6</div><h2 class="sectitle">Trading Strategies</h2></div>
+  <p class="body">Every strategy is built around a specific <strong>market view</strong>. The exam consistently presents a scenario (client's situation and expectations) and asks which strategy fits. Always ask: <em>What direction does the client expect? What is their risk tolerance? Do they own the underlying? Do they want income or protection?</em></p>
+
+  <!-- BULLISH -->
+  <div id="bull" class="sub">
+    <h3 class="subtit">Bullish Strategies — When You Expect Prices to Rise</h3>
+    <div class="strat-section">
+      <div class="strat-label bull">📈 BULLISH STRATEGIES</div>
+      <div class="strat-body">
+
+        <div class="srow">
+          <div class="srow-name">Long Call</div>
+          <div class="srow-view">Strongly bullish</div>
+          <div class="srow-desc">
+            <strong>Construction:</strong> Buy a call option.<br>
+            <strong>Why:</strong> You expect a significant price rise. You want leveraged upside with defined, limited downside.<br>
+            <strong>Payoff:</strong> Profit if stock rises above strike + premium. Max loss = premium paid.<br>
+            <span class="fm">Breakeven = Strike + Premium Paid</span><br>
+            <strong>Example:</strong> Priya buys SHOP $100 call at $5. Stock rises to $130. Profit = ($130 − $100 − $5) × 100 = $2,500. If it falls to $80, she loses only her $500 premium.
+          </div>
+        </div>
+
+        <div class="srow">
+          <div class="srow-name">Bull Call Spread</div>
+          <div class="srow-view">Moderately bullish</div>
+          <div class="srow-desc">
+            <strong>Construction:</strong> Buy a lower-strike call + simultaneously sell a higher-strike call (same expiry).<br>
+            <strong>Why:</strong> You're bullish but don't expect an explosive move. The sold call reduces your premium cost — making the trade cheaper — but caps your upside at the higher strike.<br>
+            <span class="fm">Max Profit = Higher Strike − Lower Strike − Net Premium Paid</span><br>
+            <span class="fm">Max Loss = Net Premium Paid</span><br>
+            <strong>Example:</strong> Buy $100 call at $5, sell $115 call at $2. Net cost = $3. If stock goes to $120: profit capped at ($115 − $100 − $3) = $12/share. If stock falls below $100: lose only $3 premium. <strong>Lower cost, defined risk, capped upside.</strong>
+          </div>
+        </div>
+
+        <div class="srow">
+          <div class="srow-name">Short Put (Cash-Secured)</div>
+          <div class="srow-view">Neutral to bullish</div>
+          <div class="srow-desc">
+            <strong>Construction:</strong> Write (sell) a put option while holding cash to buy if assigned.<br>
+            <strong>Why:</strong> You want to own the stock at a lower price OR generate income from the premium if it doesn't reach the strike. Sunita's strategy — getting paid to wait for a better entry.<br>
+            <strong>Payoff:</strong> Keep premium if stock stays above strike. If assigned, buy at effective cost = strike − premium.<br>
+            <strong>Key risk:</strong> If stock crashes far below strike, you're obligated to buy at strike regardless. Requires genuine willingness to own the stock.
+          </div>
+        </div>
+
+        <div class="srow">
+          <div class="srow-name">Long Futures</div>
+          <div class="srow-view">Strongly bullish</div>
+          <div class="srow-desc">
+            <strong>Construction:</strong> Buy futures contracts on the underlying.<br>
+            <strong>Why:</strong> Maximum leverage on a bullish view. No time decay (unlike options). No premium to pay — just margin deposit.<br>
+            <strong>Payoff:</strong> Profit directly from price rise, point for point. Daily MTM settlement means gains/losses hit account every day.<br>
+            <strong>Risk:</strong> No defined downside like options — losses accumulate daily with no floor. Margin calls possible.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- BEARISH -->
+  <div id="bear" class="sub">
+    <h3 class="subtit">Bearish Strategies — When You Expect Prices to Fall</h3>
+    <div class="strat-section">
+      <div class="strat-label bear">📉 BEARISH STRATEGIES</div>
+      <div class="strat-body">
+
+        <div class="srow">
+          <div class="srow-name">Long Put</div>
+          <div class="srow-view">Strongly bearish / insurance</div>
+          <div class="srow-desc">
+            <strong>Construction:</strong> Buy a put option.<br>
+            <strong>Why (speculative):</strong> You expect a sharp price decline and want leveraged exposure to the downside — cheaper and safer than short-selling (no margin call risk, loss limited to premium).<br>
+            <strong>Why (protective):</strong> You own the underlying and want to protect against a decline — portfolio insurance. Carlos's strategy with Suncor.<br>
+            <span class="fm">Breakeven = Strike − Premium Paid</span><br>
+            Max profit = strike − premium (if stock goes to zero). Max loss = premium paid.
+          </div>
+        </div>
+
+        <div class="srow">
+          <div class="srow-name">Bear Put Spread</div>
+          <div class="srow-view">Moderately bearish</div>
+          <div class="srow-desc">
+            <strong>Construction:</strong> Buy a higher-strike put + sell a lower-strike put (same expiry).<br>
+            <strong>Why:</strong> You expect a moderate decline — not a catastrophic one. The sold put reduces the premium cost of your protection, but limits how much you make if the stock collapses beyond the lower strike.<br>
+            <span class="fm">Max Profit = Higher Strike − Lower Strike − Net Premium Paid</span><br>
+            <span class="fm">Max Loss = Net Premium Paid</span><br>
+            <strong>Example:</strong> Buy $100 put at $5, sell $85 put at $2. Net cost = $3. If stock goes to $80: profit = ($100 − $85 − $3) = $12. If stock stays above $100: lose only $3 premium.
+          </div>
+        </div>
+
+        <div class="srow">
+          <div class="srow-name">Short Futures</div>
+          <div class="srow-view">Strongly bearish</div>
+          <div class="srow-desc">
+            <strong>Construction:</strong> Sell (short) futures contracts.<br>
+            <strong>Why:</strong> Bearish directional bet OR hedging an existing long position. WestJet used short futures to hedge their fuel cost — in reverse, an oil producer sells futures to hedge their revenue.<br>
+            <strong>Payoff:</strong> Profits when the price falls. Daily MTM gains if price declines. Also used by commodity producers to lock in a sales price (sell futures today to guarantee what they receive in 6 months).<br>
+            <strong>Risk:</strong> If price rises, losses accumulate daily with no upper limit. Margin calls possible.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- NEUTRAL / INCOME -->
+  <div id="neut" class="sub">
+    <h3 class="subtit">Neutral & Income-Producing Strategies — When You Expect Flat or Slow-Moving Markets</h3>
+    <div class="strat-section">
+      <div class="strat-label neut">💰 NEUTRAL / INCOME STRATEGIES</div>
+      <div class="strat-body">
+
+        <div class="srow">
+          <div class="srow-name">Covered Call</div>
+          <div class="srow-view">Neutral to mildly bullish</div>
+          <div class="srow-desc">
+            <strong>Construction:</strong> Own 100 shares + write (sell) 1 call option against them.<br>
+            <strong>Why:</strong> Generate premium income from a stock you already hold. Best in flat or slowly rising markets. David's strategy: owns RBC at $130, writes $135 call for $200.<br>
+            <span class="fm">Max Profit = (Strike − Cost Basis) + Premium</span><br>
+            <span class="fm">Max Loss = Cost Basis − Premium (if stock goes to zero)</span><br>
+            <strong>The trade-off:</strong> You give up all upside above the strike in exchange for the premium income today. If RBC shoots to $160, you still only sell at $135 + $2 = $137. <strong>Most popular retail options strategy.</strong>
+          </div>
+        </div>
+
+        <div class="srow">
+          <div class="srow-name">Cash-Secured Put</div>
+          <div class="srow-view">Neutral to mildly bullish</div>
+          <div class="srow-desc">
+            <strong>Construction:</strong> Write a put + hold cash equal to strike × 100 shares as collateral.<br>
+            <strong>Why:</strong> Generate premium income while potentially acquiring a stock at a lower price. Sunita's strategy. Either: collect premium and repeat (income), or get assigned and own the stock at an attractive effective cost.<br>
+            <strong>Risk:</strong> If stock crashes far below strike, you're forced to buy at strike regardless of how low it has fallen. Requires genuine conviction about owning the stock.
+          </div>
+        </div>
+
+        <div class="srow">
+          <div class="srow-name">Short Strangle</div>
+          <div class="srow-view">Neutral (range-bound)</div>
+          <div class="srow-desc">
+            <strong>Construction:</strong> Sell an OTM call + sell an OTM put (same expiry, different strikes).<br>
+            <strong>Why:</strong> You expect the stock to trade in a range — not moving significantly in either direction. Collect premium from both the call and put. Profit if stock stays between the two strikes at expiry.<br>
+            <span class="fm">Max Profit = Total Premium Received (if stock stays between strikes)</span><br>
+            <strong>Risk:</strong> If stock moves sharply in either direction — call side has unlimited risk; put side has substantial risk. Requires significant margin. Best used by sophisticated traders with strong conviction about low volatility.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- VOLATILITY -->
+  <div id="vol" class="sub">
+    <h3 class="subtit">Volatility Strategies — When You Expect a Large Move, Direction Unknown</h3>
+    <div class="strat-section">
+      <div class="strat-label vol">⚡ VOLATILITY STRATEGIES</div>
+      <div class="strat-body">
+
+        <div class="srow">
+          <div class="srow-name">Long Straddle</div>
+          <div class="srow-view">Big move either way</div>
+          <div class="srow-desc">
+            <strong>Construction:</strong> Buy 1 ATM call + buy 1 ATM put (same strike, same expiry).<br>
+            <strong>Why:</strong> You expect a significant price move before expiry — but you don't know the direction. Classic use: before a Bank of Canada rate decision, a major earnings announcement, or a drug trial result. You know something <em>will</em> happen — you just don't know if it's good or bad news.<br>
+            <span class="fm">Breakeven Up = Strike + Total Premium Paid</span><br>
+            <span class="fm">Breakeven Down = Strike − Total Premium Paid</span><br>
+            <strong>Worked example:</strong> Stock at $100. Buy $100 call for $5 + $100 put for $5 = $10 total cost.<br>
+            — If stock goes to $125: call worth $25. Profit = $25 − $10 = $15.<br>
+            — If stock crashes to $78: put worth $22. Profit = $22 − $10 = $12.<br>
+            — If stock stays at $100: both expire worthless. Lose full $10 premium.<br>
+            <strong>The enemy:</strong> Time decay. If the expected catalyst doesn't materialize or comes after expiry, theta destroys both options' value.
+          </div>
+        </div>
+
+        <div class="srow">
+          <div class="srow-name">Long Strangle</div>
+          <div class="srow-view">Big move either way (cheaper)</div>
+          <div class="srow-desc">
+            <strong>Construction:</strong> Buy an OTM call + buy an OTM put (different strikes, same expiry).<br>
+            <strong>Why:</strong> Same view as the straddle — expecting a large move — but cheaper because both options are out-of-the-money. Lower cost, but requires a bigger move to profit.<br>
+            <strong>Example:</strong> Stock at $100. Buy $110 call at $2.50 + $90 put at $2.50 = $5 total.<br>
+            <span class="fm">Breakeven Up = $110 + $5 = $115 | Breakeven Down = $90 − $5 = $85</span><br>
+            Stock needs to move more than 15% for profitability (vs 10% for the $10 straddle). Lower cost, wider required move.
+          </div>
+        </div>
+
+        <div class="srow">
+          <div class="srow-name">Calendar Spread</div>
+          <div class="srow-view">Low near-term vol, uncertain long-term</div>
+          <div class="srow-desc">
+            <strong>Construction:</strong> Sell a short-dated option + buy a longer-dated option at the same strike.<br>
+            <strong>Why:</strong> You expect the stock to stay flat in the near term (collecting theta on the sold short-dated option) while maintaining optionality for a bigger move later through the long-dated option. Profits from the faster time decay of shorter-dated options.<br>
+            <strong>When to use:</strong> When near-term implied volatility is high (you sell it) but you expect things to calm down short-term then potentially move again longer-term. Complex strategy — requires active management.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- STRATEGY QUICK REF -->
+  <div id="strat-summary" class="sub">
+    <h3 class="subtit">Strategy Quick-Reference — Match View to Strategy</h3>
+    <table>
+      <thead><tr><th>Market View</th><th>Strategy</th><th>Max Profit</th><th>Max Loss</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Strongly bullish</strong></td><td>Long Call or Long Futures</td><td>Unlimited (call) / Unlimited (futures)</td><td>Premium (call) / Unlimited (futures)</td></tr>
+        <tr><td><strong>Moderately bullish</strong></td><td>Bull Call Spread</td><td>Spread width − net premium</td><td>Net premium paid</td></tr>
+        <tr><td><strong>Neutral to mildly bullish</strong> (own stock)</td><td>Covered Call</td><td>(Strike − cost) + premium</td><td>Cost basis − premium</td></tr>
+        <tr><td><strong>Neutral to mildly bullish</strong> (want to own stock)</td><td>Cash-Secured Put</td><td>Premium received</td><td>Strike − premium</td></tr>
+        <tr><td><strong>Strongly bearish</strong></td><td>Long Put or Short Futures</td><td>Strike − premium (put) / Unlimited (futures)</td><td>Premium (put) / Unlimited (futures)</td></tr>
+        <tr><td><strong>Moderately bearish</strong></td><td>Bear Put Spread</td><td>Spread width − net premium</td><td>Net premium paid</td></tr>
+        <tr><td><strong>Neutral, range-bound</strong></td><td>Short Strangle</td><td>Total premium received</td><td>Unlimited (call side)</td></tr>
+        <tr><td><strong>Big move expected, direction unknown</strong></td><td>Long Straddle</td><td>Unlimited</td><td>Total premium paid</td></tr>
+        <tr><td><strong>Big move expected, cheaper version</strong></td><td>Long Strangle</td><td>Unlimited</td><td>Total premium paid</td></tr>
+      </tbody>
+    </table>
+    <div class="callout amber">
+      <div class="ci">🎯</div>
+      <div class="cb"><div class="cl">How the Exam Tests This</div>
+      <p>The exam won't just say "which strategy is bullish?" — it gives you a scenario: <em>"A client owns 500 BCE shares and believes the price will remain flat over the next 2 months. He wants to generate additional income from his position."</em> Answer: covered call. Always match: (1) ownership of underlying, (2) market direction view, (3) income vs protection goal, (4) risk tolerance.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- 8.7 ADMINISTRATIVE REQUIREMENTS -->
+<div id="s87" class="sec">
+  <div class="secrule"></div>
+  <div class="sechead"><div class="secbadge">8.7</div><h2 class="sectitle">Administrative Requirements for Derivative Trading</h2></div>
+  <p class="body">Before any derivative trading can commence, a specific set of mandatory documents must be completed and on file. These are not optional formalities — they are regulatory requirements under CIRO's IDPC Rules. The documents protect both the client and the dealer.</p>
+
+  <div class="doc-grid">
+    <div class="doc-card">
+      <div class="doc-num">Doc 1</div>
+      <div>
+        <div class="doc-title">Derivatives Account Application</div>
+        <div class="doc-desc">Standard KYC application specific to derivative accounts. Captures the client's <strong>derivatives trading knowledge and experience</strong> separately from general investment knowledge. The dealer assesses whether derivatives are appropriate for this specific client based on their knowledge, experience, and financial capacity to absorb potential losses. Must be completed before any derivative trading.</div>
+      </div>
+    </div>
+    <div class="doc-card">
+      <div class="doc-num">Doc 2</div>
+      <div>
+        <div class="doc-title">Derivatives Trading Agreement</div>
+        <div class="doc-desc">The contract governing the entire derivative trading relationship. Specifies: which types of derivatives are permitted (options only? futures? OTC?), position limits, how orders are processed, fees, and — critically — the dealer's right to close positions if the client fails to meet obligations. Must be signed before any derivative order is accepted.</div>
+      </div>
+    </div>
+    <div class="doc-card">
+      <div class="doc-num">Doc 3</div>
+      <div>
+        <div class="doc-title">Letter of Undertaking</div>
+        <div class="doc-desc">For margin accounts and leveraged positions — the client formally commits (undertakes) to: meet margin calls promptly and in full, maintain required equity at all times, and comply with the terms of the derivatives trading agreement. Critically, this document establishes the dealer's right to <strong>liquidate the client's positions without prior consent</strong> if margin obligations are not met.</div>
+      </div>
+    </div>
+    <div class="doc-card">
+      <div class="doc-num">Doc 4</div>
+      <div>
+        <div class="doc-title">Margin Agreement Form</div>
+        <div class="doc-desc">Specifies the margin rates applicable to each type of derivative position the client may hold. Establishes: initial margin required per contract/strategy type, maintenance margin threshold that triggers a margin call, how quickly margin calls must be met (typically 24–48 hours), and the consequences of failing to meet a margin call. Client signs to acknowledge all margin terms.</div>
+      </div>
+    </div>
+    <div class="doc-card">
+      <div class="doc-num">Doc 5</div>
+      <div>
+        <div class="doc-title">Derivatives Risk Disclosure Statement</div>
+        <div class="doc-desc">Mandatory regulatory document that explicitly describes all risks of derivative trading: leverage risk, potential for losses exceeding initial investment, margin call risk, market risk, counterparty risk (OTC), liquidity risk, complexity risk, and the difficulty of exiting positions quickly. The client must sign confirming they have read and <strong>understood</strong> these risks. Signing does NOT mean risks are managed — only that they've been disclosed.</div>
+      </div>
+    </div>
+    <div class="doc-card">
+      <div class="doc-num">Doc 6</div>
+      <div>
+        <div class="doc-title">Managed/Discretionary Account Agreement</div>
+        <div class="doc-desc">Required only if the client wants derivatives managed on a discretionary basis (advisor makes all trading decisions without client approval for each trade). Sets out the investment mandate, permitted derivative types, leverage limits, performance benchmarks, reporting frequency, and fees. Requires additional authorization and a higher level of compliance oversight than a standard derivative account.</div>
+      </div>
+    </div>
+    <div class="doc-card">
+      <div class="doc-num">Doc 7</div>
+      <div>
+        <div class="doc-title">Monthly Account Statements</div>
+        <div class="doc-desc">Derivative accounts must receive <strong>monthly</strong> statements — more frequent than the minimum for regular investment accounts. Given the daily mark-to-market nature of futures and the high leverage involved, frequent reporting is essential. Must show: all open positions with current market value, unrealized gains/losses, margin requirements vs current equity, daily settlement history, and open option positions with time value.</div>
+      </div>
+    </div>
+    <div class="doc-card">
+      <div class="doc-num">Doc 8</div>
+      <div>
+        <div class="doc-title">Trade Confirmations</div>
+        <div class="doc-desc">Each derivative trade must be confirmed promptly — typically same day or by end of next business day. Must include: contract details (underlying, strike/futures price, expiry/delivery date, quantity, contract type), premium or price paid/received, commission and fees charged, account margin position immediately after the trade, and for futures: the settlement price used for daily MTM.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout amber">
+    <div class="ci">📌</div>
+    <div class="cb"><div class="cl">Exam Tip — Document Sequence Matters</div>
+    <p>The exam may ask which documents are required before a client places their FIRST derivative trade. The answer always includes: <strong>Derivatives Account Application</strong> (KYC), <strong>Derivatives Trading Agreement</strong> (contract), <strong>Derivatives Risk Disclosure Statement</strong> (risk acknowledgment), and <strong>Margin Agreement Form</strong> (if using margin). Monthly statements and trade confirmations are ongoing requirements after trading begins.</p></div>
+  </div>
+</div>
+
+<!-- 8.8 PROHIBITED PRACTICES -->
+<div id="s88" class="sec">
+  <div class="secrule"></div>
+  <div class="sechead"><div class="secbadge">8.8</div><h2 class="sectitle">Prohibited Derivative Trading Practices</h2></div>
+  <p class="body">Three specific practices are explicitly prohibited under CIRO's IDPC Rules and the client's derivatives trading agreement. These are not minor infractions — violations can result in immediate position liquidation, account termination, and CIRO enforcement. Both the registered representative AND compliance are responsible for preventing them.</p>
+
+  <div class="prohib-card">
+    <div class="prohib-title">🚫 Prohibited Practice 1 — Trading While Under Margin</div>
+    <div class="prohib-body">
+      <strong>What it is:</strong> After a margin call has been issued (the client's account equity has fallen below the maintenance margin threshold), the client attempts to enter NEW derivative positions before depositing the required funds to restore the account to the initial margin level.<br><br>
+      <strong>Why it's prohibited:</strong> A client who is already under margin is in financial distress with their derivative positions. Allowing them to add new positions increases the firm's credit exposure and the client's risk exactly when both are already stressed. It's the derivative equivalent of lending more money to someone who already can't pay back what they owe.<br><br>
+      <strong>Required action:</strong> The dealer's systems must block ALL new order entry once a margin call has been issued. The client must first deposit sufficient funds to restore the account to the initial margin level. Only after the margin deficiency is fully resolved can new positions be opened.<br><br>
+      <strong>Responsibility:</strong> The RR must not accept new derivative orders from a client in margin deficit, regardless of how compelling the client's argument is ("I just need one more trade to recover"). The pre-trade margin check in the dealer's order management system is designed to catch this automatically.
+    </div>
+  </div>
+
+  <div class="prohib-card">
+    <div class="prohib-title">🚫 Prohibited Practice 2 — Trading Beyond Margin or Credit Limits</div>
+    <div class="prohib-body">
+      <strong>What it is:</strong> Entering derivative positions that would cause the account's total notional exposure, position size, or credit usage to exceed the limits established in the client's derivatives trading agreement — without prior approval to increase those limits.<br><br>
+      <strong>Why it's prohibited:</strong> Position and credit limits are set based on the client's assessed financial capacity, knowledge, and risk tolerance at account opening. They represent the maximum exposure the dealer has agreed to facilitate for this client. Exceeding them means the client is taking on more risk than has been assessed as appropriate — and the dealer is extending more credit exposure than has been approved.<br><br>
+      <strong>Common scenarios:</strong><br>
+      — Client's trading agreement allows maximum 50 contracts. They attempt to place an order for 75.<br>
+      — Client's notional options exposure limit is $500,000. They already have $480,000 open; they attempt to add $60,000 more.<br>
+      — Client's credit limit with the dealer is $200,000. Their current margin usage is $185,000; they attempt a new trade requiring $30,000 margin.<br><br>
+      <strong>Required action:</strong> Reject the order. The client must request a formal limit review if they believe their financial circumstances have changed and warrant a higher limit.
+    </div>
+  </div>
+
+  <div class="prohib-card">
+    <div class="prohib-title">🚫 Prohibited Practice 3 — Cumulative Losses Exceeding Risk Limits</div>
+    <div class="prohib-body">
+      <strong>What it is:</strong> When the client's cumulative losses from derivative trading reach a predefined dollar threshold or percentage of account value specified in the derivatives trading agreement — any further derivative trading is prohibited until the situation is reviewed and the client provides fresh authorization.<br><br>
+      <strong>Why it's prohibited:</strong> Clients who have already suffered significant derivative losses are at the highest risk of "chasing losses" — making increasingly large, reckless bets in an attempt to recover previous losses. This pattern (known as "gambler's ruin") almost always accelerates losses. The cumulative loss limit is a structural protection that forces a pause and reassessment before the situation becomes catastrophic.<br><br>
+      <strong>The psychology it prevents:</strong> After losing $40,000, a client says: "Just one more trade — I'll double my position size to make it all back in one shot." This is exactly what the loss limit is designed to prevent. The forced stop prevents a temporary setback from becoming a financial disaster.<br><br>
+      <strong>Required action:</strong> Once losses hit the threshold: (1) close all open derivative positions as required by the agreement; (2) suspend new derivative trading; (3) contact the client to review; (4) require fresh authorization and potentially a new risk assessment before any new derivative trading can begin. The loss limit is not automatically reset — it requires deliberate review.
+    </div>
+  </div>
+
+  <div class="callout red">
+    <div class="ci">🚨</div>
+    <div class="cb"><div class="cl">Supervision Responsibility</div>
+    <p>The <strong>registered representative AND the branch manager/compliance officer</strong> bear joint responsibility for preventing these prohibited practices. Automated pre-trade controls in the dealer's order management system are designed to catch margin and limit breaches before orders reach the market. However, human oversight is still essential — particularly for complex multi-leg strategies where the automated systems may not capture all dimensions of exposure. If an RR accepts a prohibited trade, both the RR and the firm face regulatory liability.</p></div>
+  </div>
+</div>
+
+<!-- MASTER SUMMARY -->
+<div id="summary">
+  <div class="sumbox" style="margin-top:60px;">
+    <div class="sum-title">Element 8 — Master Summary</div>
+    <div class="sum-sub">16 exam-critical points across both parts</div>
+    <div class="si"><span class="sin">01</span><div><strong>Four option positions:</strong> Buy call (strongly bullish, max loss = premium, profit = unlimited). Buy put (bearish or insurance, max loss = premium, max profit = strike − premium). Write call (neutral/bullish, max profit = premium, naked = unlimited loss risk). Write put (neutral/bullish, max profit = premium, max loss = strike − premium).</div></div>
+    <div class="si"><span class="sin">02</span><div><strong>Option breakevens:</strong> Long call = strike + premium. Long put = strike − premium. The stock must cross these levels at expiry for the trade to profit.</div></div>
+    <div class="si"><span class="sin">03</span><div><strong>American vs European:</strong> American = exercise any time on or before expiry (most equity options). European = exercise ONLY on expiry date (most index options). European options are commonly cash-settled.</div></div>
+    <div class="si"><span class="sin">04</span><div><strong>Futures vs Forwards:</strong> Futures = standardized, exchange-traded, centrally cleared (no counterparty risk), daily MTM settlement. Forwards = customized, OTC, bilateral counterparty risk, single settlement at maturity. Both create obligations for both parties.</div></div>
+    <div class="si"><span class="sin">05</span><div><strong>Swaps:</strong> Interest rate swap = pay fixed, receive floating (converts floating debt to fixed). Currency swap = exchange payments in different currencies. CDS = credit insurance (AIG 2008). TRS = exchange total asset return for fixed/floating (Archegos 2021).</div></div>
+    <div class="si"><span class="sin">06</span><div><strong>Three uses:</strong> Hedging = reduce existing risk (pay a cost for certainty). Speculation = leveraged directional bet (amplified risk/reward). Arbitrage = exploit price discrepancies for risk-free profit (enforces pricing relationships).</div></div>
+    <div class="si"><span class="sin">07</span><div><strong>Option premium = Intrinsic Value + Time Value.</strong> Intrinsic = value if exercised now (stock − strike for calls; strike − stock for puts). Time value = remaining probability of further favourable movement. Time value decays to zero at expiry (theta). ATM options have maximum time value.</div></div>
+    <div class="si"><span class="sin">08</span><div><strong>Four premium factors:</strong> Rising underlying price (call ↑, put ↓). Longer time to expiry (both ↑). Higher implied volatility (both ↑). Strike price (higher strike = call cheaper, put more expensive). Volatility and time affect both the same way; price direction affects them oppositely.</div></div>
+    <div class="si"><span class="sin">09</span><div><strong>Five Greeks:</strong> Delta = price sensitivity to underlying ($1 move). Gamma = rate of change of delta. Theta = daily time decay (negative for buyers, positive for sellers). Vega = sensitivity to implied volatility (positive for all long options). Rho = sensitivity to interest rates (least important for short-dated).</div></div>
+    <div class="si"><span class="sin">10</span><div><strong>Listed vs OTC:</strong> Listed = standardized, exchange-traded, central clearing (CDCC eliminates counterparty risk), transparent prices, daily MTM margin. OTC = fully customizable, bilateral, counterparty risk managed via ISDA/CSA, less transparent, used by institutions. ISDA Master Agreement governs all OTC transactions between two parties.</div></div>
+    <div class="si"><span class="sin">11</span><div><strong>Key strategies by market view:</strong> Strongly bullish → Long call. Moderately bullish → Bull call spread. Neutral/income (own stock) → Covered call. Neutral/income (want to own) → Cash-secured put. Strongly bearish → Long put. Moderately bearish → Bear put spread. Range-bound → Short strangle. Big move, direction unknown → Long straddle or strangle.</div></div>
+    <div class="si"><span class="sin">12</span><div><strong>Straddle vs Strangle:</strong> Both profit from large moves in either direction. Straddle = same strike for call and put (ATM) — higher cost, smaller required move. Strangle = different strikes (OTM call + OTM put) — cheaper cost, larger required move.</div></div>
+    <div class="si"><span class="sin">13</span><div><strong>8 administrative documents:</strong> Derivatives Account Application, Derivatives Trading Agreement, Letter of Undertaking, Margin Agreement Form, Derivatives Risk Disclosure Statement, Managed/Discretionary Account Agreement (if applicable), Monthly Account Statements, Trade Confirmations. First four required BEFORE any derivative trading begins.</div></div>
+    <div class="si"><span class="sin">14</span><div><strong>3 prohibited practices:</strong> (1) Trading while under margin — must meet margin call before new positions. (2) Trading beyond margin/credit limits — must stay within contractually set limits. (3) Cumulative losses exceeding risk limits — forced stop, review, and fresh authorization required before resuming.</div></div>
+    <div class="si"><span class="sin">15</span><div><strong>Margin mechanics:</strong> Initial margin = deposit to open position (5–10% of notional for futures). Maintenance margin = minimum equity floor. If equity drops below maintenance: margin call to restore to INITIAL level. Dealer can liquidate without consent if not met. Daily MTM = losses/gains hit account in cash every business day.</div></div>
+    <div class="si"><span class="sin">16</span><div><strong>CFDs in Canada:</strong> Not widely available to retail investors through CIRO-registered dealers. High leverage (10–30:1). No ownership of underlying. Losses can exceed initial deposit. CSA has raised investor protection concerns about offshore CFD platforms targeting Canadians. Primarily institutional/sophisticated use only.</div></div>
+  </div>
+</div>
+</div><!-- /content -->
+
+<!-- QUIZ -->
+<div id="quiz" class="quizwrap">
+  <div class="quiz-h1">Element 8 — Practice Questions</div>
+  <div class="quiz-sub">45 scenario-based questions · All options similar length · Covers both Part 1 and Part 2</div>
+  <div class="quiz-stats">
+    <div><div class="qsn">15</div><div class="qsl">Easy</div></div>
+    <div><div class="qsn">20</div><div class="qsl">Medium</div></div>
+    <div><div class="qsn">10</div><div class="qsl">Hard</div></div>
+    <div><div class="qsn" id="sLbl">0/45</div><div class="qsl">Your Score</div></div>
+  </div>
+  <div id="qC"></div>
+  <div class="quiz-ctrl">
+    <div class="scoredisp" id="fS"></div>
+    <button class="btn btnp" onclick="resetQ()">🔄 Reset All</button>
+    <button class="btn btns" onclick="revealAll()">👁 Reveal All</button>
+  </div>
+</div>
+</div><!-- /main -->
+
+<button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const Qs=[
+{id:1,d:'e',q:"An investor buys a call option on Shopify with a $100 strike price, paying a $4 premium per share. At expiry, Shopify is trading at $118. What is the investor's net profit per share?",o:["A. $18 per share, the difference between market price and strike price","B. $14 per share after subtracting the $4 premium from the $18 intrinsic value","C. $4 per share equal to the premium paid","D. $22 per share including the premium as part of the gain"],a:1,e:"At expiry: intrinsic value = $118 − $100 = $18. Less premium paid = $18 − $4 = <strong>$14 net profit per share</strong>. The breakeven was $100 + $4 = $104. Since $118 > $104 the trade is profitable. Total profit on 1 contract (100 shares) = $1,400 on a $400 investment."},
+{id:2,d:'e',q:"An investor expects Barrick Gold shares to decline significantly over the next 3 months but does not want to short-sell the shares. Which derivative strategy offers bearish exposure with limited downside risk?",o:["A. Writing a covered call on Barrick Gold shares","B. Buying a put option on Barrick Gold with a strike near the current price","C. Entering a long futures position on Barrick Gold","D. Writing a cash-secured put to generate income from the expected decline"],a:1,e:"Buying a put option is the correct bearish strategy with defined risk. <strong>Max loss = premium paid</strong> — unlike short-selling which has unlimited loss risk if the price rises, or long futures which have no defined downside floor. Writing a covered call requires owning shares. Writing a cash-secured put is neutral to mildly bullish (you want to own the stock if it falls)."},
+{id:3,d:'e',q:"What is the maximum possible loss for an investor who buys a call option?",o:["A. Unlimited, because there is no cap on how far a stock can fall against the position","B. The full market value of the underlying shares controlled by the contract","C. The premium paid for the call option — nothing more regardless of what happens","D. The difference between the strike price and the current stock price"],a:2,e:"<strong>Maximum loss for any long option (call or put) = the premium paid.</strong> If the underlying price moves against the buyer, they simply let the option expire worthless and lose only the premium. They are never obligated to do anything beyond what they've already paid. This defined maximum loss is one of the most important advantages of buying options compared to futures or leveraged stock positions."},
+{id:4,d:'e',q:"An investor believes Telus will trade flat for the next two months. She owns 200 Telus shares at $24 and writes 2 call contracts with a $26 strike, collecting $0.60 per share. If Telus stays at $24 at expiry, what happens?",o:["A. She loses $0.60 per share since the premium she collected must be returned","B. The calls expire worthless and she keeps the $120 premium as pure income, with her shares unchanged","C. She is forced to sell her shares at $24 since the options were exercised","D. She receives additional Telus shares as compensation for writing the calls"],a:1,e:"With Telus at $24 and the strike at $26, the calls are <strong>out-of-the-money</strong> at expiry — no rational buyer would exercise the right to buy at $26 when they can buy in the market at $24. The calls expire worthless. She keeps her 200 shares AND the $120 premium ($0.60 × 200 shares). This is the ideal covered call outcome: flat market, premium collected as income, no shares called away."},
+{id:5,d:'e',q:"What is the key difference between a futures contract and a forward contract?",o:["A. Futures are used only for commodities; forwards are used only for currencies and interest rates","B. Futures are standardized and exchange-traded with central clearing; forwards are customized OTC agreements with bilateral counterparty risk","C. Futures require no margin; forward contracts always require full prepayment","D. Futures allow the buyer to walk away; forwards obligate only the seller to complete the deal"],a:1,e:"The two defining differences: (1) <strong>Standardization</strong> — futures have fixed terms set by the exchange; forwards are fully customizable OTC. (2) <strong>Counterparty risk</strong> — futures are centrally cleared (the clearing house is the counterparty to every trade, eliminating default risk); forwards are bilateral (if your counterparty defaults, you may lose)."},
+{id:6,d:'e',q:"A Canadian wheat farmer will harvest 50,000 bushels in September. It is now June and wheat is at $8.00/bushel. Fearing a price drop, the farmer sells September wheat futures at $8.05/bushel. By September, wheat has fallen to $6.50. What did the futures hedge accomplish?",o:["A. The farmer must now sell at $6.50 since futures prices follow the market at delivery","B. The farmer locked in $8.05/bushel — the futures gained $1.55/bushel offsetting the spot price decline","C. The farmer lost $1.55/bushel on the futures while also losing on the physical wheat","D. The futures automatically converted the physical wheat sale to $8.05 without requiring any delivery"],a:1,e:"Short futures (sell futures) gain value when the price falls. The farmer's physical wheat sells at $6.50 spot. But the short futures position gained: ($8.05 − $6.50) = $1.55/bushel × 50,000 = $77,500. Combined with spot sale proceeds, the effective price = $6.50 + $1.55 = <strong>$8.05/bushel</strong>. The hedge worked perfectly — the farmer captured the locked-in price regardless of the market decline."},
+{id:7,d:'e',q:"An option's premium is $7.50 when the stock is trading at $113 and the strike price is $110. What are the intrinsic value and time value components?",o:["A. Intrinsic value $7.50; time value $0 since the option is deep in-the-money","B. Intrinsic value $3.00; time value $4.50 since the call is in-the-money by $3","C. Intrinsic value $4.50; time value $3.00 since the premium exceeds intrinsic by $3","D. Intrinsic value $0; time value $7.50 since only out-of-the-money options have time value"],a:1,e:"This is a call option (stock $113 > strike $110). Intrinsic value = $113 − $110 = <strong>$3.00</strong>. Time value = total premium − intrinsic = $7.50 − $3.00 = <strong>$4.50</strong>. The call is in-the-money by $3. The extra $4.50 above intrinsic reflects the possibility that the stock moves even higher before expiry — this is the time value the buyer pays for future potential."},
+{id:8,d:'e',q:"Which Greek measures how much an option's price changes for a $1 move in the underlying asset?",o:["A. Theta, which measures the daily erosion of option value","B. Vega, which measures sensitivity to changes in implied volatility","C. Delta, which measures the option price change for a $1 move in the underlying","D. Gamma, which measures the rate of change of the option's price sensitivity"],a:2,e:"<strong>Delta</strong> measures the option's price change for a $1 move in the underlying. An ATM call with delta 0.50 gains approximately $0.50 in value for every $1 rise in the stock. Deep ITM options have delta approaching 1.0 (move almost dollar-for-dollar with the stock). Deep OTM options have delta near 0 (barely move with the stock)."},
+{id:9,d:'e',q:"Which document must a client sign BEFORE placing their first derivative trade that specifically discloses the risks unique to derivatives trading?",o:["A. The New Account Application Form (NAAF) which covers all investment product risks","B. The Derivatives Risk Disclosure Statement which is mandatory before any options or futures trading","C. The Relationship Disclosure Information (RDI) which covers all applicable conflicts and risks","D. The monthly account statement which confirms the client has reviewed their positions"],a:1,e:"The <strong>Derivatives Risk Disclosure Statement</strong> is a standalone mandatory document specifically addressing derivative risks: leverage, potential losses exceeding initial investment, margin calls, complexity, liquidity risk. The NAAF and RDI cover general investment risks but not derivative-specific ones. Monthly statements are ongoing reporting — not a pre-trading requirement."},
+{id:10,d:'e',q:"A portfolio manager owns $8M in Canadian equities and buys put options on the S&P/TSX 60 index as protection before a period of market uncertainty. What use of derivatives does this represent?",o:["A. Speculation — betting that the Canadian equity market will decline sharply","B. Arbitrage — exploiting pricing differences between equity and options markets","C. Hedging — using derivatives to reduce downside risk on an existing portfolio","D. Income generation — collecting put premiums to enhance portfolio yield"],a:2,e:"Buying protective puts on an existing portfolio is a classic <strong>hedging</strong> strategy. The manager is NOT trying to profit from derivatives — they're trying to offset potential losses on their $8M equity portfolio if the market declines. The cost of the puts is the price paid for certainty (insurance). Speculation would mean having no underlying equity portfolio and buying puts purely for directional profit."},
+{id:11,d:'e',q:"What is the primary benefit of using a long straddle strategy?",o:["A. It profits from time decay since both options lose value slowly","B. It profits when the stock moves significantly in either direction — up or down — beyond the combined premium paid","C. It generates income from writing both a call and a put at the same strike","D. It provides unlimited upside while the put provides downside protection at no net cost"],a:1,e:"A long straddle (buy call + buy put, same strike, same expiry) profits when the underlying moves <strong>significantly in either direction</strong>. The total premium paid is the cost — the stock must move more than that total to be profitable. Real use case: buying a straddle before a major earnings announcement or Bank of Canada decision when you expect a large move but don't know which way."},
+{id:12,d:'e',q:"What is 'theta' in options pricing, and what does it mean for someone who bought a call option two months ago?",o:["A. Theta measures delta changes; the call holder benefits as theta increases near expiry","B. Theta measures time decay — the call option loses value every day simply due to the passage of time, hurting the call buyer","C. Theta measures volatility changes; the buyer benefits when theta rises","D. Theta measures interest rate sensitivity; higher rates help call buyers through positive theta"],a:1,e:"<strong>Theta = time decay</strong>. Every day that passes, an option loses some of its time value even if the underlying price doesn't move. For option buyers, theta is negative — they fight against time. The longer a call buyer holds an option without a favourable price move, the more time value erodes. This accelerates near expiry. For option writers (sellers), theta is positive — they collect time decay as income every day the option moves closer to expiry."},
+{id:13,d:'e',q:"An investor expects a Canadian bank stock to remain flat over the next month but wants to generate extra income from his existing holdings of 100 shares. Which single-leg strategy is most appropriate?",o:["A. Buy a put option on the bank stock to generate premium income from a neutral view","B. Write a covered call option on his 100 shares to collect the premium as additional income","C. Enter a long futures contract to lock in the current price and generate a guaranteed return","D. Buy a call option to profit if the stock happens to rise despite his neutral view"],a:1,e:"The <strong>covered call</strong> is exactly right for this scenario: (1) he already owns the 100 shares (covered), (2) he expects flat price action, (3) he wants income. By writing a call against his shares, he collects the premium upfront. If the stock stays flat (his expectation), the call expires worthless and he keeps the premium. Risk: if the stock rallies above the strike, his shares get called away — but he still made a profit."},
+{id:14,d:'e',q:"Which of the following is a prohibited derivative trading practice under CIRO's IDPC Rules?",o:["A. Writing covered calls on a stock already held in the same account","B. Trading beyond the position limits or credit limits established in the derivatives trading agreement","C. Using both options and futures in the same account simultaneously","D. Holding open derivative positions overnight in a margin account"],a:1,e:"<strong>Trading beyond margin or credit limits</strong> is explicitly prohibited. Position limits and credit limits are established in the derivatives trading agreement based on the client's assessed financial capacity and risk tolerance. Exceeding them without prior approval violates the agreement and exposes both the client and the dealer to inappropriate risk. The other options are all normal, permitted derivative activities."},
+{id:15,d:'e',q:"What is the primary difference between an American-style and a European-style option?",o:["A. American options are always more expensive than European options due to their geographic availability","B. American options can be exercised at any time before or on the expiry date; European options can only be exercised on the expiry date itself","C. American options apply to equities; European options apply only to currency and index products","D. American options settle in cash while European options require physical delivery of the underlying asset"],a:1,e:"<strong>American-style</strong> = can be exercised at any time on or before expiry (most equity options). <strong>European-style</strong> = can only be exercised on the expiry date itself (most index options). European index options are commonly cash-settled (you receive the cash difference rather than delivery of all 60 index stocks). The American option is worth slightly more due to the early exercise flexibility."},
+{id:16,d:'m',q:"A long straddle is purchased with a $90 call at $4 and a $90 put at $4 on the same stock, same expiry. The stock is at $90. What are the upside and downside breakeven prices, and what is the maximum loss?",o:["A. Upside $98, downside $82; max loss = $8 total premium paid","B. Upside $94, downside $86; max loss = $4 per option","C. Upside $90, downside $82; max loss = $4 since only one side can lose","D. Upside $98, downside $82; max loss = $16 since both premiums compound the loss"],a:0,e:"Total premium paid = $4 + $4 = $8. <strong>Upside breakeven</strong> = $90 + $8 = <strong>$98</strong>. <strong>Downside breakeven</strong> = $90 − $8 = <strong>$82</strong>. <strong>Maximum loss</strong> = $8 total premium (if stock is exactly at $90 at expiry — both options expire worthless). The straddle profits if stock moves more than $8 in either direction. If stock goes to $102: call worth $12, profit = $12 − $8 = $4. If stock goes to $79: put worth $11, profit = $11 − $8 = $3."},
+{id:17,d:'m',q:"A futures trader is long 4 crude oil contracts (1,000 barrels each) at $82/barrel. The next day, oil closes at $79. How much is immediately debited from his account, and what does this illustrate?",o:["A. $12,000 debited immediately, illustrating the daily mark-to-market settlement of futures contracts","B. $3,000 debited, illustrating that only one contract settles daily","C. Nothing debited until the contract expires, illustrating that futures settle at maturity like bonds","D. $12,000 debited but only if the maintenance margin is breached, otherwise deferred"],a:0,e:"Daily MTM loss: ($82 − $79) = $3/barrel × 1,000 barrels/contract × 4 contracts = <strong>$12,000 immediately debited</strong> from the margin account tonight. This illustrates <strong>daily mark-to-market settlement</strong> — futures gains and losses hit your cash account every single business day. There is no option to hold an underwater position without paying cash losses. If this drops the account below the maintenance margin threshold, a margin call is issued the same day."},
+{id:18,d:'m',q:"An investor believes Shopify (SHOP) will rise moderately from $120 to around $135 over the next 3 months, but not beyond. She buys a $120 call at $8 and simultaneously sells a $135 call at $3. What is the maximum profit, maximum loss, and breakeven?",o:["A. Max profit $10, max loss $5, breakeven $125","B. Max profit $4, max loss $11, breakeven $125","C. Max profit $10, max loss $5, breakeven $125 — same as answer A","D. Max profit $15, max loss $5, breakeven $125 — spread width equals maximum profit"],a:0,e:"Net premium paid = $8 − $3 = $5. <strong>Breakeven</strong> = $120 + $5 = $125. <strong>Max profit</strong> = ($135 − $120) − $5 = <strong>$10/share</strong> (if SHOP at or above $135 at expiry). <strong>Max loss</strong> = net premium paid = $5 (if SHOP stays below $120). This bull call spread costs $5 vs $8 for the outright call — cheaper because the sold $135 call caps the upside but also reduces cost. Perfect for a moderate bullish view."},
+{id:19,d:'m',q:"An interest rate swap is described as 'pay fixed 5.25%, receive floating (prime + 1.00%)'. Prime is currently 4.50%. In this quarter, the net payment is a cash outflow. Who is the net payer and what does this imply about prime vs the fixed rate?",o:["A. The fixed payer is the net payer when prime + 1% exceeds 5.25% — implying prime is above 4.25%","B. The fixed payer is the net payer when 5.25% exceeds prime + 1% — implying prime + 1% = 5.50% is below 5.25%","C. The floating rate receiver is always the net payer in interest rate swaps","D. The fixed payer pays net when prime rises to exactly match the fixed rate of 5.25%"],a:1,e:"Pay fixed 5.25%; receive floating = prime + 1% = 4.50% + 1% = 5.50%. This quarter: receive 5.50%, pay 5.25%. Net = receive 0.25% — the <strong>fixed payer actually RECEIVES net this quarter</strong>. The question says cash outflow — so re-read: the party receiving fixed (paying floating) would pay net if prime + 1% = 5.50% > 5.25% fixed. The <strong>floating payer</strong> is the net payer here. If prime falls below 4.25%, then floating (prime + 1%) falls below 5.25% fixed, and the fixed payer becomes the net payer."},
+{id:20,d:'m',q:"A client writes 5 naked call contracts on a junior mining stock (100 shares each) with a $3 strike, collecting $0.25 premium. The company announces a massive gold discovery and the stock surges to $11. What is the writer's approximate total loss?",o:["A. Loss of $125 since that is the maximum risk when writing covered calls","B. Loss of $3,875 — ($11 − $3 − $0.25) × 500 shares","C. Loss of $125 since the premium collected is the maximum gain regardless of price movement","D. Loss of $4,000 — ($11 − $3) × 500 shares before accounting for any premium received"],a:1,e:"Naked call writer must deliver 500 shares at $3 (the strike) when the buyer exercises. Writer must buy in the market at $11 to deliver. Loss per share = $11 − $3 = $8. Less premium received = $8 − $0.25 = $7.75 net loss/share. Total: $7.75 × 500 = <strong>$3,875 total loss</strong>. The $125 in premium collected (0.25 × 500) is utterly dwarfed by the $4,000 gross loss from the obligation. This perfectly illustrates why naked call writing carries unlimited theoretical risk."},
+{id:21,d:'m',q:"A Canadian technology exporter will receive USD 3,000,000 in 90 days. The current USD/CAD spot rate is 1.38. The company enters an FX forward to sell USD 3M at 1.375 (the bank's forward rate). In 90 days, the spot rate is 1.42. What was the financial impact of the forward?",o:["A. The forward cost $150,000 — the company would have received 3M × 1.42 = $4.26M but only got 3M × 1.375 = $4.125M","B. The forward saved $135,000 — without it the company would have received 3M × 1.38 = $4.14M","C. The forward is neutral — FX forwards always result in no gain or loss at settlement","D. The forward generated a $45,000 gain since 1.375 > 1.38 spot at the time of the contract"],a:0,e:"Without the forward: USD 3M × 1.42 = CAD $4,260,000. With the forward: USD 3M × 1.375 = CAD $4,125,000. The forward <strong>cost the company $135,000</strong> in opportunity ($4.26M − $4.125M). The CAD weakened (USD strengthened) — the opposite of what the company feared when they set up the hedge. However, they locked in $4.125M and could budget with certainty — which was the goal. If CAD had strengthened instead, the forward would have saved money. The forward eliminated uncertainty in both directions."},
+{id:22,d:'m',q:"An advisor's client has been issued a margin call after oil futures losses depleted their account. Before the margin call is met, the client asks the advisor to enter a new futures position. What must the advisor do?",o:["A. Accept the order since new positions might recover the loss and resolve the margin call faster","B. Refuse to accept any new derivative orders — trading while under margin is a prohibited practice under CIRO rules","C. Accept the order but report it to compliance after execution as a potential rule breach","D. Accept the order only if the new position is a hedge designed to reduce the client's overall exposure"],a:1,e:"<strong>Trading while under margin is a prohibited derivative practice.</strong> Once a margin call has been issued, ALL new derivative order entry must be blocked until the client restores the account to the initial margin level by depositing sufficient funds. The rationale: the client is already financially stressed from derivative losses — adding new positions increases risk exposure at exactly the worst time. The advisor must decline all new orders and direct the client to meet the margin call first."},
+{id:23,d:'m',q:"An investor owns 300 Suncor shares at $52. She buys 3 put contracts (100 shares each) with a $50 strike at $2 premium per share. Suncor subsequently falls to $42. What is her effective realized price per share on the combined position?",o:["A. $42 — the market price is where she ultimately sells regardless of the put","B. $48 — the put floor of $50 minus the $2 premium = $48 effective price","C. $50 — she exercises the put and sells at $50 regardless of the $2 premium cost","D. $52 — the put fully compensates her back to the original purchase price"],a:1,e:"The put with $50 strike: she exercises and sells 300 shares at $50. Proceeds = $50/share. Less premium paid = $50 − $2 = <strong>$48 effective price</strong>. Compare: without the put, she'd sell at $42 — a $10 loss from $52 cost. With the put: effective price $48, loss limited to $52 − $48 = $4/share instead of $10. The put cost $2 but saved $8 ($10 loss → $4 effective loss). This is how protective puts create a floor on a position."},
+{id:24,d:'m',q:"A trader uses a bull call spread: buys a $50 call at $6 and sells a $65 call at $2. Net premium paid = $4. The stock is at $70 at expiry. What is the profit per share?",o:["A. $20 per share — from $50 strike to $70 market, the long call profits fully","B. $11 per share — the spread width ($65−$50=$15) minus net premium ($4)","C. $20 per share minus the $6 premium = $14 net profit per share","D. $4 per share — equal to the net premium since the spread has capped upside"],a:1,e:"Bull call spread max profit is reached when the stock is at or above the HIGHER strike. Max profit = higher strike − lower strike − net premium = $65 − $50 − $4 = <strong>$11/share</strong>. Even though the stock is at $70 (above $65), the sold $65 call caps the gain. Long $50 call payoff: $70 − $50 = $20. Short $65 call payoff: −($70 − $65) = −$5. Net option payoff: $20 − $5 = $15. Less net premium: $15 − $4 = $11."},
+{id:25,d:'m',q:"Why does an increase in implied volatility cause BOTH call and put option premiums to rise simultaneously?",o:["A. Higher volatility means higher interest rates, which directly increases both call and put values","B. Higher volatility increases the probability of large price movements in either direction, making any given option more likely to end up significantly in-the-money at expiry","C. Higher volatility reduces the time decay on both options, effectively increasing their remaining value","D. Higher volatility is always preceded by rising stock prices, which mechanically increases both option values"],a:1,e:"Vega (volatility sensitivity) is positive for ALL long options — both calls and puts. Higher implied volatility means the market expects larger price swings — making it more likely that the stock will make a large move in <em>either</em> direction. For a call: bigger upside moves are more likely (good). For a put: bigger downside moves are more likely (also good). Since both benefit from larger moves, both become more valuable when volatility rises. This is why options buying is often called 'buying volatility.'"},
+{id:26,d:'m',q:"A client's derivatives trading agreement specifies a maximum notional options exposure of $400,000. She currently has $375,000 in open positions and wants to add a new options position worth $50,000 notional. What must happen before this order can be accepted?",o:["A. Accept the order since the overage ($25,000) is minor and within reasonable tolerance","B. Reject the order — trading beyond credit limits is prohibited; the client must request a formal limit increase or reduce existing positions first","C. Accept the order but immediately hedge the excess $25,000 to bring net exposure within limits","D. Accept the order and file a report with CIRO since the breach is under 10% of the limit"],a:1,e:"<strong>Trading beyond credit limits is a prohibited derivative practice.</strong> The new order would bring total exposure to $425,000 — $25,000 above the $400,000 limit. The order must be rejected. The client has two options: (1) reduce existing positions to below $350,000 before adding the new $50,000 position, or (2) formally request a limit increase — which requires a review of their updated financial circumstances and risk tolerance. There is no tolerance range for breaching agreed limits."},
+{id:27,d:'m',q:"An advisor wants to recommend a derivative strategy that generates income for a client who holds 500 shares of a dividend-paying utility stock and expects the market to be flat over the next 60 days. Which strategy is most appropriate, and why?",o:["A. Buy 5 call contracts at-the-money — the calls will increase in value if the stock rises slightly","B. Write 5 covered call contracts slightly out-of-the-money — generates premium income while the client keeps the stock and any dividends if the market stays flat","C. Buy 5 put contracts at-the-money — protects against any unforeseen decline during the neutral period","D. Enter 5 short futures contracts — locks in the current price and generates a fixed return over 60 days"],a:1,e:"The covered call is perfect here: (1) client already owns 500 shares (the 'covered' part), (2) flat market expectation — neutral, (3) income objective — writing calls generates premium. By writing 5 OTM covered calls, she collects premium income. If the stock stays flat (her expectation), calls expire worthless, she keeps premium + stock + dividends. If stock rises above the strike, her shares may be called away — but she still profits at the capped level. Buying puts costs money rather than generating it."},
+{id:28,d:'m',q:"A speculator buys 1 call contract (100 shares) on BMO with a $128 strike for $3.50 premium. BMO is currently at $125. What does he need BMO to reach at expiry just to break even?",o:["A. $125 — the current market price when he entered the trade","B. $128 — the strike price where the call first gains intrinsic value","C. $131.50 — strike plus premium paid","D. $124.50 — current price minus the premium to account for cost"],a:2,e:"Long call breakeven = strike price + premium paid = $128 + $3.50 = <strong>$131.50</strong>. Below $128 the call has no intrinsic value. Between $128 and $131.50 the call has intrinsic value but not enough to offset the $3.50 premium cost. Above $131.50 every dollar gained is net profit. BMO needs to rise from $125 to $131.50 — a 5.2% move — just to break even. This shows why time to expiry and the size of the expected move matters when buying options."},
+{id:29,d:'m',q:"A mining company will sell 100,000 oz of gold in 6 months. Gold is currently $2,400/oz. The CFO uses short gold futures at $2,380/oz. In 6 months, gold is at $2,600. What was the net effective selling price after the hedge?",o:["A. $2,600/oz — the company benefits from the full spot price rise despite the futures","B. $2,180/oz — the company lost on both the physical and futures position","C. $2,380/oz — the short futures locked in this price; gains on physical offset by futures loss","D. $2,490/oz — an average of the futures price and the spot price at delivery"],a:2,e:"Physical gold sold at $2,600 spot: +$2,600. Short futures at $2,380 vs close at $2,600: futures loss = −$2,600 + $2,380 = −$220. Net effective price = $2,600 − $220 = <strong>$2,380/oz</strong> — exactly the hedged price. The short futures locked in $2,380 regardless of where gold actually traded. The company gave up the $200 upside (from $2,380 to $2,600) in exchange for planning certainty. This is the classic short futures commodity hedge — used by miners, farmers, and oil producers worldwide."},
+{id:30,d:'m',q:"A client holds a derivatives account with $25,000 margin on deposit. His open futures positions have suffered $14,000 in cumulative losses from daily MTM settlement, leaving $11,000 in the account. The maintenance margin requirement is $12,000. What must happen now?",o:["A. Nothing immediately — the client has until expiry to restore the margin balance","B. A margin call is issued; the client must immediately restore the account to the initial margin level by depositing $14,000 or close positions","C. The dealer automatically extends additional credit to maintain the $12,000 minimum","D. The account is converted to a cash account to prevent further futures losses"],a:1,e:"Account balance $11,000 < maintenance margin $12,000. <strong>A margin call is issued immediately.</strong> The client must restore the account to the <em>initial</em> margin level of $25,000 — not just back to $12,000 maintenance. Required deposit = $25,000 − $11,000 = $14,000. If the client cannot or will not deposit within the required timeframe (typically 24–48 hours), the dealer has the right to liquidate sufficient open positions to restore required equity — without needing the client's consent for those liquidation trades."},
+{id:31,d:'m',q:"Why does writing a naked call carry unlimited loss risk while writing a covered call has a much more limited downside?",o:["A. Naked calls have unlimited risk because the premium collected is higher, amplifying potential losses","B. Covered calls are risky only up to the premium received; naked calls can lose any amount","C. Naked call writers must buy shares in the market at whatever price they have risen to in order to deliver at the strike, with no upper limit on how high the stock can go; covered call writers already own shares and deliver at cost","D. Naked calls are exercised more frequently than covered calls because buyers prefer them"],a:2,e:"When a call is exercised, the writer must DELIVER the shares at the strike price. <strong>Covered call writer</strong>: already owns the shares — delivers at their cost basis, maximum loss limited to that cost basis minus premium. <strong>Naked call writer</strong>: must buy shares in the market at whatever the current price is (which could be $200, $500, any amount) to deliver at the low strike price. Since stocks can theoretically rise to infinity, the naked call writer's potential loss is theoretically unlimited. This is why naked call writing requires the highest options approval level."},
+{id:32,d:'m',q:"A client's derivatives losses have reached $48,000, crossing the $45,000 cumulative loss limit specified in their derivatives trading agreement. The client insists they just need 'one more trade' to recover. What is the correct response?",o:["A. Allow the one additional trade since the overage is small and the client seems knowledgeable","B. Allow the trade if it's specifically designed to reduce risk rather than speculate","C. Refuse all new derivative trading — cumulative losses exceeding risk limits is a prohibited practice; the account must be reviewed and fresh authorization obtained before any new derivative positions","D. Report the situation to CIRO before taking any account action and await regulatory guidance"],a:2,e:"<strong>Cumulative losses exceeding the agreed risk limit is a prohibited derivative practice.</strong> All new derivative trading must stop immediately. The reason this prohibition exists is precisely because of the 'one more trade' psychology — clients who have suffered large losses are most likely to make increasingly reckless bets to recover, which typically accelerates losses. The account must be reviewed with the client, any required position closures completed, and fresh authorization (with possibly a revised risk assessment) obtained before any new derivative trading can begin."},
+{id:33,d:'m',q:"Before a client can trade options, the advisor must ensure several documents are on file. Which combination represents the complete pre-trading requirement?",o:["A. New Account Application Form and Derivatives Risk Disclosure Statement only","B. Derivatives Account Application, Derivatives Trading Agreement, Derivatives Risk Disclosure Statement, and Margin Agreement Form","C. Derivatives Risk Disclosure Statement and Letter of Undertaking only","D. Trade confirmation template and monthly statement agreement are sufficient pre-trade documents"],a:1,e:"The four documents required BEFORE any derivative trading: (1) <strong>Derivatives Account Application</strong> — KYC specific to derivatives. (2) <strong>Derivatives Trading Agreement</strong> — the contract governing the relationship. (3) <strong>Derivatives Risk Disclosure Statement</strong> — mandatory risk acknowledgment. (4) <strong>Margin Agreement Form</strong> — establishes margin terms. Monthly statements and trade confirmations are ongoing requirements after trading begins, not pre-trading prerequisites. The Letter of Undertaking is also required for margin accounts."},
+{id:34,d:'m',q:"What is the key reason a short strangle has unlimited theoretical loss potential on one side?",o:["A. The sold put has unlimited loss since the stock can fall to zero, far below the put strike","B. The sold call has unlimited loss potential since a stock's price can rise indefinitely — there is no cap on how high it can go","C. Both legs of the strangle have unlimited risk since options are leveraged instruments","D. Short strangles have unlimited risk only when both legs are deep in-the-money at expiry"],a:1,e:"A short strangle sells an OTM call + sells an OTM put. The <strong>sold call has unlimited loss potential</strong> — if the stock price rises dramatically above the call strike, the writer must buy at market price to fulfill the call obligation. Since stocks can theoretically rise without limit, the call side's loss is unlimited. The sold put's loss is large but limited — the stock can only fall to zero, so max loss on the put side = strike − premium. The strangle's total risk profile: limited on the downside, unlimited on the upside."},
+{id:35,d:'m',q:"A corporation with floating-rate debt enters a 'pay fixed, receive floating' interest rate swap. Six months later, the central bank raises interest rates by 1.5%. Who benefits from this rate increase, and why?",o:["A. The corporation benefits because the higher fixed rate they pay is now worth more in the market","B. The corporation benefits because the floating rate they receive on the swap also rises by 1.5%, increasing their net receipt from the swap counterparty","C. The swap counterparty (paying floating) benefits since they owe less because the swap resets at lower rates","D. Neither party benefits — interest rate swaps are zero-sum instruments where gains exactly cancel losses"],a:1,e:"Pay fixed, receive floating: the corporation pays a fixed rate (say 5%) and receives the floating rate (which just rose 1.5%). Post-rate rise, the floating receipt increases. For example: before: pay 5%, receive 4.5% = net pay 0.5%. After: pay 5%, receive 6.0% = net RECEIVE 1.0%. The corporation now receives a net payment rather than making one. <strong>Rising rates benefit the fixed payer (corporation)</strong> in an interest rate swap. This is consistent with the corporation's goal: they entered the swap to achieve certainty — but when rates rise, the swap delivers an additional benefit."},
+{id:36,d:'h',q:"A portfolio manager holds $15M in 10-year Government of Canada bonds with an average modified duration of 8.2 years. She wants to temporarily reduce portfolio duration to 5.0 years using GoC bond futures. Each futures contract has a duration of 6.8 years and a notional value of $100,000. How many contracts must she sell (short)?",o:["A. Sell approximately 47 contracts","B. Sell approximately 70 contracts","C. Sell approximately 117 contracts","D. Sell approximately 180 contracts"],a:1,e:"Duration hedge formula: N = [Portfolio Value × (Target Duration − Current Duration)] / [Futures Contract Value × Futures Duration]. N = [$15,000,000 × (5.0 − 8.2)] / [$100,000 × 6.8]. N = [$15,000,000 × (−3.2)] / [$680,000]. N = −$48,000,000 / $680,000 = <strong>−70.6 ≈ 70 contracts to sell (short)</strong>. Selling futures reduces portfolio duration from 8.2 to 5.0. A 1% rise in yields would now cause ~5% price decline on the portfolio rather than ~8.2%."},
+{id:37,d:'h',q:"An investor buys 10 call contracts (delta 0.42) on a stock and wants to create a delta-neutral position by shorting the underlying. How many shares must be shorted, and what does delta-neutral mean for this investor's P&L?",o:["A. Short 420 shares; delta-neutral means the position has no sensitivity to small moves in the underlying price","B. Short 42 shares; delta-neutral means the position cannot lose money in any market scenario","C. Short 4,200 shares; delta-neutral requires selling 10× the delta value","D. Short 420 shares; delta-neutral means total immunity to volatility changes"],a:0,e:"Options delta: 10 contracts × 100 shares/contract × 0.42 = 420 shares equivalent of long exposure. To neutralize: <strong>short 420 shares</strong>. Delta-neutral means the position's value doesn't change for <em>small</em> price moves in the underlying — the long call gains and the short stock loses by equal amounts (or vice versa) for small moves. Why do this? To isolate <strong>vega exposure</strong> (profit from volatility changes) or <strong>theta income</strong> (from writing options delta-hedged) without directional risk. Delta-neutral is not risk-free — it still has gamma, vega, and theta exposure."},
+{id:38,d:'h',q:"A client writes 10 naked puts on a $60 stock with $55 strike, collecting $2.20 premium per share. The company later announces an accounting fraud and the stock collapses to $8. What is the writer's total loss?",o:["A. $2,200 — limited to the premium received on the 10 contracts","B. $44,800 — ($55 − $8 − $2.20) × 1,000 shares","C. $55,000 — the full strike obligation regardless of premium received","D. $47,000 — ($55 − $8) × 1,000 shares without adjusting for premium"],a:1,e:"The naked put writer must buy 1,000 shares (10 × 100) at $55 strike when the buyer exercises. The shares are worth $8. Gross loss = ($55 − $8) × 1,000 = $47,000. Less premium received: $2.20 × 1,000 = $2,200. Net loss = $47,000 − $2,200 = <strong>$44,800</strong>. The $2,200 premium is a tiny fraction of the catastrophic loss. This illustrates why naked put writing on individual stocks carries substantial risk — a $60 stock with a $55 strike collected $2.20 in premium to take on $52.80/share of potential loss."},
+{id:39,d:'h',q:"An options trader sells a straddle: writes a $100 call for $6 and a $100 put for $5. Total premium received = $11. At expiry, the stock is at $87. What is the net profit or loss on the short straddle?",o:["A. Profit of $11 since both options expire out-of-the-money for the writer","B. Loss of $2 — the put is exercised against the writer; loss = ($100 − $87) − $11 = $2","C. Loss of $13 — the put is worth $13, total premium was $11, net loss = $2 (the calculation in B is correct, not $13)","D. Profit of $2 — ($100 − $87) = $13 put value minus $11 premium, net short straddle gain = $2"],a:1,e:"At $87, the stock is below the strike. The <strong>put is exercised against the writer</strong>. The call expires worthless (OTM). Put loss to writer = $100 − $87 = $13. Less total premium collected = $13 − $11 = <strong>net loss of $2/share</strong>. The writer needed the stock to stay within the profit zone: between $89 ($100 − $11) and $111 ($100 + $11). At $87, they're just outside the profit zone. Total loss on 1 contract = $200."},
+{id:40,d:'h',q:"Put-call parity states: C − P = S − PV(K). A stock trades at $95. The 3-month $95 strike call is priced at $6. Risk-free rate = 4% (annual). What should the 3-month $95 put be worth? If it's priced at $8, describe the arbitrage.",o:["A. Put should be worth $1.95; at $8 it is overpriced — sell the put, buy the call, short the stock, invest PV(K)","B. Put should be worth $5.05; at $8 it is overpriced — sell the put, buy the call, short the stock, invest PV(K) to collect the $2.95 spread risk-free","C. Put should be worth $5.05; at $8 buy the put and call together for a cheap straddle","D. Put should be worth $6; equal to the call value since at-the-money options are always symmetrically priced"],a:1,e:"PV(K) = $95 / (1 + 0.04 × 0.25) = $95 / 1.01 ≈ $94.06. Put-call parity: P = C − S + PV(K) = $6 − $95 + $94.06 = <strong>$5.06 ≈ $5.05</strong>. Put is priced at $8 — overpriced by ~$2.95. Arbitrage: <strong>Sell the $8 put + Buy the $6 call + Short $95 stock + Invest $94.06</strong>. Cash today: +$8 − $6 + $95 − $94.06 = +$2.94 inflow risk-free. At expiry: if S > $95, call exercised (buy at $95 to close short), put expires. If S < $95, put exercised against you (buy at $95 to close short), call expires. Either way, $94.06 invested grows to $95 covering the obligation. Risk-free $2.94/share locked in."},
+{id:41,d:'h',q:"A crude oil producer will sell 500,000 barrels in 3 months. Oil is at $85/barrel. They hedge by selling 500 futures contracts (1,000 barrels each) at $85/barrel. Initial margin = $5,500/contract. Oil rises sharply to $95 over 3 weeks. Describe the cash flow problem the producer faces despite being economically hedged.",o:["A. No cash flow problem — the short futures position is profitable since oil rose, covering all costs","B. The producer faces margin calls totalling approximately $5,000,000 in cash outflows during the 3 weeks, even though they will eventually recover this when they sell their physical oil at higher spot prices","C. The producer loses their physical oil inventory since rising prices trigger automatic delivery obligations","D. The producer must immediately close their futures position and re-enter at $95 — daily MTM prevents holding short futures in a rising market"],a:1,e:"This is the basis of the 'cash-carry' problem in commodity hedging. Short futures in a rising market: loss = ($95 − $85) × 500,000 barrels = $5,000,000 in cumulative <strong>daily MTM cash debits</strong> over 3 weeks. These are real cash payments from the margin account every day. Even though the producer will eventually sell physical oil at $95 (recovering the cash), they need $5M in cash <em>right now</em> for margin calls. Many commodity producers face this liquidity crunch — they are economically hedged but cash-flow squeezed. This is why some prefer OTC forwards (no daily MTM) over exchange-traded futures for hedging."},
+{id:42,d:'h',q:"A long strangle is purchased: buy $110 call at $3 and buy $90 put at $3 on a $100 stock. Total cost = $6. At expiry the stock is at $118. Calculate the profit, and compare to a long straddle (buy $100 call at $7, buy $100 put at $6, total cost $13) at the same expiry price of $118.",o:["A. Strangle profit $2 ($118−$110−$6); straddle profit $5 ($118−$100−$13) — straddle wins","B. Strangle profit $2; straddle profit $5 — straddle is more profitable at $118 despite higher cost","C. Strangle profit $8 ($118−$110); straddle profit $18 ($118−$100) — straddle dominates at all prices","D. Strangle profit $2; straddle profit $5 — same conclusion as A, confirming the straddle's advantage for moderate moves"],a:0,e:"<strong>Long Strangle at $118:</strong> Call ($110 strike) worth: $118 − $110 = $8 intrinsic. Put ($90 strike): OTM, worthless. Profit = $8 − $6 total premium = <strong>$2 profit</strong>. <strong>Long Straddle at $118:</strong> Call ($100 strike) worth: $118 − $100 = $18. Put ($100): OTM, worthless. Profit = $18 − $13 total premium = <strong>$5 profit</strong>. At $118, the straddle wins ($5 vs $2) because its ATM $100 call captures the full $18 move. However, the straddle cost $13 vs only $6 for the strangle — the strangle was 'break-even cheap' up to $116 and $84, while the straddle breaks even at $113 and $87. The strangle wins on cost but requires a larger move."},
+{id:43,d:'h',q:"A hedge fund manager runs a 'delta-neutral volatility selling' strategy: writes straddles on 20 different stocks, collecting $450,000 in total premium. She immediately delta-hedges all positions. One week later, the market experiences a volatility spike — implied volatility rises 35% across all positions. Describe the impact on the fund's P&L.",o:["A. Fund profits since rising volatility causes the underlying stocks to move in the fund's favour","B. Fund suffers losses — the written straddles (short vega) lose value as implied volatility rises, with positions now costing more to close than what was collected; delta hedging only protects against price moves, not volatility changes","C. Fund is unaffected since delta-neutral hedging eliminates all risk including volatility risk","D. Fund profits from the delta hedge which gains value when volatility rises"],a:1,e:"This is a core concept: <strong>delta-neutral does NOT mean vega-neutral</strong>. Delta hedging eliminates directional (delta) risk but leaves <em>vega exposure</em> fully intact. Short straddles (written options) have <strong>negative vega</strong> — they lose value when implied volatility rises. A 35% vol spike means the straddles she sold at low volatility now trade much higher (more expensive to buy back). The $450,000 premium collected may be partially or fully wiped out by mark-to-market losses on the vega exposure. To be truly neutral, she would need to also hedge vega — by buying some options back to reduce net short vega exposure."},
+{id:44,d:'h',q:"A client deposits $20,000 to trade crude oil futures (contract = 1,000 barrels, initial margin = $6,000/contract, maintenance = $4,200/contract). She buys 3 contracts at $81/barrel. Day 1: oil falls to $79. Day 2: oil falls to $76. Day 3: oil falls to $73. Trace the margin account balance each day and identify when a margin call is triggered.",o:["A. Day 1 balance $14,000; Day 2 balance $5,000; margin call triggered end of Day 2","B. Day 1 balance $14,000; no margin call. Day 2 balance $5,000 — below $12,600 maintenance — margin call triggered end of Day 2","C. Day 1 balance $14,000; Day 2 balance $8,000 — margin call triggered since below $12,600","D. No margin call triggered since the total account started above $18,000 initial margin"],a:1,e:"Initial: $20,000 deposited. 3 contracts, initial margin needed = 3 × $6,000 = $18,000. Maintenance threshold = 3 × $4,200 = $12,600. Day 1: oil $81→$79 = −$2/barrel × 3,000 = −$6,000 deducted. Balance = $20,000 − $6,000 = $14,000. <strong>$14,000 > $12,600 — no margin call.</strong> Day 2: oil $79→$76 = −$3/barrel × 3,000 = −$9,000 deducted. Balance = $14,000 − $9,000 = $5,000. <strong>$5,000 < $12,600 — MARGIN CALL triggered end of Day 2.</strong> Client must deposit $18,000 − $5,000 = $13,000 to restore to initial margin. Day 3 would add another −$9,000 if positions not closed."},
+{id:45,d:'h',q:"A sophisticated options trader observes that implied volatility on a stock's options has spiked to 58% before earnings (vs typical realized volatility of 25–30%). She sells a strangle: writes a $120 call for $7 and a $80 put for $6 (stock at $100). Total premium = $13. After earnings, the stock moves to $114 — a large move but within the strangle's profit zone. Implied volatility collapses to 22%. Explain the dual source of profit.",o:["A. The trader profits only from the stock staying between $67 and $133 — there is only one source of profit","B. The trader profits from two sources: (1) both options expire within the profit zone (stock at $114 — both options OTM or barely ITM for the call — net premium retained), and (2) the collapse in implied volatility (vega gain) means the positions would have shown mark-to-market gains even before expiry","C. The trader profits only from the volatility collapse, not from the stock movement","D. The trader suffers a loss since the $114 stock price is close to the $120 call strike, creating significant assignment risk"],a:1,e:"Two profit sources: (1) <strong>Position P&L at expiry:</strong> Stock at $114 — call ($120 strike) is OTM (worthless). Put ($80 strike) is OTM (worthless). Writer keeps full $13 premium. Profit zone was $80 − $13 = $67 to $120 + $13 = $133. $114 is well within the zone. (2) <strong>Vega gain / Volatility crush:</strong> She sold options when implied vol was 58% (expensive). After earnings, vol collapsed to 22%. Options written at high vol are now worth far less even at mid-expiry — if she wanted to close early, she could buy them back cheaply. This 'volatility crush' after earnings is the core income in this strategy — even if the stock had moved to $112 (close to making the call profitable), the collapse in implied vol would have kept the options' mark-to-market value low. Selling overpriced volatility is the professional options income strategy."}
+];
+
+let ans={},cor=0,att=0;
+function build(){
+  const c=document.getElementById('qC');c.innerHTML='';
+  Qs.forEach((q,i)=>{
+    const dc=q.d==='e'?'de':q.d==='m'?'dm':'dh';
+    const dl=q.d==='e'?'Easy':q.d==='m'?'Medium':'Hard';
+    const opts=q.o.map((o,oi)=>`<div class="qqopt" onclick="chk(${i},${oi})" id="o${i}_${oi}"><span class="optl">${String.fromCharCode(65+oi)}</span>${o.substring(3)}</div>`).join('');
+    c.innerHTML+=`<div class="qq" id="q${i}"><div class="qqtop"><span class="qqnum">Q${q.id}</span><span class="qqdiff ${dc}">${dl}</span><div class="qqtext">${q.q}</div></div><div class="qqopts">${opts}</div><div class="qqexp" id="e${i}">${q.e}</div></div>`;
+  });
+}
+function chk(qi,sel){
+  if(ans[qi]!==undefined)return;
+  ans[qi]=sel;att++;
+  const q=Qs[qi],ok=sel===q.a;
+  if(ok)cor++;
+  for(let i=0;i<q.o.length;i++){
+    const el=document.getElementById(`o${qi}_${i}`);
+    if(i===q.a)el.classList.add('correct');
+    else if(i===sel&&!ok)el.classList.add('wrong');
+  }
+  document.getElementById(`e${qi}`).classList.add('show');
+  document.getElementById('sLbl').textContent=`${cor}/${att}`;
+  if(att===Qs.length){
+    const pct=Math.round(cor/Qs.length*100);
+    const fd=document.getElementById('fS');
+    fd.style.display='block';
+    fd.innerHTML=`<div class="scoren">${pct}%</div><div class="scorel">${cor} of ${Qs.length} correct — ${pct>=60?'✅ Pass level achieved':'❌ Below 60% — review and retry'}</div>`;
+  }
+}
+function revealAll(){
+  Qs.forEach((q,qi)=>{
+    if(ans[qi]!==undefined)return;
+    ans[qi]=q.a;
+    for(let i=0;i<q.o.length;i++){
+      const el=document.getElementById(`o${qi}_${i}`);
+      if(i===q.a)el.classList.add('correct');
+    }
+    document.getElementById(`e${qi}`).classList.add('show');
+  });
+}
+function resetQ(){
+  ans={};cor=0;att=0;
+  document.getElementById('sLbl').textContent='0/45';
+  document.getElementById('fS').style.display='none';
+  build();
+}
+function goTo(id){
+  const el=document.getElementById(id);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function updateUI(){
+  const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;
+  const f=document.getElementById('pFill');
+  if(f)f.style.width=Math.min(dh>0?(st/dh)*100:0,100)+'%';
+  const btn=document.getElementById('scrolltop');
+  st>500?btn.classList.add('vis'):btn.classList.remove('vis');
+  const ids=['cover','s85','s86','bull','bear','neut','vol','strat-summary','s87','s88','summary','quiz'];
+  let cur='cover';
+  ids.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<120)cur=id;});
+  document.querySelectorAll('.nl,.ns').forEach(l=>{
+    l.classList.remove('active');
+    const fn=l.getAttribute('onclick')||'';
+    if(fn.includes("'"+cur+"'"))l.classList.add('active');
+  });
+}
+window.addEventListener('scroll',updateUI,{passive:true});
+build();
+updateUI();
+</script>
+</body>
+</html>

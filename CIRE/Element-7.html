@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIRE Element 7 — Securities, Managed Products & Investments</title>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f1f3f4;--paper:#fff;--warm:#f8f9fa;--border:#e0e4ea;
+  --ink:#0c1526;--ink2:#1e3050;--ink3:#4a5e78;--muted:#7a8ea8;
+  --sb:#0c1526;--sb-b:rgba(255,255,255,0.07);
+  --violet:#5b21b6;--violet-bg:#f5f3ff;--violet-border:#c4b5fd;
+  --rose:#9f1239;--rose-bg:#fff1f2;--rose-border:#fda4af;
+  --sky:#0369a1;--sky-bg:#e0f2fe;--sky-border:#7dd3fc;
+  --amber:#b45309;--amber-bg:#fffbeb;--amber-border:#fcd34d;
+  --emerald:#065f46;--emerald-bg:#ecfdf5;--emerald-border:#6ee7b7;
+  --orange:#c2410c;--orange-bg:#fff7ed;--orange-border:#fdba74;
+  --sidebar-w:290px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#1a1028;font-family:'Inter',sans-serif;color:var(--ink);display:flex;}
+
+/* SB */
+#sb{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--sb);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;}
+#sb::-webkit-scrollbar{width:3px;}
+#sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);}
+.sbh{padding:22px 18px 16px;border-bottom:1px solid var(--sb-b);background:rgba(0,0,0,0.3);position:sticky;top:0;z-index:5;}
+.sbp{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:#c4b5fd;text-transform:uppercase;background:rgba(91,33,182,0.2);border:1px solid rgba(91,33,182,0.35);display:inline-block;padding:2px 8px;border-radius:10px;margin-bottom:8px;}
+.sbt{font-family:'Spectral',serif;font-size:16px;font-weight:700;color:#ede9fe;line-height:1.3;margin-bottom:2px;}
+.sbs{font-size:10px;color:rgba(255,255,255,0.28);}
+.sbpr{padding:10px 18px 3px;}
+.sbpl{font-size:9px;color:rgba(255,255,255,0.22);font-family:'Space Mono',monospace;margin-bottom:5px;}
+.sbpt{height:3px;background:rgba(255,255,255,0.07);border-radius:3px;}
+.sbpf{height:100%;background:linear-gradient(90deg,var(--violet),#a78bfa);border-radius:3px;width:0%;transition:width 0.3s;}
+.ng{padding:7px 0;}
+.ngl{padding:5px 18px;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,0.2);text-transform:uppercase;font-family:'Space Mono',monospace;}
+.nl{display:flex;align-items:flex-start;gap:8px;padding:6px 18px;cursor:pointer;border-left:2px solid transparent;transition:all 0.17s;text-decoration:none;}
+.nl:hover{background:rgba(255,255,255,0.04);border-left-color:rgba(91,33,182,0.5);}
+.nl.active{background:rgba(91,33,182,0.14);border-left-color:var(--violet);}
+.nn{font-family:'Space Mono',monospace;font-size:10px;color:#c4b5fd;min-width:28px;margin-top:2px;flex-shrink:0;}
+.nt{font-size:11.5px;color:rgba(255,255,255,0.42);line-height:1.4;transition:color 0.17s;}
+.nl:hover .nt,.nl.active .nt{color:rgba(255,255,255,0.82);}
+.ns{display:block;padding:3px 18px 3px 54px;font-size:10.5px;color:rgba(255,255,255,0.26);cursor:pointer;border-left:2px solid transparent;transition:all 0.17s;text-decoration:none;}
+.ns:hover{color:rgba(255,255,255,0.5);border-left-color:rgba(91,33,182,0.3);}
+
+/* MAIN */
+#main{margin-left:var(--sidebar-w);flex:1;background:var(--bg);min-height:100vh;}
+
+/* COVER */
+.cover{min-height:100vh;background:linear-gradient(150deg,#0a0818 0%,#130e28 45%,#0e1828 100%);padding:80px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
+.cv-dots{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(196,181,253,0.12) 1px,transparent 1px);background-size:32px 32px;}
+.cv-glow{position:absolute;top:-60px;right:-60px;width:500px;height:500px;background:radial-gradient(circle,rgba(91,33,182,0.12),transparent 70%);border-radius:50%;}
+.cv-tag{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:4px;color:#c4b5fd;text-transform:uppercase;margin-bottom:20px;position:relative;display:flex;align-items:center;gap:12px;}
+.cv-tag::before{content:'';width:24px;height:1px;background:#c4b5fd;}
+.cv-title{font-family:'Spectral',serif;font-size:clamp(32px,4.8vw,60px);font-weight:800;color:#ede9fe;line-height:1.1;max-width:660px;margin-bottom:14px;position:relative;}
+.cv-title em{color:#a78bfa;font-style:italic;}
+.cv-rule{width:60px;height:2px;background:linear-gradient(90deg,var(--violet),transparent);margin:18px 0;position:relative;}
+.cv-desc{font-size:14.5px;color:rgba(237,233,254,0.5);max-width:540px;line-height:1.9;margin-bottom:46px;position:relative;}
+.cv-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;max-width:680px;border:1px solid rgba(91,33,182,0.25);border-radius:8px;overflow:hidden;position:relative;}
+.cv-stat{padding:14px 12px;background:rgba(255,255,255,0.02);}
+.cv-stat-n{font-family:'Spectral',serif;font-size:22px;font-weight:700;color:#c4b5fd;line-height:1;margin-bottom:3px;}
+.cv-stat-l{font-size:9px;color:rgba(255,255,255,0.25);line-height:1.3;}
+
+/* CONTENT */
+.content{max-width:840px;padding:0 62px 120px;}
+.sec{padding-top:70px;}
+.sec-rule{height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:24px;}
+.sec-hdr{display:flex;align-items:flex-start;gap:13px;margin-bottom:20px;}
+.sec-badge{font-family:'Space Mono',monospace;font-size:11px;background:var(--violet-bg);border:1px solid var(--violet-border);color:var(--violet);padding:4px 11px;border-radius:4px;white-space:nowrap;margin-top:5px;flex-shrink:0;}
+.sec-title{font-family:'Spectral',serif;font-size:27px;font-weight:700;color:var(--ink);line-height:1.2;}
+.body{font-size:14.5px;color:var(--ink3);line-height:1.9;margin-bottom:14px;}
+.body strong{color:var(--ink);font-weight:600;}
+.body em{color:var(--violet);font-style:normal;font-weight:600;}
+
+.sub{margin-top:28px;}
+.sub-title{font-family:'Spectral',serif;font-size:19px;font-weight:700;color:var(--ink2);margin-bottom:11px;padding-left:11px;border-left:3px solid var(--violet);}
+.subsub{margin-top:17px;}
+.subsub-title{font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.subsub-title::before{content:'▶';font-size:9px;color:var(--violet);}
+
+/* CALLOUTS */
+.callout{margin:16px 0;padding:13px 16px;border-radius:6px;border-left:3px solid;display:flex;gap:11px;align-items:flex-start;}
+.callout.violet{background:var(--violet-bg);border-color:var(--violet);}
+.callout.sky{background:var(--sky-bg);border-color:var(--sky);}
+.callout.amber{background:var(--amber-bg);border-color:var(--amber);}
+.callout.rose{background:var(--rose-bg);border-color:var(--rose);}
+.callout.emerald{background:var(--emerald-bg);border-color:var(--emerald);}
+.callout.orange{background:var(--orange-bg);border-color:var(--orange);}
+.ci{font-size:15px;flex-shrink:0;margin-top:1px;}
+.cl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.callout.violet .cl{color:var(--violet);}
+.callout.sky .cl{color:var(--sky);}
+.callout.amber .cl{color:var(--amber);}
+.callout.rose .cl{color:var(--rose);}
+.callout.emerald .cl{color:var(--emerald);}
+.callout.orange .cl{color:var(--orange);}
+.callout p{font-size:13.5px;color:var(--ink3);line-height:1.7;}
+.callout p strong{color:var(--ink);}
+
+/* DEF TABLE */
+.dt{margin:13px 0;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+.dr{display:grid;grid-template-columns:185px 1fr;}
+.dr:not(:last-child){border-bottom:1px solid var(--border);}
+.dterm{background:var(--warm);padding:11px 13px;font-family:'Space Mono',monospace;font-size:11px;color:var(--violet);border-right:1px solid var(--border);display:flex;align-items:flex-start;line-height:1.5;}
+.dval{background:var(--paper);padding:11px 13px;font-size:13.5px;color:var(--ink3);line-height:1.65;}
+.dval strong{color:var(--ink);}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin:13px 0;font-size:13.5px;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+thead tr{background:var(--sb);}
+th{padding:10px 13px;text-align:left;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#c4b5fd;font-weight:400;}
+td{padding:10px 13px;border-bottom:1px solid var(--border);color:var(--ink3);line-height:1.6;vertical-align:top;}
+td strong{color:var(--ink);}
+tr:last-child td{border-bottom:none;}
+tr:nth-child(even) td{background:var(--warm);}
+
+/* CHECKLIST */
+.chk{margin:11px 0;}
+.chi{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;border-radius:5px;margin-bottom:3px;background:var(--warm);border:1px solid var(--border);font-size:13.5px;color:var(--ink3);line-height:1.55;}
+.chi strong{color:var(--ink);}
+.chico{color:var(--violet);font-size:11px;flex-shrink:0;margin-top:2px;}
+
+/* ASSET CLASS PILLS */
+.ac-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0;}
+.ac-card{border-radius:7px;padding:14px;text-align:center;border:1px solid var(--border);}
+.ac-icon{font-size:24px;margin-bottom:6px;}
+.ac-name{font-weight:700;font-size:12.5px;color:var(--ink);}
+.ac-desc{font-size:11.5px;color:var(--ink3);margin-top:4px;line-height:1.45;}
+.ac-card.cash{background:var(--emerald-bg);border-color:var(--emerald-border);}
+.ac-card.fi{background:var(--sky-bg);border-color:var(--sky-border);}
+.ac-card.eq{background:var(--violet-bg);border-color:var(--violet-border);}
+.ac-card.com{background:var(--amber-bg);border-color:var(--amber-border);}
+.ac-card.der{background:var(--orange-bg);border-color:var(--orange-border);}
+
+/* COMPARE GRID */
+.cmp-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+.cmp-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+.cmp-card{border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.cmp-head{padding:11px 14px;font-weight:700;font-size:13px;border-bottom:1px solid var(--border);}
+.cmp-card.v .cmp-head{background:var(--violet-bg);color:var(--violet);}
+.cmp-card.s .cmp-head{background:var(--sky-bg);color:var(--sky);}
+.cmp-card.e .cmp-head{background:var(--emerald-bg);color:var(--emerald);}
+.cmp-card.a .cmp-head{background:var(--amber-bg);color:var(--amber);}
+.cmp-card.r .cmp-head{background:var(--rose-bg);color:var(--rose);}
+.cmp-card.o .cmp-head{background:var(--orange-bg);color:var(--orange);}
+.cmp-body{padding:12px 14px;font-size:13px;color:var(--ink3);line-height:1.65;background:var(--paper);}
+.cmp-body strong{color:var(--ink);}
+
+/* PREFERRED SHARE TABLE */
+.pref-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0;}
+.pref-card{border-radius:7px;overflow:hidden;border:1px solid var(--border);}
+.pref-head{padding:9px 12px;font-weight:700;font-size:12px;text-align:center;}
+.pref-card.cv .pref-head{background:var(--violet-bg);color:var(--violet);}
+.pref-card.rt .pref-head{background:var(--sky-bg);color:var(--sky);}
+.pref-card.cm .pref-head{background:var(--emerald-bg);color:var(--emerald);}
+.pref-card.pp .pref-head{background:var(--amber-bg);color:var(--amber);}
+.pref-body{padding:10px 12px;font-size:12px;color:var(--ink3);line-height:1.6;background:var(--paper);}
+
+/* BOND VISUAL */
+.bond-example{background:var(--warm);border:1px solid var(--border);border-radius:8px;padding:18px;margin:13px 0;}
+.be-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--sky);margin-bottom:12px;}
+.be-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:13.5px;}
+.be-row:last-child{border-bottom:none;font-weight:700;color:var(--ink);}
+.be-label{color:var(--ink3);}
+.be-val{font-family:'Space Mono',monospace;font-weight:600;color:var(--sky);}
+.be-formula{background:var(--sky-bg);border:1px solid var(--sky-border);border-radius:5px;padding:10px 14px;margin:12px 0;font-family:'Space Mono',monospace;font-size:12px;color:var(--sky);}
+
+/* ETF vs MF TABLE */
+.etf-mf{background:var(--warm);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:14px 0;}
+.etf-mf-header{display:grid;grid-template-columns:160px 1fr 1fr;background:var(--sb);}
+.etf-mf-header div{padding:10px 14px;font-family:'Space Mono',monospace;font-size:10px;color:#c4b5fd;letter-spacing:1px;}
+.etf-mf-row{display:grid;grid-template-columns:160px 1fr 1fr;border-top:1px solid var(--border);}
+.etf-mf-row:nth-child(even){background:var(--paper);}
+.etf-mf-row div{padding:10px 14px;font-size:13px;color:var(--ink3);}
+.etf-mf-row div:first-child{font-family:'Space Mono',monospace;font-size:11px;color:var(--violet);background:rgba(91,33,182,0.04);}
+
+/* HIGHLIGHT BOX */
+.hlbox{background:var(--sb);border-radius:8px;padding:20px 24px;margin:16px 0;}
+.hlbox-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:#c4b5fd;text-transform:uppercase;margin-bottom:9px;}
+.hlbox p{font-size:13.5px;color:rgba(237,233,254,0.65);line-height:1.8;}
+.hlbox p strong{color:#c4b5fd;}
+
+/* MANAGED PRODUCTS TABLE */
+.mp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+.mp-card{border-radius:7px;overflow:hidden;border:1px solid var(--border);}
+.mp-head{padding:10px 13px;font-weight:700;font-size:12.5px;}
+.mp-card.mft .mp-head{background:var(--violet-bg);color:var(--violet);border-bottom:1px solid var(--violet-border);}
+.mp-card.ce .mp-head{background:var(--sky-bg);color:var(--sky);border-bottom:1px solid var(--sky-border);}
+.mp-card.etf .mp-head{background:var(--emerald-bg);color:var(--emerald);border-bottom:1px solid var(--emerald-border);}
+.mp-card.reit .mp-head{background:var(--amber-bg);color:var(--amber);border-bottom:1px solid var(--amber-border);}
+.mp-card.wrap .mp-head{background:var(--rose-bg);color:var(--rose);border-bottom:1px solid var(--rose-border);}
+.mp-card.hf .mp-head{background:var(--orange-bg);color:var(--orange);border-bottom:1px solid var(--orange-border);}
+.mp-body{padding:11px 13px;font-size:12.5px;color:var(--ink3);line-height:1.6;background:var(--paper);}
+
+/* INDEX COMPARE */
+.index-example{background:var(--warm);border:1px solid var(--border);border-radius:8px;padding:18px;margin:13px 0;}
+.idx-t{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--violet);margin-bottom:12px;}
+
+/* SUMMARY */
+.sum-box{background:var(--sb);border-radius:10px;padding:28px;margin-top:60px;}
+.sum-title{font-family:'Spectral',serif;font-size:24px;font-weight:700;color:#ede9fe;margin-bottom:4px;}
+.sum-sub{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,0.2);margin-bottom:22px;text-transform:uppercase;}
+.si{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13px;color:rgba(237,233,254,0.58);line-height:1.65;align-items:flex-start;}
+.si:last-child{border-bottom:none;}
+.si strong{color:#c4b5fd;}
+.sin{font-family:'Space Mono',monospace;font-size:10px;color:rgba(196,181,253,0.4);min-width:22px;flex-shrink:0;margin-top:2px;}
+
+/* QUIZ */
+.quiz-wrap{background:var(--sb);padding:46px 62px 80px;}
+.quiz-h1{font-family:'Spectral',serif;font-size:32px;font-weight:800;color:#ede9fe;margin-bottom:6px;text-align:center;}
+.quiz-sub-txt{font-size:12px;color:rgba(255,255,255,0.3);font-family:'Space Mono',monospace;letter-spacing:1px;text-align:center;}
+.quiz-stats{display:flex;justify-content:center;gap:28px;margin-top:18px;flex-wrap:wrap;padding-bottom:32px;}
+.qs-n{font-family:'Spectral',serif;font-size:26px;font-weight:700;color:#c4b5fd;}
+.qs-l{font-size:10px;color:rgba(255,255,255,0.28);text-align:center;}
+.qq{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:9px;padding:20px;margin-bottom:11px;transition:border-color 0.2s;}
+.qq:hover{border-color:rgba(91,33,182,0.35);}
+.qq-top{display:flex;align-items:flex-start;gap:11px;margin-bottom:13px;}
+.qq-num{font-family:'Space Mono',monospace;font-size:10px;color:#c4b5fd;min-width:30px;flex-shrink:0;margin-top:2px;}
+.qq-diff{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+.de{background:rgba(6,95,70,0.2);color:#34d399;border:1px solid rgba(6,95,70,0.3);}
+.dm{background:rgba(180,83,9,0.2);color:#fbbf24;border:1px solid rgba(180,83,9,0.3);}
+.dh{background:rgba(159,18,57,0.2);color:#fb7185;border:1px solid rgba(159,18,57,0.3);}
+.qq-text{font-size:13.5px;color:rgba(237,233,254,0.82);line-height:1.7;flex:1;}
+.qq-opts{display:flex;flex-direction:column;gap:5px;padding-left:41px;}
+.qq-opt{display:flex;gap:8px;align-items:flex-start;padding:8px 12px;border-radius:5px;cursor:pointer;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);transition:all 0.17s;font-size:13px;color:rgba(237,233,254,0.55);line-height:1.5;}
+.qq-opt:hover{background:rgba(91,33,182,0.1);border-color:rgba(91,33,182,0.3);color:rgba(237,233,254,0.85);}
+.qq-opt.correct{background:rgba(6,95,70,0.15);border-color:rgba(6,95,70,0.4);color:#6ee7b7;}
+.qq-opt.wrong{background:rgba(159,18,57,0.12);border-color:rgba(159,18,57,0.3);color:#fda4af;}
+.opt-l{font-family:'Space Mono',monospace;font-size:10px;color:#c4b5fd;min-width:16px;flex-shrink:0;margin-top:1px;}
+.qq-opt.correct .opt-l{color:#34d399;}
+.qq-opt.wrong .opt-l{color:#fb7185;}
+.qq-exp{margin-top:10px;padding:10px 12px;background:rgba(91,33,182,0.08);border-left:3px solid var(--violet);border-radius:0 5px 5px 0;display:none;font-size:12.5px;color:rgba(237,233,254,0.55);line-height:1.7;}
+.qq-exp strong{color:#c4b5fd;}
+.qq-exp.show{display:block;}
+.quiz-ctrl{text-align:center;padding:22px 0 0;}
+.btn{padding:10px 26px;border-radius:6px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;transition:all 0.18s;}
+.btn-p{background:var(--violet);color:#fff;}
+.btn-p:hover{background:#4c1d95;}
+.btn-s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.65);margin-left:8px;}
+.score-disp{background:rgba(91,33,182,0.15);border:1px solid rgba(91,33,182,0.3);border-radius:8px;padding:16px 26px;margin:16px auto;max-width:340px;display:none;text-align:center;}
+.score-n{font-family:'Spectral',serif;font-size:46px;font-weight:700;color:#c4b5fd;line-height:1;}
+.score-l{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;}
+#scrolltop{position:fixed;bottom:22px;right:22px;background:var(--violet);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:16px;cursor:pointer;opacity:0;transition:opacity 0.3s;z-index:200;display:flex;align-items:center;justify-content:center;font-weight:700;}
+#scrolltop.visible{opacity:1;}
+@media(max-width:900px){#sb{display:none;}#main{margin-left:0;}.content{padding:0 20px 80px;}.cover{padding:54px 20px;}.quiz-wrap{padding:28px 20px 60px;}.ac-grid,.pref-grid,.cmp-3,.mp-grid{grid-template-columns:1fr 1fr;}.cmp-2{grid-template-columns:1fr;}.cv-stats{grid-template-columns:repeat(3,1fr);}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sb">
+  <div class="sbh">
+    <div class="sbp">CIRE · Element 7</div>
+    <div class="sbt">Securities, Managed Products & Investments</div>
+    <div class="sbs">12 sections + 45 exam questions</div>
+  </div>
+  <div class="sbpr"><div class="sbpl">Progress</div><div class="sbpt"><div class="sbpf" id="pFill"></div></div></div>
+  <div class="ng">
+    <div class="ngl">Content</div>
+    <a class="nl" onclick="goTo('cover')"><span class="nn">◉</span><span class="nt">Cover</span></a>
+    <a class="nl" onclick="goTo('s71')"><span class="nn">7.1</span><span class="nt">Asset Classes Overview</span></a>
+    <a class="nl" onclick="goTo('s72')"><span class="nn">7.2</span><span class="nt">Equities — Types & Features</span></a>
+    <a class="ns" onclick="goTo('s72-common')">Common Shares</a>
+    <a class="ns" onclick="goTo('s72-pref')">Preferred Shares</a>
+    <a class="nl" onclick="goTo('s73')"><span class="nn">7.3</span><span class="nt">Equity Investor Considerations</span></a>
+    <a class="ns" onclick="goTo('s73-div')">Dividends & Taxation</a>
+    <a class="ns" onclick="goTo('s73-split')">Stock Splits & Consolidations</a>
+    <a class="nl" onclick="goTo('s74')"><span class="nn">7.4</span><span class="nt">Fixed Income — Types & Features</span></a>
+    <a class="ns" onclick="goTo('s74-gov')">Government & Corporate Bonds</a>
+    <a class="ns" onclick="goTo('s74-strip')">STRIPs, T-Bills & CP</a>
+    <a class="nl" onclick="goTo('s75')"><span class="nn">7.5</span><span class="nt">Fixed Income Investor Considerations</span></a>
+    <a class="ns" onclick="goTo('s75-yield')">Coupon vs Yield</a>
+    <a class="ns" onclick="goTo('s75-risk')">Duration, Credit & Term Risk</a>
+    <a class="nl" onclick="goTo('s76')"><span class="nn">7.6</span><span class="nt">Market Indices</span></a>
+    <a class="ns" onclick="goTo('s76-types')">Index Construction Types</a>
+    <a class="ns" onclick="goTo('s76-use')">Uses & Benchmarking</a>
+    <a class="nl" onclick="goTo('s77')"><span class="nn">7.7</span><span class="nt">Pooled Products — Types</span></a>
+    <a class="nl" onclick="goTo('s78')"><span class="nn">7.8</span><span class="nt">Managed Products — Features & Risks</span></a>
+    <a class="nl" onclick="goTo('s79')"><span class="nn">7.9</span><span class="nt">Managed Product Investor Considerations</span></a>
+    <a class="nl" onclick="goTo('s710')"><span class="nn">7.10</span><span class="nt">Mutual Fund Considerations</span></a>
+    <a class="ns" onclick="goTo('s710-ff')">Fund Facts Document</a>
+    <a class="ns" onclick="goTo('s710-price')">Pricing Methods</a>
+    <a class="nl" onclick="goTo('s711')"><span class="nn">7.11</span><span class="nt">ETF Considerations</span></a>
+    <a class="ns" onclick="goTo('s711-nav')">Market Price vs NAV</a>
+    <a class="ns" onclick="goTo('s711-vs')">ETF vs Mutual Fund</a>
+    <a class="nl" onclick="goTo('s712')"><span class="nn">7.12</span><span class="nt">Alternative Investments</span></a>
+    <a class="ns" onclick="goTo('s712-hf')">Hedge Funds</a>
+    <a class="ns" onclick="goTo('s712-sp')">Structured Products</a>
+    <a class="ns" onclick="goTo('s712-crypto')">Crypto Assets</a>
+    <a class="ns" onclick="goTo('s712-esg')">ESG Products</a>
+    <a class="nl" onclick="goTo('summary')"><span class="nn">★</span><span class="nt">Master Summary</span></a>
+  </div>
+  <div class="ng">
+    <div class="ngl">Practice</div>
+    <a class="nl" onclick="goTo('quiz')"><span class="nn">📝</span><span class="nt">45 Scenario-Based Questions</span></a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+<div id="cover" class="cover">
+  <div class="cv-dots"></div><div class="cv-glow"></div>
+  <div class="cv-tag" style="position:relative;">CIRE Examination Preparation</div>
+  <h1 class="cv-title">Securities, <em>Managed Products,</em><br>Mutual Funds & Other Investments</h1>
+  <div class="cv-rule"></div>
+  <p class="cv-desc">The most comprehensive element — covering all 5 asset classes, equities, fixed income, market indices, mutual funds, ETFs, hedge funds, structured products, crypto assets, and ESG investments, with latest 2025–26 regulatory updates and 45 scenario-based exam questions designed to match real CIRE difficulty.</p>
+  <div class="cv-stats">
+    <div class="cv-stat"><div class="cv-stat-n">5</div><div class="cv-stat-l">Asset Classes</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">$2T+</div><div class="cv-stat-l">Canadian MF+ETF AUM</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">Jan 26</div><div class="cv-stat-l">TCR Effective Date</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">T+2</div><div class="cv-stat-l">Mutual fund settlement</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">2-day</div><div class="cv-stat-l">ETF Facts delivery</div></div>
+    <div class="cv-stat"><div class="cv-stat-n">45</div><div class="cv-stat-l">Practice Questions</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ═══ 7.1 ═══ -->
+<div id="s71" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">7.1</div><h2 class="sec-title">Asset Classes — Overview</h2></div>
+  <p class="body">An investment dealer trades across five major asset classes. Each has distinct characteristics, risk-return profiles, and roles within a client portfolio. Understanding the core features of each class is foundational to every other section in Element 7.</p>
+  <div class="ac-grid">
+    <div class="ac-card cash"><div class="ac-icon">💵</div><div class="ac-name">Cash & Equivalents</div><div class="ac-desc">T-bills, GICs, money market funds. Capital preservation, lowest return, highest liquidity. Risk: inflation erosion.</div></div>
+    <div class="ac-card fi"><div class="ac-icon">📄</div><div class="ac-name">Fixed Income</div><div class="ac-desc">Bonds, debentures, preferred shares, mortgage-backed. Regular income, less volatility than equities. Interest rate & credit risk.</div></div>
+    <div class="ac-card eq"><div class="ac-icon">📈</div><div class="ac-name">Equity</div><div class="ac-desc">Common & preferred shares. Ownership stake, capital growth & dividends. Higher risk, higher long-term return.</div></div>
+    <div class="ac-card com"><div class="ac-icon">🛢️</div><div class="ac-name">Commodities</div><div class="ac-desc">Oil, gold, silver, grains. Inflation hedge, portfolio diversifier. High volatility, no income stream.</div></div>
+    <div class="ac-card der"><div class="ac-icon">⚙️</div><div class="ac-name">Derivatives</div><div class="ac-desc">Options, futures, swaps. Used for hedging or speculation. Leverage amplifies gains and losses. Complex, specialist products.</div></div>
+  </div>
+  <div class="callout violet">
+    <div class="ci">💡</div>
+    <div class="cb"><div class="cl">Risk-Return Spectrum</div><p>In general: <strong>Cash → Fixed Income → Equity → Commodities → Derivatives</strong> in order of increasing risk and potential return. However, this is a simplification — within each asset class there is a wide range of risk levels (e.g., government bonds carry minimal credit risk, while high-yield junk bonds carry substantial credit risk).</p></div>
+  </div>
+</div>
+
+<!-- ═══ 7.2 ═══ -->
+<div id="s72" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">7.2</div><h2 class="sec-title">Equities — Types, Features, Risks & Returns</h2></div>
+
+  <div id="s72-common" class="sub">
+    <h3 class="sub-title">Common Shares</h3>
+    <p class="body">Common shares represent <strong>ownership in a corporation</strong>. Shareholders are residual claimants — they receive what is left after all creditors, bondholders, and preferred shareholders are paid. This makes common shares the riskiest securities in the corporate capital structure, but also the ones with the greatest long-term return potential.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Voting Rights</div><div class="dval">Common shareholders have the right to vote on corporate matters — election of directors, appointment of auditors, major transactions. Typically one vote per share (though dual-class shares with "super voting" exist — e.g., Shopify's Class B shares).</div></div>
+      <div class="dr"><div class="dterm">Dividends</div><div class="dval">Dividends on common shares are <strong>not guaranteed</strong> — the board of directors must declare them each period. They can be cut or eliminated at any time. Common shareholders receive dividends after preferred shareholders.</div></div>
+      <div class="dr"><div class="dterm">Capital Appreciation</div><div class="dval">The primary return driver for common shares is price appreciation — the stock increases in value as the company grows earnings. This is the "equity premium" — the additional return over bonds that compensates for higher risk.</div></div>
+      <div class="dr"><div class="dterm">Limited Liability</div><div class="dval">Shareholders' maximum loss is the amount invested — they cannot be personally sued for corporate debts. This was a revolutionary legal innovation that enabled large-scale capital formation.</div></div>
+      <div class="dr"><div class="dterm">Residual Claim</div><div class="dval">In bankruptcy, common shareholders are last in line after: secured creditors → unsecured creditors → preferred shareholders. In practice, common shareholders often receive nothing in a bankruptcy.</div></div>
+      <div class="dr"><div class="dterm">Risks</div><div class="dval"><strong>Market risk</strong> (price fluctuations), <strong>company-specific risk</strong> (business failure, earnings miss), <strong>liquidity risk</strong> (small caps may be hard to sell), <strong>currency risk</strong> (for foreign shares), <strong>concentration risk</strong> (if over-weighted in one company).</div></div>
+    </div>
+  </div>
+
+  <div id="s72-pref" class="sub">
+    <h3 class="sub-title">Preferred Shares</h3>
+    <p class="body">Preferred shares are <strong>hybrid securities</strong> — they have characteristics of both equity (they are shares, appear in equity on the balance sheet) and fixed income (they pay a fixed, predetermined dividend). They rank above common shareholders but below debt holders in the capital structure.</p>
+    <div class="pref-grid">
+      <div class="pref-card cv">
+        <div class="pref-head">Convertible</div>
+        <div class="pref-body">Can be converted into a specified number of common shares at the holder's option. Provides upside participation if the common share price rises above the conversion price. Protection if price falls — still receives preferred dividend.</div>
+      </div>
+      <div class="pref-card rt">
+        <div class="pref-head">Retractable</div>
+        <div class="pref-body">Holder has the right to "retract" (sell back) the shares to the issuer at a specified price on specified dates. Provides liquidity and capital protection — limits duration risk for the investor.</div>
+      </div>
+      <div class="pref-card cm">
+        <div class="pref-head">Cumulative</div>
+        <div class="pref-body">Unpaid dividends accumulate ("accrue"). If the company skips a dividend, the arrears must be paid to preferred shareholders before any common share dividends can be declared. Most Canadian preferred shares are cumulative.</div>
+      </div>
+      <div class="pref-card pp">
+        <div class="pref-head">Perpetual / Fixed-Rate</div>
+        <div class="pref-body">Pay a fixed dividend forever with no maturity date. Most sensitive to interest rate changes — when rates rise, perpetual preferred prices fall sharply (long duration). Rate resets (every 5 years) can reduce this risk.</div>
+      </div>
+    </div>
+    <div class="dt" style="margin-top:14px;">
+      <div class="dr"><div class="dterm">Priority</div><div class="dval">Preferred shareholders receive dividends before common shareholders. In liquidation, preferred shareholders rank above common shareholders but below all creditors.</div></div>
+      <div class="dr"><div class="dterm">Tax Advantage</div><div class="dval">Dividends from Canadian corporations receive the dividend tax credit, making preferred share dividends more tax-efficient than interest income for Canadian investors in non-registered accounts.</div></div>
+      <div class="dr"><div class="dterm">No Voting Rights</div><div class="dval">Most preferred shares do not carry voting rights (this is the trade-off for their dividend priority). Some preferred shares gain voting rights if dividends are in arrears for a specified period.</div></div>
+      <div class="dr"><div class="dterm">Interest Rate Sensitivity</div><div class="dval">Because preferred shares pay fixed dividends, their prices move inversely with interest rates — similar to bonds. <strong>Rate-reset preferred shares</strong> reset their dividend rate every 5 years (linked to 5-year Government of Canada bond yield + a spread), reducing long-term interest rate risk.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 7.3 ═══ -->
+<div id="s73" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">7.3</div><h2 class="sec-title">Equity Investor Considerations</h2></div>
+
+  <div class="sub">
+    <h3 class="sub-title">Market Access & Information Sources</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Market Access</div><div class="dval">Canadian equities trade on the TSX (large-cap), TSX Venture (small-cap), NEO Exchange, and various ATSs. Retail investors access through CIRO-registered investment dealers (full-service or discount). Foreign equities are accessible through Canadian dealers routing to recognized foreign markets (FORMs).</div></div>
+      <div class="dr"><div class="dterm">Information Sources</div><div class="dval">SEDAR+ (regulatory filings), company investor relations websites, TSX/TSXV market data, research reports from investment dealers, financial data providers (Bloomberg, Refinitiv), the Globe and Mail, Financial Post, BNN Bloomberg, Statistics Canada for sector data.</div></div>
+      <div class="dr"><div class="dterm">Managed Products vs Individual Equities</div><div class="dval">Individual equities: direct ownership, full transparency, no management fees, but requires research time and expertise. Managed products (mutual funds, ETFs): professional management or passive index exposure, instant diversification, but fees erode returns. The decision depends on: client knowledge, account size, time available, and whether active management can add value after fees.</div></div>
+    </div>
+  </div>
+
+  <div id="s73-div" class="sub">
+    <h3 class="sub-title">How Dividends Are Declared, Received & Taxed</h3>
+    <p class="body">Understanding the dividend process and its tax treatment is a core exam topic. The four key dates are:</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Declaration Date</div><div class="dval">The date the Board of Directors formally declares the dividend — sets the amount, the record date, and the payment date. Before declaration, shareholders have no legal right to the dividend.</div></div>
+      <div class="dr"><div class="dterm">Ex-Dividend Date</div><div class="dval">The first date on which buying the stock does NOT entitle the buyer to the upcoming dividend. Buyers must own shares BEFORE the ex-dividend date to receive the dividend. Stock price typically drops by approximately the dividend amount on the ex-dividend date.</div></div>
+      <div class="dr"><div class="dterm">Record Date</div><div class="dval">The date on which the company checks its register to determine which shareholders are entitled to receive the dividend. To be on record, you must have purchased shares before the ex-dividend date (accounting for T+1 settlement).</div></div>
+      <div class="dr"><div class="dterm">Payment Date</div><div class="dval">The date on which the dividend is actually paid to shareholders on record. Can be days or weeks after the record date.</div></div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Canadian Dividend Taxation — Eligible vs Non-Eligible Dividends</h4>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Eligible Dividends</div><div class="dval">Paid by Canadian public corporations (listed companies) and large CCPCs. Receive the <strong>Enhanced Dividend Tax Credit (EDTC)</strong>. Grossed up by <strong>38%</strong>, then a federal tax credit of <strong>15.02%</strong> of the grossed-up amount is applied. Net effective tax rate is substantially below the rate on interest income at most income levels. These are the most tax-efficient source of investment income in non-registered accounts for most Canadians.</div></div>
+        <div class="dr"><div class="dterm">Non-Eligible Dividends</div><div class="dval">Paid by small and medium CCPCs on income taxed at the small business rate. Grossed up by <strong>15%</strong>, tax credit is <strong>9.03%</strong> federal. Still more advantageous than interest income but less favorable than eligible dividends.</div></div>
+        <div class="dr"><div class="dterm">Foreign Dividends</div><div class="dval">Taxed as ordinary income (like interest) — NO dividend tax credit available for foreign dividends. Additionally, foreign withholding taxes may be deducted at source (e.g., 15% US withholding on US dividends paid to Canadian residents in non-registered or TFSA accounts). US dividends in RRSPs are exempt from US withholding tax under the Canada-US Tax Treaty.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s73-split" class="sub">
+    <h3 class="sub-title">Stock Splits and Consolidations (Reverse Splits)</h3>
+    <div class="cmp-2">
+      <div class="cmp-card v">
+        <div class="cmp-head">Stock Split (e.g., 2-for-1)</div>
+        <div class="cmp-body">The company increases the number of shares outstanding by dividing each existing share into multiple shares. The total market cap stays the same — only the price per share changes.<br><br>
+        <strong>Example:</strong> If you hold 100 shares at $100 = $10,000 total. After a 2-for-1 split: 200 shares at $50 = $10,000. <strong>No change in total value.</strong><br><br>
+        <strong>Why do it?</strong> Makes shares more affordable and accessible to retail investors. Increases liquidity. Often signals management confidence in continued growth.<br><br>
+        <strong>Tax impact:</strong> Adjusted cost base (ACB) per share decreases proportionally. Total ACB unchanged. No immediate tax consequences.</div>
+      </div>
+      <div class="cmp-card a">
+        <div class="cmp-head">Consolidation / Reverse Split (e.g., 1-for-5)</div>
+        <div class="cmp-body">The company reduces the number of shares outstanding — multiple shares are combined into one. Price increases proportionally. Total market cap unchanged.<br><br>
+        <strong>Example:</strong> 500 shares at $1 = $500. After 1-for-5 consolidation: 100 shares at $5 = $500. <strong>No change in total value.</strong><br><br>
+        <strong>Why do it?</strong> Often done when the stock price has fallen very low — to increase the price per share and avoid exchange delisting (many exchanges have minimum price requirements). Or to reduce administrative costs of having too many small shareholders.<br><br>
+        <strong>Signal:</strong> Often viewed negatively — it suggests the company's stock price has declined significantly. ACB per share increases; total ACB unchanged.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Advantages and Disadvantages of Share Ownership</h3>
+    <table>
+      <thead><tr><th>Advantages</th><th>Disadvantages</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Unlimited upside potential</strong> — no cap on how much a stock can appreciate</td><td><strong>Full capital at risk</strong> — can lose entire investment if company fails</td></tr>
+        <tr><td><strong>Dividend income</strong> — potential for regular, tax-efficient income</td><td><strong>Dividend not guaranteed</strong> — can be cut or eliminated at any time</td></tr>
+        <tr><td><strong>Liquidity</strong> — exchange-listed shares can be bought or sold quickly</td><td><strong>Market volatility</strong> — significant short-term price swings</td></tr>
+        <tr><td><strong>Voting rights</strong> — participation in corporate governance</td><td><strong>Residual claim risk</strong> — last to receive proceeds in bankruptcy</td></tr>
+        <tr><td><strong>Tax efficiency</strong> — capital gains taxed at 50% inclusion rate; eligible dividends receive tax credit</td><td><strong>Research burden</strong> — requires ongoing monitoring and analysis</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══ 7.4 ═══ -->
+<div id="s74" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">7.4</div><h2 class="sec-title">Fixed Income — Types, Features, Risks & Returns</h2></div>
+  <p class="body">Fixed income securities represent debt obligations — the issuer borrows money from investors and promises to repay principal at maturity plus periodic interest payments. They rank above equity in the capital structure, providing more security but lower long-term return potential.</p>
+
+  <div id="s74-gov" class="sub">
+    <h3 class="sub-title">Government Bonds</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Government of Canada Bonds</div><div class="dval">The highest credit quality in Canada — backed by the full faith and credit of the federal government. Zero credit risk (theoretically). Canada AAA-rated. Issued at regular auctions by the Bank of Canada. Used as the benchmark ("risk-free rate") against which all other Canadian fixed income is priced. Real Return Bonds (RRBs) protect against inflation by adjusting principal with CPI.</div></div>
+      <div class="dr"><div class="dterm">Provincial Bonds</div><div class="dval">Issued by provincial governments. Slightly higher yield than federal bonds (credit risk depends on province's fiscal situation and credit rating). Ontario and Quebec are the largest provincial issuers. Still very high quality — but cannot issue their own currency, creating slightly more technical credit risk than federal bonds.</div></div>
+      <div class="dr"><div class="dterm">Municipal Bonds</div><div class="dval">Issued by cities and municipalities. Higher yield than provincial bonds. Tax treatment differs — in Canada, unlike the US, municipal bond interest is fully taxable (no special tax exemption). Relatively rare in Canada compared to the US where the municipal market is enormous.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Corporate Bonds</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Investment Grade</div><div class="dval">Rated BBB- or above by S&P/Fitch (Baa3 or above by Moody's). Lower risk, lower yield. Suitable for income-seeking investors who need principal preservation. Canadian banks, major utilities, and large corporations typically issue investment grade debt.</div></div>
+      <div class="dr"><div class="dterm">High-Yield (Junk)</div><div class="dval">Rated below BBB- (below investment grade). Higher yield compensates for higher default probability. Not suitable for conservative investors. More correlated with equities than investment grade bonds. More common in US market than Canada.</div></div>
+      <div class="dr"><div class="dterm">Secured vs Unsecured</div><div class="dval"><strong>Secured</strong> (mortgage bonds, equipment trust certificates): backed by specific assets — lower risk. <strong>Unsecured</strong> (debentures): backed only by the issuer's general credit — higher risk than secured, but still senior to equity. The priority in bankruptcy: secured creditors → unsecured creditors (debenture holders) → preferred shareholders → common shareholders.</div></div>
+      <div class="dr"><div class="dterm">Callable Bonds</div><div class="dval">Issuer has the right to redeem (call) the bond before maturity at a specified price (call price, usually at a premium to par). Call risk: when interest rates fall, the issuer calls and refinances at lower rates — hurting the investor who must then reinvest at lower rates. Callable bonds pay a higher yield to compensate for call risk.</div></div>
+    </div>
+  </div>
+
+  <div id="s74-strip" class="sub">
+    <h3 class="sub-title">STRIPs, Treasury Bills & Commercial Paper</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">STRIPs</div><div class="dval"><strong>Separate Trading of Registered Interest and Principal of Securities.</strong> Created by "stripping" a regular coupon bond into its individual cash flows — each coupon payment and the principal repayment become separate zero-coupon instruments. Traded at a deep discount to face value; no periodic interest payments; interest accrues to maturity. <strong>Risk:</strong> Highest duration risk of any bond — entire return comes at maturity, so they're extremely price-sensitive to interest rate changes. Very useful for pension funds wanting to match specific future liabilities.</div></div>
+      <div class="dr"><div class="dterm">Treasury Bills (T-bills)</div><div class="dval">Short-term Government of Canada debt, maturing in 3, 6, or 12 months. Zero-coupon — issued at a discount to face value. The difference between purchase price and face value at maturity is the return. Considered the safest, most liquid instrument in Canada. Used as the Canadian "risk-free rate" for short-term investments. Interest income for tax purposes (not capital gain).</div></div>
+      <div class="dr"><div class="dterm">Commercial Paper (CP)</div><div class="dval">Short-term unsecured promissory notes issued by corporations, financial institutions, or government agencies. Maturities typically 1–365 days. Issued at a discount (like T-bills). <strong>Higher yield than T-bills</strong> (credit risk). Used by large corporations to fund short-term working capital needs. Requires high credit rating — most CP is issued by A-rated or better entities. The 2007–08 Asset-Backed Commercial Paper (ABCP) crisis froze Canada's $30B+ ABCP market, highlighting liquidity and credit risks embedded in structured CP.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 7.5 ═══ -->
+<div id="s75" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">7.5</div><h2 class="sec-title">Fixed Income Investor Considerations</h2></div>
+
+  <div id="s75-yield" class="sub">
+    <h3 class="sub-title">The Difference Between Bond Coupon and Bond Yield</h3>
+    <p class="body">This distinction is one of the most tested concepts in Element 7. Many candidates confuse coupon and yield — they are related but fundamentally different concepts.</p>
+    <div class="bond-example">
+      <div class="be-title">Bond Example — Coupon vs Yield</div>
+      <div class="be-row"><span class="be-label">Face value (par value)</span><span class="be-val">$1,000</span></div>
+      <div class="be-row"><span class="be-label">Coupon rate (stated on the bond)</span><span class="be-val">5% per year = $50/year</span></div>
+      <div class="be-row"><span class="be-label">Market interest rates rise to 7%</span><span class="be-val">Bond price falls below par</span></div>
+      <div class="be-row"><span class="be-label">Bond now trades at (approx.)</span><span class="be-val">~$857</span></div>
+      <div class="be-row"><span class="be-label">Current yield = $50 / $857</span><span class="be-val">= 5.83%</span></div>
+      <div class="be-row"><span class="be-label">Yield to Maturity (YTM)</span><span class="be-val">≈ 7% (includes capital gain to par)</span></div>
+    </div>
+    <div class="be-formula">Coupon Rate = Annual Interest / Face Value (FIXED — never changes after issuance)
+Yield to Maturity = Total return if held to maturity, accounting for price paid (CHANGES with market price)</div>
+
+    <div class="dt">
+      <div class="dr"><div class="dterm">Coupon Rate</div><div class="dval">The fixed annual interest rate stated on the bond at issuance. Expressed as a percentage of face value. Does NOT change. A 5% coupon on a $1,000 bond always pays $50/year regardless of market price.</div></div>
+      <div class="dr"><div class="dterm">Current Yield</div><div class="dval">Annual interest payment ÷ current market price. Changes as price changes. Ignores capital gain/loss to maturity — a partial measure of yield.</div></div>
+      <div class="dr"><div class="dterm">Yield to Maturity (YTM)</div><div class="dval">The complete measure of bond return — the discount rate that equates the present value of all future cash flows (coupons + face value) to the current market price. The most important yield concept for the exam. When market price < par: YTM > coupon rate. When market price > par: YTM < coupon rate.</div></div>
+      <div class="dr"><div class="dterm">Price-Yield Relationship</div><div class="dval"><strong>Bond prices and yields move inversely.</strong> This is the most fundamental relationship in fixed income: rates rise → prices fall; rates fall → prices rise. Understanding WHY: when new bonds offer higher yields, existing bonds with lower coupons must decline in price to offer equivalent returns.</div></div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">How Coupons Are Declared, Received & Taxed</h4>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Payment</div><div class="dval">Bond coupons are typically paid semi-annually (every 6 months). Some bonds pay quarterly or annually. The amount is fixed: coupon rate × face value ÷ payment frequency.</div></div>
+        <div class="dr"><div class="dterm">Taxation</div><div class="dval">Bond interest income is taxed as <strong>ordinary income</strong> at the investor's full marginal tax rate — the most heavily taxed form of investment income. No dividend tax credit; no capital gains half-inclusion. For this reason, bonds are ideally held in tax-sheltered accounts (RRSP, TFSA) where the tax is deferred or eliminated.</div></div>
+        <div class="dr"><div class="dterm">Accrued Interest</div><div class="dval">When a bond is bought between coupon dates, the buyer pays the price PLUS accrued interest (the portion of the next coupon that has accrued since the last payment). The seller effectively collects the accrued portion through the purchase price; the buyer receives the full next coupon but has already paid for the accrued portion.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s75-risk" class="sub">
+    <h3 class="sub-title">Components of Bond Risk — Term, Credit Rating & Duration</h3>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Term (Maturity) Risk</h4>
+      <p class="body">The longer the term to maturity, the more interest rate risk the bond carries. A 30-year bond will fluctuate far more in price for a given interest rate change than a 1-year bond. This is because more of the bond's cash flows are far in the future and therefore discounted at the new rate for longer.</p>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Credit Rating</h4>
+      <p class="body">Credit rating agencies (S&P, Moody's, DBRS Morningstar in Canada) assess an issuer's ability to repay its debt obligations. Ratings determine the <strong>credit spread</strong> — the additional yield investors require over government bonds to compensate for default risk.</p>
+      <table>
+        <thead><tr><th>S&P / DBRS</th><th>Moody's</th><th>Category</th><th>Typical Spread Over GoC</th></tr></thead>
+        <tbody>
+          <tr><td><strong>AAA</strong></td><td>Aaa</td><td>Highest quality, minimal risk</td><td>5–25 bps</td></tr>
+          <tr><td><strong>AA</strong></td><td>Aa</td><td>Very high quality</td><td>20–60 bps</td></tr>
+          <tr><td><strong>A</strong></td><td>A</td><td>Upper medium grade</td><td>50–120 bps</td></tr>
+          <tr><td><strong>BBB</strong></td><td>Baa</td><td>Investment grade (lowest)</td><td>100–250 bps</td></tr>
+          <tr><td><strong>BB / B</strong></td><td>Ba / B</td><td>Speculative / High yield</td><td>300–700 bps</td></tr>
+          <tr><td><strong>CCC or below</strong></td><td>Caa</td><td>Near default or in default</td><td>700+ bps</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Duration — The Master Risk Measure</h4>
+      <p class="body"><strong>Duration</strong> is the most precise measure of a bond's sensitivity to interest rate changes. It measures the weighted average time to receive the bond's cash flows — expressed in years. A bond with duration of 7 years will lose approximately <strong>7% in price for every 1% rise in interest rates</strong> (modified duration).</p>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Macaulay Duration</div><div class="dval">The weighted average time until cash flows are received, where weights = PV of each cash flow ÷ total bond price. Always expressed in years. For a zero-coupon bond: duration = maturity. For a coupon bond: duration < maturity (because some cash flows arrive earlier as coupons).</div></div>
+        <div class="dr"><div class="dterm">Modified Duration</div><div class="dval">= Macaulay Duration / (1 + YTM/n). The most practically useful measure: <strong>% change in price ≈ −Modified Duration × % change in yield</strong>. Example: bond with modified duration of 6, yield rises 1% → price falls ~6%.</div></div>
+        <div class="dr"><div class="dterm">Duration Rules</div><div class="dval">Duration increases with: longer maturity, lower coupon rate, lower yield. Duration decreases with: higher coupon (more earlier cash flows), shorter maturity. STRIPs have the longest duration (all cash flow at maturity = duration equals maturity).</div></div>
+      </div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Factors That Affect Bond Yield</h4>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Benchmark Rate</div><div class="dval">The Bank of Canada overnight rate sets the foundation. All Canadian bond yields are anchored to government bond yields, which reflect the expected path of the overnight rate.</div></div>
+        <div class="dr"><div class="dterm">Inflation Expectations</div><div class="dval">Higher inflation expectations → higher bond yields (investors demand compensation for expected purchasing power erosion). Surprise inflation spikes are very negative for bond prices.</div></div>
+        <div class="dr"><div class="dterm">Credit Quality</div><div class="dval">Lower credit rating → higher credit spread → higher yield. Spreads widen during economic downturns (credit risk increases) and tighten during recoveries.</div></div>
+        <div class="dr"><div class="dterm">Liquidity</div><div class="dval">Less liquid bonds trade at a yield premium (liquidity premium) to compensate investors for the difficulty of selling. Government bonds are most liquid; some corporate bonds trade by appointment.</div></div>
+        <div class="dr"><div class="dterm">Supply and Demand</div><div class="dval">Large government deficits increase bond supply → puts upward pressure on yields. Central bank bond purchases (QE) increase demand → pushes yields down.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 7.6 ═══ -->
+<div id="s76" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">7.6</div><h2 class="sec-title">Market Indices — Purpose, Construction & Uses</h2></div>
+  <p class="body">Market indices are mathematical constructs that track the performance of a defined set of securities — providing a snapshot of market performance, a benchmark for investment managers, and the underlying basis for index-linked investment products.</p>
+
+  <div id="s76-types" class="sub">
+    <h3 class="sub-title">How Index Values Are Constructed — Market Value Weighted vs Price Weighted</h3>
+    <div class="index-example">
+      <div class="idx-t">Market Value (Cap) Weighted vs Price Weighted — The Critical Distinction</div>
+      <div class="cmp-2">
+        <div class="cmp-card v">
+          <div class="cmp-head">Market Value Weighted (Cap Weighted)</div>
+          <div class="cmp-body">
+            Each component's weight = its market capitalization ÷ total market cap of all components.<br><br>
+            <strong>How it works:</strong> A company worth $100B has 10× the weight of a $10B company.<br><br>
+            <strong>Examples:</strong> S&P/TSX Composite, S&P 500, MSCI World — ALL major equity indices.<br><br>
+            <strong>Implication:</strong> Larger companies dominate performance. When the largest companies do well (or poorly), the index moves substantially. The S&P 500 is heavily influenced by a handful of mega-cap tech stocks (Apple, Microsoft, Nvidia).<br><br>
+            <strong>Rebalancing:</strong> Automatic — as market caps change, weights update constantly.
+          </div>
+        </div>
+        <div class="cmp-card a">
+          <div class="cmp-head">Price Weighted</div>
+          <div class="cmp-body">
+            Each component's weight = its share price ÷ sum of all component prices. Higher-priced shares have more influence regardless of company size.<br><br>
+            <strong>Example:</strong> Dow Jones Industrial Average (DJIA), Nikkei 225.<br><br>
+            <strong>Problem:</strong> A $400 stock has 4× the influence of a $100 stock even if the $100 stock represents a far larger company. Stock splits change weights artificially — a "divisor" is used to adjust for splits.<br><br>
+            <strong>Why it's used:</strong> Historical — the DJIA was created in 1896 when price weighting was simpler to calculate. No longer considered the most representative index method.<br><br>
+            <strong>Index vs Average:</strong> Technically, the DJIA is an "average" (price-weighted sum) not a true index. NI 81-102 defines an "index" as a rules-based benchmark.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Price Return vs Total Return Index</h4>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Price Return Index</div><div class="dval">Tracks only the capital gains (or losses) component of returns — price changes only. Dividends are NOT included. The S&P/TSX Composite is often quoted as a price return index in headlines (e.g., "the TSX gained 8% this year"). This understates true investor returns.</div></div>
+        <div class="dr"><div class="dterm">Total Return Index</div><div class="dval">Includes price changes AND all dividend/income reinvested. The <strong>true measure of investor returns</strong>. For dividend-heavy markets like Canada (banks, utilities pay significant dividends), total return can be 2–3% per year higher than price return. Most performance benchmarks for fund managers use total return indices.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="s76-use" class="sub">
+    <h3 class="sub-title">Types of Indices & How They're Used</h3>
+    <table>
+      <thead><tr><th>Index Type</th><th>Examples</th><th>Use Case</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Asset Class — Equity</strong></td><td>S&P/TSX Composite, S&P 500, Russell 2000</td><td>Overall equity market performance; ETF underlyings</td></tr>
+        <tr><td><strong>Asset Class — Bond</strong></td><td>FTSE Canada Universe Bond Index</td><td>Fixed income benchmark; bond ETF underlyings</td></tr>
+        <tr><td><strong>Sector</strong></td><td>S&P/TSX Energy Index, MSCI Financials</td><td>Sector rotation analysis; sector ETFs</td></tr>
+        <tr><td><strong>Country</strong></td><td>MSCI Canada, MSCI Japan</td><td>Country-specific equity exposure; geographic diversification</td></tr>
+        <tr><td><strong>International</strong></td><td>MSCI World, MSCI Emerging Markets, MSCI EAFE</td><td>Global diversification; comparison across geographies</td></tr>
+        <tr><td><strong>Factor / Smart Beta</strong></td><td>MSCI Quality, MSCI Minimum Volatility</td><td>Systematic factor exposure; rules-based ETFs</td></tr>
+      </tbody>
+    </table>
+
+    <div class="subsub">
+      <h4 class="subsub-title">Using Indices for Benchmarking</h4>
+      <p class="body">Every investment manager or investment strategy must be compared against an <strong>appropriate benchmark</strong>. The benchmark must reflect the manager's investable universe. Key benchmarking concepts:</p>
+      <div class="chk">
+        <div class="chi"><span class="chico">◆</span><div><strong>Alpha:</strong> Return above the benchmark after fees. Positive alpha = manager added value. Negative alpha = manager destroyed value vs passive benchmark. Most active managers produce negative alpha after fees over long periods.</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Beta:</strong> Sensitivity of portfolio to benchmark movements. Beta of 1.2 = portfolio moves 1.2% for every 1% benchmark move (more volatile). Beta < 1 = less volatile than benchmark.</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Tracking Error:</strong> Standard deviation of the difference between portfolio returns and benchmark returns. Low tracking error = closely follows benchmark. High tracking error = significant deviation — either active management or poor index replication.</div></div>
+        <div class="chi"><span class="chico">◆</span><div><strong>Sharpe Ratio:</strong> (Portfolio return − risk-free rate) ÷ Portfolio standard deviation. Measures risk-adjusted return. Higher is better. Compares managers on an apples-to-apples basis regardless of risk taken.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 7.7 ═══ -->
+<div id="s77" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">7.7</div><h2 class="sec-title">Types of Pooled Products</h2></div>
+  <p class="body">Pooled products allow multiple investors to combine their capital into a single fund managed collectively — providing access to diversification, professional management, and asset classes that might be inaccessible or uneconomical individually.</p>
+  <div class="mp-grid">
+    <div class="mp-card mft">
+      <div class="mp-head">Mutual Funds</div>
+      <div class="mp-body">Open-ended: continuously issues and redeems units. Priced once daily at NAV after market close. Most common pooled product — $1.1T+ AUM in Canada. Broad retail access through dealers. Subject to NI 81-101 and NI 81-102.</div>
+    </div>
+    <div class="mp-card ce">
+      <div class="mp-head">Closed-End Funds</div>
+      <div class="mp-body">Fixed number of units issued at IPO. Units trade on stock exchange like shares — at market price (can be at premium or discount to NAV). Manager does not issue new units or redeem existing ones. Can use more leverage than open-ended funds.</div>
+    </div>
+    <div class="mp-card etf">
+      <div class="mp-head">Exchange-Traded Funds (ETFs)</div>
+      <div class="mp-body">Hybrid: open-ended fund that trades on exchange like a stock throughout the day. Creation/redemption mechanism by designated brokers keeps market price close to NAV. Rapidly growing — Canada now has $500B+ ETF AUM.</div>
+    </div>
+    <div class="mp-card reit">
+      <div class="mp-head">REITs</div>
+      <div class="mp-body">Real Estate Investment Trusts. Pool capital to invest in commercial real estate (office, retail, industrial, residential). Trade on exchange. Must distribute 90%+ of taxable income (usually monthly). High income distributions but interest rate sensitive.</div>
+    </div>
+    <div class="mp-card wrap">
+      <div class="mp-head">Pooled Funds</div>
+      <div class="mp-body">Similar to mutual funds but NOT publicly offered — available only to accredited/institutional investors. Not subject to the same NI 81-102 restrictions (more flexible investment strategies). Lower fees than retail mutual funds at comparable AUM.</div>
+    </div>
+    <div class="mp-card hf">
+      <div class="mp-head">Income Trusts</div>
+      <div class="mp-body">Structure that allows businesses or assets to distribute income directly to unitholders in a tax-efficient manner. Common for pipelines (pipeline income trusts), oil sands, resource royalties. Many converted to corporations after 2011 tax changes. REITs are the main surviving income trust category.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 7.8 ═══ -->
+<div id="s78" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">7.8</div><h2 class="sec-title">Managed Products — Features, Risks & Returns</h2></div>
+
+  <div class="dt">
+    <div class="dr"><div class="dterm">Mutual Fund Trust</div><div class="dval">Most common structure. Flow-through tax treatment — income, dividends, and capital gains are distributed to unitholders and taxed in their hands (not at the fund level). Multiple series possible (Series A vs Series F vs Series I) with different fee structures. Units can be purchased daily at NAV. Governed by NI 81-102.</div></div>
+    <div class="dr"><div class="dterm">Mutual Fund Corporation</div><div class="dval">Corporate structure — investors own shares instead of units. Advantage: allows tax-efficient switching between funds within the same corporate structure without triggering a taxable disposition (useful for fund-of-funds or wrap programs). Less common than trust structure.</div></div>
+    <div class="dr"><div class="dterm">Closed-End Funds</div><div class="dval">Fixed capital structure. Can trade at significant discount to NAV (if market is bearish on the fund) or premium (if there's demand for a unique strategy). The discount/premium is a key risk for investors. Can employ more leverage and hold illiquid assets (because they don't face daily redemptions). Split shares are a type of closed-end fund.</div></div>
+    <div class="dr"><div class="dterm">Wrap Funds / Fund of Funds</div><div class="dval">Fund that invests in other funds rather than individual securities. "Wrap" includes asset allocation oversight, regular rebalancing, and a single all-inclusive fee. <strong>Double layer of fees</strong> risk: the wrap fund charges a fee on top of the underlying funds' fees. Key for KYP — must understand both layers of costs.</div></div>
+    <div class="dr"><div class="dterm">Exchange-Traded Funds</div><div class="dval">Detailed in section 7.11. Key features: intraday trading, low MER (for passive ETFs), creation/redemption mechanism, high transparency. Can be passive (index) or actively managed. As of July 2025, CIRO amended UMIR to require transparency around ETF orders executed at NAV price.</div></div>
+    <div class="dr"><div class="dterm">Pooled Funds</div><div class="dval">Institutional-grade pools — no retail prospectus filing requirement. Managed under investment mandate agreed with large investors. Lower costs, more flexible strategies. Not CIPF eligible (institutional clients). Minimum investment often $1M+.</div></div>
+  </div>
+</div>
+
+<!-- ═══ 7.9 ═══ -->
+<div id="s79" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">7.9</div><h2 class="sec-title">Managed Product Investor Considerations</h2></div>
+
+  <div class="sub">
+    <h3 class="sub-title">Range of Exposures & Diversification</h3>
+    <p class="body">Managed products give investors access to a vast range of exposures impossible to replicate cost-effectively with individual securities, especially for smaller portfolios:</p>
+    <div class="cmp-3">
+      <div class="cmp-card v">
+        <div class="cmp-head">By Asset Class</div>
+        <div class="cmp-body">Cash, fixed income, equity, real estate (REITs), infrastructure, commodities, alternatives. Multi-asset balanced funds blend multiple asset classes in a single vehicle with automatic rebalancing.</div>
+      </div>
+      <div class="cmp-card s">
+        <div class="cmp-head">By Sector</div>
+        <div class="cmp-body">Technology, healthcare, financials, energy, materials, utilities. Sector funds allow tactical overweights or thematic investing (e.g., clean energy, AI, cannabis) without stock-picking risk.</div>
+      </div>
+      <div class="cmp-card e">
+        <div class="cmp-head">By Geography</div>
+        <div class="cmp-body">Canadian, US, global developed, emerging markets, frontier markets, country-specific. Reduces home bias. Canadian investors historically over-weight Canadian equities (home bias risk in a market that represents only ~3% of global market cap).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Advantages and Disadvantages of Managed Products</h3>
+    <table>
+      <thead><tr><th>Advantages</th><th>Disadvantages</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Instant diversification</strong> even with small amounts</td><td><strong>Fees erode returns</strong> — MER, trading expense ratio, trailing commissions all compound against the investor</td></tr>
+        <tr><td><strong>Professional management</strong> and research capability</td><td><strong>Lack of control</strong> — investor cannot choose specific holdings or time individual trades</td></tr>
+        <tr><td><strong>Accessibility</strong> — minimum investment as low as $500</td><td><strong>Tax inefficiency</strong> — capital gains distributions can occur even when the investor has not sold units</td></tr>
+        <tr><td><strong>Liquidity</strong> — daily redemption (mutual funds) or intraday (ETFs)</td><td><strong>Active underperformance</strong> — most active funds underperform their benchmark after fees over time</td></tr>
+        <tr><td><strong>Regulatory oversight</strong> — subject to NI 81-102 investor protections</td><td><strong>Double fees</strong> in wrap/fund-of-funds structures</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Impact of Fees, Turnover & Taxes on Managed Product Returns</h3>
+    <div class="callout rose">
+      <div class="ci">🚨</div>
+      <div class="cb"><div class="cl">January 2026 — Total Cost Reporting (TCR) Enhancement</div><p>Effective <strong>January 1, 2026</strong>, CIRO's enhanced cost reporting requirements (TCR Amendments to IDPC Rules and MFD Rules) require dealers to disclose ALL investment fund costs in dollar amounts in client account reports — including costs embedded in fund MERs that are not directly paid by the client. This includes mutual funds, ETFs, scholarship plans, and foreign funds. This is the most significant disclosure change since CRM2 in 2016 and will make fund costs far more transparent to investors.</p></div>
+    </div>
+    <div class="dt">
+      <div class="dr"><div class="dterm">MER Impact</div><div class="dval">The annual drag of the Management Expense Ratio compounds over time and dramatically reduces long-term wealth. A 2% MER on a $200,000 portfolio = $4,000/year in fees before any performance is considered. Over 20 years, this can cost hundreds of thousands in foregone compounding. Every 1% MER reduction adds approximately 20% more wealth over a 20-year period.</div></div>
+      <div class="dr"><div class="dterm">Portfolio Turnover</div><div class="dval">High turnover in actively managed funds generates trading costs (included in TER — Trading Expense Ratio) and creates taxable capital gains events in non-registered accounts. Even if the investor didn't sell any units, if the fund sold securities at a gain, the capital gain is distributed to unitholders and taxed. Low-turnover index funds and ETFs are more tax-efficient.</div></div>
+      <div class="dr"><div class="dterm">Tax Drag</div><div class="dval">In non-registered accounts, annual distributions of interest income, dividends, and capital gains from managed products create immediate tax obligations — even if units are not sold. Tax drag can be 0.5–1.5% per year for actively managed funds in taxable accounts. ETFs and index funds minimize this through low turnover.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 7.10 ═══ -->
+<div id="s710" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">7.10</div><h2 class="sec-title">Mutual Fund — Key Investor Considerations</h2></div>
+
+  <div id="s710-ff" class="sub">
+    <h3 class="sub-title">The Fund Facts Document — Mandatory Disclosure</h3>
+    <p class="body">The <strong>Fund Facts</strong> document is a mandatory, standardized 2-page plain language summary of key information for each mutual fund series. It was introduced by the CSA in 2013 and must be <strong>delivered to the investor before or at the point of sale</strong> (i.e., before accepting the purchase order). If delivered after, the investor has the right of withdrawal.</p>
+    <div class="chk">
+      <div class="chi"><span class="chico">◆</span><div><strong>Fund name, series, and fund code</strong> — unambiguously identifies which fund</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Date of document</strong> — must be current (refreshed at least annually)</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Investment objectives and strategies</strong> — what the fund invests in and how</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Top 10 holdings</strong> — the fund's 10 largest positions, providing insight into actual exposures</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Risk rating</strong> — on a 5-point scale from Low to High (see below)</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Past performance</strong> — year-by-year returns for up to 10 years AND average returns for 1, 3, 5, 10 years</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Cost information</strong> — MER, sales charges, trailing commissions, fund expenses</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Right of withdrawal</strong> — investor can withdraw from a purchase within 2 business days; right of rescission within applicable limitation period if Fund Facts not delivered pre-sale</div></div>
+      <div class="chi"><span class="chico">◆</span><div><strong>Who manages the fund</strong> — fund manager, portfolio advisor</div></div>
+    </div>
+    <div class="callout amber">
+      <div class="ci">⚠️</div>
+      <div class="cb"><div class="cl">Key Risk Rating Methodology</div><p>The CSA mandates a <strong>standard risk classification methodology</strong> for mutual funds. Funds are rated on a 5-point scale based on 10-year standard deviation of monthly returns: <strong>Low, Low to Medium, Medium, Medium to High, High</strong>. A new fund uses a reference index if it lacks 10 years of history. Funds must reassess their risk rating annually. This methodology ensures all dealers and fund companies use consistent terminology when describing risk.</p></div>
+    </div>
+  </div>
+
+  <div id="s710-price" class="sub">
+    <h3 class="sub-title">Mutual Fund Pricing Methods</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Net Asset Value (NAV)</div><div class="dval">NAV = (Total Assets − Total Liabilities) ÷ Units Outstanding. Calculated after market close each business day. This is the price at which units are purchased and redeemed. Unlike ETFs, mutual fund investors do not know the exact price when they submit a purchase — they buy at the "unknown" forward price (end-of-day NAV).</div></div>
+      <div class="dr"><div class="dterm">Forward Pricing</div><div class="dval">All mutual fund orders received before the fund's cutoff time (typically 3:00 or 4:00 pm ET) execute at that day's NAV. Orders received after cutoff execute at the NEXT day's NAV. This prevents market timing abuse (buying funds knowing they will price higher or lower based on after-market news).</div></div>
+      <div class="dr"><div class="dterm">Settlement</div><div class="dval">Mutual fund purchases typically settle in <strong>T+2</strong> (two business days after the order date). Some money market funds settle same day (T+0). Different from equity T+1.</div></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3 class="sub-title">Sales Charge Structures</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">No Load</div><div class="dval">No sales charge on purchase or redemption. Advisor typically compensated through trailing commissions embedded in the MER. Most common structure today.</div></div>
+      <div class="dr"><div class="dterm">Front-End Load (Initial Sales Charge)</div><div class="dval">Sales commission deducted at purchase (e.g., 0–5% of purchase price). Negotiable with the dealer. Reduces the amount actually invested. Must be disclosed in Fund Facts.</div></div>
+      <div class="dr"><div class="dterm">DSC (Deferred Sales Charge)</div><div class="dval"><strong>BANNED</strong> — the CSA prohibited DSC mutual funds effective June 2022. New DSC investments cannot be made by retail investors in Canada as of that date. DSC funds sold before June 2022 may still exist with residual redemption schedules that run off. The ban was a major investor protection measure — DSC trapped investors in unsuitable funds.</div></div>
+      <div class="dr"><div class="dterm">Low Load</div><div class="dval">A reduced DSC schedule — lower fees that decline to zero over a shorter period (e.g., 3 years rather than 7). Also affected by the DSC ban — Low Load was similarly prohibited for new sales as of June 2022.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 7.11 ═══ -->
+<div id="s711" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">7.11</div><h2 class="sec-title">Exchange-Traded Funds (ETFs) — Key Investor Considerations</h2></div>
+
+  <div id="s711-nav" class="sub">
+    <h3 class="sub-title">ETF Pricing — Market Price vs NAV</h3>
+    <p class="body">One of the most important features distinguishing ETFs from mutual funds is their pricing mechanism. ETFs trade <em>continuously</em> throughout the day at market prices, but their true underlying value (NAV) is calculated separately.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Market Price</div><div class="dval">The price at which ETF units trade on the stock exchange at any given moment — determined by supply and demand between buyers and sellers. Can differ from NAV.</div></div>
+      <div class="dr"><div class="dterm">INAV (Indicative NAV)</div><div class="dval">Published every 15 seconds during trading hours — a real-time estimate of the ETF's underlying portfolio value. Used by market makers to price the ETF accurately.</div></div>
+      <div class="dr"><div class="dterm">Premium</div><div class="dval">When market price > NAV: ETF trades at a premium. Designated brokers (DBs) can create new ETF units by delivering the underlying basket of securities to the fund manager (creation mechanism), which arbitrages away the premium.</div></div>
+      <div class="dr"><div class="dterm">Discount</div><div class="dval">When market price < NAV: ETF trades at a discount. DBs can redeem ETF units for the underlying basket (redemption mechanism), which arbitrages away the discount. This creation/redemption mechanism is what keeps ETF prices close to NAV — unlike closed-end funds which can trade at persistent discounts/premiums.</div></div>
+      <div class="dr"><div class="dterm">ETF Facts Delivery</div><div class="dval">Similar to Fund Facts, the <strong>ETF Facts document</strong> must be delivered within <strong>2 business days</strong> after the dealer accepts the client's purchase order (post-sale delivery — unlike mutual funds' pre-sale requirement). The ETF Facts document contains equivalent information to Fund Facts plus ETF-specific items (e.g., trading information, premium/discount history).</div></div>
+    </div>
+  </div>
+
+  <div id="s711-vs" class="sub">
+    <h3 class="sub-title">ETF vs Mutual Fund — Full Comparison</h3>
+    <div class="etf-mf">
+      <div class="etf-mf-header">
+        <div>Feature</div><div>ETF</div><div>Mutual Fund</div>
+      </div>
+      <div class="etf-mf-row"><div>Pricing</div><div>Intraday market price; continuous</div><div>Once daily at NAV (forward pricing)</div></div>
+      <div class="etf-mf-row"><div>Trading</div><div>Exchange; through broker; commission may apply</div><div>Direct with fund company or through dealer; no market impact</div></div>
+      <div class="etf-mf-row"><div>Minimum Investment</div><div>Price of one unit ($5–$500+ for most)</div><div>$500–$1,000 typical minimum</div></div>
+      <div class="etf-mf-row"><div>MER (passive)</div><div>0.05%–0.30% for index ETFs</div><div>Higher (passive MF is rare in Canada)</div></div>
+      <div class="etf-mf-row"><div>MER (active)</div><div>0.40%–1.20% for active ETFs</div><div>1.50%–2.50% for active funds</div></div>
+      <div class="etf-mf-row"><div>Tax Efficiency</div><div>Very high — creation/redemption mechanism avoids forced capital gains distributions</div><div>Lower — redemptions may force selling with taxable gains distributed to all holders</div></div>
+      <div class="etf-mf-row"><div>Transparency</div><div>Daily holdings disclosure (most ETFs)</div><div>Quarterly holdings disclosure (typically)</div></div>
+      <div class="etf-mf-row"><div>Short Selling / Options</div><div>Yes — ETF units can be shorted or used with options</div><div>No — mutual fund units cannot be shorted</div></div>
+      <div class="etf-mf-row"><div>Leverage</div><div>Leveraged ETFs available (1.25×, 2×)</div><div>Limited leverage under NI 81-102</div></div>
+      <div class="etf-mf-row"><div>Disclosure Document</div><div>ETF Facts (2 days post-sale)</div><div>Fund Facts (pre-sale)</div></div>
+      <div class="etf-mf-row"><div>DSC Charges</div><div>None — ETF units trade at market price</div><div>No new DSC since June 2022</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 7.12 ═══ -->
+<div id="s712" class="sec">
+  <div class="sec-rule"></div>
+  <div class="sec-hdr"><div class="sec-badge">7.12</div><h2 class="sec-title">Alternative Investments — Hedge Funds, Structured Products, Crypto & ESG</h2></div>
+
+  <div id="s712-hf" class="sub">
+    <h3 class="sub-title">Hedge Funds</h3>
+    <p class="body">Hedge funds are privately offered investment vehicles that use sophisticated strategies unavailable to conventional mutual funds — including short selling, leverage, derivatives, and illiquid investments. They aim to generate returns uncorrelated to traditional markets ("absolute return"). Available primarily to accredited investors.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Key Features</div><div class="dval">Flexible mandates — can go long, short, use leverage, trade derivatives, invest globally across asset classes. Not subject to the same NI 81-102 restrictions as mutual funds. Generally offered under prospectus exemptions (accredited investor, minimum amount). Higher minimum investment ($100K–$1M+).</div></div>
+      <div class="dr"><div class="dterm">Fee Structure</div><div class="dval">"2 and 20" — <strong>2% annual management fee + 20% performance fee on profits</strong>. The performance fee aligns manager incentives but creates an "option-like" incentive structure that rewards risk-taking. Typically includes a <strong>high-water mark</strong> — manager must recover prior losses before charging a new performance fee.</div></div>
+      <div class="dr"><div class="dterm">Liquidity</div><div class="dval">Typically <strong>limited liquidity</strong> — quarterly redemptions with 30–90 day notice, or annual liquidity only. Some have <strong>lock-up periods</strong> (1–3 years) where redemptions are not permitted. Not suitable for clients needing near-term access to capital.</div></div>
+      <div class="dr"><div class="dterm">Common Strategies</div><div class="dval"><strong>Long/Short Equity:</strong> Buy undervalued stocks, short overvalued ones. <strong>Market Neutral:</strong> Equal long and short exposure — eliminates market beta. <strong>Global Macro:</strong> Top-down bets on currencies, rates, commodities. <strong>Event-Driven:</strong> M&A arbitrage, distressed investing. <strong>Quantitative:</strong> Algorithm-based systematic strategies.</div></div>
+      <div class="dr"><div class="dterm">Disclosure (Canada)</div><div class="dval">Alternative mutual funds (liquid alternatives) offered to retail investors under NI 81-102 with special rules allowing some leverage and short selling. Must provide Fund Facts. Traditional hedge funds under prospectus exemption use Offering Memorandum — less stringent disclosure.</div></div>
+    </div>
+  </div>
+
+  <div id="s712-sp" class="sub">
+    <h3 class="sub-title">Structured Products & Alternative Investment Funds</h3>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Structured Products</div><div class="dval">Complex securities engineered to achieve specific risk-return profiles, typically by combining a fixed income component with a derivative overlay. Examples: Principal Protected Notes (PPN — guarantee return of principal at maturity + market upside), Equity-Linked GICs, Buffer ETFs (limit downside while capping upside). <strong>Key risks:</strong> Credit risk of the issuer (if bank goes bankrupt, PPN may be worthless despite "guarantee"), liquidity risk (often hold to maturity), complexity risk (clients may not understand the payoff structure).</div></div>
+      <div class="dr"><div class="dterm">Alternative Investment Funds</div><div class="dval">Funds that use alternative strategies — private equity, private credit, infrastructure, real assets, commodities. Growing in Canada as regulators allow retail access to previously institutional-only strategies. Key concerns: valuation uncertainty (illiquid assets are hard to value daily), leverage, longer lock-up periods. Require enhanced KYP and suitability assessment.</div></div>
+    </div>
+  </div>
+
+  <div id="s712-crypto" class="sub">
+    <h3 class="sub-title">Crypto Assets</h3>
+    <p class="body">Canada was a global pioneer in approving crypto-asset investment products for retail investors — the world's first Bitcoin ETFs launched on the TSX in February 2021.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Types Available in Canada</div><div class="dval">Spot Bitcoin and Ethereum ETFs (e.g., Purpose Bitcoin ETF, CI Galaxy Bitcoin ETF). Crypto mutual funds. Crypto-asset trading platforms (CTPs) regulated by the CSA. Direct crypto ownership through unregulated or regulated exchanges (Coinsquare, Wealthsimple Crypto).</div></div>
+      <div class="dr"><div class="dterm">Key Risks</div><div class="dval"><strong>Extreme volatility</strong> — Bitcoin has experienced 70–80%+ drawdowns multiple times. <strong>Regulatory risk</strong> — evolving global regulatory environment. <strong>Custody risk</strong> — loss or theft of private keys (self-custody). <strong>Market manipulation</strong> risk — unregulated markets. <strong>Liquidity risk</strong> — some crypto assets can become illiquid rapidly.</div></div>
+      <div class="dr"><div class="dterm">Regulatory Framework</div><div class="dval">CSA requires crypto-asset trading platforms (CTPs) to register and meet investor protection standards. Canadian-registered crypto ETFs must comply with NI 81-102 (modified requirements). Custody of crypto assets for retail products must be with qualified custodians. KYP obligation for RRs recommending crypto products is significant — must understand blockchain mechanics, custody, and all specific risks.</div></div>
+      <div class="dr"><div class="dterm">Suitability Considerations</div><div class="dval">Crypto assets are <strong>speculative investments</strong> unsuitable for risk-averse or conservative investors. Even for growth-oriented investors, crypto should typically represent only a small portion of the portfolio. The high volatility means crypto has low duration utility for capital preservation or income objectives.</div></div>
+    </div>
+  </div>
+
+  <div id="s712-esg" class="sub">
+    <h3 class="sub-title">ESG-Related Products</h3>
+    <p class="body"><strong>Environmental, Social, and Governance (ESG)</strong> investing has grown dramatically — Canada's mutual fund and ETF market now offers hundreds of ESG-labelled products. Canada's mutual fund AUM in sustainable strategies has reached approximately $30B+.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">ESG Integration</div><div class="dval">Incorporates ESG factors into financial analysis — not necessarily excluding any sectors, but assessing how ESG risks affect long-term financial performance. The most widely used ESG approach among institutional investors.</div></div>
+      <div class="dr"><div class="dterm">Negative Screening (Exclusionary)</div><div class="dval">Excludes specific industries or companies from the portfolio (tobacco, weapons, fossil fuels, gambling, alcohol). Common in "ethical" or "socially responsible" funds. Risk: may underperform if excluded sectors perform well.</div></div>
+      <div class="dr"><div class="dterm">Positive Screening (Best-in-Class)</div><div class="dval">Invests in companies with the best ESG scores within each sector. Does not exclude sectors — instead favors the "cleanest" oil company over the "dirtiest." Maintains broad diversification while rewarding ESG leaders.</div></div>
+      <div class="dr"><div class="dterm">Impact Investing</div><div class="dval">Targets investments that generate specific, measurable positive environmental or social outcomes alongside financial returns. More focused than ESG integration — e.g., funds specifically financing affordable housing, renewable energy, or healthcare in underserved communities.</div></div>
+      <div class="dr"><div class="dterm">Greenwashing Risk</div><div class="dval">Risk that a fund labels itself as ESG without genuinely incorporating ESG principles — or that ESG claims are exaggerated. The CSA published revised Staff Notice 81-334 (ESG-Related Investment Fund Disclosure) — updated guidance requiring that ESG fund names, disclosure documents, and marketing materials accurately reflect the fund's actual ESG approach. KYP obligation requires RRs to understand the fund's real ESG methodology.</div></div>
+    </div>
+    <div class="callout emerald">
+      <div class="ci">🌱</div>
+      <div class="cb"><div class="cl">2024 CSA ESG Update</div><p>In 2024, the CSA revised its guidance on ESG-related investment fund disclosure (Staff Notice 81-334 Revised). Key requirements: <strong>ESG fund names must reflect actual investment approach</strong>; funds cannot call themselves "ESG" if ESG is only a secondary consideration; fund managers must use consistent ESG terminology and provide clear disclosure of methodology, data sources, and limitations. This directly addresses greenwashing concerns.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div id="summary">
+  <div class="sum-box" style="margin-top:60px;">
+    <div class="sum-title">Element 7 — Master Summary</div>
+    <div class="sum-sub">16 exam-critical points</div>
+    <div class="si"><span class="sin">01</span><div><strong>5 Asset Classes:</strong> Cash/equivalents → Fixed Income → Equity → Commodities → Derivatives (increasing risk/return). Each has distinct tax treatment, risk profile, and role in portfolio construction.</div></div>
+    <div class="si"><span class="sin">02</span><div><strong>Common vs Preferred Shares:</strong> Common = residual claim, unlimited upside, voting rights, uncertain dividends. Preferred = fixed dividend (priority over common), no voting, hybrid fixed-income-like characteristics. Cumulative = arrears accumulate. Rate-reset = dividend resets every 5 years.</div></div>
+    <div class="si"><span class="sin">03</span><div><strong>Dividend Process:</strong> 4 dates: Declaration → Ex-Dividend → Record → Payment. Must own BEFORE ex-dividend date to receive dividend. Eligible Canadian dividends = grossed up 38%, EDTC 15.02% federal. Foreign dividends = taxed as ordinary income.</div></div>
+    <div class="si"><span class="sin">04</span><div><strong>Stock Splits & Consolidations:</strong> Both leave total value unchanged — only share count and price change. Split = more shares, lower price (bullish signal). Consolidation = fewer shares, higher price (often bearish signal — stock has fallen). ACB adjusts proportionally.</div></div>
+    <div class="si"><span class="sin">05</span><div><strong>Bond Pricing Fundamentals:</strong> Coupon rate = fixed (never changes). Yield to Maturity = total return if held to maturity (changes with price). Price and yield move inversely. Price > par: YTM < coupon. Price < par: YTM > coupon.</div></div>
+    <div class="si"><span class="sin">06</span><div><strong>Duration:</strong> Measures interest rate sensitivity. Modified duration ≈ % price change for 1% yield change. Long duration (STRIPs, long bonds) = most price sensitive. Duration increases with: longer maturity, lower coupon, lower yield.</div></div>
+    <div class="si"><span class="sin">07</span><div><strong>Credit Ratings:</strong> BBB-/Baa3 and above = investment grade. Below = high yield/speculative. Credit spreads widen in downturns, tighten in recoveries. DBRS Morningstar is Canada's primary rating agency (alongside S&P, Moody's).</div></div>
+    <div class="si"><span class="sin">08</span><div><strong>Index Construction:</strong> Market-cap weighted (S&P/TSX, S&P 500) = dominant method. Price-weighted (DJIA) = archaic, distorted by price. Total return index includes dividends reinvested — the proper benchmark. Price return index (headline) understates real returns.</div></div>
+    <div class="si"><span class="sin">09</span><div><strong>Pooled Products — 4 Types:</strong> Mutual funds (open-ended, daily NAV). Closed-end funds (fixed units, trade at premium/discount to NAV). ETFs (exchange-traded, creation/redemption keeps price ≈ NAV). REITs (real estate, 90%+ income distribution, exchange-traded).</div></div>
+    <div class="si"><span class="sin">10</span><div><strong>Fund Facts (MF) vs ETF Facts (ETF):</strong> Fund Facts = pre-sale delivery required. ETF Facts = within 2 business days post-sale. Both: 2 pages, plain language, risk rating (5-point scale), past performance, costs, top holdings.</div></div>
+    <div class="si"><span class="sin">11</span><div><strong>Mutual Fund Pricing:</strong> Forward pricing at unknown end-of-day NAV. Settlement T+2. DSC and Low Load charges BANNED for new sales since June 2022. No-load funds pay advisors through trailer commissions embedded in MER.</div></div>
+    <div class="si"><span class="sin">12</span><div><strong>ETF Pricing:</strong> Intraday market price ± premium/discount to NAV. Creation/redemption mechanism keeps premium/discount small. Leveraged ETFs amplify daily returns (2× or −1×) — NOT designed for long-term holding due to volatility decay.</div></div>
+    <div class="si"><span class="sin">13</span><div><strong>Hedge Funds:</strong> "2 and 20" fee structure. Limited liquidity (quarterly/annual redemptions, lock-ups). Available to accredited investors. Liquid alternatives (alt mutual funds) now offer some hedge strategies to retail investors with daily liquidity under NI 81-102.</div></div>
+    <div class="si"><span class="sin">14</span><div><strong>TCR Enhancement — January 2026:</strong> Enhanced cost reporting requires dealers to disclose ALL fund costs in dollar amounts in client reports, including costs embedded in MERs not directly paid by the client. Applies to mutual funds, ETFs, and other investment funds. Most significant disclosure change since CRM2.</div></div>
+    <div class="si"><span class="sin">15</span><div><strong>Crypto Assets:</strong> Canada = first country with Bitcoin ETFs (Feb 2021). CTPs regulated by CSA. Extreme volatility makes them speculative — unsuitable for conservative/moderate investors. RR has full KYP obligation for crypto products.</div></div>
+    <div class="si"><span class="sin">16</span><div><strong>ESG Greenwashing Risk:</strong> CSA Staff Notice 81-334 (revised 2024) requires ESG fund names, disclosures, and marketing to accurately reflect actual ESG methodology. "ESG" label cannot be applied to funds where ESG is only secondary. Part of KYP for RRs recommending ESG products.</div></div>
+  </div>
+</div>
+</div><!-- /content -->
+
+<!-- QUIZ -->
+<div id="quiz" class="quiz-wrap">
+  <div class="quiz-h1">Element 7 — Practice Questions</div>
+  <div class="quiz-sub-txt">45 scenario-based questions · Exam-level difficulty · All options are similar length</div>
+  <div class="quiz-stats">
+    <div><div class="qs-n">15</div><div class="qs-l">Easy</div></div>
+    <div><div class="qs-n">20</div><div class="qs-l">Medium</div></div>
+    <div><div class="qs-n">10</div><div class="qs-l">Hard</div></div>
+    <div><div class="qs-n" id="sLbl">0/45</div><div class="qs-l">Score</div></div>
+  </div>
+  <div id="qC"></div>
+  <div class="quiz-ctrl">
+    <div class="score-disp" id="fS"></div>
+    <button class="btn btn-p" onclick="resetQ()">🔄 Reset</button>
+    <button class="btn btn-s" onclick="revealAll()">👁 Reveal All</button>
+  </div>
+</div>
+</div><!-- /main -->
+<button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const Qs=[
+// EASY 1-15
+{id:1,d:'e',q:"A client holds 200 shares of XYZ Corp at $60 per share. XYZ announces a 3-for-2 stock split. After the split, what does the client hold?",o:["A. 200 shares at $90 per share","B. 300 shares at $40 per share","C. 133 shares at $90 per share","D. 300 shares at $60 per share"],a:1,e:"A 3-for-2 split means for every 2 shares held, the investor receives 3. So 200 shares × (3/2) = <strong>300 shares</strong>. The price adjusts: $60 × (2/3) = <strong>$40 per share</strong>. Total value: 300 × $40 = $12,000, same as 200 × $60 = $12,000. <strong>No change in total market value</strong>."},
+{id:2,d:'e',q:"A bond with a 4% coupon is issued at par ($1,000). Market interest rates subsequently rise to 6%. Which statement best describes the bond's current market price and yield?",o:["A. Price remains at $1,000; yield remains at 4%","B. Price falls below $1,000; yield to maturity rises above 4%","C. Price rises above $1,000; yield to maturity falls below 4%","D. Price falls below $1,000; yield to maturity stays at 4%"],a:1,e:"<strong>Bond prices and yields move inversely.</strong> When market rates rise from 4% to 6%, the 4% coupon bond becomes less attractive. Its price must fall below par to make it competitive with new 6% bonds. As the price falls, the yield to maturity rises above the coupon rate. This is the fundamental price-yield relationship in fixed income."},
+{id:3,d:'e',q:"An investor buys units of a mutual fund on a Tuesday afternoon. At what price does the transaction execute?",o:["A. At Tuesday's opening price, since the order was placed on Tuesday","B. At the price quoted when the order was placed during the trading day","C. At Tuesday's end-of-day NAV (forward pricing), regardless of when the order was placed","D. At the NAV calculated the following Monday"],a:2,e:"Mutual funds use <strong>forward pricing</strong> — all orders accepted before the fund's daily cutoff execute at that <strong>same day's end-of-day NAV</strong>, regardless of what time the order was placed. The investor doesn't know the exact price at the moment of placing the order. This is why mutual fund investors 'buy at an unknown price' — a key distinction from ETFs which trade at known intraday market prices."},
+{id:4,d:'e',q:"Which of the following correctly describes how eligible Canadian dividends are taxed compared to interest income?",o:["A. Eligible dividends are taxed at the full marginal rate, same as interest income","B. Eligible dividends are grossed up and a dividend tax credit applied, resulting in a lower effective rate than interest income","C. Eligible dividends are completely tax-free for all Canadian investors","D. Eligible dividends are taxed at 50% inclusion rate, same as capital gains"],a:1,e:"Eligible dividends from Canadian public corporations receive the <strong>Enhanced Dividend Tax Credit (EDTC)</strong>. They are grossed up by 38% and the federal dividend tax credit of 15.02% is applied, resulting in a significantly lower effective tax rate than interest income (which is taxed at the full marginal rate). This makes Canadian dividend income the most tax-efficient form of regular investment income in non-registered accounts."},
+{id:5,d:'e',q:"What is the key characteristic that distinguishes a closed-end fund from an open-ended mutual fund?",o:["A. Closed-end funds invest only in fixed income; open-ended funds invest in equities","B. Closed-end funds have a fixed number of units that trade on an exchange; open-ended funds continuously issue and redeem units at NAV","C. Closed-end funds charge no management fees; open-ended funds charge MERs","D. Closed-end funds are available only to institutional investors; open-ended funds are retail products"],a:1,e:"The defining difference: <strong>closed-end funds have a fixed number of units issued at IPO that then trade on a stock exchange at market prices</strong> (which may be at a premium or discount to NAV). Open-ended mutual funds continuously issue new units to buyers and redeem units from sellers at the calculated NAV. This means closed-end funds can trade at persistent premiums or discounts to their underlying value."},
+{id:6,d:'e',q:"An ETF trades at $52.40 on the exchange while its INAV (Indicative NAV) is $51.80. Which statement is correct?",o:["A. The ETF is trading at a discount of $0.60 to NAV","B. The ETF is trading at a premium of $0.60 to NAV","C. The ETF's NAV is incorrect and should be adjusted to match market price","D. This situation is impossible since ETF prices always equal NAV exactly"],a:1,e:"Market price ($52.40) > INAV ($51.80): the ETF is trading at a <strong>premium of $0.60</strong> to its underlying NAV. In this situation, designated brokers (DBs) can create new ETF units by delivering the underlying basket of securities to the fund at NAV ($51.80) and receive units worth $52.40 — profiting from the $0.60 spread. This arbitrage mechanism typically keeps premiums and discounts small."},
+{id:7,d:'e',q:"Which type of fixed income security makes no coupon payments during its life and is sold at a deep discount to its face value?",o:["A. A Government of Canada benchmark bond","B. A floating rate corporate bond","C. A STRIP (zero-coupon bond)","D. A retractable preferred share"],a:2,e:"<strong>STRIPs</strong> (and other zero-coupon bonds) make no periodic interest payments. They are issued at a deep discount to face value and the investor receives the full face value at maturity. The difference between purchase price and face value represents the total return. STRIPs also have the highest duration of any fixed income instrument — entirely exposed to interest rate movements as all cash flow comes at maturity."},
+{id:8,d:'e',q:"How does the Fund Facts document protect a mutual fund investor who did not receive it before purchasing?",o:["A. The investor may receive a partial refund of the MER","B. The investor has the right to withdraw from the purchase within 2 business days of receiving the Fund Facts","C. The fund company must reimburse all future losses on the investment","D. The investor automatically receives the fund units for free"],a:1,e:"If the Fund Facts document is not delivered <strong>before or at the point of sale</strong>, the investor has a <strong>right of withdrawal within 2 business days</strong> of receiving the document. They can also exercise the right of rescission within the applicable limitation period. These are statutory rights that cannot be waived."},
+{id:9,d:'e',q:"What was the regulatory significance of the June 2022 DSC (Deferred Sales Charge) ban in Canada?",o:["A. All mutual fund sales were banned; investors must use ETFs only","B. New DSC mutual fund purchases by retail investors were prohibited — preventing funds from locking investors in with redemption penalties","C. All existing DSC mutual funds were immediately redeemed and proceeds returned to investors","D. DSC was replaced by an increased front-end load requirement for all funds"],a:1,e:"The CSA prohibited new DSC mutual fund sales to retail investors effective <strong>June 2022</strong>. DSC funds charged redemption fees (declining over 5–7 years) that trapped investors who wished to switch to better or cheaper funds. This was a significant investor protection measure — advisors could no longer earn upfront commissions that created an incentive to keep clients in unsuitable funds. <strong>Existing DSC investments continued their redemption schedules; new DSC sales were banned.</strong>"},
+{id:10,d:'e',q:"A client asks why a Canadian equity ETF has a lower MER than an actively managed Canadian equity mutual fund with a similar mandate. What is the primary reason?",o:["A. ETFs receive government subsidies to reduce fees for retail investors","B. ETFs do not pay portfolio managers since they passively replicate an index, whereas active funds employ analysts and portfolio managers who must be compensated","C. ETF fees are capped by CIRO at 0.25%; mutual funds have no cap","D. ETFs invest in fewer securities, reducing research and administrative costs"],a:1,e:"The primary driver: passive index ETFs <strong>do not require active portfolio managers, research analysts, or stock-picking infrastructure</strong>. They simply replicate an index by holding the same securities in the same proportions. Active mutual funds employ teams of analysts and portfolio managers, running trading desks, and conducting research — all of which are expensive and embedded in the MER. This is why passive ETF MERs can be 0.05–0.25% while active mutual fund MERs are 1.5–2.5%."},
+{id:11,d:'e',q:"Which of the following is a characteristic of a cumulative preferred share?",o:["A. The dividend rate adjusts with market interest rates every quarter","B. Unpaid dividends accumulate and must be paid to preferred shareholders before any common dividends can be declared","C. The holder can force the company to repurchase the shares at a fixed price on specified dates","D. The share can be exchanged for a fixed number of common shares at the holder's option"],a:1,e:"<strong>Cumulative preferred shares</strong> accumulate any skipped dividends as 'dividends in arrears.' These arrears must be paid to preferred shareholders before the company can declare or pay any dividends to common shareholders. This feature provides significant protection for preferred investors — the company cannot simply skip preferred dividends and immediately distribute profits to common shareholders."},
+{id:12,d:'e',q:"For an investor purchasing Government of Canada bonds in a non-registered account, what is the tax treatment of the coupon income received?",o:["A. Taxed as capital gains at 50% inclusion rate","B. Eligible for the dividend tax credit, reducing the effective tax rate","C. Completely exempt from Canadian income tax","D. Taxed as ordinary income at the investor's full marginal rate"],a:3,e:"Bond interest income — including Government of Canada bond coupons — is taxed as <strong>ordinary income at the investor's full marginal tax rate</strong>. There is no dividend tax credit (that applies to dividends), no capital gains treatment (50% inclusion), and no exemption. This is why bonds are often held in RRSP or TFSA accounts — to shelter the interest from immediate taxation."},
+{id:13,d:'e',q:"A market-cap weighted index and a price-weighted index both contain the same three stocks. In the market-cap weighted index, which factor determines each stock's influence on the index return?",o:["A. The stock's price per share relative to the other stocks' prices","B. The stock's total market capitalization relative to the total market cap of all components","C. The volume of shares traded in the previous month","D. The stock's dividend yield relative to the other components"],a:1,e:"In a <strong>market-cap weighted index</strong>, each component's weight = its market capitalization ÷ total market cap of all components. A company worth $50B has 5× the weight of a $10B company, regardless of share price. This is the construction method used by the S&P/TSX Composite, S&P 500, and virtually all major equity indices. By contrast, a price-weighted index (like the Dow) weights by share price."},
+{id:14,d:'e',q:"A bond's modified duration is 8.5 years. If interest rates rise by 0.75%, what is the approximate percentage change in the bond's price?",o:["A. The bond price rises approximately 6.4%","B. The bond price falls approximately 6.4%","C. The bond price falls approximately 11.3%","D. The bond price is unchanged because duration only applies to zero-coupon bonds"],a:1,e:"% change in price ≈ −Modified Duration × % change in yield = −8.5 × 0.75% = −<strong>6.375%</strong> (approximately 6.4% price DECLINE). Since interest rates rose, the bond price falls — consistent with the inverse price-yield relationship. Duration tells us the price sensitivity: for every 1% change in yield, the price changes by approximately the modified duration percentage in the opposite direction."},
+{id:15,d:'e',q:"When must the ETF Facts document be delivered to a retail investor who purchases ETF units?",o:["A. Before the investor places the purchase order, similar to the Fund Facts pre-sale requirement","B. Within 2 business days after the dealer accepts the investor's purchase order","C. At the annual account review meeting, not at point of sale","D. Only if the investor specifically requests the document"],a:1,e:"The <strong>ETF Facts document must be delivered within 2 business days after the dealer accepts the purchase order</strong> — this is a post-sale delivery requirement, unlike the Fund Facts for mutual funds which must be delivered before the sale. The ETF Facts contains equivalent key information (performance, costs, risk rating) but the timing difference reflects the practical difficulty of providing pre-trade disclosure for securities that trade continuously on an exchange."},
+// MEDIUM 16-35
+{id:16,d:'m',q:"Rajesh is a 35-year-old engineer who wants to invest $50,000 for retirement. He has a high risk tolerance and a 30-year time horizon. He is considering either actively managed Canadian equity mutual funds (MER 2.3%) or a passive Canadian equity ETF (MER 0.20%). Which consideration is MOST important in this scenario?",o:["A. The mutual fund provides CIPF protection; the ETF does not","B. Over a 30-year period, the 2.1% annual cost difference compounds dramatically — research consistently shows most active funds underperform their benchmark after fees, making the ETF likely superior for a long-horizon investor","C. The ETF is riskier than the mutual fund because it trades intraday and could be sold at a bad time","D. The mutual fund should be preferred because the advisor's fiduciary duty requires recommending higher-cost products"],a:1,e:"For a <strong>30-year horizon</strong>, the MER difference of 2.1%/year compounds enormously. On $50,000 over 30 years at 7% gross: with 2.3% MER (net 4.7%) ≈ $190,000; with 0.20% MER (net 6.8%) ≈ $344,000 — a difference of $154,000. Combined with the evidence that most active managers underperform after fees, the ETF is highly likely to be the superior choice. CIPF protection applies to both (held through a CIRO dealer); intraday trading is irrelevant for a 30-year buy-and-hold investor; advisors must act in the client's best interest, not recommend higher-cost products."},
+{id:17,d:'m',q:"A client who owns 1,000 preferred shares of ABC Corp receives notice that the company will skip this quarter's $1.50 per share preferred dividend due to cash flow pressures. The preferred shares are cumulative. Which statement is most accurate?",o:["A. The missed dividend is permanently forfeited — the investor loses that income permanently","B. The $1,500 in missed dividends becomes arrears; ABC cannot pay any common dividend until all preferred arrears are fully paid","C. The missed dividend is immediately replaced by additional share units worth $1,500","D. The investor can immediately force ABC to redeem the shares at par value"],a:1,e:"Cumulative preferred shares ensure that <strong>unpaid dividends accumulate as 'dividends in arrears.'</strong> ABC Corp cannot pay any common dividends until the full arrears ($1,500 per 1,000 shares for this quarter, plus any future skipped dividends) are paid to preferred shareholders. This is a powerful protective feature — it prevents management from simply redirecting income away from preferred investors to common shareholders."},
+{id:18,d:'m',q:"A client holds a corporate bond purchased at $980 with a 5% annual coupon and face value of $1,000, with 3 years remaining to maturity. Market rates rise sharply. Which scenario correctly describes both the impact on the bond's price AND the YTM relationship?",o:["A. Price rises above $980; YTM falls below 5.2%","B. Price falls further below $980; YTM rises further above 5.2%","C. Price falls to $0 since rising rates make bonds worthless","D. Price stays at $980 since it is already trading below par"],a:1,e:"Since the bond was already below par ($980 < $1,000), its YTM was already above 5% (approx 5.7%). When market rates rise further, the bond must drop in price to remain competitive — <strong>price falls further below $980, and YTM rises further above 5.7%</strong>. The inverse price-yield relationship applies regardless of whether the bond is trading at par, above par, or below par. The only time price is 'stuck' at par is on a new issue or when rates exactly equal the coupon rate."},
+{id:19,d:'m',q:"Maria is reviewing two mutual funds for a client in a 45% marginal tax bracket. Fund A (equity) distributes primarily capital gains. Fund B (bond) distributes primarily interest income. Assuming equal pre-tax returns, which statement about tax efficiency is most accurate for a non-registered account?",o:["A. Fund B is more tax-efficient because bond income is stable and predictable","B. Fund A is more tax-efficient because capital gains are taxed at 50% inclusion rate — effectively 22.5% at her marginal rate versus 45% on interest income","C. Both funds are equally tax-efficient since they are managed products","D. Fund A is less tax-efficient because equities are more volatile than bonds"],a:1,e:"Tax efficiency depends on income type, not stability. At a 45% marginal rate: <strong>Capital gains (Fund A)</strong> — only 50% of the gain is included in income, effective rate = 22.5%. <strong>Interest income (Fund B)</strong> — 100% included, effective rate = 45%. Fund A is clearly more tax-efficient in a non-registered account. This is why fixed income (interest income) is ideally held in RRSP/TFSA, while equity (capital gains and dividends) can be held more tax-efficiently in non-registered accounts."},
+{id:20,d:'m',q:"An ETF tracking the S&P/TSX 60 closes with an INAV of $38.20. The next morning, the TSX opens 1.5% higher due to positive overnight news. How would this likely affect the ETF's opening market price?",o:["A. The ETF opens at $38.20 since it can only price once daily like a mutual fund","B. The ETF opens at approximately $38.77, reflecting the 1.5% gain in the underlying index","C. The ETF opens at $38.20 and gradually moves toward $38.77 over several weeks","D. The ETF cannot open until NAV is officially recalculated by the fund manager"],a:1,e:"ETFs trade continuously at market prices — they are NOT priced once daily. When the TSX opens 1.5% higher, the ETF's underlying basket of stocks is worth approximately $38.20 × 1.015 = <strong>$38.77</strong>. Market makers, knowing the INAV, will price the ETF close to this level at the open. If the ETF trades significantly below $38.77, designated brokers can create new units by buying the underlying stocks and delivering them to the fund manager, keeping the ETF price close to NAV."},
+{id:21,d:'m',q:"A client is comparing the S&P/TSX Composite Price Return index (up 9% for the year) with the S&P/TSX Composite Total Return index (up 12% for the year). What accounts for the 3% difference?",o:["A. The total return index includes reinvested dividends; the price return index only captures share price appreciation","B. The total return index uses a different set of stocks than the price return index","C. The price return index adjusts for inflation; the total return index does not","D. The total return index double-counts dividend payments from bank stocks"],a:0,e:"The <strong>total return index</strong> assumes all dividends are reinvested back into the index — it captures both price appreciation AND dividend income. The <strong>price return index</strong> only measures capital price changes, excluding dividends. The 3% gap represents the dividend yield of the S&P/TSX Composite (which is high for a developed market due to Canadian banks, utilities, and pipelines paying significant dividends). For investment management purposes, the total return index is the appropriate benchmark."},
+{id:22,d:'m',q:"A portfolio manager operates an 'equity long/short' hedge fund. The fund goes long $10M of undervalued Canadian bank stocks and simultaneously short $8M of overvalued insurance company stocks. How does this strategy attempt to reduce market risk?",o:["A. By using government bonds to offset equity volatility","B. By combining a long position on rising stocks with a short position on falling stocks, the fund reduces net market exposure while still profiting from the relative performance difference between banks and insurance companies","C. By eliminating all systematic market risk through complete hedging of every long position","D. By investing in sectors with inverse correlation to the TSX benchmark"],a:1,e:"This is the classic long/short equity strategy. The long $10M in banks and short $8M in insurance creates a <strong>net market exposure of +$2M</strong> (not $18M). The fund profits if banks outperform insurance companies regardless of whether the market rises or falls — this is 'alpha generation' through relative value, not market beta. The $8M short position acts as a partial hedge against broad market declines (since insurance stocks would also decline), reducing overall market risk compared to a pure long equity portfolio."},
+{id:23,d:'m',q:"An advisor is assessing a 'carbon-neutral' equity mutual fund for a client interested in ESG investing. The fund invests in all sectors including oil companies, but claims to offset emissions. Under the CSA's revised Staff Notice 81-334, what must the advisor verify through KYP before recommending this fund?",o:["A. Whether the fund has earned a minimum 3-star Morningstar ESG rating","B. Whether the fund's ESG methodology, carbon offset approach, and disclosure accurately reflect what is claimed in the fund name and marketing materials — ensuring the label is not misleading (greenwashing)","C. Whether the fund is exclusively invested in renewable energy companies","D. Whether the fund has obtained CIRO's approval for its ESG classification"],a:1,e:"Under CSA Staff Notice 81-334 (revised 2024), <strong>ESG fund names and marketing must accurately reflect the fund's actual ESG approach</strong>. An advisor's KYP obligation requires verifying: What exactly does 'carbon-neutral' mean in this fund? How are offsets calculated and verified? Is the offset approach meaningful or superficial? Is the description in the fund name and marketing consistent with the actual investment policy? The advisor must be able to explain the fund's ESG methodology clearly to the client — if they cannot, they should not recommend it."},
+{id:24,d:'m',q:"A bond portfolio manager wants to extend portfolio duration from 5 years to 8 years in anticipation of interest rate declines. Which action achieves this?",o:["A. Selling long-term government bonds and buying short-term T-bills","B. Buying longer-maturity bonds with lower coupons, replacing shorter-maturity higher-coupon bonds","C. Adding floating-rate notes to the portfolio to benefit from declining rates","D. Increasing credit quality by moving from high-yield to investment-grade bonds"],a:1,e:"Duration increases with: <strong>longer maturity and lower coupon rate</strong>. By selling shorter-maturity higher-coupon bonds (lower duration) and buying longer-maturity lower-coupon bonds (higher duration), the manager extends overall portfolio duration from 5 to 8 years. With duration of 8 years, a 1% decline in rates would produce approximately an 8% price gain — exactly what the manager wants if rates decline. Floating rate notes have very short duration (reset with market rates), the opposite of what's needed."},
+{id:25,d:'m',q:"A client's wrap fund (fund-of-funds) has a wrap fee of 1.5% on top of an average underlying fund MER of 1.8%. An alternative is a simple balanced ETF with a total MER of 0.25%. If both generate the same gross return of 7%, what is the approximate annual after-fee difference in returns?",o:["A. The wrap fund and ETF have the same after-fee return since wrap fees include management services","B. The wrap fund delivers approximately 3.8% after fees versus 6.75% for the ETF — a difference of approximately 2.95% annually","C. The ETF delivers a lower return because it does not include rebalancing services","D. The wrap fund is 1.5% more expensive, so the difference is exactly 1.5% annually"],a:1,e:"Wrap fund total cost = 1.5% wrap fee + 1.8% underlying fund MER = <strong>3.3% total</strong>. After-fee return = 7% − 3.3% = <strong>3.7%</strong>. ETF total cost = 0.25%. After-fee return = 7% − 0.25% = <strong>6.75%</strong>. Difference = 6.75% − 3.7% = <strong>approximately 3.05% per year</strong>. Compounded over time, this creates an enormous wealth gap. The rebalancing service in the wrap fund must deliver far more than 3% annual value to justify the additional cost — which is very difficult to achieve consistently."},
+{id:26,d:'m',q:"A client inherited $500,000 and wants exposure to commercial real estate without the hassle of direct property ownership. The advisor suggests a REIT. Which feature of a REIT best matches the client's objective?",o:["A. REITs exclusively invest in government bonds backed by real estate collateral","B. REITs pool investor capital to own and operate income-producing commercial real estate, distributing 90%+ of taxable income monthly while trading on the exchange for liquidity","C. REITs guarantee the return of all invested capital since real estate always appreciates","D. REITs are only available to accredited investors with minimum $250,000 investments"],a:1,e:"REITs directly match the client's objective: <strong>REITs own income-producing commercial real estate</strong> (office, retail, industrial, residential) and distribute 90%+ of taxable income to unitholders — typically monthly. They trade on exchanges, providing liquidity unavailable with direct real estate ownership. There is no capital guarantee (real estate can decline in value); they are available to all retail investors; and they invest in actual real estate, not bonds."},
+{id:27,d:'m',q:"Treasury bills and commercial paper are both short-term money market instruments. A client asks about the key risk difference between them. Which statement is most accurate?",o:["A. T-bills have more inflation risk; commercial paper has more liquidity risk","B. T-bills carry no credit risk since they are backed by the Government of Canada; commercial paper carries credit risk of the issuing corporation","C. Commercial paper has longer maturities, making it more interest rate sensitive","D. T-bills pay higher returns because the government offers better compensation for illiquidity"],a:1,e:"The fundamental difference is <strong>credit risk</strong>. Government of Canada T-bills are direct obligations of the federal government — effectively zero credit risk (the government can print money). Commercial paper is issued by corporations and is backed only by their ability to repay — it carries credit risk. The 2007-08 ABCP crisis vividly demonstrated that commercial paper could become illiquid and partially worthless if the underlying credit quality was questionable. T-bills generally pay lower yields as a result of their superior safety."},
+{id:28,d:'m',q:"An advisor is recommending a globally diversified equity ETF to reduce a client's home bias. The ETF is denominated in USD and is not currency-hedged. The client's portfolio is in CAD. What additional risk does the client take on compared to a CAD-denominated equivalent?",o:["A. Liquidity risk, since USD ETFs are less liquid than CAD ETFs","B. Currency risk — if the CAD appreciates against the USD, returns when converted back to CAD will be lower than the USD return","C. Tax risk, since foreign ETF dividends are ineligible for the dividend tax credit","D. Settlement risk, since cross-currency ETF trades take longer to settle"],a:1,e:"Both B and C are risks, but the question asks what the client takes on COMPARED to a CAD-denominated equivalent. The primary additional risk from a USD ETF (unhedged) vs a CAD-equivalent is <strong>currency risk</strong> — if CAD appreciates vs USD, the USD-denominated returns are worth less when converted back to CAD, even if the underlying portfolio performed well. Note: C is also true (foreign dividends are taxed as ordinary income, not eligible for the dividend tax credit) — but this applies to any foreign equity investment, hedged or not."},
+{id:29,d:'m',q:"A 55-year-old client is 10 years from retirement and holds a $400,000 bond portfolio with an average modified duration of 9 years. The client is concerned about potential interest rate increases. What is the most appropriate portfolio adjustment?",o:["A. Increase duration by adding more long-term government bonds to capture capital gains","B. Reduce duration by replacing some long-term bonds with short-term bonds or T-bills, reducing sensitivity to rate increases","C. Convert all bonds to equities since equities are better in rising rate environments","D. Keep the portfolio unchanged since duration only affects bonds held to maturity"],a:1,e:"With a <strong>rising rate concern</strong>, the client wants to <strong>reduce duration</strong> — lower duration = less price sensitivity to rate increases. Replacing long-term bonds (high duration) with short-term bonds or T-bills (low duration) reduces the portfolio's vulnerability. With modified duration of 9, a 1% rate rise would cause approximately a 9% price decline on $400,000 = $36,000 loss. Reducing to a duration of 4 would cut that sensitivity roughly in half. Increasing duration would magnify losses; converting to equities introduces a different risk set entirely."},
+{id:30,d:'m',q:"An investor considers buying units of a liquid alternative mutual fund that uses short selling and modest leverage. The fund is offered under NI 81-102. How does this differ from a traditional hedge fund?",o:["A. Liquid alt funds have no regulatory restrictions; traditional hedge funds are heavily regulated","B. Liquid alt funds offer daily liquidity and are subject to NI 81-102 restrictions on leverage and short selling; traditional hedge funds have fewer restrictions but limited liquidity and are only available to accredited investors","C. Liquid alt funds guarantee positive returns in all market conditions; hedge funds do not offer any guarantees","D. Liquid alt funds charge no management fees; traditional hedge funds charge '2 and 20'"],a:1,e:"<strong>Liquid alternative (liquid alt) funds</strong> are a regulatory innovation under NI 81-102 that allows retail investors to access some hedge-fund-like strategies (limited short selling, modest leverage up to 3×, use of derivatives) with <strong>daily liquidity</strong> and standard mutual fund oversight. Traditional hedge funds: available to accredited investors only, much higher leverage permitted, quarterly or annual liquidity only, less regulatory oversight, '2 and 20' fee structure typical. Liquid alts bridge the gap — some alternative strategies with retail accessibility and daily liquidity."},
+{id:31,d:'m',q:"Which factor most directly causes credit spreads on corporate bonds to WIDEN?",o:["A. The Bank of Canada cutting interest rates significantly","B. A period of strong economic growth and improving corporate earnings","C. Rising economic uncertainty or recession risk, which increases concerns about corporate default probabilities","D. A significant reduction in the supply of new corporate bond issuance"],a:2,e:"<strong>Credit spreads widen</strong> when investors demand more compensation for the risk of corporate default. This happens primarily when <strong>economic uncertainty or recession risk rises</strong> — companies become more likely to default on their debt obligations during economic downturns. Conversely, spreads tighten (narrow) during strong economic growth as default risk falls. Bank of Canada rate cuts and strong growth would typically NARROW spreads, not widen them. Supply reductions would also tend to support prices (narrow spreads)."},
+{id:32,d:'m',q:"A client holds both a rate-reset preferred share and a perpetual (fixed-rate) preferred share from the same issuer. Interest rates rise by 2%. Which preferred share experiences a larger price decline, and why?",o:["A. The rate-reset preferred falls more because its dividend increases, making it less attractive to income investors","B. The perpetual preferred falls more because its fixed dividend never changes, making its discount to par larger as rates rise; the rate-reset's dividend will adjust upward at the next reset date, limiting its duration","C. Both decline by the same amount since they are from the same issuer","D. Neither declines since preferred shares are guaranteed to maintain par value"],a:1,e:"<strong>Perpetual fixed-rate preferred shares</strong> have very long (essentially infinite) duration — the fixed dividend continues forever with no reset. When rates rise 2%, the present value of those fixed dividends is substantially reduced, causing a large price decline. <strong>Rate-reset preferred shares</strong> reset their dividend rate periodically (every 5 years, linked to the 5-year GoC bond yield + spread). When rates rise, the reset dividend will be higher in 5 years, limiting the current price decline. Lower duration (because cash flows effectively reset) = less price sensitivity. This is a critical feature distinction for fixed income suitability."},
+{id:33,d:'m',q:"An investor notices that a closed-end fund specializing in Canadian real estate is trading at a 15% discount to its reported NAV. What is the most likely explanation for this persistent discount?",o:["A. The fund manager charges higher fees than open-ended mutual funds investing in the same assets","B. The market is skeptical about the accuracy of the NAV (possibly overvalued illiquid real estate assets), or lacks confidence in the fund manager's ability to close the discount through future performance","C. The fund is about to be liquidated and all units are being marked down to zero","D. The fund company is withholding dividend payments, causing the price to fall below NAV"],a:1,e:"Persistent discounts in closed-end funds typically reflect: (1) <strong>Market skepticism about NAV accuracy</strong> — illiquid real estate assets may be appraised at prices that investors believe are too high; (2) <strong>Lack of confidence in the manager</strong>; (3) Expectation that the NAV will decline or the manager won't create value. Unlike ETFs (where designated brokers can arbitrage away discounts), closed-end funds have no creation/redemption mechanism — the discount can persist indefinitely if there's no catalyst to close it (activist investor, conversion to open-ended structure, etc.)."},
+{id:34,d:'m',q:"A client's non-registered account holds an actively managed Canadian equity mutual fund. At year-end, the fund distributes $3,200 in capital gains even though the client did not sell any units. What is the tax consequence?",o:["A. No tax consequence since the client didn't sell any units; taxes are deferred until redemption","B. The $3,200 capital gains distribution is taxable in the client's hands this year — 50% inclusion rate means $1,600 is included in taxable income, taxed at the marginal rate","C. The $3,200 is added to the ACB of the units and reduces future capital gains on redemption","D. The client can defer the tax by reinvesting the distribution back into the fund"],a:1,e:"This is a common source of client confusion. When a mutual fund distributes capital gains, the <strong>distribution is taxable in the year received — even if the investor didn't sell units</strong>. At 50% inclusion: $3,200 × 50% = $1,600 is included in taxable income. However, the distribution also <strong>increases the ACB of the units by $3,200</strong> — preventing double taxation when the investor eventually sells. Reinvesting the distribution does NOT defer the tax (the taxable event already occurred in the distribution year)."},
+{id:35,d:'m',q:"A financial planner recommends a principal protected note (PPN) to a conservative client. The PPN guarantees return of the $50,000 principal at maturity in 7 years, plus participation in stock market gains. What risk does the planner MOST need to disclose?",o:["A. The client will definitely lose money on the PPN if stock markets fall","B. The principal guarantee is only as good as the creditworthiness of the issuing financial institution — if the bank defaults, the guarantee may be worthless","C. The PPN charges a 2 and 20 fee structure similar to hedge funds","D. The PPN will underperform government bonds in all market conditions"],a:1,e:"The critical risk of PPNs that is often misunderstood: <strong>the 'guarantee' is a contractual promise from the issuing institution, not an insured deposit or government guarantee</strong>. If the issuing bank or financial institution becomes insolvent, the guarantee may be worthless — the client may lose their principal regardless of the contractual protection. The 2008 financial crisis demonstrated this risk for structured products issued by failing banks. Additional risks: 7-year lock-up (liquidity risk), complex participation formulas that limit upside, opportunity cost vs alternatives."},
+// HARD 36-45
+{id:36,d:'h',q:"A portfolio manager is evaluating two portfolios. Portfolio A: 60% S&P/TSX Composite ETF (MER 0.06%), 40% FTSE Canada Universe Bond Index ETF (MER 0.09%). Portfolio B: 60% active Canadian equity fund (MER 2.1%), 40% active Canadian bond fund (MER 1.1%). Both generate identical gross returns of 6% equity, 3.5% bond. Calculate approximate annual after-fee returns for each portfolio.",o:["A. Portfolio A: 4.98%; Portfolio B: 4.74% — difference of 0.24%","B. Portfolio A: 5.30%; Portfolio B: 3.75% — difference of 1.55%","C. Portfolio A: approximately 4.98%; Portfolio B: approximately 3.64% — difference of approximately 1.34% per year","D. Portfolio A: 5.94%; Portfolio B: 5.94% — fees are already reflected in gross returns"],a:2,e:"<strong>Portfolio A:</strong> Equity: (6% − 0.06%) × 60% = 3.564%. Bond: (3.5% − 0.09%) × 40% = 1.364%. Total = <strong>4.928% ≈ 4.93%</strong>. <strong>Portfolio B:</strong> Equity: (6% − 2.1%) × 60% = 2.34%. Bond: (3.5% − 1.1%) × 40% = 0.96%. Total = <strong>3.30%</strong>. Difference = 4.93% − 3.30% = <strong>approximately 1.63% per year</strong>. Over 30 years on $500,000, this compounds to hundreds of thousands in additional wealth with Portfolio A. The closest answer is C — the exact calculation depends on rounding, but the key is the ~1.3–1.7% annual fee drag on Portfolio B."},
+{id:37,d:'h',q:"A STRIP (zero-coupon bond) has a face value of $10,000, matures in 12 years, and is priced to yield 4.5%. Using the zero-coupon bond pricing formula, what is its approximate purchase price today? (P = FV ÷ (1+r)^n)",o:["A. Approximately $9,550 — close to par since it's a government STRIP","B. Approximately $5,897 — reflecting 12 years of 4.5% discount","C. Approximately $7,200 — reflecting only the time value discount","D. Approximately $4,500 — calculated as face value minus 45% coupon payments"],a:1,e:"P = $10,000 ÷ (1.045)^12 = $10,000 ÷ 1.6959 = approximately <strong>$5,897</strong>. The STRIP trades at a deep discount to face value because all $10,000 is received only at maturity in 12 years, with no interim cash flows. The buyer earns the 4.5% yield purely from the appreciation from $5,897 to $10,000 over 12 years. This also illustrates why STRIPs have the highest duration — they are entirely dependent on the single payment at maturity and are maximally sensitive to interest rate changes."},
+{id:38,d:'h',q:"An ETF uses a 2× leveraged strategy to track the S&P/TSX 60. Day 1: Index rises 5%. Day 2: Index falls 4.76% (back to original level). What happens to the leveraged ETF's value over these two days, and what does this illustrate?",o:["A. The leveraged ETF returns to its original value, demonstrating perfect 2× performance tracking","B. Day 1: ETF +10%; Day 2: ETF −9.52% — ending below original value despite index returning to the start, illustrating volatility decay in leveraged ETFs","C. The leveraged ETF returns exactly 2× the index return over any holding period","D. Day 1: ETF +10%; Day 2: ETF +10% — leveraged ETFs only capture positive returns"],a:1,e:"<strong>Day 1:</strong> Index +5% → Leveraged ETF +10%. Starting at $100: +10% = $110. <strong>Day 2:</strong> Index −4.76% (back to start) → Leveraged ETF −9.52%. $110 × (1 − 0.0952) = $110 × 0.9048 = <strong>$99.53</strong>. The index returned to its starting value, but the leveraged ETF lost $0.47 (0.47%). This is <strong>volatility decay</strong> (also called beta slippage or compounding risk) — leveraged ETFs are designed for <strong>daily trading</strong>, not long-term holding. Over time, in volatile markets, they systematically underperform their stated leverage multiple applied to the long-term return."},
+{id:39,d:'h',q:"A bond portfolio currently has these holdings: $1M in 2-year government bonds (modified duration 1.9); $1M in 10-year government bonds (modified duration 8.7); $1M in 30-year government bonds (modified duration 18.2). Calculate the portfolio's weighted average modified duration and the approximate dollar loss if yields rise 1%.",o:["A. Duration 9.6 years; loss approximately $288,000","B. Duration 9.6 years; loss approximately $288,000 — same as answer A since both are correct","C. Duration 12.5 years; loss approximately $375,000","D. Duration 8.7 years; loss approximately $261,000 — median bond determines portfolio duration"],a:0,e:"Portfolio duration = (1.9 + 8.7 + 18.2) ÷ 3 = 28.8 ÷ 3 = <strong>9.6 years</strong> (equal weights). Dollar loss for 1% yield rise: $3,000,000 × 9.6% = <strong>$288,000</strong>. A 1% rate increase would cause approximately a 9.6% decline in the total portfolio value of $3M, resulting in a $288,000 paper loss. This illustrates why duration management is critical for bond portfolios — 9.6 years of duration creates substantial interest rate risk."},
+{id:40,d:'h',q:"XYZ Corp's stock trades at $42. It has 100M shares outstanding, earnings of $210M, book value of $1.4B, and pays a $1.50 annual dividend. Calculate P/E, P/B, and dividend yield. Which client type is this stock MOST suitable for based on these metrics?",o:["A. P/E 20×, P/B 3.0×, yield 3.6% — suitable for a growth investor seeking capital appreciation","B. P/E 20×, P/B 3.0×, yield 3.6% — suitable for an income investor seeking stable dividends with moderate growth","C. P/E 15×, P/B 2.0×, yield 2.5% — suitable for a value investor seeking undervalued stocks","D. P/E 20×, P/B 3.0×, yield 3.6% — unsuitable for all investors since the P/E exceeds 15×"],a:1,e:"<strong>Calculations:</strong> EPS = $210M ÷ 100M = $2.10. P/E = $42 ÷ $2.10 = <strong>20×</strong>. Book value/share = $1.4B ÷ 100M = $14. P/B = $42 ÷ $14 = <strong>3.0×</strong>. Dividend Yield = $1.50 ÷ $42 = <strong>3.57%</strong>. At 20× P/E (fair to slight premium), 3.0× P/B, and 3.6% yield — this fits an <strong>income investor with moderate growth expectations</strong>. The 3.6% yield provides stable income; P/E of 20× is not a screaming value. Pure growth investors want higher growth potential; pure value investors want P/E < 15× and P/B < 2×. The dividend and moderate valuation suggest a balanced income-with-growth profile."},
+{id:41,d:'h',q:"A hedge fund uses a 'convertible arbitrage' strategy: buying convertible bonds (bonds convertible into common stock) and shorting the underlying common stock. The fund profits from pricing inefficiencies between the bond and stock. One position: buy $5M convertible bonds (delta 0.4), short $2M common shares. Market falls 20% sharply. What happens to this position?",o:["A. The position profits since the short stock position gains while the convertible bond maintains par value","B. The convertible bond falls as a hybrid instrument (both bond and equity value decline); the short stock gains — but if the decline triggers credit concerns on the issuer, the bond could fall faster than the delta hedge protects, creating net losses","C. The convertible arbitrage is perfectly hedged — market declines have no impact since the bond and stock offset exactly","D. The position profits exactly 20% since the short position is sized at 2× the bond's delta"],a:1,e:"Convertible arbitrage is NOT riskless. In a 20% market crash: <strong>Short stock gains</strong> (short $2M × 20% = $400K gain). <strong>Convertible bond falls</strong> — but not just by equity delta. In a sharp decline: (1) equity component loses value; (2) if the issuer's creditworthiness is questioned, credit spreads widen and the bond's value as fixed income also declines; (3) liquidity can dry up for convertible bonds. The delta hedge (0.4 × $2M short against $5M bonds) protects against small moves but can fail in large, fast-moving markets — especially when credit risk emerges. This 'credit-gamma risk' is why convertible arb funds suffered badly in the 2008 crisis."},
+{id:42,d:'h',q:"A client in the 48% marginal tax bracket holds $200,000 in a non-registered account. She is choosing between: Option 1: Corporate bond fund yielding 5% (all interest income). Option 2: Canadian dividend equity ETF yielding 4% (all eligible dividends) with expected capital appreciation of 2% annually. Calculate the approximate after-tax annual cash yield for each option.",o:["A. Option 1: 2.60%; Option 2: approximately 2.92% dividend yield after tax — Option 2 is more tax-efficient","B. Option 1: 2.60%; Option 2: 4.00% — dividends are always fully exempt from tax","C. Option 1: 3.50%; Option 2: 2.10% — Option 1 is more efficient for high-bracket investors","D. Both yield the same after-tax return since all investment income is taxed equally"],a:0,e:"<strong>Option 1 (Interest income):</strong> 5% × (1 − 48%) = 5% × 52% = <strong>2.60%</strong> after-tax cash yield. <strong>Option 2 (Eligible dividends at 48% bracket):</strong> The effective rate on eligible dividends at high marginal rates varies by province but is typically approximately 27–33% federal+provincial combined for high earners. Grossed-up dividend: 4% × 1.38 = 5.52%. Tax credit reduces effective rate to approximately 27–28% combined. After-tax yield ≈ 4% × (1 − 0.27) ≈ <strong>2.92%</strong>. Option 2 is more tax-efficient on the income component, plus the 2% capital appreciation (taxed at ~24% effective for capital gains at high bracket) adds further advantage. The correct ranking is A: Option 2 is more tax-efficient overall for a high-bracket investor."},
+{id:43,d:'h',q:"A mutual fund has $500M in assets, $10M in liabilities, and 22M units outstanding. If 3M additional units are purchased at NAV and then 2M units are redeemed at NAV over the same week, what is the NAV per unit before and after these transactions?",o:["A. NAV before: $22.27; NAV after: $22.27 — transactions do not change NAV per unit","B. NAV before: $22.27; NAV after rises to $23.50 — new purchases dilute liabilities","C. NAV before: $22.27; NAV after falls to $21.00 — redemptions cause dilution","D. NAV before: $22.27; NAV after: $22.27 — but only if markets are unchanged"],a:3,e:"<strong>Initial NAV:</strong> ($500M − $10M) ÷ 22M = $490M ÷ 22M = <strong>$22.27/unit</strong>. <strong>After 3M units purchased at $22.27:</strong> Assets = $500M + (3M × $22.27) = $500M + $66.8M = $566.8M. Units = 22M + 3M = 25M. NAV = ($566.8M − $10M) ÷ 25M = $556.8M ÷ 25M = $22.27. <strong>After 2M units redeemed at $22.27:</strong> Assets = $566.8M − (2M × $22.27) = $566.8M − $44.5M = $522.3M. Units = 25M − 2M = 23M. NAV = ($522.3M − $10M) ÷ 23M = $512.3M ÷ 23M = $22.27. <strong>NAV per unit does not change</strong> from purchases or redemptions because investors transact at the current NAV — neither diluting nor enriching remaining unitholders. NAV changes only with market value changes or distributions."},
+{id:44,d:'h',q:"A rate-reset preferred share was issued with a dividend of $1.00/year (based on 1.00% reset spread + 5-year GoC bond yield of 4.00% at issuance = 5.00% on $20 par = $1.00). Five-year GoC bond yields are now 6.50% when the share resets. What is the new annual dividend per $20 par share, and how does this compare to a comparable perpetual preferred issued at 5%?",o:["A. New rate-reset dividend: $1.50/year; perpetual preferred: $1.00/year — rate-reset outperforms in rising rate environment","B. New rate-reset dividend: $1.50/year; perpetual preferred: $1.00/year — demonstrating how rate-resets protect investors through rate cycles","C. New rate-reset dividend: $0.70/year — the reset cuts the dividend since 5-year rates rose","D. New rate-reset dividend: $1.50/year; perpetual preferred: $1.50/year — both adjust to market rates"],a:0,e:"<strong>Rate-reset calculation:</strong> New rate = 5-year GoC (6.50%) + spread (1.00%) = 7.50%. New annual dividend = 7.50% × $20 par = <strong>$1.50/year</strong>. <strong>Perpetual preferred (fixed 5%):</strong> Dividend stays at $1.00/year forever (5% × $20 = $1.00). In a rising rate environment: <strong>Rate-reset preferred outperforms</strong> on income ($1.50 vs $1.00), and its price decline is limited (the upcoming reset to a higher dividend partially offsets rising yield demand). The perpetual preferred suffers: its fixed $1.00 dividend becomes less attractive relative to new bonds/preferreds offering 7.5%, causing significant price decline. This illustrates a key suitability distinction: rate-resets are better suited for rising rate environments or inflation concerns."},
+{id:45,d:'h',q:"An investor holds $300,000 in a balanced fund (60% equity/40% bond, MER 2.2%) in a non-registered account. After analyzing the fund, the advisor determines the investor would be better served by a comparable balanced ETF (MER 0.25%). However, the balanced fund has an unrealized capital gain of $80,000. Calculate: (1) the tax cost of switching (48% combined marginal rate), and (2) how many years of fee savings are required to recover the switching cost.",o:["A. Tax cost: $19,200; fee savings: approximately 0.65% per year on $300,000 = $1,950 — recovery takes about 10 years","B. Tax cost: $19,200; fee savings: 1.95% per year on $300,000 = $5,850 — recovery takes approximately 3.3 years","C. Tax cost: $38,400; fee savings: $5,850 per year — recovery takes approximately 6.6 years","D. Tax cost: $19,200; fee savings: 1.95% on $300,000 = $5,850 — no recovery period needed since tax is a one-time cost"],a:1,e:"<strong>Tax cost:</strong> Capital gain = $80,000. Taxable amount (50% inclusion) = $40,000. Tax = $40,000 × 48% = <strong>$19,200</strong>. <strong>Annual fee savings:</strong> MER difference = 2.2% − 0.25% = 1.95%. Savings = 1.95% × $300,000 = <strong>$5,850/year</strong>. <strong>Recovery period:</strong> $19,200 ÷ $5,850 = <strong>approximately 3.3 years</strong>. After 3.3 years, the cumulative fee savings equal the upfront tax cost, and the investor is ahead. Over a 10+ year horizon, switching clearly makes sense. This calculation illustrates the 'embedded gain trap' — investors in highly appreciated funds may be reluctant to switch to lower-cost alternatives due to the tax bill, even when long-term economics strongly favor switching."}
+];
+
+let ans={},cor=0,att=0;
+function build(){
+  const c=document.getElementById('qC');c.innerHTML='';
+  Qs.forEach((q,i)=>{
+    const dc=q.d==='e'?'de':q.d==='m'?'dm':'dh',dl=q.d==='e'?'Easy':q.d==='m'?'Medium':'Hard';
+    const opts=q.o.map((o,oi)=>`<div class="qq-opt" onclick="chk(${i},${oi})" id="o${i}_${oi}"><span class="opt-l">${String.fromCharCode(65+oi)}</span>${o.substring(3)}</div>`).join('');
+    c.innerHTML+=`<div class="qq" id="q${i}"><div class="qq-top"><span class="qq-num">Q${q.id}</span><span class="qq-diff ${dc}">${dl}</span><div class="qq-text">${q.q}</div></div><div class="qq-opts">${opts}</div><div class="qq-exp" id="e${i}">${q.e}</div></div>`;
+  });
+}
+function chk(qi,sel){if(ans[qi]!==undefined)return;ans[qi]=sel;att++;const q=Qs[qi],ok=sel===q.a;if(ok)cor++;for(let i=0;i<q.o.length;i++){const el=document.getElementById(`o${qi}_${i}`);if(i===q.a)el.classList.add('correct');else if(i===sel&&!ok)el.classList.add('wrong');}document.getElementById(`e${qi}`).classList.add('show');document.getElementById('sLbl').textContent=`${cor}/${att}`;if(att===Qs.length){const pct=Math.round(cor/Qs.length*100),fd=document.getElementById('fS');fd.style.display='block';fd.innerHTML=`<div class="score-n">${pct}%</div><div class="score-l">${cor}/${Qs.length} correct — ${pct>=60?'✅ Pass':'❌ Below pass'}</div>`;}}
+function revealAll(){Qs.forEach((q,qi)=>{if(ans[qi]!==undefined)return;ans[qi]=q.a;for(let i=0;i<q.o.length;i++){const el=document.getElementById(`o${qi}_${i}`);if(i===q.a)el.classList.add('correct');}document.getElementById(`e${qi}`).classList.add('show');});}
+function resetQ(){ans={};cor=0;att=0;document.getElementById('sLbl').textContent='0/45';document.getElementById('fS').style.display='none';build();}
+function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function updateUI(){const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;const f=document.getElementById('pFill');if(f)f.style.width=Math.min(dh>0?(st/dh)*100:0,100)+'%';const btn=document.getElementById('scrolltop');st>500?btn.classList.add('visible'):btn.classList.remove('visible');const ids=['cover','s71','s72','s73','s74','s75','s76','s77','s78','s79','s710','s711','s712','summary','quiz'];let cur='cover';ids.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<100)cur=id;});document.querySelectorAll('.nl').forEach(l=>{l.classList.remove('active');const fn=l.getAttribute('onclick')||'';if(fn.includes("'"+cur+"'"))l.classList.add('active');});}
+window.addEventListener('scroll',updateUI,{passive:true});
+build();updateUI();
+</script>
+</body>
+</html>

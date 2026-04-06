@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIRE Element 8 Part 1 — Options & Derivative Types</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#faf8f4;--paper:#ffffff;--warm:#f4f1eb;--border:#e2ddd4;
+  --ink:#1a1510;--ink2:#2d2419;--ink3:#5c4f3d;--muted:#9a8a78;
+  --sb:#1a1510;
+  --amber:#c47a00;--amber-bg:#fff9ec;--amber-bd:#f5d080;
+  --teal:#006666;--teal-bg:#e8f5f5;--teal-bd:#80c8c8;
+  --red:#8b1a1a;--red-bg:#fef0f0;--red-bd:#f0a0a0;
+  --green:#1a5c2a;--green-bg:#eef8f0;--green-bd:#80c898;
+  --indigo:#1e3a8a;--indigo-bg:#eef2ff;--indigo-bd:#93aff0;
+  --rose:#8b1a3a;--rose-bg:#fef0f4;--rose-bd:#f0a0b8;
+  --sidebar-w:280px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#0f0c08;font-family:'Source Sans 3',sans-serif;color:var(--ink);display:flex;}
+
+/* SIDEBAR */
+#sb{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--sb);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;border-right:1px solid rgba(255,255,255,0.04);}
+#sb::-webkit-scrollbar{width:2px;}
+#sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);}
+.sbhead{padding:24px 18px 18px;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;background:#1a1510;z-index:5;}
+.sbtag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;color:#f5d080;text-transform:uppercase;background:rgba(196,122,0,0.15);border:1px solid rgba(196,122,0,0.3);padding:2px 8px;border-radius:2px;display:inline-block;margin-bottom:10px;}
+.sbtitle{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#fdf5e6;line-height:1.35;margin-bottom:3px;}
+.sbsub{font-size:10px;color:rgba(255,255,255,0.25);}
+.sbprog{padding:10px 18px 4px;}
+.sbprogl{font-size:9px;color:rgba(255,255,255,0.2);font-family:'JetBrains Mono',monospace;margin-bottom:5px;}
+.sbprogt{height:2px;background:rgba(255,255,255,0.06);border-radius:2px;}
+.sbprogf{height:100%;background:linear-gradient(90deg,var(--amber),#f5d080);border-radius:2px;width:0%;transition:width 0.3s;}
+.ng{padding:8px 0;}
+.ngl{padding:6px 18px;font-size:8.5px;letter-spacing:3px;color:rgba(255,255,255,0.18);text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+.nl{display:flex;align-items:flex-start;gap:9px;padding:5px 18px;cursor:pointer;border-left:2px solid transparent;transition:all 0.15s;text-decoration:none;}
+.nl:hover{background:rgba(255,255,255,0.03);border-left-color:rgba(196,122,0,0.4);}
+.nl.active{background:rgba(196,122,0,0.12);border-left-color:var(--amber);}
+.nn{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#f5d080;min-width:26px;flex-shrink:0;margin-top:2px;}
+.nt{font-size:11px;color:rgba(255,255,255,0.38);line-height:1.45;transition:color 0.15s;}
+.nl:hover .nt,.nl.active .nt{color:rgba(255,255,255,0.78);}
+.ns{display:block;padding:3px 18px 3px 50px;font-size:10.5px;color:rgba(255,255,255,0.22);cursor:pointer;border-left:2px solid transparent;transition:all 0.15s;}
+.ns:hover{color:rgba(255,255,255,0.48);border-left-color:rgba(196,122,0,0.25);}
+
+/* MAIN */
+#main{margin-left:var(--sidebar-w);flex:1;background:var(--bg);min-height:100vh;}
+
+/* COVER */
+.cover{background:linear-gradient(140deg,#0f0c08 0%,#1c1408 55%,#120e0a 100%);padding:88px 80px;min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
+.cov-texture{position:absolute;inset:0;opacity:0.04;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c47a00' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+.cov-glow1{position:absolute;top:-100px;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(196,122,0,0.08),transparent 65%);border-radius:50%;}
+.cov-glow2{position:absolute;bottom:-50px;left:200px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,102,102,0.06),transparent 65%);border-radius:50%;}
+.cov-part{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:4px;color:#f5d080;text-transform:uppercase;margin-bottom:12px;position:relative;display:flex;align-items:center;gap:14px;}
+.cov-part::before{content:'';width:28px;height:1px;background:#f5d080;}
+.cov-h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5.5vw,68px);font-weight:900;color:#fdf5e6;line-height:1.06;max-width:680px;margin-bottom:10px;position:relative;}
+.cov-h1 em{color:#f5d080;font-style:italic;}
+.cov-rule{width:54px;height:2px;background:linear-gradient(90deg,var(--amber),transparent);margin:20px 0;position:relative;}
+.cov-desc{font-size:15px;color:rgba(253,245,230,0.48);max-width:560px;line-height:1.9;margin-bottom:48px;position:relative;}
+.cov-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;max-width:580px;border:1px solid rgba(196,122,0,0.18);border-radius:6px;overflow:hidden;position:relative;}
+.cov-stat{padding:16px 14px;background:rgba(255,255,255,0.015);}
+.cov-stat-n{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#f5d080;line-height:1;margin-bottom:4px;}
+.cov-stat-l{font-size:9px;color:rgba(255,255,255,0.22);line-height:1.35;}
+
+/* CONTENT AREA */
+.content{max-width:820px;padding:0 72px 140px;}
+.sec{padding-top:76px;}
+.secrule{height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-bottom:26px;}
+.sechead{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px;}
+.secbadge{font-family:'JetBrains Mono',monospace;font-size:10.5px;background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber);padding:4px 12px;border-radius:3px;white-space:nowrap;margin-top:6px;flex-shrink:0;}
+.sectitle{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--ink);line-height:1.2;}
+.body{font-size:15px;color:var(--ink3);line-height:1.88;margin-bottom:15px;}
+.body strong{color:var(--ink);font-weight:700;}
+.body em{color:var(--amber);font-style:normal;font-weight:600;}
+
+.sub{margin-top:34px;}
+.subtit{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:var(--ink2);margin-bottom:12px;padding-left:13px;border-left:3px solid var(--amber);}
+.subsub{margin-top:20px;}
+.subsubtit{font-size:13.5px;font-weight:700;color:var(--ink2);margin-bottom:9px;display:flex;align-items:center;gap:7px;}
+.subsubtit::before{content:'▸';font-size:10px;color:var(--amber);}
+
+/* CALLOUTS */
+.callout{margin:18px 0;padding:14px 18px;border-radius:5px;border-left:3px solid;display:flex;gap:13px;align-items:flex-start;}
+.callout.amber{background:var(--amber-bg);border-color:var(--amber);}
+.callout.teal{background:var(--teal-bg);border-color:var(--teal);}
+.callout.red{background:var(--red-bg);border-color:var(--red);}
+.callout.green{background:var(--green-bg);border-color:var(--green);}
+.callout.indigo{background:var(--indigo-bg);border-color:var(--indigo);}
+.callout.rose{background:var(--rose-bg);border-color:var(--rose);}
+.ci{font-size:17px;flex-shrink:0;margin-top:1px;}
+.cl{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+.callout.amber .cl{color:var(--amber);}
+.callout.teal .cl{color:var(--teal);}
+.callout.red .cl{color:var(--red);}
+.callout.green .cl{color:var(--green);}
+.callout.indigo .cl{color:var(--indigo);}
+.callout.rose .cl{color:var(--rose);}
+.callout p{font-size:13.5px;color:var(--ink3);line-height:1.72;}
+.callout p strong{color:var(--ink);}
+
+/* DEF TABLE */
+.dt{margin:15px 0;border-radius:5px;overflow:hidden;border:1px solid var(--border);}
+.dr{display:grid;grid-template-columns:170px 1fr;}
+.dr:not(:last-child){border-bottom:1px solid var(--border);}
+.dterm{background:var(--warm);padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--amber);border-right:1px solid var(--border);display:flex;align-items:flex-start;line-height:1.5;}
+.dval{background:var(--paper);padding:12px 14px;font-size:13.5px;color:var(--ink3);line-height:1.68;}
+.dval strong{color:var(--ink);}
+
+/* SCENARIO */
+.scene{background:linear-gradient(135deg,rgba(196,122,0,0.05),rgba(0,102,102,0.05));border:1px solid var(--amber-bd);border-radius:7px;padding:20px;margin:18px 0;}
+.scene-title{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--amber);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.scene-body{font-size:14px;color:var(--ink3);line-height:1.85;}
+.scene-body strong{color:var(--ink);}
+.person{font-weight:700;color:var(--amber);}
+.scene-math{background:var(--paper);border:1px solid var(--border);border-radius:5px;padding:12px 14px;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink);line-height:1.7;}
+.math-good{color:var(--green);}
+.math-bad{color:var(--red);}
+.math-neu{color:var(--indigo);}
+
+/* PAYOFF CARDS */
+.payoff-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.payoff-card{border-radius:7px;overflow:hidden;border:1px solid var(--border);}
+.ph{padding:13px 16px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:8px;}
+.buy-call .ph{background:var(--green-bg);color:var(--green);border-bottom:1px solid var(--green-bd);}
+.sell-call .ph{background:var(--red-bg);color:var(--red);border-bottom:1px solid var(--red-bd);}
+.buy-put .ph{background:var(--indigo-bg);color:var(--indigo);border-bottom:1px solid var(--indigo-bd);}
+.sell-put .ph{background:var(--amber-bg);color:var(--amber);border-bottom:1px solid var(--amber-bd);}
+.naked-call .ph{background:var(--rose-bg);color:var(--rose);border-bottom:1px solid var(--rose-bd);}
+.cash-put .ph{background:var(--teal-bg);color:var(--teal);border-bottom:1px solid var(--teal-bd);}
+.pb{padding:14px 16px;font-size:13px;color:var(--ink3);line-height:1.72;background:var(--paper);}
+.pb strong{color:var(--ink);}
+.pb .tag{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--amber);background:var(--amber-bg);padding:4px 8px;border-radius:3px;display:inline-block;margin:4px 0;}
+
+/* FOUR POSITIONS SUMMARY TABLE */
+.four-pos{margin:18px 0;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+.fp-head{display:grid;grid-template-columns:140px 1fr 1fr 1fr;background:var(--sb);}
+.fp-head div{padding:10px 13px;font-family:'JetBrains Mono',monospace;font-size:9px;color:#f5d080;letter-spacing:1.5px;text-transform:uppercase;}
+.fp-row{display:grid;grid-template-columns:140px 1fr 1fr 1fr;border-top:1px solid var(--border);}
+.fp-row:nth-child(even){background:var(--warm);}
+.fp-row div{padding:10px 13px;font-size:13px;color:var(--ink3);line-height:1.5;}
+.fp-row div:first-child{font-weight:700;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:11px;}
+.tag-bull{color:var(--green);font-weight:700;}
+.tag-bear{color:var(--red);font-weight:700;}
+.tag-neut{color:var(--indigo);font-weight:700;}
+
+/* COMPARE 2 */
+.cmp2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:16px 0;}
+.ccard{border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+.ccard-head{padding:12px 15px;font-weight:700;font-size:13px;border-bottom:1px solid var(--border);}
+.ccard.lst .ccard-head{background:var(--green-bg);color:var(--green);}
+.ccard.otc .ccard-head{background:var(--rose-bg);color:var(--rose);}
+.ccard.fix .ccard-head{background:var(--indigo-bg);color:var(--indigo);}
+.ccard.flt .ccard-head{background:var(--teal-bg);color:var(--teal);}
+.ccard-body{padding:13px 15px;font-size:13px;color:var(--ink3);line-height:1.7;background:var(--paper);}
+.ccard-body strong{color:var(--ink);}
+
+/* FULL TABLE */
+table{width:100%;border-collapse:collapse;margin:15px 0;font-size:13.5px;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+thead tr{background:var(--sb);}
+th{padding:10px 13px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:#f5d080;font-weight:400;}
+td{padding:10px 13px;border-bottom:1px solid var(--border);color:var(--ink3);line-height:1.6;vertical-align:top;}
+td strong{color:var(--ink);}
+tr:last-child td{border-bottom:none;}
+tr:nth-child(even) td{background:var(--warm);}
+
+/* HLBOX */
+.hlbox{background:var(--sb);border-radius:7px;padding:22px 26px;margin:18px 0;}
+.hlbox-t{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2.5px;color:#f5d080;text-transform:uppercase;margin-bottom:10px;}
+.hlbox p{font-size:14px;color:rgba(253,245,230,0.62);line-height:1.85;}
+.hlbox p strong{color:#f5d080;}
+.hlbox p .yes{color:#80c898;}
+.hlbox p .no{color:#f0a0a0;}
+
+/* GREEKS */
+.greeks{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px 0;}
+.gk{border-radius:7px;padding:16px 12px;text-align:center;border:1px solid var(--border);}
+.gk-sym{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;margin-bottom:5px;}
+.gk-name{font-weight:700;font-size:12px;color:var(--ink);margin-bottom:5px;}
+.gk-desc{font-size:11px;color:var(--ink3);line-height:1.5;}
+.gk.g1{background:var(--green-bg);border-color:var(--green-bd);}.gk.g1 .gk-sym{color:var(--green);}
+.gk.g2{background:var(--indigo-bg);border-color:var(--indigo-bd);}.gk.g2 .gk-sym{color:var(--indigo);}
+.gk.g3{background:var(--amber-bg);border-color:var(--amber-bd);}.gk.g3 .gk-sym{color:var(--amber);}
+.gk.g4{background:var(--rose-bg);border-color:var(--rose-bd);}.gk.g4 .gk-sym{color:var(--rose);}
+.gk.g5{background:var(--teal-bg);border-color:var(--teal-bd);}.gk.g5 .gk-sym{color:var(--teal);}
+
+/* FACTORS TABLE */
+.factor-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin:16px 0;}
+.fac{border-radius:6px;padding:14px;border:1px solid var(--border);background:var(--paper);}
+.fac-title{font-weight:700;font-size:12.5px;color:var(--ink);margin-bottom:8px;}
+.fac-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;border-bottom:1px solid var(--border);}
+.fac-row:last-child{border-bottom:none;}
+.fac-label{color:var(--ink3);}
+.up{color:var(--green);font-weight:700;}
+.dn{color:var(--red);font-weight:700;}
+.ud{color:var(--amber);font-weight:700;}
+
+/* MARGIN EXAMPLE */
+.margin-ex{background:var(--warm);border:1px solid var(--border);border-radius:7px;padding:20px;margin:15px 0;}
+.mx-title{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:14px;}
+.mx-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px;}
+.mx-row:last-child{border-bottom:none;font-weight:700;color:var(--ink);}
+.mx-label{color:var(--ink3);}
+.mx-val{font-family:'JetBrains Mono',monospace;font-weight:600;}
+.mx-val.pos{color:var(--green);}
+.mx-val.neg{color:var(--red);}
+.mx-val.neu{color:var(--indigo);}
+
+/* ITM ATM OTM boxes */
+.iotm-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:14px 0;}
+.iotm{border-radius:6px;padding:14px;border:1px solid var(--border);text-align:center;}
+.iotm.itm{background:var(--green-bg);border-color:var(--green-bd);}
+.iotm.atm{background:var(--amber-bg);border-color:var(--amber-bd);}
+.iotm.otm{background:var(--red-bg);border-color:var(--red-bd);}
+.iotm-title{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;margin-bottom:6px;}
+.iotm.itm .iotm-title{color:var(--green);}
+.iotm.atm .iotm-title{color:var(--amber);}
+.iotm.otm .iotm-title{color:var(--red);}
+.iotm-body{font-size:12px;color:var(--ink3);line-height:1.55;}
+
+/* CHECKLIST */
+.chk{margin:12px 0;}
+.chi{display:flex;align-items:flex-start;gap:9px;padding:9px 13px;border-radius:5px;margin-bottom:3px;background:var(--warm);border:1px solid var(--border);font-size:13.5px;color:var(--ink3);line-height:1.58;}
+.chi strong{color:var(--ink);}
+.chico{color:var(--amber);font-size:11px;flex-shrink:0;margin-top:2px;}
+
+/* SCROLL TO TOP */
+#scrolltop{position:fixed;bottom:24px;right:24px;background:var(--amber);color:#fff;border:none;border-radius:50%;width:42px;height:42px;font-size:17px;cursor:pointer;opacity:0;transition:opacity 0.3s;z-index:200;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 4px 18px rgba(0,0,0,0.3);}
+#scrolltop.vis{opacity:1;}
+
+@media(max-width:900px){#sb{display:none;}#main{margin-left:0;}.content{padding:0 22px 80px;}.cover{padding:56px 22px;}.payoff-grid,.cmp2,.factor-grid,.iotm-grid{grid-template-columns:1fr;}.greeks{grid-template-columns:1fr 1fr;}.cov-stats{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sb">
+  <div class="sbhead">
+    <div class="sbtag">CIRE · Element 8 · Part 1</div>
+    <div class="sbtitle">Options & Derivative Types</div>
+    <div class="sbsub">Sections 8.1 – 8.4 · Deep dive with examples</div>
+  </div>
+  <div class="sbprog"><div class="sbprogl">Reading progress</div><div class="sbprogt"><div class="sbprogf" id="pFill"></div></div></div>
+  <div class="ng">
+    <div class="ngl">Content</div>
+    <a class="nl" onclick="goTo('cover')"><span class="nn">◉</span><span class="nt">Cover & What Is a Derivative?</span></a>
+    <a class="nl" onclick="goTo('s81')"><span class="nn">8.1</span><span class="nt">Options — Puts & Calls</span></a>
+    <a class="ns" onclick="goTo('longcall')">Buying a Call — Long Call</a>
+    <a class="ns" onclick="goTo('longput')">Buying a Put — Long Put</a>
+    <a class="ns" onclick="goTo('writing')">Writing (Selling) Options</a>
+    <a class="ns" onclick="goTo('covered')">Covered Call vs Naked Call</a>
+    <a class="ns" onclick="goTo('cashput')">Cash-Secured Put</a>
+    <a class="ns" onclick="goTo('fourpos')">Four Positions Summary</a>
+    <a class="ns" onclick="goTo('style')">American vs European Style</a>
+    <a class="nl" onclick="goTo('s82')"><span class="nn">8.2</span><span class="nt">Futures, Forwards, Swaps & CFDs</span></a>
+    <a class="ns" onclick="goTo('futures')">Futures Contracts</a>
+    <a class="ns" onclick="goTo('forwards')">Forward Contracts</a>
+    <a class="ns" onclick="goTo('swaps')">Swaps (Interest Rate, CDS, TRS)</a>
+    <a class="ns" onclick="goTo('cfds')">Contracts for Difference (CFDs)</a>
+    <a class="nl" onclick="goTo('s83')"><span class="nn">8.3</span><span class="nt">Uses — Hedging, Speculation, Arbitrage</span></a>
+    <a class="nl" onclick="goTo('s84')"><span class="nn">8.4</span><span class="nt">Premium, Greeks & Margin</span></a>
+    <a class="ns" onclick="goTo('premium')">Intrinsic & Time Value</a>
+    <a class="ns" onclick="goTo('itmotm')">ITM / ATM / OTM</a>
+    <a class="ns" onclick="goTo('greeks')">The Five Greeks</a>
+    <a class="ns" onclick="goTo('factors')">Factors Affecting Premium</a>
+    <a class="ns" onclick="goTo('margin')">Margin & Mark-to-Market</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+
+<!-- COVER -->
+<div id="cover" class="cover">
+  <div class="cov-texture"></div>
+  <div class="cov-glow1"></div>
+  <div class="cov-glow2"></div>
+  <div class="cov-part" style="position:relative;">Element 8 of 9 · Part 1 of 2</div>
+  <h1 class="cov-h1"><em>Derivatives</em><br>Part One</h1>
+  <div class="cov-rule"></div>
+  <p class="cov-desc">Everything built from zero — what derivatives are and <em>why</em> real people use them. The exact thinking behind each option position from both the buyer's and seller's view, all four derivative types explained with real scenarios, and the full premium/Greeks framework with intuitive explanations.</p>
+  <div class="cov-stats">
+    <div class="cov-stat"><div class="cov-stat-n">4</div><div class="cov-stat-l">Option positions fully explained</div></div>
+    <div class="cov-stat"><div class="cov-stat-n">4</div><div class="cov-stat-l">Derivative types with examples</div></div>
+    <div class="cov-stat"><div class="cov-stat-n">5</div><div class="cov-stat-l">Greeks explained intuitively</div></div>
+    <div class="cov-stat"><div class="cov-stat-n">Part 2</div><div class="cov-stat-l">Strategies, admin & questions</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- INTRO: WHAT IS A DERIVATIVE -->
+<div id="whatisit" class="sec">
+  <div class="secrule"></div>
+  <h2 class="sectitle" style="font-family:'Playfair Display',serif;font-size:27px;margin-bottom:18px;">Starting From Zero — What Is a Derivative?</h2>
+  <p class="body">A <strong>derivative</strong> is a financial contract whose value is <em>derived from</em> the price of something else — called the <strong>underlying asset</strong>. You don't own the underlying asset itself. You own a <em>contract</em> that gives you certain rights or obligations based on what happens to the price of that asset.</p>
+  <p class="body">The underlying can be: a stock (e.g., Shopify), a commodity (oil, gold, wheat), a currency (USD/CAD), an interest rate (Bank of Canada overnight rate), or a market index (S&P/TSX 60). This flexibility is what makes derivatives so useful — and so complex.</p>
+  <div class="hlbox">
+    <div class="hlbox-t">The House Analogy — Understand This First</div>
+    <p>You want to buy a house in Toronto for $800,000 — but you need 3 months to arrange financing. The seller agrees to lock in the $800,000 price today with a $10,000 deposit. You now have a <strong>contract</strong> that gives you the right to buy the house at $800,000 in 3 months, regardless of what the market does.<br><br>
+    If prices rise to $950,000: your $10,000 deposit generated $150,000 in value — <strong>15× leverage on your money</strong>.<br>
+    If prices fall to $650,000: your deposit is gone and the contract is worthless. <strong>Max loss = $10,000</strong>.<br><br>
+    <strong>This is exactly how a call option works.</strong> House = underlying asset. The contract = the derivative. The $10,000 deposit = the premium. Your right to buy at $800,000 = the strike price. 3 months = the expiry date.</p>
+  </div>
+
+  <div class="callout amber">
+    <div class="ci">💡</div>
+    <div class="cb"><div class="cl">The Single Most Important Concept</div>
+    <p>The distinction that separates options from all other derivatives: <strong>an option buyer has a RIGHT, not an obligation.</strong> If prices move against them, they can simply walk away — losing only the premium. A futures or forward party has an <strong>OBLIGATION</strong> — they must complete the transaction regardless of price. The option buyer pays the premium to have this choice. This asymmetry drives everything in derivatives.</p></div>
+  </div>
+</div>
+
+<!-- 8.1 OPTIONS -->
+<div id="s81" class="sec">
+  <div class="secrule"></div>
+  <div class="sechead"><div class="secbadge">8.1</div><h2 class="sectitle">Options — Puts, Calls, and Writing</h2></div>
+  <p class="body">An <strong>option contract</strong> gives the buyer the right — but not the obligation — to buy or sell a specific quantity of an underlying asset at a predetermined <strong>strike price (exercise price)</strong> on or before a specific <strong>expiry date</strong>. The buyer pays a <strong>premium</strong> upfront for this right.</p>
+  <p class="body">There are exactly <strong>four basic option positions</strong>. Every strategy in derivatives — no matter how complex — is just a combination of these four. You must understand the thinking behind each one, not just the payoff. Especially for the exam — the questions test whether you know <em>why</em> someone would use each one.</p>
+
+  <!-- LONG CALL -->
+  <div id="longcall" class="sub">
+    <h3 class="subtit">Position 1 — Buying a Call (Long Call)</h3>
+    <p class="body">A <strong>call option</strong> gives the buyer the right to <em>buy</em> the underlying asset at the strike price. You buy a call when you expect the price to <em>rise</em>. You want unlimited upside but limited downside.</p>
+    <div class="scene">
+      <div class="scene-title">🎯 Real Scenario — The Leveraged Bullish Bet</div>
+      <div class="scene-body">
+        <span class="person">Priya</span> is a tech analyst who believes Shopify (SHOP) at $100/share is about to surge 30%+ after their upcoming earnings announcement. She has $10,000 to invest. Option 1: Buy 100 SHOP shares at $100 = $10,000 capital at risk. Option 2: Buy <strong>1 call contract</strong> (= 100 shares) with strike $100, expiring in 3 months, at $5 premium per share = $500 total.<br><br>
+        Priya chooses Option 2. She now has the <strong>right to buy 100 SHOP shares at $100</strong> regardless of where the market price goes over the next 3 months.
+        <div class="scene-math">
+          <span class="math-neu">What Priya controls:</span> 100 shares × $100 = $10,000 notional exposure<br>
+          <span class="math-neu">What Priya paid:</span> $500 (the premium)<br>
+          <span class="math-neu">Leverage ratio:</span> $10,000 ÷ $500 = 20:1
+        </div>
+      </div>
+    </div>
+    <div class="payoff-grid">
+      <div class="payoff-card buy-call">
+        <div class="ph">✅ SHOP rises to $135 at expiry</div>
+        <div class="pb">
+          Priya <strong>exercises her call</strong>: buys 100 shares at $100 (strike), sells immediately at $135 (market).<br><br>
+          Profit per share: $135 − $100 = $35<br>
+          Less premium: $35 − $5 = <strong>$30 net profit/share</strong><br>
+          <span class="tag">Total profit = $30 × 100 = $3,000 on $500 invested = 600% return</span><br><br>
+          Compare: If she had bought the shares at $100, she'd have made ($135−$100)×100 = $3,500 — but she would have tied up $10,000 to make that. The option freed up $9,500 of capital while still making $3,000.
+        </div>
+      </div>
+      <div class="payoff-card sell-call">
+        <div class="ph">❌ SHOP falls to $82 at expiry</div>
+        <div class="pb">
+          Nobody pays $100 when the market price is $82. Priya <strong>does not exercise</strong> — she simply lets the option expire worthless.<br><br>
+          <span class="tag">Maximum loss = $500 (the premium paid). Nothing more, ever.</span><br><br>
+          Compare: If she had bought shares at $100, she'd have lost ($100−$82)×100 = $1,800. The option limited her loss to $500 — 72% less loss than owning the stock. <strong>This defined downside is the defining advantage of buying options.</strong>
+        </div>
+      </div>
+    </div>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Breakeven at expiry</div><div class="dval">Strike price + premium paid = $100 + $5 = <strong>$105</strong>. SHOP must be above $105 for the trade to be profitable. Between $100–$105 she recoups some premium but still has a net loss.</div></div>
+      <div class="dr"><div class="dterm">Max profit</div><div class="dval"><strong>Unlimited in theory</strong> — there is no cap on how high a stock can rise. The higher SHOP goes, the more the call is worth.</div></div>
+      <div class="dr"><div class="dterm">Max loss</div><div class="dval"><strong>Premium paid — $500. Nothing more.</strong> Even if SHOP goes to zero, Priya only loses $500. This is the critical advantage of buying vs short-selling or using futures.</div></div>
+      <div class="dr"><div class="dterm">Market view</div><div class="dval"><strong>Strongly bullish</strong> — expects the stock to rise significantly above the strike before expiry.</div></div>
+      <div class="dr"><div class="dterm">Why use instead of buying stock?</div><div class="dval">Leverage (controls more with less capital), defined risk (cannot lose more than premium), capital efficiency (frees up remaining $9,500 for other investments or safety margin).</div></div>
+    </div>
+  </div>
+
+  <!-- LONG PUT -->
+  <div id="longput" class="sub">
+    <h3 class="subtit">Position 2 — Buying a Put (Long Put)</h3>
+    <p class="body">A <strong>put option</strong> gives the buyer the right to <em>sell</em> the underlying asset at the strike price. You buy a put when you expect the price to <em>fall</em>. Puts have two main uses: (1) <em>speculation</em> on a price decline, and (2) <em>portfolio insurance</em> on existing holdings.</p>
+    <div class="scene">
+      <div class="scene-title">🛡️ Real Scenario — Portfolio Insurance Before Uncertainty</div>
+      <div class="scene-body">
+        <span class="person">Carlos</span> holds 500 Suncor (SU) shares bought at $55, now at $60. His total position value = $30,000. He's nervous about a market selloff due to a geopolitical event in 4 weeks. He doesn't want to sell because: (1) he'd trigger a capital gains tax event, (2) he still believes in the stock long-term. Solution: buy <strong>5 put contracts</strong> (5 × 100 = 500 shares) with strike $58, 3-month expiry, at $3 premium/share = $1,500 total.<br><br>
+        Carlos now has the <strong>right to sell all 500 SU shares at $58</strong>, regardless of where the market goes.
+        <div class="scene-math">
+          <span class="math-neu">What Carlos is insuring:</span> $30,000 of SU stock<br>
+          <span class="math-neu">His effective floor:</span> $58/share = $29,000 minimum value<br>
+          <span class="math-neu">Cost of insurance:</span> $1,500 (5% of position value)
+        </div>
+      </div>
+    </div>
+    <div class="payoff-grid">
+      <div class="payoff-card buy-put">
+        <div class="ph">✅ SU crashes to $38 (geopolitical shock)</div>
+        <div class="pb">
+          Without puts: SU worth $38 × 500 = $19,000 — a $11,000 loss from $30,000.<br><br>
+          With puts: Carlos <strong>exercises</strong> — sells 500 shares at $58 despite $38 market price.<br>
+          Proceeds: $58 × 500 = $29,000.<br>
+          Less premium: $29,000 − $1,500 = <strong>$27,500 net floor</strong>.<br>
+          <span class="tag">Insurance saved: $27,500 − $19,000 = $8,500 in protection</span>
+        </div>
+      </div>
+      <div class="payoff-card buy-put" style="--border:var(--amber-bd);">
+        <div class="ph" style="background:var(--amber-bg);color:var(--amber);border-bottom:1px solid var(--amber-bd);">❌ SU rises to $72 (geopolitical relief)</div>
+        <div class="pb">
+          Why would Carlos sell at $58 when market is $72? He <strong>does not exercise</strong>. The put expires worthless.<br><br>
+          Stock gain: ($72−$60) × 500 = $6,000 profit.<br>
+          Less premium paid: $1,500.<br>
+          <span class="tag">Net gain: $4,500. Insurance cost $1,500 but wasn't needed.</span><br><br>
+          Like buying car insurance you don't use — the peace of mind during uncertainty was worth the cost.
+        </div>
+      </div>
+    </div>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Breakeven at expiry</div><div class="dval">Strike price − premium paid = $58 − $3 = <strong>$55</strong>. Stock must fall below $55 for the standalone put to profit.</div></div>
+      <div class="dr"><div class="dterm">Max profit</div><div class="dval">Strike − premium (if stock falls to zero). = ($58 − $3) × 500 = $27,500 theoretical max. Stock cannot fall below zero.</div></div>
+      <div class="dr"><div class="dterm">Max loss</div><div class="dval">Premium paid = $1,500. If stock stays above $58, the put expires worthless.</div></div>
+      <div class="dr"><div class="dterm">Use 1: Speculation</div><div class="dval">Bearish directional bet without short-selling risks. Cheaper than shorting — no margin call, no potential for losses exceeding premium. Used when you expect a sharp drop but don't own the underlying.</div></div>
+      <div class="dr"><div class="dterm">Use 2: Insurance (Protective Put)</div><div class="dval">Owning the underlying + buying puts = <strong>protective put</strong> strategy. Carlos's approach. Creates a floor under the position. Common before earnings, elections, or other high-uncertainty events.</div></div>
+    </div>
+  </div>
+
+  <!-- WRITING OPTIONS -->
+  <div id="writing" class="sub">
+    <h3 class="subtit">Positions 3 & 4 — Writing (Selling) Options</h3>
+    <p class="body">The option <strong>writer</strong> (seller) takes the opposite side. They collect the premium upfront but accept an <em>obligation</em>. If the buyer exercises, the writer must fulfill their duty — regardless of how bad the market conditions are. This is where options become genuinely dangerous if done wrong.</p>
+    <p class="body"><strong>Writers make money when options expire worthless.</strong> Their income is the premium. Their goal is for the underlying to NOT move in a way that triggers exercise. Time decay works in the writer's favour — every day the option loses time value.</p>
+
+    <div id="covered" class="subsub">
+      <h4 class="subsubtit">Writing a Covered Call — The Most Common Strategy</h4>
+      <div class="scene">
+        <div class="scene-title">📘 Real Scenario — Generating Income on a Stock You Hold</div>
+        <div class="scene-body">
+          <span class="person">David</span> owns 100 RBC shares at $130. He believes RBC will trade flat over the next month — maybe up a bit, but not going to $140+. He decides to sell (write) 1 call option with $135 strike, collecting <strong>$2/share = $200 premium</strong> upfront.<br><br>
+          <strong>Why "covered"?</strong> He already owns the 100 shares. If the call is exercised, he can deliver his existing shares — he doesn't need to buy them in the market. This is the key difference from writing a naked call.
+          <div class="scene-math">
+            Three possible outcomes at expiry:
+            <br><span class="math-good">RBC at $128:</span> Call expires worthless. David keeps shares + $200 premium. Total return = $200 extra income on his position.
+            <br><span class="math-neu">RBC at $135:</span> Call exercised. David sells at $135. Effective sale price = $135 + $2 premium = <strong>$137</strong>. Still a solid gain from $130.
+            <br><span class="math-neu">RBC at $152:</span> Call exercised at $135. David misses the rally above $135. His effective gain is capped at $137 ($135 + $2). He "left money on the table" — but he knew this risk when he wrote the call.
+          </div>
+        </div>
+      </div>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Max profit</div><div class="dval">(Strike − stock cost basis) + premium received = ($135 − $130) + $2 = <strong>$7/share</strong>. Profit is capped — no benefit from rally above $135.</div></div>
+        <div class="dr"><div class="dterm">Max loss</div><div class="dval">If stock falls to zero: (loss on stock − premium received) = $130 − $2 = $128/share. The premium provides only slight cushion against a large stock decline. The stock risk dominates.</div></div>
+        <div class="dr"><div class="dterm">Ideal scenario</div><div class="dval">Stock stays flat or rises slightly — call expires, David keeps premium AND the stock. Repeat monthly to build income stream. This is called "rolling" the call.</div></div>
+        <div class="dr"><div class="dterm">Seller's mindset</div><div class="dval">David is <em>selling</em> upside potential in exchange for <em>certain income now</em>. He's saying: "I'll give up gains above $135 in exchange for $200 guaranteed today." This is the core trade-off of covered call writing.</div></div>
+      </div>
+    </div>
+
+    <div class="subsub" style="margin-top:22px;">
+      <h4 class="subsubtit">Writing a Naked Call — Maximum Risk, Maximum Danger</h4>
+      <div class="callout red">
+        <div class="ci">🚨</div>
+        <div class="cb"><div class="cl">Unlimited Loss Risk</div>
+        <p><strong>Naked call writing = writing a call WITHOUT owning the underlying shares.</strong> If the stock rockets past the strike, the writer must buy shares at market (which could be $200, $300, any price) and sell them at the $135 strike. Loss = (market price − strike − premium). Theoretically unlimited. This is the most dangerous derivative strategy for a retail investor. Requires significant margin. Regulators and dealers require high approval levels before permitting naked call writing.</p></div>
+      </div>
+    </div>
+
+    <div id="cashput" class="subsub" style="margin-top:22px;">
+      <h4 class="subsubtit">Writing a Cash-Secured Put — The "Buy at a Better Price" Strategy</h4>
+      <div class="scene">
+        <div class="scene-title">📘 Real Scenario — Getting Paid to Wait for a Better Entry Price</div>
+        <div class="scene-body">
+          <span class="person">Sunita</span> wants to buy Telus (T) at $22/share. It's currently trading at $24. She thinks $22 is a great entry price but doesn't want to overpay at $24. Instead of placing a limit buy order at $22, she <strong>writes (sells) a put option with a $22 strike</strong>, collecting <strong>$0.80/share = $80 per contract</strong> premium. She keeps $2,200 in cash in her account as collateral (cash-secured).
+          <div class="scene-math">
+            <span class="math-good">Outcome A — Telus stays at $24+ at expiry:</span> Put expires worthless. Sunita keeps $80. She didn't buy the stock — but she earned $80 for waiting. She can write another put next month. Income strategy if repeated.
+            <br><span class="math-neu">Outcome B — Telus falls to $21 at expiry:</span> Put is exercised. Sunita is <strong>obligated to buy 100 shares at $22</strong> (using her $2,200 cash). Effective cost = $22 − $0.80 = <strong>$21.20/share</strong>. She bought Telus $2.80 below where it was when she set up the trade. She wanted to own it — this worked.
+            <br><span class="math-bad">Outcome C — Telus crashes to $10:</span> Sunita still must buy at $22. She now owns shares worth only $10. Loss = ($22 − $10 − $0.80) = $11.20/share. The $0.80 premium is barely a consolation. This is why cash-secured puts require genuine willingness to own the stock.
+          </div>
+        </div>
+      </div>
+      <div class="dt">
+        <div class="dr"><div class="dterm">Max profit</div><div class="dval">Premium received = $80. If the put expires worthless (stock stays above $22).</div></div>
+        <div class="dr"><div class="dterm">Max loss</div><div class="dval">(Strike − premium) × 100 = ($22 − $0.80) × 100 = $2,120. If stock falls to zero. Significant but defined (stock can't fall below zero).</div></div>
+        <div class="dr"><div class="dterm">Key requirement</div><div class="dval">Must be <em>genuinely willing</em> to own the underlying stock at the strike price. If you write a put on a stock you don't want to own, and it gets assigned, you're forced into a bad position.</div></div>
+        <div class="dr"><div class="dterm">Seller's mindset</div><div class="dval">"I want to own Telus at $22. I'll get paid $80 for promising to buy at $22 if it gets there. If it doesn't, I keep $80 and try again next month." Premium income substitutes for a passive limit order.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOUR POSITIONS SUMMARY -->
+  <div id="fourpos" class="sub">
+    <h3 class="subtit">The Four Positions — Complete Summary</h3>
+    <div class="four-pos">
+      <div class="fp-head"><div>Position</div><div>Market View</div><div>Max Profit</div><div>Max Loss</div></div>
+      <div class="fp-row"><div>Buy Call</div><div><span class="tag-bull">Strongly bullish</span> — expects significant rise above strike</div><div>Unlimited (stock rises indefinitely)</div><div>Premium paid only</div></div>
+      <div class="fp-row"><div>Buy Put</div><div><span class="tag-bear">Bearish / insurance</span> — expects fall OR wants to protect existing position</div><div>Strike − premium (stock to zero)</div><div>Premium paid only</div></div>
+      <div class="fp-row"><div>Write Call (covered)</div><div><span class="tag-neut">Neutral to mildly bullish</span> — expects flat or slight rise; generating income</div><div>Premium + (strike − cost basis)</div><div>Cost basis − premium if stock collapses</div></div>
+      <div class="fp-row"><div>Write Put (cash-secured)</div><div><span class="tag-neut">Neutral to mildly bullish</span> — willing to own stock at lower price; generating income</div><div>Premium received</div><div>Strike − premium (stock to zero)</div></div>
+    </div>
+    <div class="callout amber">
+      <div class="ci">🔑</div>
+      <div class="cb"><div class="cl">The Exam Tests This Constantly</div>
+      <p>A scenario will describe a client's view and situation, then ask which option position is appropriate. Always ask: (1) What direction does the client expect? (2) Do they want to generate income or buy protection? (3) Do they own the underlying? Match the view to the position — not just the mechanics.</p></div>
+    </div>
+  </div>
+
+  <!-- AMERICAN VS EUROPEAN -->
+  <div id="style" class="sub">
+    <h3 class="subtit">American-Style vs European-Style Options</h3>
+    <div class="cmp2">
+      <div class="ccard lst">
+        <div class="ccard-head">🇺🇸 American-Style</div>
+        <div class="ccard-body">
+          Can be exercised <strong>at any time</strong> on or before the expiry date. Full flexibility for the holder.<br><br>
+          <strong>Used for:</strong> Most exchange-listed <em>individual stock options</em> in Canada and the US — TSX equity options, S&P 500 stock options.<br><br>
+          <strong>Why it matters:</strong> Early exercise is useful when a dividend is coming (call holders may exercise early to capture the dividend), or when an in-the-money put has significant intrinsic value close to expiry.<br><br>
+          <strong>Premium:</strong> Slightly higher than European-style due to the early exercise flexibility.
+        </div>
+      </div>
+      <div class="ccard otc">
+        <div class="ccard-head">🇪🇺 European-Style</div>
+        <div class="ccard-body">
+          Can only be exercised <strong>on the expiry date itself</strong> — not before. No early exercise.<br><br>
+          <strong>Used for:</strong> Most <em>index options</em> — S&P/TSX 60 index options, S&P 500 index options. Usually cash-settled (you receive the cash difference, not actual delivery of 60 stocks).<br><br>
+          <strong>Why it matters:</strong> Simpler to price (Black-Scholes model is designed for European options). No assignment risk before expiry for the writer.<br><br>
+          <strong>Cash settlement:</strong> At expiry, if the index is above (for calls) or below (for puts) the strike, you receive the difference in cash — no physical delivery of the basket.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 8.2 OTHER DERIVATIVE TYPES -->
+<div id="s82" class="sec">
+  <div class="secrule"></div>
+  <div class="sechead"><div class="secbadge">8.2</div><h2 class="sectitle">Futures, Forwards, Swaps & CFDs</h2></div>
+  <p class="body">Unlike options where the buyer has a <em>right</em>, the following instruments create <em>obligations</em> for both parties — they must complete the transaction under the agreed terms. Understanding the differences between them is critical for the exam.</p>
+
+  <!-- FUTURES -->
+  <div id="futures" class="sub">
+    <h3 class="subtit">Futures Contracts</h3>
+    <p class="body">A <strong>futures contract</strong> is a legally binding agreement to buy or sell a specific quantity of an underlying asset at a predetermined price on a specific future date. Both buyer and seller are <em>obligated</em> — there is no right to walk away. Both sides can profit and both sides can lose.</p>
+
+    <div class="scene">
+      <div class="scene-title">✈️ Futures in the Real World — Airline vs Oil Producer</div>
+      <div class="scene-body">
+        <span class="person">WestJet</span> needs 10 million litres of jet fuel in 6 months. Current price: $1.00/litre. They're worried oil prices will rise by then, making fuel much more expensive and destroying their profitability. They decide to <strong>buy oil futures contracts at $1.05/litre</strong> to lock in their fuel cost.<br><br>
+        On the other side: an <span class="person">Alberta oil producer</span> needs to sell 10 million litres in 6 months and is worried prices could fall. They're happy to lock in $1.05 guaranteed revenue by taking the other side of WestJet's futures contracts.<br><br>
+        Both parties eliminated their uncertainty. Now look at what actually happens:
+        <div class="scene-math">
+          <span class="math-good">If oil rises to $1.40/litre:</span> WestJet's hedge worked — they pay $1.05 instead of $1.40. Saving = $0.35 × 10M = $3.5M. Oil producer missed the extra $0.35 but had certainty.
+          <br><span class="math-bad">If oil falls to $0.75/litre:</span> WestJet pays $1.05 instead of $0.75. Overpay = $0.30 × 10M = $3.0M. They wish they hadn't hedged. But at $1.05 they knew exactly what their fuel cost would be — that planning certainty was worth the trade-off.
+          <br><span class="math-neu">Key insight:</span> Neither party is "wrong" to use the futures. Both eliminated a major uncertainty. Futures exist to let commercial users transfer price risk to those willing to bear it.
+        </div>
+      </div>
+    </div>
+
+    <div class="dt">
+      <div class="dr"><div class="dterm">Obligation — Both Sides</div><div class="dval">Unlike options: both buyer AND seller are obligated to complete the transaction. To exit before expiry, you must enter an <strong>offsetting (opposite) trade</strong> — not simply walk away. Most futures are closed before delivery; less than 2% of futures contracts result in physical delivery.</div></div>
+      <div class="dr"><div class="dterm">Standardized</div><div class="dval">Exchange-traded futures have completely fixed terms: contract size, delivery location, delivery date, quality specifications. E.g., one crude oil futures contract = 1,000 barrels of a specific grade at Cushing, Oklahoma. This standardization creates liquidity — thousands of buyers and sellers can trade identically defined contracts.</div></div>
+      <div class="dr"><div class="dterm">Daily Mark-to-Market</div><div class="dval">This is the defining operational feature of futures. <strong>Every day</strong>, gains and losses are settled in cash. If you're long oil futures and oil falls $2/barrel on Tuesday: $2 × 1,000 barrels = <strong>$2,000 debited from your account Tuesday night</strong>. If it rises $3 on Wednesday: $3,000 credited Wednesday night. Losses don't accumulate silently like they do in stocks — they hit your account immediately every day.</div></div>
+      <div class="dr"><div class="dterm">Leverage</div><div class="dval">Only 5–10% of the contract value is required as margin. A $100,000 oil contract needs only ~$5,000 initial margin — 20:1 leverage. Every 1% move in oil = 20% gain or loss on the margin deposited.</div></div>
+      <div class="dr"><div class="dterm">Canadian Futures</div><div class="dval">Exchange: <strong>Montréal Exchange (MX)</strong>. Key products: S&P/TSX 60 futures (SXF), GoC bond futures, Banker's Acceptance futures. Canadian commodity producers use US exchanges (CME, NYMEX) for oil, gold, grain futures since those have much deeper liquidity.</div></div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-title">📊 Mark-to-Market — Worked Example</div>
+      <div class="scene-body">
+        <span class="person">Marcus</span> buys 3 crude oil futures contracts at $80/barrel (3 × 1,000 barrels = 3,000 barrels total notional). Initial margin = $6,000/contract = $18,000 total deposited.
+        <div class="scene-math">
+          Day 1: Oil closes at $79. Loss = $1 × 3,000 = <span class="math-bad">-$3,000 debited tonight</span>. Margin balance = $15,000.
+          <br>Day 2: Oil closes at $77. Loss = $2 × 3,000 = <span class="math-bad">-$6,000 debited tonight</span>. Margin balance = $9,000.
+          <br>Day 2 night: Maintenance margin threshold = $4,500/contract × 3 = $13,500. Balance $9,000 &lt; $13,500. <span class="math-bad">MARGIN CALL ISSUED.</span>
+          <br>Day 3 morning: Marcus must deposit $18,000 − $9,000 = $9,000 to restore to initial margin, OR close his positions. If he does neither, the dealer <strong>liquidates his contracts</strong>.
+          <br><span class="math-bad">A 3.75% move in oil (from $80 to $77) wiped out half his margin in 2 days.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORWARDS -->
+  <div id="forwards" class="sub">
+    <h3 class="subtit">Forward Contracts</h3>
+    <p class="body">A <strong>forward contract</strong> is essentially a futures contract that is NOT exchange-traded. It's a private, customized OTC agreement between two parties — typically a bank/dealer and a corporation. There is no exchange, no standardization, and no daily mark-to-market settlement.</p>
+
+    <div class="cmp2">
+      <div class="ccard fix">
+        <div class="ccard-head">✅ Advantages of Forwards Over Futures</div>
+        <div class="ccard-body">
+          <strong>Full customization:</strong> Any underlying asset, any quantity, any delivery date, any delivery location. A Canadian exporter can match the forward <em>exactly</em> to their invoice — same amount, same date, same currency pair.<br><br>
+          <strong>No daily cash calls:</strong> No mark-to-market settlement. Gains and losses accumulate until contract maturity. No margin calls disrupting cash management.<br><br>
+          <strong>No basis risk:</strong> Because the forward is tailor-made, there's no mismatch between what you're hedging and what you've hedged with. Futures are standardized — there's almost always some imperfect match.
+        </div>
+      </div>
+      <div class="ccard otc">
+        <div class="ccard-head">⚠️ Disadvantages vs Futures</div>
+        <div class="ccard-body">
+          <strong>Counterparty risk:</strong> No central clearing house. If the bank you made the forward with fails (like Lehman Brothers in 2008), your contract may become worthless. This is the biggest risk.<br><br>
+          <strong>No easy exit:</strong> To close a forward early, you negotiate with the counterparty — you can't simply sell it on an exchange. Less liquid than futures.<br><br>
+          <strong>Less transparent pricing:</strong> OTC pricing is negotiated — you can't see what other participants are paying. Banks earn a spread on every forward.
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-title">🌍 FX Forward — The Most Common Real-World Forward Contract</div>
+      <div class="scene-body">
+        <span class="person">A B.C. lumber exporter</span> sells $US 5,000,000 of lumber to a US buyer, with payment due in 90 days. Current exchange rate: 1 USD = 1.36 CAD. The exporter is worried — if CAD strengthens to 1.25, they'll receive 5M × 1.25 = C$6.25M instead of 5M × 1.36 = <strong>C$6.8M</strong>. That's a C$550,000 revenue shortfall.<br><br>
+        Solution: They call their bank and enter a <strong>90-day FX forward to sell USD 5M at 1.355 CAD/USD</strong> (the bank charges a small spread from the spot 1.36).
+        <div class="scene-math">
+          <span class="math-good">What they locked in:</span> USD 5M × 1.355 = <strong>C$6.775M guaranteed</strong> in 90 days.
+          <br><span class="math-neu">If CAD strengthens to 1.22:</span> Spot sale = $6.1M, but forward pays $6.775M. Forward saved $675,000.
+          <br><span class="math-bad">If CAD weakens to 1.45:</span> Spot sale = $7.25M, but forward still pays $6.775M. Forward cost $475,000 in opportunity. But the company budgeted and planned around $6.775M — the certainty was worth more than the gamble.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SWAPS -->
+  <div id="swaps" class="sub">
+    <h3 class="subtit">Swaps</h3>
+    <p class="body">A <strong>swap</strong> is an agreement between two parties to exchange a series of cash flows over a defined period. The most common type is the <em>interest rate swap</em>. Swaps are OTC instruments — documented under an ISDA Master Agreement — used primarily by large corporations, banks, and institutional investors.</p>
+
+    <div class="scene">
+      <div class="scene-title">📊 Interest Rate Swap — The Most Common Type Globally</div>
+      <div class="scene-body">
+        <span class="person">Air Canada</span> has C$500M of floating-rate debt tied to 3-month CDOR (prime equivalent) + 1.5%. Current rate: 5% all-in. They're worried the Bank of Canada will raise rates further, making their interest payments unpredictable. They want to pay a <em>fixed</em> rate instead.<br><br>
+        <span class="person">A pension fund</span> holds C$500M in 5-year fixed-rate Government bonds (paying 4.8%) but wants floating-rate exposure because their liabilities are inflation-linked and rise with rates.<br><br>
+        <strong>The swap deal:</strong> Air Canada agrees to pay the pension fund a <strong>fixed rate of 5.0%</strong> per year on a $500M notional. The pension fund agrees to pay Air Canada the <strong>floating rate</strong> (prime + 1.5%) on the same $500M notional. The notional $500M is never exchanged — only the <em>interest difference</em> changes hands each quarter.
+        <div class="scene-math">
+          Air Canada's situation after the swap:
+          <br>Pays to bank (original debt): Prime + 1.5% (floating)
+          <br>Receives from pension fund on swap: Prime + 1.5% (floating) — <span class="math-good">cancels out their floating debt cost</span>
+          <br>Pays to pension fund on swap: 5.0% fixed
+          <br><span class="math-neu">Net result: Air Canada now effectively pays 5.0% fixed — certainty for budgeting and planning.</span>
+          <br><br>Pension fund's situation: Receives 5.0% fixed (from swap), pays floating to Air Canada. Net exposure = receives floating — better matches their inflation-linked liabilities.
+        </div>
+      </div>
+    </div>
+
+    <div class="dt">
+      <div class="dr"><div class="dterm">Interest Rate Swap</div><div class="dval">Exchange fixed for floating (or vice versa) on a notional principal. The principal is NOT exchanged — only interest flows change hands. Most common OTC derivative globally — hundreds of trillions in notional outstanding. Used by companies to convert floating debt to fixed (or vice versa) for certainty and risk management.</div></div>
+      <div class="dr"><div class="dterm">Currency Swap</div><div class="dval">Exchange interest payments AND typically the principal in different currencies. Example: A Canadian company issues bonds in EUR (at lower European rates) and swaps the EUR obligations back to CAD, effectively borrowing cheaply in Europe while ending up with CAD debt. The currency swap converts the foreign currency exposure back to domestic.</div></div>
+      <div class="dr"><div class="dterm">Credit Default Swap (CDS)</div><div class="dval">Functions like insurance on a bond or loan. The protection buyer pays periodic premiums to the protection seller. If the reference entity (e.g., a corporation or country) defaults, the seller pays the face value of the debt. Famous from the 2008 financial crisis — AIG sold CDS on subprime mortgage securities and couldn't pay when defaults surged. Required a US$180B government bailout to prevent global financial collapse.</div></div>
+      <div class="dr"><div class="dterm">Total Return Swap (TRS)</div><div class="dval">One party pays the total return (price change + dividends/income) of a reference asset. The other party pays a fixed or floating rate. Hedge funds use TRS to gain full economic exposure to an asset without owning it — avoiding certain regulatory requirements, ownership reporting thresholds, or tax rules. <strong>Archegos Capital (2021)</strong> built enormous concentrated positions through TRS — when those positions collapsed, Archegos defaulted on its swaps, causing Credit Suisse and other banks over $10B+ in losses because the positions weren't publicly disclosed.</div></div>
+    </div>
+  </div>
+
+  <!-- CFDs -->
+  <div id="cfds" class="sub">
+    <h3 class="subtit">Contracts for Difference (CFDs)</h3>
+    <p class="body">A <strong>CFD</strong> is an agreement to exchange the difference in value of an underlying asset between when the contract is opened and when it is closed. You never own the underlying — you simply profit or lose from the price movement.</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">How It Works</div><div class="dval">You "buy" a CFD on SHOP at $100. If you close it at $130, you receive $30 × contract size. If it falls to $80, you pay $20 × contract size. You can go long (buy, profit from rising price) or short (sell, profit from falling price). No physical ownership, no voting rights, dividends handled as cash adjustments.</div></div>
+      <div class="dr"><div class="dterm">Leverage</div><div class="dval">Typically 10:1 to 30:1 for equities. A 3.3% adverse move on 30:1 leverage wipes out 100% of capital. Extremely high risk, especially in volatile markets. EU regulators capped retail CFD leverage at 2:1 to 5:1 after massive retail losses. Canada has taken a similar protective stance.</div></div>
+      <div class="dr"><div class="dterm">Canada Regulatory Status</div><div class="dval">CFDs are <strong>not widely available to Canadian retail investors</strong> through CIRO-regulated dealers. The CSA has raised investor protection concerns about offshore CFD platforms targeting Canadians with high leverage. CIRO-registered dealers generally do not offer high-leverage retail CFDs. Primarily used by institutional and sophisticated investors where available.</div></div>
+      <div class="dr"><div class="dterm">Key Risk Summary</div><div class="dval">Losses can exceed initial deposit (unlike buying options). No ownership rights. Overnight financing charges erode long-term holds. Offshore platforms offering CFDs to Canadians may not be registered — adds regulatory and counterparty risk.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 8.3 USES OF DERIVATIVES -->
+<div id="s83" class="sec">
+  <div class="secrule"></div>
+  <div class="sechead"><div class="secbadge">8.3</div><h2 class="sectitle">Three Uses of Derivatives</h2></div>
+
+  <table>
+    <thead><tr><th>Use</th><th>Who Uses It</th><th>Goal</th><th>Real Example</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Hedging</strong></td><td>Corporations, portfolio managers, farmers, exporters</td><td>Reduce or eliminate an existing risk. Not trying to profit — trying to avoid loss. Pays a cost (premium or opportunity cost) for certainty.</td><td>Carlos buying protective puts on his SU shares before a geopolitical event. WestJet locking in fuel prices with oil futures.</td></tr>
+      <tr><td><strong>Speculation</strong></td><td>Retail and institutional investors, hedge funds, proprietary traders</td><td>Take a leveraged directional bet with the goal of profiting from price movements. No underlying position to protect — pure directional view with amplified risk/reward.</td><td>Priya buying SHOP calls before earnings expecting a surge. Buying put options on the S&P/TSX expecting a market correction.</td></tr>
+      <tr><td><strong>Arbitrage</strong></td><td>Sophisticated institutions, algorithmic traders, market makers</td><td>Exploit price discrepancies between related instruments simultaneously for theoretical risk-free profit. Enforces pricing relationships (put-call parity, futures fair value).</td><td>If a futures contract trades above its theoretical fair value (spot price + carrying cost), buy the underlying and sell the futures simultaneously, locking in the spread.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout amber">
+    <div class="ci">⚖️</div>
+    <div class="cb"><div class="cl">Why All Three Matter — The Ecosystem</div>
+    <p>Speculators provide the <strong>liquidity</strong> that makes hedging possible — without speculators on the other side of every trade, hedgers would have no counterparty. Arbitrageurs enforce <strong>fair pricing</strong> — without them, options and futures prices would deviate wildly from theoretical values. All three participants serve a role in a functioning derivatives market.</p></div>
+  </div>
+</div>
+
+<!-- 8.4 PREMIUM, GREEKS, MARGIN -->
+<div id="s84" class="sec">
+  <div class="secrule"></div>
+  <div class="sechead"><div class="secbadge">8.4</div><h2 class="sectitle">Premium, Greeks, Margin & Leverage</h2></div>
+
+  <div id="premium" class="sub">
+    <h3 class="subtit">What Makes Up the Option Premium?</h3>
+    <p class="body">The premium is the price you pay (as buyer) or receive (as writer) for the option. It has exactly two components:</p>
+    <div class="dt">
+      <div class="dr"><div class="dterm">Intrinsic Value</div><div class="dval"><strong>The value if exercised right now.</strong><br>Call: max(0, Stock Price − Strike Price)<br>Put: max(0, Strike Price − Stock Price)<br><br>Example: Call with $100 strike when stock is at $115 = <strong>$15 intrinsic value</strong>. The call is "in the money" by $15. You could exercise right now and capture $15. This component is real, tangible value.</div></div>
+      <div class="dr"><div class="dterm">Time Value</div><div class="dval"><strong>The extra value above intrinsic — reflecting future possibility.</strong><br><br>An option with 6 months to expiry might trade at $18 even though intrinsic value is only $15. The extra $3 is time value — it reflects the chance that the stock moves even further in your favour before expiry.<br><br>Key rule: <strong>Time value always decays toward zero as expiry approaches.</strong> On the expiry date itself, time value = zero. The option is worth only its intrinsic value (or zero if OTM).</div></div>
+    </div>
+    <div class="callout teal">
+      <div class="ci">⏰</div>
+      <div class="cb"><div class="cl">Time Decay Is the Option Seller's Best Friend</div>
+      <p>Every single day, an option loses some of its time value — even if the underlying price doesn't move. This daily erosion is called <strong>theta</strong>. For option buyers: theta is an enemy — you're fighting against time. For option writers (sellers): theta is income — the option you sold is losing value every day, making it cheaper to buy back (or more likely to expire worthless). This is why professional option writers use time decay as their core income source.</p></div>
+    </div>
+  </div>
+
+  <div id="itmotm" class="sub">
+    <h3 class="subtit">In-the-Money, At-the-Money, Out-of-the-Money</h3>
+    <div class="iotm-grid">
+      <div class="iotm itm">
+        <div class="iotm-title">ITM — In the Money</div>
+        <div class="iotm-body">Has intrinsic value right now.<br><br>Call ITM: Stock > Strike<br>Put ITM: Stock &lt; Strike<br><br>Example: $100 call when stock = $115 → ITM by $15<br><br>ITM options cost more (more intrinsic value). Moving deeper ITM = delta approaches 1.0</div>
+      </div>
+      <div class="iotm atm">
+        <div class="iotm-title">ATM — At the Money</div>
+        <div class="iotm-body">Strike ≈ current stock price.<br><br>No intrinsic value, but maximum time value.<br><br>Example: $100 call when stock = $100 → ATM<br><br>ATM options have the highest time value and the most sensitivity to volatility changes. Delta ≈ 0.50</div>
+      </div>
+      <div class="iotm otm">
+        <div class="iotm-title">OTM — Out of the Money</div>
+        <div class="iotm-body">Has no intrinsic value — only time value.<br><br>Call OTM: Stock &lt; Strike<br>Put OTM: Stock > Strike<br><br>Example: $100 call when stock = $82 → OTM by $18<br><br>OTM options are cheaper (less likely to reach strike). Can go to zero rapidly near expiry. Delta &lt; 0.50</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="greeks" class="sub">
+    <h3 class="subtit">The Option Greeks — Measuring Sensitivity</h3>
+    <p class="body">The "Greeks" measure how an option's price changes in response to different market conditions. You need to understand what each one means and the <em>direction</em> of the effect — not the formulas.</p>
+    <div class="greeks">
+      <div class="gk g1">
+        <div class="gk-sym">Δ</div>
+        <div class="gk-name">Delta</div>
+        <div class="gk-desc">How much the option price changes for a $1 change in the underlying. Call delta: 0 to +1. Put delta: -1 to 0. ATM ≈ ±0.50. Deep ITM ≈ ±1.0. Deep OTM ≈ 0.</div>
+      </div>
+      <div class="gk g2">
+        <div class="gk-sym">Γ</div>
+        <div class="gk-name">Gamma</div>
+        <div class="gk-desc">Rate of change of delta. How fast delta accelerates as price moves. Highest for ATM options near expiry. Important for dynamic hedging — delta doesn't stay constant.</div>
+      </div>
+      <div class="gk g3">
+        <div class="gk-sym">Θ</div>
+        <div class="gk-name">Theta</div>
+        <div class="gk-desc">Daily time decay. How much value the option loses per day from time alone. Always negative for buyers (you lose value each day). Positive for sellers (you gain from decay). Accelerates near expiry.</div>
+      </div>
+      <div class="gk g4">
+        <div class="gk-sym">V</div>
+        <div class="gk-name">Vega</div>
+        <div class="gk-desc">Sensitivity to implied volatility changes. Higher volatility → higher premiums for both calls and puts. Long options: positive vega (benefit from rising vol). Short options: negative vega (hurt by rising vol).</div>
+      </div>
+      <div class="gk g5">
+        <div class="gk-sym">ρ</div>
+        <div class="gk-name">Rho</div>
+        <div class="gk-desc">Sensitivity to interest rate changes. Rising rates → calls worth more, puts worth less. Least important Greek for short-dated options. More relevant for long-dated LEAPS options.</div>
+      </div>
+    </div>
+    <div class="callout indigo">
+      <div class="ci">🎯</div>
+      <div class="cb"><div class="cl">How to Think About Greeks on the Exam</div>
+      <p>The exam won't ask you to calculate Greeks — it asks you to reason with them. <strong>Delta:</strong> "If the stock rises $1, how much does the call change?" <strong>Theta:</strong> "Why did the option lose value even though the stock didn't move?" (Answer: time decay). <strong>Vega:</strong> "Why did both calls and puts get more expensive after the earnings announcement?" (Answer: implied volatility spiked). Focus on the direction and intuition behind each Greek.</p></div>
+    </div>
+  </div>
+
+  <div id="factors" class="sub">
+    <h3 class="subtit">Four Main Factors That Affect Option Premium</h3>
+    <div class="factor-grid">
+      <div class="fac">
+        <div class="fac-title">📈 Underlying Price</div>
+        <div class="fac-row"><span class="fac-label">Call premium</span><span class="up">↑ Rises</span></div>
+        <div class="fac-row"><span class="fac-label">Put premium</span><span class="dn">↓ Falls</span></div>
+        <div style="font-size:11.5px;color:var(--ink3);margin-top:8px;line-height:1.5;">Stock rising → call more likely ITM. Put less likely ITM. Delta reflects this directly.</div>
+      </div>
+      <div class="fac">
+        <div class="fac-title">⏳ Time to Expiry</div>
+        <div class="fac-row"><span class="fac-label">Call premium</span><span class="up">↑ Rises</span></div>
+        <div class="fac-row"><span class="fac-label">Put premium</span><span class="up">↑ Rises</span></div>
+        <div style="font-size:11.5px;color:var(--ink3);margin-top:8px;line-height:1.5;">More time = more chance of favourable move. Both calls and puts are more valuable with longer expiry. Time decay (theta) erodes this daily.</div>
+      </div>
+      <div class="fac">
+        <div class="fac-title">⚡ Implied Volatility</div>
+        <div class="fac-row"><span class="fac-label">Call premium</span><span class="up">↑ Rises</span></div>
+        <div class="fac-row"><span class="fac-label">Put premium</span><span class="up">↑ Rises</span></div>
+        <div style="font-size:11.5px;color:var(--ink3);margin-top:8px;line-height:1.5;">Higher volatility = bigger potential swings in either direction. Both calls and puts become more valuable. This is why options spike before earnings and major events — uncertainty = volatility = premium.</div>
+      </div>
+      <div class="fac">
+        <div class="fac-title">🎯 Strike Price</div>
+        <div class="fac-row"><span class="fac-label">Higher strike → Call</span><span class="dn">↓ Cheaper</span></div>
+        <div class="fac-row"><span class="fac-label">Higher strike → Put</span><span class="up">↑ More expensive</span></div>
+        <div style="font-size:11.5px;color:var(--ink3);margin-top:8px;line-height:1.5;">For a call: higher strike = harder to reach = worth less. For a put: higher strike = easier to fall below = worth more. Opposite directions.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="margin" class="sub">
+    <h3 class="subtit">Margin, Mark-to-Market & Leverage in Derivatives</h3>
+
+    <div class="margin-ex">
+      <div class="mx-title">Leverage Example — S&P/TSX 60 Futures</div>
+      <div class="mx-row"><span class="mx-label">S&P/TSX 60 Futures contract value</span><span class="mx-val neu">$150,000 (index × multiplier)</span></div>
+      <div class="mx-row"><span class="mx-label">Initial margin required</span><span class="mx-val pos">$9,000 (6% of contract value)</span></div>
+      <div class="mx-row"><span class="mx-label">Leverage ratio</span><span class="mx-val neu">$150,000 ÷ $9,000 = 16.7:1</span></div>
+      <div class="mx-row"><span class="mx-label">Index falls 5% → contract loses</span><span class="mx-val neg">$7,500</span></div>
+      <div class="mx-row"><span class="mx-label">Loss as % of margin deposited</span><span class="mx-val neg">$7,500 ÷ $9,000 = 83.3% of margin gone in one day</span></div>
+      <div class="mx-row"><span class="mx-label">Net result if not met</span><span class="mx-val neg">MARGIN CALL — restore to $9,000 or positions liquidated</span></div>
+    </div>
+
+    <div class="dt">
+      <div class="dr"><div class="dterm">Initial Margin</div><div class="dval">The deposit required to open a futures position or write an option. It's a <strong>good faith deposit</strong> — not the cost of the contract. Set by the exchange (futures) or CIRO/dealer (options writing). Typically 5–10% of notional value for futures.</div></div>
+      <div class="dr"><div class="dterm">Maintenance Margin</div><div class="dval">The minimum equity level the account must maintain. Lower than initial margin. If daily MTM losses push the account below the maintenance level, a <strong>margin call</strong> is issued. The trader must restore the account to the <em>initial</em> margin level — not just the maintenance level.</div></div>
+      <div class="dr"><div class="dterm">Mark-to-Market (MTM)</div><div class="dval">Futures accounts are revalued in cash <strong>every business day</strong> at the closing price. Profitable positions receive cash credits; losing positions have cash debited. This means losses hit your actual bank balance every night — unlike holding stocks where paper losses are just on paper until you sell. This daily reckoning is what makes futures positions so demanding on cash management.</div></div>
+      <div class="dr"><div class="dterm">Leverage — The Double-Edged Sword</div><div class="dval">Leverage amplifies both profits and losses proportionally. 20:1 leverage means a 5% adverse move wipes out 100% of your margin. A 5% favourable move doubles your margin. The underlying only moved 5% — but your percentage gain or loss is 100%. This is why leverage is the central risk in derivatives trading.</div></div>
+      <div class="dr"><div class="dterm">Options — No Margin for Buyers</div><div class="dval">Option <em>buyers</em> do not post margin — their maximum loss is capped at the premium paid (already paid upfront). Option <em>writers</em> (sellers) must post margin as security against the obligation they've taken on. The margin requirement for writing naked calls is particularly high because the potential loss is unlimited.</div></div>
+    </div>
+
+    <div class="callout red">
+      <div class="ci">🚨</div>
+      <div class="cb"><div class="cl">Why Leverage Is the Defining Risk in Derivatives</div>
+      <p>A trader deposits $10,000 and uses 20:1 leverage to control $200,000 of futures. A 5% adverse move = $10,000 loss — <strong>the trader is completely wiped out</strong> from a move that barely registers as a rounding error in the broader market. This is why derivatives require the full set of administrative documents (derivatives agreement, risk disclosure, margin agreement, letter of undertaking) before any client can trade. They are not like buying stocks — the risk profile is categorically different.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- PART 1 CLOSING -->
+<div class="sec" style="padding-top:60px;">
+  <div class="secrule"></div>
+  <div class="hlbox">
+    <div class="hlbox-t">Part 1 Complete — What's Coming in Part 2</div>
+    <p>
+      <strong>8.5</strong> — Listed vs OTC markets (detailed comparison table)<br>
+      <strong>8.6</strong> — All trading strategies: bullish (long call, bull call spread, short put), bearish (long put, bear put spread, short futures), income/neutral (covered call, cash-secured put, short strangle), volatility (long straddle, long strangle, calendar spread) — each explained with the market view, construction, payoff, and when to use it<br>
+      <strong>8.7</strong> — All 8 administrative documents explained in full<br>
+      <strong>8.8</strong> — All 3 prohibited derivative practices<br>
+      <strong>Master Summary</strong> — 16 exam-critical points<br>
+      <strong>45 Scenario-Based Practice Questions</strong> — all options similar length, exam difficulty
+    </p>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+
+<button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function updateUI(){
+  const st=window.scrollY,dh=document.documentElement.scrollHeight-window.innerHeight;
+  const f=document.getElementById('pFill');if(f)f.style.width=Math.min(dh>0?(st/dh)*100:0,100)+'%';
+  const btn=document.getElementById('scrolltop');st>500?btn.classList.add('vis'):btn.classList.remove('vis');
+  const ids=['cover','whatisit','s81','longcall','longput','writing','covered','cashput','fourpos','style','s82','futures','forwards','swaps','cfds','s83','s84','premium','itmotm','greeks','factors','margin'];
+  let cur='cover';
+  ids.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<110)cur=id;});
+  document.querySelectorAll('.nl,.ns').forEach(l=>{
+    l.classList.remove('active');
+    const fn=l.getAttribute('onclick')||'';
+    if(fn.includes("'"+cur+"'"))l.classList.add('active');
+  });
+}
+window.addEventListener('scroll',updateUI,{passive:true});
+updateUI();
+</script>
+</body>
+</html>
