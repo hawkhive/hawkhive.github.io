@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSE Study Book — Element 1 Part 2: RDI, KYP, Suitability & Conduct</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6WNH68TS65"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6WNH68TS65');
+</script>
+<style>
+  :root {
+    --navy:#0d1b2e; --navy-mid:#142035; --gold:#c9973a; --gold-light:#e8b96a;
+    --cream:#f8f4ed; --cream-dark:#ede8df; --text:#1a1a2e; --text-muted:#5a5a6e;
+    --green:#1a6b4a; --green-light:#e8f5ef; --red:#8b1a1a; --red-light:#fdf0f0;
+    --blue:#1a3a6b; --blue-light:#e8f0fd; --amber:#7a4f1a; --amber-light:#fef6e8;
+    --purple:#4a1a6b; --purple-light:#f0e8fd;
+    --sidebar-w:300px; --header-h:64px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Source Serif 4',serif;background:var(--cream);color:var(--text);display:flex;min-height:100vh;overflow-x:hidden;}
+
+  /* SIDEBAR */
+  #sidebar{width:var(--sidebar-w);height:100vh;background:var(--navy);position:fixed;left:0;top:0;z-index:100;border-right:2px solid var(--gold);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold) var(--navy-mid);}
+  #sidebar::-webkit-scrollbar{width:4px;}
+  #sidebar::-webkit-scrollbar-thumb{background:var(--gold);}
+  .sidebar-brand{padding:24px 20px 16px;border-bottom:1px solid rgba(201,151,58,.3);}
+  .sidebar-brand .brand-tag{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;}
+  .sidebar-brand h2{font-family:'Playfair Display',serif;color:white;font-size:14px;line-height:1.3;}
+  .sidebar-brand .element-badge{display:inline-block;margin-top:8px;background:var(--gold);color:var(--navy);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;padding:3px 8px;border-radius:2px;letter-spacing:1px;}
+  .sidebar-search{padding:12px 16px;border-bottom:1px solid rgba(201,151,58,.2);}
+  .sidebar-search input{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(201,151,58,.3);border-radius:4px;padding:7px 10px;color:white;font-family:'Source Serif 4',serif;font-size:13px;outline:none;}
+  .sidebar-search input::placeholder{color:rgba(255,255,255,.3);font-style:italic;}
+  .sidebar-search input:focus{border-color:var(--gold);}
+  #nav-links{flex:1;overflow-y:auto;padding-bottom:16px;-webkit-overflow-scrolling:touch;}
+  .nav-section-label{padding:14px 16px 6px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold-light);letter-spacing:2px;text-transform:uppercase;opacity:.7;}
+  .nav-item{display:block;padding:9px 16px 9px 20px;color:rgba(255,255,255,.65);text-decoration:none;font-size:12.5px;line-height:1.4;cursor:pointer;border-left:3px solid transparent;transition:all .2s;}
+  .nav-item:hover{color:white;border-left-color:var(--gold-light);background:rgba(201,151,58,.08);}
+  .nav-item.active{color:var(--gold-light);border-left-color:var(--gold);background:rgba(201,151,58,.12);}
+  .nav-item .nav-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);margin-right:6px;}
+  .nav-item.sub{padding-left:36px;font-size:11.5px;opacity:.75;}
+  .nav-item.sub:hover{opacity:1;}
+  .nav-divider{height:1px;background:rgba(201,151,58,.15);margin:8px 16px;}
+  .sidebar-footer{margin-top:auto;padding:16px;border-top:1px solid rgba(201,151,58,.2);font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.3);text-align:center;}
+
+  /* MAIN */
+  #main{margin-left:var(--sidebar-w);flex:1;min-height:100vh;}
+  #top-bar{background:var(--navy);height:var(--header-h);display:flex;align-items:center;padding:0 40px;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:50;gap:16px;}
+  #top-bar .breadcrumb{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1px;}
+  #top-bar .breadcrumb span{color:var(--gold);}
+  #top-bar .progress-area{margin-left:auto;display:flex;align-items:center;gap:12px;}
+  #top-bar .prog-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.4);}
+  #top-bar .prog-bar{width:120px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;}
+  #top-bar .prog-fill{height:100%;background:var(--gold);border-radius:2px;width:0%;transition:width .4s;}
+
+  /* CONTENT */
+  #content{padding:0 60px 80px;max-width:960px;}
+
+  .hero{padding:60px 0 40px;border-bottom:1px solid var(--cream-dark);margin-bottom:48px;}
+  .hero .element-tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
+  .hero h1{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;line-height:1.1;color:var(--navy);margin-bottom:16px;}
+  .hero p{font-size:16px;color:var(--text-muted);max-width:700px;line-height:1.7;font-style:italic;}
+  .hero-meta{display:flex;gap:20px;margin-top:24px;flex-wrap:wrap;}
+  .hero-meta .meta-chip{background:var(--navy);color:var(--gold-light);padding:6px 14px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;}
+
+  .chapter{margin-bottom:64px;scroll-margin-top:80px;}
+  .section-header{display:flex;align-items:flex-start;gap:20px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--cream-dark);}
+  .section-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;color:var(--cream-dark);line-height:1;min-width:56px;}
+  .section-title-area h2{font-family:'Playfair Display',serif;font-size:25px;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:4px;}
+  .section-title-area .section-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:1px;}
+
+  .subsection{margin-bottom:32px;scroll-margin-top:80px;}
+  .subsection h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:12px;padding-left:12px;border-left:3px solid var(--gold);}
+  .subsection h4{font-size:15px;font-weight:600;color:var(--navy);margin:16px 0 8px;}
+  p{line-height:1.8;margin-bottom:14px;font-size:15.5px;}
+
+  /* Callouts */
+  .callout{border-radius:6px;padding:18px 22px;margin:20px 0;border-left:4px solid;}
+  .callout-exam{background:var(--blue-light);border-color:var(--blue);}
+  .callout-exam .callout-label{color:var(--blue);}
+  .callout-tip{background:var(--green-light);border-color:var(--green);}
+  .callout-tip .callout-label{color:var(--green);}
+  .callout-warning{background:var(--amber-light);border-color:var(--amber);}
+  .callout-warning .callout-label{color:var(--amber);}
+  .callout-rule{background:var(--red-light);border-color:var(--red);}
+  .callout-rule .callout-label{color:var(--red);}
+  .callout-purple{background:var(--purple-light);border-color:var(--purple);}
+  .callout-purple .callout-label{color:var(--purple);}
+  .callout p{margin-bottom:0;font-size:14.5px;line-height:1.7;}
+  .callout-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-weight:500;display:block;}
+
+  /* Tables */
+  .table-wrap{overflow-x:auto;margin:20px 0;border-radius:6px;border:1px solid var(--cream-dark);}
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  th{background:var(--navy);color:var(--gold-light);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;padding:12px 16px;text-align:left;}
+  td{padding:11px 16px;border-bottom:1px solid var(--cream-dark);vertical-align:top;line-height:1.6;}
+  tr:nth-child(even) td{background:rgba(0,0,0,.02);}
+  tr:last-child td{border-bottom:none;}
+
+  /* Diagrams */
+  .diagram{background:var(--navy);border-radius:8px;padding:28px 24px;margin:24px 0;color:white;}
+  .diagram-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;text-align:center;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  .grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;}
+  .grid-card{background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.3);border-radius:6px;padding:16px;}
+  .grid-card h5{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;}
+  .grid-card p{font-size:13px;color:rgba(255,255,255,.75);margin:0;line-height:1.6;}
+  .grid-card ul{padding-left:16px;}
+  .grid-card li{font-size:12.5px;color:rgba(255,255,255,.75);margin-bottom:4px;line-height:1.5;}
+
+  /* Flow */
+  .flow{display:flex;flex-direction:column;gap:4px;align-items:center;}
+  .flow-box{background:rgba(255,255,255,.08);border:1px solid rgba(201,151,58,.4);border-radius:6px;padding:10px 16px;font-size:13px;text-align:center;min-width:120px;line-height:1.4;}
+  .flow-box.gold{background:rgba(201,151,58,.2);border-color:var(--gold);}
+  .flow-box.green{background:rgba(26,107,74,.25);border-color:#2ecc71;}
+  .flow-box.red{background:rgba(139,26,26,.25);border-color:#e74c3c;}
+  .flow-box.wide{width:100%;text-align:left;padding:14px 20px;}
+  .flow-arrow{color:var(--gold);font-size:20px;text-align:center;}
+
+  /* Lists */
+  .styled-list{list-style:none;padding:0;margin:14px 0;}
+  .styled-list li{padding:6px 0 6px 22px;position:relative;font-size:15px;line-height:1.7;border-bottom:1px solid rgba(0,0,0,.04);}
+  .styled-list li:last-child{border-bottom:none;}
+  .styled-list li::before{content:'›';position:absolute;left:0;color:var(--gold);font-size:18px;font-weight:700;top:4px;}
+  .styled-list li strong{color:var(--navy);}
+  .check-list{list-style:none;padding:0;margin:14px 0;}
+  .check-list li{padding:5px 0 5px 26px;position:relative;font-size:14.5px;line-height:1.7;}
+  .check-list li::before{content:'✓';position:absolute;left:0;color:var(--green);font-weight:700;font-size:14px;}
+  .cross-list{list-style:none;padding:0;margin:14px 0;}
+  .cross-list li{padding:5px 0 5px 26px;position:relative;font-size:14.5px;line-height:1.7;}
+  .cross-list li::before{content:'✗';position:absolute;left:0;color:var(--red);font-weight:700;font-size:14px;}
+
+  mark{background:rgba(201,151,58,.25);color:inherit;border-radius:2px;padding:0 2px;}
+
+  /* Def list */
+  .def-list{margin:16px 0;}
+  .def-item{display:grid;grid-template-columns:210px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--cream-dark);font-size:14.5px;}
+  .def-item:last-child{border-bottom:none;}
+  .def-term{font-weight:600;color:var(--navy);font-size:13.5px;}
+
+  /* Tags */
+  .tag{display:inline-block;padding:2px 8px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-right:6px;margin-bottom:4px;}
+  .tag-navy{background:var(--navy);color:var(--gold-light);}
+  .tag-gold{background:rgba(201,151,58,.15);color:var(--amber);border:1px solid rgba(201,151,58,.4);}
+  .tag-green{background:var(--green-light);color:var(--green);}
+  .tag-red{background:var(--red-light);color:var(--red);}
+  .tag-purple{background:var(--purple-light);color:var(--purple);}
+
+  /* Section h3 shortcut */
+  .sh3{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--navy);margin:20px 0 12px;padding-left:12px;border-left:3px solid var(--gold);}
+
+  /* Info barrier visual */
+  .barrier-visual{display:flex;align-items:center;justify-content:space-around;gap:8px;flex-wrap:wrap;}
+  .barrier-side{flex:1;min-width:160px;}
+  .barrier-wall{width:36px;background:rgba(201,151,58,.3);border:2px dashed var(--gold);border-radius:4px;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold-light);letter-spacing:2px;padding:12px 4px;text-transform:uppercase;}
+  .barrier-dept{background:rgba(255,255,255,.07);border:1px solid rgba(201,151,58,.3);border-radius:6px;padding:12px;text-align:center;}
+  .barrier-dept h6{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold-light);letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;}
+  .barrier-dept p{font-size:12px;color:rgba(255,255,255,.65);margin:0;line-height:1.5;}
+
+  /* CIPF card */
+  .cipf-card{background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.3);border-radius:8px;padding:20px;margin:12px 0;}
+  .cipf-card h5{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:10px;text-transform:uppercase;}
+
+  /* Quiz */
+  #quiz-section{background:var(--navy);border-radius:12px;padding:40px 44px;margin-top:60px;scroll-margin-top:80px;}
+  .quiz-header{font-family:'Playfair Display',serif;font-size:30px;color:white;margin-bottom:8px;}
+  .quiz-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:28px;}
+  .quiz-stats{display:flex;gap:20px;margin-bottom:32px;flex-wrap:wrap;}
+  .quiz-stat{background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.3);border-radius:6px;padding:12px 18px;text-align:center;}
+  .quiz-stat .stat-val{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold-light);display:block;}
+  .quiz-stat .stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;}
+  .q-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:20px 22px;margin-bottom:16px;transition:border-color .2s;}
+  .q-item:hover{border-color:rgba(201,151,58,.3);}
+  .q-meta{display:flex;gap:10px;margin-bottom:10px;align-items:center;}
+  .q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);}
+  .q-diff{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 8px;border-radius:3px;letter-spacing:1px;}
+  .diff-easy{background:rgba(26,107,74,.25);color:#5dda9a;}
+  .diff-medium{background:rgba(201,151,58,.2);color:var(--gold-light);}
+  .diff-hard{background:rgba(139,26,26,.25);color:#ff8a8a;}
+  .q-topic{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.3);margin-left:auto;letter-spacing:1px;}
+  .q-text{color:white;font-size:15px;line-height:1.6;margin-bottom:14px;}
+  .q-options{list-style:none;padding:0;margin:0 0 14px;}
+  .q-options li{padding:8px 12px;border:1px solid rgba(255,255,255,.08);border-radius:5px;margin-bottom:6px;font-size:14px;color:rgba(255,255,255,.8);cursor:pointer;transition:all .15s;}
+  .q-options li:hover{background:rgba(201,151,58,.1);border-color:rgba(201,151,58,.3);}
+  .q-options li.correct{background:rgba(26,107,74,.25);border-color:#2ecc71;color:#5dda9a;}
+  .q-options li.wrong{background:rgba(139,26,26,.25);border-color:#e74c3c;color:#ff8a8a;}
+  .q-options li.reveal-correct{background:rgba(26,107,74,.15);border-color:rgba(46,204,113,.5);color:rgba(93,218,154,.8);}
+  .q-answer{display:none;background:rgba(201,151,58,.08);border:1px solid rgba(201,151,58,.2);border-radius:5px;padding:12px 14px;font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.65;}
+  .q-answer.show{display:block;}
+  .q-answer strong{color:var(--gold-light);}
+  .show-ans-btn{background:none;border:1px solid rgba(201,151,58,.4);color:var(--gold-light);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;padding:6px 14px;border-radius:4px;cursor:pointer;transition:all .15s;}
+  .show-ans-btn:hover{background:rgba(201,151,58,.15);}
+  .quiz-controls{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;}
+  .ctrl-btn{padding:9px 20px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;transition:all .15s;border:none;}
+  .ctrl-btn-primary{background:var(--gold);color:var(--navy);}
+  .ctrl-btn-primary:hover{background:var(--gold-light);}
+  .ctrl-btn-outline{background:transparent;border:1px solid rgba(201,151,58,.4);color:var(--gold-light);}
+  .ctrl-btn-outline:hover{background:rgba(201,151,58,.1);}
+  .quiz-score-panel{background:rgba(201,151,58,.1);border:1px solid rgba(201,151,58,.3);border-radius:8px;padding:20px 24px;margin-top:24px;display:none;text-align:center;}
+  .quiz-score-panel .score-val{font-family:'Playfair Display',serif;font-size:52px;color:var(--gold-light);}
+  .quiz-score-panel p{color:rgba(255,255,255,.7);margin:0;}
+
+  #back-top{position:fixed;bottom:28px;right:28px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);width:42px;height:42px;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;opacity:0;transition:opacity .3s;z-index:200;}
+  #back-top.visible{opacity:1;}
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-thumb{background:var(--cream-dark);border-radius:3px;}
+
+  @media(max-width:900px){#sidebar{transform:translateX(-100%);} #main{margin-left:0;} #content{padding:0 24px 60px;} .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;} .def-item{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-tag">CIRO · RSE Prep</div>
+    <h2>KYC &amp; Suitability — Part 2<br>RDI · KYP · Conduct · COI</h2>
+    <span class="element-badge">ELEMENT 01 · PART 2</span>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" id="nav-search" placeholder="Search topics…" oninput="filterNav(this.value)">
+  </div>
+  <div id="nav-links">
+    <div class="nav-section-label">Overview</div>
+    <a class="nav-item" onclick="scrollToSection('hero')"><span class="nav-num">—</span>Introduction</a>
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Sections 1.12 – 1.27</div>
+    <a class="nav-item" onclick="scrollToSection('s12')"><span class="nav-num">1.12</span>Relationship Disclosure</a>
+    <a class="nav-item sub" onclick="scrollToSection('s12-obj')">Objective &amp; Content</a>
+    <a class="nav-item sub" onclick="scrollToSection('s12-freq')">Frequency &amp; Format</a>
+    <a class="nav-item" onclick="scrollToSection('s13')"><span class="nav-num">1.13</span>Confidential Info</a>
+    <a class="nav-item sub" onclick="scrollToSection('s13-barriers')">Info Barriers &amp; Firewalls</a>
+    <a class="nav-item sub" onclick="scrollToSection('s13-lists')">Grey &amp; Restricted Lists</a>
+    <a class="nav-item sub" onclick="scrollToSection('s13-cyber')">Cybersecurity &amp; Privacy</a>
+    <a class="nav-item" onclick="scrollToSection('s14')"><span class="nav-num">1.14</span>Welcome Package</a>
+    <a class="nav-item sub" onclick="scrollToSection('s14-cipf')">CIPF</a>
+    <a class="nav-item sub" onclick="scrollToSection('s14-brochures')">CIRO Brochures</a>
+    <a class="nav-item" onclick="scrollToSection('s15')"><span class="nav-num">1.15</span>Product Due Diligence</a>
+    <a class="nav-item" onclick="scrollToSection('s16')"><span class="nav-num">1.16</span>Know Your Product (KYP)</a>
+    <a class="nav-item sub" onclick="scrollToSection('s16-struct')">Structure &amp; Features</a>
+    <a class="nav-item sub" onclick="scrollToSection('s16-costs')">Costs &amp; Impact</a>
+    <a class="nav-item" onclick="scrollToSection('s17')"><span class="nav-num">1.17</span>Suitability Determination</a>
+    <a class="nav-item sub" onclick="scrollToSection('s17-churn')">Churning</a>
+    <a class="nav-item" onclick="scrollToSection('s18')"><span class="nav-num">1.18</span>Unsolicited &amp; Unsuitable Orders</a>
+    <a class="nav-item" onclick="scrollToSection('s19')"><span class="nav-num">1.19</span>Investment Actions</a>
+    <a class="nav-item" onclick="scrollToSection('s20')"><span class="nav-num">1.20</span>Appropriateness vs Suitability</a>
+    <a class="nav-item" onclick="scrollToSection('s21')"><span class="nav-num">1.21</span>Monitoring &amp; Triggering Events</a>
+    <a class="nav-item" onclick="scrollToSection('s22')"><span class="nav-num">1.22</span>Portfolio Impact Analysis</a>
+    <a class="nav-item" onclick="scrollToSection('s23')"><span class="nav-num">1.23</span>Conflicts of Interest</a>
+    <a class="nav-item" onclick="scrollToSection('s24')"><span class="nav-num">1.24</span>Outside Activities</a>
+    <a class="nav-item" onclick="scrollToSection('s25')"><span class="nav-num">1.25</span>Personal Financial Dealings</a>
+    <a class="nav-item" onclick="scrollToSection('s26')"><span class="nav-num">1.26</span>COI Policies &amp; Procedures</a>
+    <a class="nav-item" onclick="scrollToSection('s27')"><span class="nav-num">1.27</span>CIRO Standards of Conduct</a>
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Practice</div>
+    <a class="nav-item" onclick="scrollToSection('quiz-section')"><span class="nav-num">★</span>50 Exam Questions</a>
+  </div>
+  <div class="sidebar-footer">CIRO RSE · Element 1 Part 2 of 9</div>
+</nav>
+
+<!-- TOP BAR -->
+<div id="main">
+<div id="top-bar">
+  <div class="breadcrumb">RSE Exam Prep &rsaquo; Element 1 &rsaquo; <span>Part 2</span></div>
+  <div class="progress-area">
+    <span class="prog-label">READING PROGRESS</span>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <div class="element-tag">ELEMENT 1 · PART 2 OF 2 · RETAIL SECURITIES EXAM · CIRO</div>
+  <h1>RDI · Information Barriers<br>KYP · Suitability · Conduct</h1>
+  <p>This section covers the Relationship Disclosure Information document, information containment, the Welcome Package, product due diligence, full suitability determination, investment actions, ongoing monitoring, conflicts of interest management, outside activities, personal financial dealings, and CIRO standards of conduct.</p>
+  <div class="hero-meta">
+    <span class="meta-chip">SECTIONS 1.12 – 1.27</span>
+    <span class="meta-chip">CFR PHASE 2 SWEEP · DEC 2025</span>
+    <span class="meta-chip">50 PRACTICE QUESTIONS</span>
+    <span class="meta-chip">CIRO IDPC RULES 2200–3600</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.12  RELATIONSHIP DISCLOSURE DOCUMENT
+══════════════════════════════════════════ -->
+<div class="chapter" id="s12">
+  <div class="section-header">
+    <div class="section-num">1.12</div>
+    <div class="section-title-area">
+      <h2>The Relationship Disclosure Document (RDI)</h2>
+      <div class="section-sub">OBJECTIVE · FREQUENCY · FORM · CONTENT · REVIEW</div>
+    </div>
+  </div>
+
+  <div class="subsection" id="s12-obj">
+    <h3>Objective of the Relationship Disclosure Information</h3>
+    <p>The Relationship Disclosure Information (RDI) is a document required under CIRO Rule 2.2.7 (Investment Dealer and Partially Consolidated Rules). Its central purpose is to ensure that every client — before or at the time of account opening — has a <mark>clear, plain-language understanding of the nature of their relationship with the dealer and what to expect from that relationship.</mark></p>
+
+    <p>Specifically, the RDI is designed to help clients understand:</p>
+    <ul class="styled-list">
+      <li><strong>What services the dealer provides</strong> — and what it does NOT provide (e.g., a discount broker does not provide personalized investment advice)</li>
+      <li><strong>What the client's obligations are</strong> — such as keeping KYC information current</li>
+      <li><strong>What the dealer's obligations are</strong> — including suitability determination, conflict of interest management, and reporting</li>
+      <li><strong>What costs the client will incur</strong> — commissions, account fees, MERs, trailing commissions, DSC charges, etc.</li>
+      <li><strong>How conflicts of interest are managed</strong> — what conflicts exist and how the dealer addresses them</li>
+      <li><strong>The suitability obligation</strong> — that any investment action must be suitable and put the client's interest first</li>
+    </ul>
+
+    <div class="callout callout-exam">
+      <div class="callout-label">📌 EXAM FOCUS</div>
+      <p>The RDI is <strong>not a marketing document</strong>. It is a regulatory disclosure document. It must be written in plain language that a retail client can understand — not in legal or technical jargon. This is tested frequently.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s12-freq">
+    <h3>Frequency, Form, Format &amp; Review</h3>
+
+    <h4>Frequency of Provision</h4>
+    <p>The RDI must be provided:</p>
+    <ul class="styled-list">
+      <li><strong>At or before account opening</strong> — for every new account. The client must receive the RDI before any investment activity begins.</li>
+      <li><strong>When there are material changes</strong> — if the information in the RDI changes materially (e.g., fee changes, new conflict of interest, change in services offered), the RDI must be updated and re-delivered to affected clients.</li>
+      <li><strong>No required annual re-delivery</strong> — unlike account statements, the RDI does not need to be sent annually unless material changes occur.</li>
+    </ul>
+
+    <h4>Form and Format</h4>
+    <ul class="styled-list">
+      <li>Must be provided <strong>in writing</strong> — physical or electronic delivery is acceptable (with appropriate e-delivery consent)</li>
+      <li>The format is <strong>not prescribed</strong> by CIRO — the dealer has flexibility. It can be a standalone document or integrated into the account opening package</li>
+      <li>However, it must be provided in <strong>plain language</strong> — clear, not legalistic</li>
+      <li>It can be <strong>standardized</strong> — one version for all clients or tailored versions for different account types</li>
+      <li>Dealer's choice on whether to use one combined document or separate documents covering different topics</li>
+    </ul>
+
+    <h4>Required Content of the RDI</h4>
+    <div class="diagram">
+      <div class="diagram-title">RDI — Mandatory Content Checklist (CIRO Rule 2.2.7)</div>
+      <div class="grid-2">
+        <div class="grid-card">
+          <h5>📋 Relationship &amp; Services</h5>
+          <ul>
+            <li>Nature of the advisory relationship (advisory vs. execution-only vs. managed)</li>
+            <li>General description of products and services offered</li>
+            <li>Any limits on products/services (e.g., only proprietary products)</li>
+            <li>Exclusive distribution arrangements that restrict in-kind transfers</li>
+            <li>Restrictions on client's ability to liquidate or resell securities</li>
+          </ul>
+        </div>
+        <div class="grid-card">
+          <h5>💰 Costs &amp; Compensation</h5>
+          <ul>
+            <li>All fees, charges, and compensation the client will incur</li>
+            <li>Investment fund management expense fees and ongoing fees</li>
+            <li>Types of compensation the dealer receives (commissions, trailers, markups)</li>
+            <li>Fee schedule or reference to separate fee schedule document</li>
+            <li>How optional services can be obtained and their costs</li>
+          </ul>
+        </div>
+        <div class="grid-card">
+          <h5>⚖️ Conflicts &amp; Suitability</h5>
+          <ul>
+            <li>Material conflicts of interest and how they are addressed</li>
+            <li>Whether proprietary or related issuer products are offered</li>
+            <li>The suitability obligation — when and how assessments are made</li>
+            <li>KYC purpose — why the dealer collects this information</li>
+            <li>The client's obligation to keep KYC current</li>
+          </ul>
+        </div>
+        <div class="grid-card">
+          <h5>📬 Operations &amp; Reporting</h5>
+          <ul>
+            <li>How client cash and cheques are handled — to whom cheques should be payable (always to the FIRM, never to an individual RR)</li>
+            <li>Reporting: account statements, performance reports, trade confirmations</li>
+            <li>How to raise concerns or make complaints</li>
+            <li>Reference to CIRO membership and CIPF coverage</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-rule">
+      <div class="callout-label">🔴 CRITICAL RULE — CHEQUES</div>
+      <p>The RDI must explicitly state that all cheques must be made payable to the <strong>dealer (firm), not to the Registered Representative personally</strong>. An RR who accepts client cheques made payable to themselves is committing a serious violation that can result in registration cancellation.</p>
+    </div>
+
+    <h4>Review and Update of the RDI</h4>
+    <p>The dealer must review its RDI whenever circumstances change and update it if there has been a <strong>material change</strong> to any of the disclosed information. Upon updating, affected clients must receive the revised document. Examples of material changes requiring an RDI update:</p>
+    <ul class="check-list">
+      <li>Fee schedule changes</li>
+      <li>New services being added (e.g., dealer begins offering managed accounts)</li>
+      <li>Services being removed (e.g., discontinuing options trading)</li>
+      <li>New or changed conflict of interest (e.g., new affiliated product manufacturer)</li>
+      <li>Changes to how cheques are processed</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.13  CONFIDENTIAL INFORMATION
+══════════════════════════════════════════ -->
+<div class="chapter" id="s13">
+  <div class="section-header">
+    <div class="section-num">1.13</div>
+    <div class="section-title-area">
+      <h2>Containment of Confidential Information</h2>
+      <div class="section-sub">INFORMATION BARRIERS · GREY &amp; RESTRICTED LISTS · CYBERSECURITY · PRIVACY</div>
+    </div>
+  </div>
+
+  <p>Integrated investment dealers — those that have both a retail/advisory business AND an investment banking or corporate finance business — face a unique challenge: <mark>the same firm that advises retail clients also has access to highly sensitive, non-public information about corporate transactions.</mark> Without rigorous controls, this creates serious insider trading and conflict of interest risks.</p>
+
+  <div class="subsection" id="s13-barriers">
+    <h3>Information Barriers (Chinese Walls) and Firewalls</h3>
+    <p>An <strong>information barrier</strong> (often called a "Chinese Wall") is a set of policies, procedures, and physical/digital controls that prevent the flow of <strong>Material Non-Public Information (MNPI)</strong> from departments that possess it (like investment banking) to departments that could misuse it (like research or retail sales).</p>
+
+    <div class="diagram">
+      <div class="diagram-title">Information Barrier — How It Works in an Integrated Dealer</div>
+      <div class="barrier-visual">
+        <div class="barrier-side">
+          <div class="barrier-dept">
+            <h6>🏦 Investment Banking / Corporate Finance</h6>
+            <p>Has access to MNPI:<br>• Pending M&amp;A deals<br>• Upcoming equity offerings<br>• Unreleased earnings<br>• Merger negotiations</p>
+          </div>
+        </div>
+        <div class="barrier-wall">INFORMATION BARRIER</div>
+        <div class="barrier-side">
+          <div class="barrier-dept">
+            <h6>📈 Retail Sales / Research</h6>
+            <p>Must NOT have MNPI:<br>• Analyst reports<br>• Client recommendations<br>• Trading decisions<br>• Public market activity</p>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:12px;color:rgba(255,255,255,.5);margin-top:14px">The information barrier prevents the "contamination" of the public-side business with non-public information from the private side</p>
+    </div>
+
+    <h4>What Makes an Information Barrier Effective?</h4>
+    <ul class="styled-list">
+      <li><strong>Physical separation:</strong> Different floors, buildings, or locked areas for investment banking vs. retail/research</li>
+      <li><strong>System access controls:</strong> IT restrictions preventing banking staff from accessing retail trading systems, and vice versa</li>
+      <li><strong>Need-to-know principle:</strong> MNPI is shared only with individuals who absolutely require it for their role</li>
+      <li><strong>Training and attestation:</strong> All staff must understand the barrier rules and sign annual attestations confirming compliance</li>
+      <li><strong>Compliance monitoring:</strong> Surveillance of communications and trading activity to detect potential leakage</li>
+      <li><strong>Watch list management:</strong> Maintaining grey and restricted lists (see below)</li>
+    </ul>
+
+    <div class="callout callout-rule">
+      <div class="callout-label">🔴 WHAT IS MNPI?</div>
+      <p><strong>Material Non-Public Information (MNPI)</strong> is information that: (1) has not been publicly disclosed, AND (2) a reasonable investor would consider important in making an investment decision. Examples: a pending merger, an upcoming earnings restatement, a regulatory approval for a drug, an impending bankruptcy. Trading on MNPI is <strong>insider trading</strong> — a criminal offence under Canadian securities law.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s13-lists">
+    <h3>Grey Lists and Restricted Lists</h3>
+    <p>These are the two key control mechanisms used by compliance departments to manage the flow of MNPI and regulate trading activity in specific securities.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>List Type</th><th>What It Means</th><th>Who Knows About It?</th><th>Trading Permitted?</th></tr>
+        <tr>
+          <td><strong>Grey List</strong></td>
+          <td>The compliance department is aware that investment banking is in active, but <em>non-public</em> discussions with the issuer. The existence of the list itself is confidential.</td>
+          <td>Compliance department only — NOT shared with research or sales. Adding to the grey list does not breach the information barrier.</td>
+          <td>⚠️ Trading is permitted but monitored. The compliance team watches for suspicious trading patterns.</td>
+        </tr>
+        <tr>
+          <td><strong>Restricted List</strong></td>
+          <td>The compliance department has determined that the information barrier has been crossed or is at risk. The issuer is placed on restricted list as a firm-wide restriction.</td>
+          <td>Firm-wide — research, sales, and trading departments are notified that this issuer is restricted.</td>
+          <td>❌ Trading generally PROHIBITED or severely restricted for both the firm and its clients. New research reports on the issuer are suspended.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="callout callout-exam">
+      <div class="callout-label">📌 EXAM FOCUS — KEY DISTINCTION</div>
+      <p><strong>Grey list = confidential monitoring list (few people know)</strong>. <strong>Restricted list = firm-wide trading prohibition (everyone is told — but not why)</strong>. The exam may test whether you know that a company being on the restricted list means trading is restricted but the reason (the pending deal) is not necessarily disclosed to all staff — just that the restriction exists.</p>
+    </div>
+
+    <h3 class="sh3">The Role of Each Department</h3>
+
+    <h4>Investment Banking</h4>
+    <p>Investment banking originates deals — M&amp;A advisory, equity and debt underwriting, IPOs, secondary offerings. Because banking has access to MNPI from its corporate clients, it sits <strong>behind the information barrier</strong> (the "private side"). Bankers must not share deal details with research analysts or sales staff unless the issuer is placed on the restricted list.</p>
+
+    <h4>The Research Department</h4>
+    <p>The research department produces analyst reports with investment ratings (Buy/Hold/Sell) on public companies. Research sits on the <strong>"public side"</strong> of the information barrier. Key rules for research:</p>
+    <ul class="styled-list">
+      <li>Analysts cannot receive MNPI from the investment banking team</li>
+      <li>Research reports must contain <strong>conflict of interest disclosures</strong> — e.g., "This dealer acted as underwriter for this company in the past 12 months"</li>
+      <li>Research must be <strong>objective and independent</strong> — analysts cannot have their compensation linked to specific investment banking transactions</li>
+      <li><strong>Quiet periods:</strong> After an underwriting, the dealer's research on that issuer must observe a quiet period (blackout) before publishing new research — typically 10 days post-IPO for prospectus offerings</li>
+      <li>Analysts must disclose personal ownership interests in securities they cover</li>
+    </ul>
+
+    <h4>Corporate Finance</h4>
+    <p>Corporate finance works closely with investment banking, assisting with structuring transactions, preparing prospectuses, and managing regulatory filings. Corporate finance personnel are typically also behind the information barrier and must be subject to the same information containment protocols.</p>
+  </div>
+
+  <div class="subsection" id="s13-cyber">
+    <h3>Cybersecurity</h3>
+    <p>CIRO's 2025 and 2026 compliance reports have made cybersecurity a top regulatory priority. Dealers are required to maintain robust cybersecurity frameworks to protect:</p>
+    <ul class="styled-list">
+      <li><strong>Client personal and financial information</strong> — protected under PIPEDA (federal) and provincial privacy laws</li>
+      <li><strong>Trading systems and market integrity</strong> — a cyber attack on a dealer's trading infrastructure could constitute market disruption</li>
+      <li><strong>MNPI and proprietary firm information</strong> — cyberattacks are an external threat to information barriers</li>
+    </ul>
+
+    <p>CIRO's specific cybersecurity expectations include:</p>
+    <ul class="check-list">
+      <li>Written cybersecurity policies and procedures tailored to the dealer's business model and risk profile</li>
+      <li>Defined incident reporting thresholds — when must a cyber incident be reported to CIRO?</li>
+      <li>Third-party vendor management — dealers must assess the cybersecurity posture of outsourced service providers</li>
+      <li>Annual cybersecurity training for all staff</li>
+      <li>Business continuity and incident response plans</li>
+    </ul>
+
+    <div class="callout callout-warning">
+      <div class="callout-label">⚠️ 2025–2026 REGULATORY FOCUS</div>
+      <p>CIRO itself experienced a sophisticated cyberattack in 2025. CIRO's 2026 Compliance Report explicitly flagged cybersecurity as a key area of examination focus, particularly for small and mid-sized dealers. Dealers that rely on third-party vendors must be able to demonstrate how CIRO's requirements are being met through that third party — they cannot simply outsource their compliance responsibility.</p>
+    </div>
+
+    <h3 class="sh3">Privacy</h3>
+    <p>Privacy obligations for investment dealers arise primarily from:</p>
+    <ul class="styled-list">
+      <li><strong>PIPEDA</strong> (Personal Information Protection and Electronic Documents Act) — federal law governing collection, use, and disclosure of personal information in commercial activities</li>
+      <li><strong>Provincial privacy laws</strong> — Alberta, B.C., and Quebec have their own substantially similar legislation</li>
+      <li><strong>FINTRAC requirements</strong> — AML obligations require collecting personal information, but that information has strict use limitations</li>
+    </ul>
+    <p>Key privacy principles: <strong>Consent, Limiting Collection, Limiting Use, Accuracy, Safeguards, Accountability.</strong> Client information collected for KYC purposes can only be used for the purposes for which it was collected — it cannot be shared with other departments or affiliated companies without consent.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.14  WELCOME PACKAGE
+══════════════════════════════════════════ -->
+<div class="chapter" id="s14">
+  <div class="section-header">
+    <div class="section-num">1.14</div>
+    <div class="section-title-area">
+      <h2>The Investment Dealer Welcome Package</h2>
+      <div class="section-sub">FEE SCHEDULE · CIRO BROCHURES · CIPF · RISK DISCLOSURES</div>
+    </div>
+  </div>
+
+  <p>When a new account is opened, the dealer must provide the client with a collection of required documents collectively known as the "Welcome Package." Each document serves a specific regulatory purpose. Knowing <strong>exactly what each document is for</strong> is frequently tested on the RSE exam.</p>
+
+  <div class="subsection" id="s14-brochures">
+    <h3>CIRO Brochures — Must vs. May Disclose</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Document</th><th>Must or May Provide?</th><th>Purpose</th></tr>
+        <tr><td><strong>CIRO Complaints Brochure</strong></td><td><span class="tag tag-red">MUST</span></td><td>Explains how a retail client can make a complaint — directly to the dealer and escalation to CIRO. Required disclosure under CIRO rules.</td></tr>
+        <tr><td><strong>"How CIRO Protects Investors"</strong></td><td><span class="tag tag-red">MUST</span></td><td>Explains CIRO's role as the SRO, investor protection resources, and how CIRO regulates dealers. Required for all retail clients.</td></tr>
+        <tr><td><strong>"Opening an Investment Account"</strong></td><td><span class="tag tag-gold">MAY</span></td><td>A plain-language guide to help clients understand the account-opening process, KYC requirements, and how advisory accounts work. Optional but recommended best practice.</td></tr>
+      </table>
+    </div>
+
+    <div class="callout callout-exam">
+      <div class="callout-label">📌 EXAM FOCUS — MUST vs. MAY</div>
+      <p>This distinction is directly tested. The <strong>Complaints Brochure</strong> and <strong>"How CIRO Protects Investors"</strong> are MANDATORY for all retail clients. <strong>"Opening an Investment Account"</strong> is optional (may be provided). Know which is which.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s14-cipf">
+    <h3>Canadian Investor Protection Fund (CIPF)</h3>
+    <p>CIPF is an industry-funded protection fund that compensates eligible clients of CIRO member firms if a member firm becomes insolvent (goes bankrupt) and client assets are missing from accounts.</p>
+
+    <div class="diagram">
+      <div class="diagram-title">CIPF — What You Need to Know</div>
+      <div class="grid-2">
+        <div class="grid-card">
+          <h5>✅ CIPF COVERS</h5>
+          <ul>
+            <li>Cash held in accounts</li>
+            <li>Stocks, bonds, ETFs, mutual funds held in accounts</li>
+            <li>Missing assets due to dealer insolvency</li>
+            <li>Up to <strong>$1 million</strong> per account category (see below)</li>
+          </ul>
+        </div>
+        <div class="grid-card">
+          <h5>❌ CIPF DOES NOT COVER</h5>
+          <ul>
+            <li>Investment losses due to market decline</li>
+            <li>Losses due to bad investment advice</li>
+            <li>Fraud by a third party (not related to insolvency)</li>
+            <li>Losses from unsuitable recommendations</li>
+            <li>Losses caused by the investor's own decisions</li>
+          </ul>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:14px;background:rgba(255,255,255,.06);border-radius:6px;border:1px solid rgba(201,151,58,.3)">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold-light);letter-spacing:1px;margin-bottom:10px">COVERAGE LIMITS PER ACCOUNT CATEGORY</div>
+        <div class="grid-4">
+          <div style="text-align:center;padding:10px;background:rgba(255,255,255,.04);border-radius:4px">
+            <div style="font-size:18px;color:var(--gold-light);font-weight:700">$1M</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.6)">General accounts (non-registered)</div>
+          </div>
+          <div style="text-align:center;padding:10px;background:rgba(255,255,255,.04);border-radius:4px">
+            <div style="font-size:18px;color:var(--gold-light);font-weight:700">$1M</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.6)">Registered retirement accounts (RRSP, RRIF, LIRA)</div>
+          </div>
+          <div style="text-align:center;padding:10px;background:rgba(255,255,255,.04);border-radius:4px">
+            <div style="font-size:18px;color:var(--gold-light);font-weight:700">$1M</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.6)">RESPs and other education savings</div>
+          </div>
+          <div style="text-align:center;padding:10px;background:rgba(255,255,255,.04);border-radius:4px">
+            <div style="font-size:18px;color:var(--gold-light);font-weight:700">$1M</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.6)">TFSAs and other separate categories</div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:rgba(255,255,255,.5);margin-top:10px;margin-bottom:0">Each category gets its own $1M limit — a client with $1M in an RRSP and $1M in a non-registered account has $2M total coverage (subject to CIPF eligibility rules).</p>
+      </div>
+    </div>
+
+    <div class="callout callout-warning">
+      <div class="callout-label">⚠️ CRITICAL CIPF DISTINCTION — EXAM TESTED</div>
+      <p>CIPF <strong>ONLY covers insolvency of the dealer</strong>. It does NOT protect against market losses, fraud by the RR, or unsuitable advice. This distinction is tested every exam. If a client loses money because the stock market fell — CIPF cannot help. If a client's assets are missing because the dealer went bankrupt — CIPF may help.</p>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>Other Welcome Package Components</h3>
+
+    <h4>Fee Schedule</h4>
+    <p>A complete schedule of all fees, commissions, and charges the client may incur. Must be provided at account opening. Clients must explicitly acknowledge receipt. Key items include: trading commissions, account maintenance fees, transfer-out fees, margin interest rates, options exercise fees, and early redemption fees.</p>
+
+    <h4>Derivative Risk Disclosure Document</h4>
+    <p>Must be provided when a client opens an options or futures-enabled account. It explains in plain language:</p>
+    <ul class="check-list">
+      <li>The nature and risks of derivative instruments</li>
+      <li>That derivatives can result in losses exceeding the initial investment (leverage risk)</li>
+      <li>Margin requirements and margin call risk</li>
+      <li>Liquidity risk — some options may be difficult to close out</li>
+    </ul>
+    <p>The client must sign an acknowledgement that they received and read the Derivative Risk Disclosure Document before options trading is permitted.</p>
+
+    <h4>Conflict of Interest Disclosures</h4>
+    <p>As discussed in 1.12, material conflicts of interest must be disclosed. The welcome package must include the dealer's specific conflict of interest disclosures relevant to their business model — e.g., if the dealer primarily sells proprietary mutual funds, this must be disclosed.</p>
+
+    <h4>Complaint Handling Procedures</h4>
+    <p>The dealer must provide a description of its internal complaint handling procedures. This includes:</p>
+    <ul class="check-list">
+      <li>How to submit a complaint to the dealer</li>
+      <li>The expected timeline for a response</li>
+      <li>Escalation rights — if unsatisfied with the dealer's response, the client can escalate to CIRO or the Ombudsman for Banking Services and Investments (OBSI)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.15  PRODUCT DUE DILIGENCE
+══════════════════════════════════════════ -->
+<div class="chapter" id="s15">
+  <div class="section-header">
+    <div class="section-num">1.15</div>
+    <div class="section-title-area">
+      <h2>Product Due Diligence Obligation</h2>
+      <div class="section-sub">DEALER OBLIGATION · APPROVED PERSON OBLIGATION · CFR PHASE 2 FINDINGS</div>
+    </div>
+  </div>
+
+  <p>Product due diligence is the foundational process that enables both the dealer and the individual RR to fulfill their <strong>Know Your Product (KYP)</strong> obligation. Under the Client Focused Reforms (IDPC Rule 3300), there are <strong>two separate and distinct levels</strong> of product due diligence — one at the firm level and one at the individual RR level.</p>
+
+  <div class="diagram">
+    <div class="diagram-title">Two Levels of Product Due Diligence</div>
+    <div class="grid-2">
+      <div class="grid-card">
+        <h5>🏢 INVESTMENT DEALER (Firm-Level)</h5>
+        <ul>
+          <li>Must assess, approve, and monitor ALL securities it offers to clients</li>
+          <li>Maintains an approved product shelf — a list of securities that have been approved for offering</li>
+          <li>Must have a formal product review committee or process</li>
+          <li>Reviews include: prospectus/offering docs, financial statements, risk analysis, fee structures, counterparty risk</li>
+          <li>Must document the approval process — not just a list but evidence of actual review</li>
+          <li>Must monitor approved products on an ongoing basis — annual review minimum (more frequently for complex/illiquid products)</li>
+          <li>Related and connected issuers (proprietary products) require the same rigorous KYP process as unrelated issuers</li>
+        </ul>
+      </div>
+      <div class="grid-card">
+        <h5>👤 APPROVED PERSON / RR (Individual Level)</h5>
+        <ul>
+          <li>Even when selecting from the dealer's pre-approved product shelf, the RR must conduct their OWN KYP assessment</li>
+          <li>Must understand each product sufficiently to determine suitability for a specific client</li>
+          <li>Cannot rely solely on the firm's approval or a third-party rating</li>
+          <li>Must understand: structure, features, risks, costs, who the product is appropriate for</li>
+          <li>For model portfolios: must understand composition, risk, fees, and suitable client type</li>
+          <li>Must document their own KYP assessment in the client file</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-rule">
+    <div class="callout-label">🔴 CFR PHASE 2 SWEEP FINDING — DEC 2025</div>
+    <p>In the December 2025 CFR Phase 2 Sweep (105 firms reviewed), regulators found that many firms: (1) collected product documents but showed <strong>no evidence of actual analysis</strong>; (2) did not conduct KYP for related/connected issuer products, assuming their internal involvement was sufficient; (3) approved model portfolios without documenting purpose, risk level, or suitable client type. This is a major compliance gap that RRs must understand.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.16  KNOW YOUR PRODUCT (KYP)
+══════════════════════════════════════════ -->
+<div class="chapter" id="s16">
+  <div class="section-header">
+    <div class="section-num">1.16</div>
+    <div class="section-title-area">
+      <h2>Know Your Product (KYP)</h2>
+      <div class="section-sub">STRUCTURE · FEATURES · COSTS · RISKS · IMPACT OF COSTS</div>
+    </div>
+  </div>
+
+  <p>KYP is the bridge between KYC (knowing the client) and suitability (matching the right product to the right client). You cannot make a suitability determination without first understanding both the client (KYC) and the product (KYP). CIRO's KYP obligation requires the RR to assess every investment on five key dimensions:</p>
+
+  <div class="subsection" id="s16-struct">
+    <h3>Structure of the Investment</h3>
+    <p>Understanding the structure means knowing what kind of asset or instrument you are dealing with, how it is legally organized, and who the key parties are. For example:</p>
+    <div class="def-list">
+      <div class="def-item"><div class="def-term">Common shares</div><div>Equity ownership; residual claim on assets; voting rights; dividends at board's discretion; unlimited upside; potentially worthless in bankruptcy</div></div>
+      <div class="def-item"><div class="def-term">Corporate bonds</div><div>Debt instrument; fixed or floating coupon; senior to equity in bankruptcy; interest rate risk; credit risk; callable vs. non-callable</div></div>
+      <div class="def-item"><div class="def-term">Mutual funds</div><div>Pooled investment vehicle; professionally managed; daily NAV pricing; can be open-end (daily liquidity) or closed-end; may have DSC, front-load, or no-load structures</div></div>
+      <div class="def-item"><div class="def-term">ETFs</div><div>Exchange-traded; intraday liquidity; passive or active; tracks an index, sector, factor, or strategy; management fee usually lower than mutual funds</div></div>
+      <div class="def-item"><div class="def-term">Structured products</div><div>Complex instruments with custom risk/return profiles; often involve derivatives; may include principal protection features but with limited liquidity and counterparty risk</div></div>
+      <div class="def-item"><div class="def-term">Limited partnerships</div><div>Illiquid; used in real estate, oil &amp; gas; tax-advantaged; limited partners have limited liability but cannot participate in management; secondary market is thin or nonexistent</div></div>
+    </div>
+
+    <p>The December 2025 CFR Phase 2 Sweep added guidance that KYP must also assess the <strong>parties involved</strong> in a security — management team, portfolio manager, product manufacturer, guarantors, and significant counterparties. A structurally attractive product can still be high-risk if the management team is inexperienced or conflicted.</p>
+  </div>
+
+  <div class="subsection" id="s16-costs">
+    <h3>Features, Costs, and Impact of Costs</h3>
+
+    <h4>Initial and Ongoing Costs</h4>
+    <p>The RR must understand and explain to the client all costs associated with a security — not just the obvious ones. Cost categories include:</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Cost Type</th><th>Description</th><th>Example</th></tr>
+        <tr><td><strong>Commission / Sales charge</strong></td><td>One-time charge at purchase (front-end load) or redemption (back-end/DSC)</td><td>2% front-end load on mutual fund purchase; $29 equity trading commission</td></tr>
+        <tr><td><strong>Management Expense Ratio (MER)</strong></td><td>Annual ongoing cost embedded in the fund, deducted from returns before being reported</td><td>A mutual fund with 2.5% MER vs. an ETF with 0.2% MER — same underlying exposure, very different long-term performance impact</td></tr>
+        <tr><td><strong>Trailing commission</strong></td><td>Ongoing annual fee paid by the fund company to the dealer/RR for as long as the client holds the fund</td><td>0.5–1.0% annually on most equity mutual funds</td></tr>
+        <tr><td><strong>Deferred Sales Charge (DSC)</strong></td><td>Redemption fee if client sells within a specified period (typically 6–7 years)</td><td>Client bought $10,000 in DSC fund; if they sell in year 2, they pay a 5.5% redemption fee = $550</td></tr>
+        <tr><td><strong>Spread (bid-ask)</strong></td><td>The difference between the price a buyer pays and the price a seller receives; implicit cost especially in bonds and some ETFs</td><td>A bond trading at 99.5/100.0 means a 0.5% immediate cost on purchase</td></tr>
+        <tr><td><strong>Currency conversion</strong></td><td>Fee charged when converting CAD to USD or other currency for US-listed securities</td><td>Norbert's gambit vs. direct conversion — material cost difference</td></tr>
+        <tr><td><strong>Margin interest</strong></td><td>Interest charged on the debit balance in a margin account — ongoing cost of using leverage</td><td>3–5% annual interest on borrowed amount</td></tr>
+      </table>
+    </div>
+
+    <h4>The Impact of Costs</h4>
+    <p>This is one of the most important additions under the CFRs. The RR must not just disclose costs — they must consider <strong>how costs impact the client's investment returns and goals.</strong> Key principles:</p>
+    <ul class="styled-list">
+      <li><strong>Cost as a drag on performance:</strong> A fund with a 2.5% MER must earn 2.5% more than a comparable fund with 0% cost just to break even. Over 20 years, this compounding drag is enormous.</li>
+      <li><strong>Cost in the context of alternatives:</strong> If two products are equally suitable, the RR should recommend the lower-cost option. Recommending a higher-cost product when a lower-cost equivalent exists, without justification, is a suitability violation.</li>
+      <li><strong>DSC suitability:</strong> A DSC fund is inappropriate for a client who may need their money within the DSC schedule. The lock-in conflicts with their liquidity needs.</li>
+      <li><strong>Cost transparency:</strong> The client must understand the total cost of ownership — both explicit fees and embedded costs like MERs.</li>
+    </ul>
+
+    <h4>Risks</h4>
+    <p>The KYP assessment must identify all material risks of the investment. Key risk categories include:</p>
+    <ul class="styled-list">
+      <li><strong>Market risk:</strong> The investment can lose value due to market movements (equities, commodities, etc.)</li>
+      <li><strong>Credit risk:</strong> The issuer may default on obligations (bonds, preferred shares, structured products)</li>
+      <li><strong>Liquidity risk:</strong> The investment may be difficult or impossible to sell quickly at a fair price (private placements, limited partnerships, some ETFs)</li>
+      <li><strong>Interest rate risk:</strong> Bonds and fixed income securities lose value when interest rates rise</li>
+      <li><strong>Currency risk:</strong> Foreign securities carry exchange rate risk in addition to investment risk</li>
+      <li><strong>Concentration risk:</strong> Overweighting one issuer, sector, or geography in a portfolio</li>
+      <li><strong>Counterparty risk:</strong> The risk that the counterparty in a transaction (issuer, guarantor, clearing house) fails to perform</li>
+      <li><strong>Leverage risk:</strong> Margin or leveraged products amplify both gains and losses</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.17  SUITABILITY DETERMINATION
+══════════════════════════════════════════ -->
+<div class="chapter" id="s17">
+  <div class="section-header">
+    <div class="section-num">1.17</div>
+    <div class="section-title-area">
+      <h2>Retail Client Suitability Determination</h2>
+      <div class="section-sub">KYC → RECOMMENDATION · CHURNING · CLIENT INTEREST FIRST</div>
+    </div>
+  </div>
+
+  <p>Suitability is the <strong>culmination of KYC + KYP</strong>. The suitability determination is the judgment call where the RR brings together everything they know about the client (KYC) and everything they know about the product (KYP) to determine: <mark>Does this investment action put this client's interest first?</mark></p>
+
+  <p>Suitability cannot be satisfied through disclosure or a client waiver. Even if a client signs a form saying "I understand this may not be suitable," the RR's suitability obligation is not eliminated.</p>
+
+  <h3 class="sh3">The 5-Factor Suitability Test</h3>
+  <p>Under CIRO rules, a suitability determination must consider:</p>
+  <div class="diagram">
+    <div class="diagram-title">Suitability Determination — 5 Mandatory Factors</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="flow-box gold wide"><strong>1. Investment objectives and risk profile</strong> — Does the security align with the client's stated objectives (growth, income, capital preservation) and assessed risk profile (low/medium/high)?</div>
+      <div class="flow-box wide"><strong>2. Time horizon</strong> — Is the investment's liquidity and risk profile appropriate for the client's investment horizon? A 30-year bond is not suitable for someone who needs the money in 2 years.</div>
+      <div class="flow-box gold wide"><strong>3. Financial situation</strong> — Can the client financially sustain potential losses? Net worth, income, and liabilities must support the risk level of the recommendation.</div>
+      <div class="flow-box wide"><strong>4. Concentration &amp; liquidity of portfolio</strong> — After the trade, will the client be over-concentrated in any single position, sector, or asset class? Is there sufficient liquidity in the portfolio?</div>
+      <div class="flow-box gold wide"><strong>5. Cost impact</strong> — Do the costs of the investment (MER, commission, spread) materially impair the likelihood of meeting the client's goals? Is there a lower-cost suitable alternative?</div>
+    </div>
+    <p style="text-align:center;margin-top:12px;font-size:12px;color:rgba(255,255,255,.5)">The RR must then determine that the chosen action puts the client's interest FIRST — not just "it is suitable"</p>
+  </div>
+
+  <h3 class="sh3">Portfolio-Level Suitability</h3>
+  <p>One of the most significant CFR enhancements: suitability must be assessed at the <strong>overall portfolio level</strong>, not just trade by trade. An individual trade may be technically suitable, but if it pushes the portfolio to be over-concentrated in a sector, or reduces overall liquidity below what the client needs, the trade is not suitable for the portfolio.</p>
+
+  <h3 class="sh3">The Relationship of KYC to Recommendations</h3>
+  <p>The suitability chain is:</p>
+  <div class="flow" style="margin:16px 0">
+    <div class="flow-box gold">Collect KYC → Know the Client</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box">Assess KYP → Know the Product</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box gold">Make Suitability Determination → Match Product to Client</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box">Document rationale → Explain how the action puts the client's interest first</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box gold">Execute → Take the investment action</div>
+  </div>
+
+  <div class="subsection" id="s17-churn">
+    <h3>Churning — Excessive Switches</h3>
+    <p><strong>Churning</strong> occurs when an RR excessively trades a client's account primarily for the purpose of generating commissions for themselves, rather than for the benefit of the client. Churning is a serious violation of CIRO rules and can result in registration suspension, fines, and criminal charges.</p>
+
+    <h4>How to Identify Churning</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Indicator</th><th>Red Flag Threshold</th></tr>
+        <tr><td>Redemption frequency in mutual funds</td><td>Redemptions within 3 months of purchase (especially DSC)</td></tr>
+        <tr><td>Switch frequency</td><td>More than 5 trades per month in an account</td></tr>
+        <tr><td>DSC pattern</td><td>DSC purchases made within 3 months of a DSC redemption</td></tr>
+        <tr><td>Commission-to-equity ratio</td><td>Annual commissions representing a high percentage of average account value</td></tr>
+        <tr><td>Turnover ratio</td><td>Portfolio value being traded multiple times over in a year</td></tr>
+        <tr><td>Pattern of switching</td><td>Excessive switches between no-load and DSC/front-load funds without benefit to the client</td></tr>
+      </table>
+    </div>
+
+    <div class="callout callout-rule">
+      <div class="callout-label">🔴 CHURNING IS A REGULATORY VIOLATION</div>
+      <p>Every trade must be individually justifiable on suitability grounds. If the primary reason for a trade is to generate a commission — not to benefit the client — it is churning. Supervisors must monitor accounts for churning patterns through monthly and quarterly commission review reports. Accounts generating more than $1,500 in commissions in a month require head-office supervisory review.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.18  UNSOLICITED & UNSUITABLE ORDERS
+══════════════════════════════════════════ -->
+<div class="chapter" id="s18">
+  <div class="section-header">
+    <div class="section-num">1.18</div>
+    <div class="section-title-area">
+      <h2>Unsolicited &amp; Unsuitable Orders</h2>
+      <div class="section-sub">RR OBLIGATIONS · DEALER OBLIGATIONS · DOCUMENTATION</div>
+    </div>
+  </div>
+
+  <p>Not all trades are initiated by the RR. Sometimes clients call in with their own instructions. The regulatory framework treats these differently depending on whether the order was solicited or unsolicited, and whether it is suitable or unsuitable.</p>
+
+  <h3 class="sh3">Unsolicited Orders — Client-Initiated Trades</h3>
+  <p>An <strong>unsolicited order</strong> is a trade that was <em>initiated entirely by the client</em>, not recommended by the RR. The key question is: <strong>does the RR's suitability obligation still apply?</strong></p>
+  <p><strong>Yes — it does.</strong> Under the CFRs, the RR must still assess whether an unsolicited trade is suitable. The fact that the client asked for the trade does not eliminate the RR's suitability duty.</p>
+
+  <h3 class="sh3">When an Unsolicited Order Is Unsuitable</h3>
+  <div class="flow">
+    <div class="flow-box gold wide"><strong>Step 1:</strong> RR receives unsolicited order from client</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box wide"><strong>Step 2:</strong> RR assesses suitability — determine if the order is suitable and puts the client's interest first</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box red wide"><strong>Step 3:</strong> Order is assessed as UNSUITABLE</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box wide"><strong>Step 4:</strong> RR must:<br>• Inform the client the order appears unsuitable<br>• Explain why and the risks involved<br>• Recommend an alternative if one exists<br>• Document the discussion fully</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box wide"><strong>Step 5:</strong> Client still insists on proceeding</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box gold wide"><strong>Step 6:</strong> RR may execute the trade BUT must:<br>• Clearly document that the trade was <em>client-directed and unsolicited</em><br>• Note the RR's expressed concern about suitability<br>• Get client acknowledgement where possible<br>• Mark the trade as unsolicited in the system</div>
+  </div>
+
+  <div class="callout callout-warning">
+    <div class="callout-label">⚠️ IMPORTANT NUANCE</div>
+    <p>The fact that a trade is unsolicited does NOT automatically permit execution. The RR must still explain suitability concerns. However, once the RR has fulfilled their obligation to inform, advise, and document, an adult client generally has the right to proceed with their own decision. The RR is not obligated to refuse execution indefinitely — but documentation of the concern is essential.</p>
+  </div>
+
+  <div class="callout callout-rule">
+    <div class="callout-label">🔴 DEALER OBLIGATION</div>
+    <p>The Investment Dealer must have supervisory systems in place to monitor for patterns of unsuitable trades — even unsolicited ones. A pattern of unsolicited orders that all end up unsuitable for the client may indicate the RR is improperly labelling solicited trades as unsolicited to avoid documentation requirements. This is a serious violation.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.19  INVESTMENT ACTIONS
+══════════════════════════════════════════ -->
+<div class="chapter" id="s19">
+  <div class="section-header">
+    <div class="section-num">1.19</div>
+    <div class="section-title-area">
+      <h2>Types of Investment Actions</h2>
+      <div class="section-sub">PURCHASING · SELLING · HOLDING · DEPOSITING · EXCHANGING · TRANSFERRING</div>
+    </div>
+  </div>
+
+  <p>Under CIRO rules, a <strong>suitability determination is required before taking any "investment action"</strong> for a client's account. Understanding exactly what constitutes an "investment action" is important — it is broader than most people assume.</p>
+
+  <div class="diagram">
+    <div class="diagram-title">Investment Actions — All Require a Suitability Determination</div>
+    <div class="grid-3">
+      <div class="grid-card">
+        <h5>📈 Purchasing</h5>
+        <p>Buying any security for a client's account — equities, bonds, mutual funds, ETFs, options, structured products. The most obvious investment action. Full KYP + KYC → suitability required before every purchase.</p>
+      </div>
+      <div class="grid-card">
+        <h5>📉 Selling</h5>
+        <p>Selling securities from the account. A suitability assessment is required — is selling now in the client's best interest? Selling is not "default safe." An untimely sale that triggers tax consequences or disrupts the investment plan requires justification.</p>
+      </div>
+      <div class="grid-card">
+        <h5>⏸ Holding a Position</h5>
+        <p><strong>Critical CFR enhancement:</strong> A decision to CONTINUE holding is also an investment action. Periodic reviews must assess whether existing positions remain suitable. The RR cannot simply hold indefinitely without reassessing.</p>
+      </div>
+      <div class="grid-card">
+        <h5>💳 Depositing</h5>
+        <p>Depositing cash or securities into an account. The cash must be invested in a way that is suitable, and deposited securities must be assessed for KYP and portfolio fit. Clients cannot simply "park" deposits without the dealer considering appropriate investment action.</p>
+      </div>
+      <div class="grid-card">
+        <h5>🔄 Exchanging Securities</h5>
+        <p>Exchanging one class or series of a fund for another (e.g., switching from Series A to Series F of the same mutual fund). A suitability determination is required — especially if fees change. Switching from a DSC fund to another DSC fund with a new schedule resets the redemption clock.</p>
+      </div>
+      <div class="grid-card">
+        <h5>➡️ Transferring</h5>
+        <p>Transferring securities between accounts (e.g., from a spouse's account or from another dealer). Securities transferred in must be assessed for KYP — the RR cannot assume the transferred securities are suitable just because they were previously held elsewhere.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-exam">
+    <div class="callout-label">📌 EXAM FOCUS — HOLDING IS AN ACTION</div>
+    <p>A very frequently tested point: <strong>deciding to hold an existing position is an investment action</strong> that requires a suitability determination. The CFRs explicitly added this. If a client's circumstances change (e.g., they lose their job, approach retirement, or a product's risk rating changes) — the RR must reassess existing holdings, not just new purchases. If the existing holdings are no longer suitable, the RR must take action.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.20  APPROPRIATENESS vs SUITABILITY
+══════════════════════════════════════════ -->
+<div class="chapter" id="s20">
+  <div class="section-header">
+    <div class="section-num">1.20</div>
+    <div class="section-title-area">
+      <h2>Account Appropriateness vs. Suitability</h2>
+      <div class="section-sub">KEY DISTINCTION · WHEN EACH APPLIES · CFR ENHANCEMENT</div>
+    </div>
+  </div>
+
+  <p>This distinction was significantly clarified by the CFRs and is one of the most tested topics in Element 1. Many candidates conflate these two separate and distinct obligations.</p>
+
+  <div class="diagram">
+    <div class="diagram-title">Account Appropriateness vs. Suitability Determination — Full Comparison</div>
+    <div class="grid-2">
+      <div class="grid-card">
+        <h5>🏦 Account Appropriateness</h5>
+        <ul>
+          <li><strong>Level:</strong> ACCOUNT level — assessed once at opening (and when circumstances change)</li>
+          <li><strong>Question:</strong> Is this <em>type of account</em> appropriate for this client overall?</li>
+          <li><strong>Examples:</strong> Is a margin account appropriate? Is an options account appropriate? Is a discretionary account appropriate?</li>
+          <li><strong>What it considers:</strong> Client's overall KYC — financial situation, investment knowledge, objectives, general risk profile</li>
+          <li><strong>Timing:</strong> Account opening + reassessment at triggering events</li>
+          <li><strong>One-time per account:</strong> Once the account is open and appropriate, each individual trade is assessed separately via suitability</li>
+        </ul>
+      </div>
+      <div class="grid-card">
+        <h5>📊 Suitability Determination</h5>
+        <ul>
+          <li><strong>Level:</strong> TRANSACTION level — assessed before EVERY investment action</li>
+          <li><strong>Question:</strong> Is <em>this specific trade/holding/action</em> suitable for this client right now?</li>
+          <li><strong>Examples:</strong> Is buying 500 shares of this small-cap mining company suitable? Is holding this bond suitable given rising rates? Is this DSC fund exchange suitable?</li>
+          <li><strong>What it considers:</strong> Full 5-factor suitability test (objectives, time horizon, finances, concentration, cost)</li>
+          <li><strong>Timing:</strong> Before EVERY investment action</li>
+          <li><strong>Ongoing:</strong> Never stops — continues for every trade and at every KYC review</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-exam">
+    <div class="callout-label">📌 EXAM FOCUS — THE KEY RULE</div>
+    <p>Account appropriateness ≠ suitability. You must understand both: (1) A margin account can be appropriate for a client (account appropriateness ✓) but a specific leveraged trade in that margin account may still be unsuitable (suitability ✗). (2) A plain cash account is appropriate for any client, but the specific securities purchased in that account still require suitability assessment for every trade.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.21  MONITORING & TRIGGERING EVENTS
+══════════════════════════════════════════ -->
+<div class="chapter" id="s21">
+  <div class="section-header">
+    <div class="section-num">1.21</div>
+    <div class="section-title-area">
+      <h2>Monitoring, Maintenance &amp; Triggering Events</h2>
+      <div class="section-sub">ONGOING OBLIGATIONS · TRIGGERING EVENTS · SUPERVISORY REQUIREMENTS</div>
+    </div>
+  </div>
+
+  <p>The suitability obligation is not point-in-time. Both the dealer and the RR have ongoing obligations to <strong>monitor accounts and conduct periodic suitability reviews</strong>. A comprehensive monitoring program is required under CIRO rules.</p>
+
+  <h3 class="sh3">Minimum Monitoring Obligations</h3>
+  <ul class="styled-list">
+    <li><strong>Regular KYC reviews:</strong> Advisory accounts — at least every 36 months; Managed accounts — annually</li>
+    <li><strong>At triggering events:</strong> A full suitability review must be performed whenever a triggering event occurs (see below)</li>
+    <li><strong>Supervisory surveillance:</strong> Dealers must run monthly commission reports, quarterly AUA reports, and monitor for churning, concentration issues, and unsuitable patterns</li>
+    <li><strong>Change of RR:</strong> When an account is transferred to a new RR, a full suitability review must be performed</li>
+  </ul>
+
+  <h3 class="sh3">Triggering Events — Full List</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Triggering Event</th><th>Action Required</th></tr>
+      <tr><td>Client reports a life event (marriage, divorce, birth of child, death of spouse)</td><td>Full KYC update; reassess suitability of all holdings and objectives</td></tr>
+      <tr><td>Client retires or is about to retire</td><td>Objectives likely shift from growth to income/capital preservation; full review</td></tr>
+      <tr><td>Client experiences significant income change (job loss, promotion, new business)</td><td>Update financial KYC; reassess risk capacity and investment plan</td></tr>
+      <tr><td>Client approaches RRSP-to-RRIF conversion age (71)</td><td>Major change in registered account structure; full review and planning required</td></tr>
+      <tr><td>Client receives large inheritance or windfall</td><td>Material change in net worth; reassess asset allocation and objectives</td></tr>
+      <tr><td>Significant change in a held security (credit downgrade, restructuring, fraud disclosure)</td><td>Full KYP reassessment; suitability of holding must be reassessed</td></tr>
+      <tr><td>Material change in market conditions (rate cycle change, recession, market crash)</td><td>Portfolio-level suitability review; concentration and liquidity review</td></tr>
+      <tr><td>Account is transferred to a new RR</td><td>Full KYC verification and suitability review by the incoming RR</td></tr>
+      <tr><td>Client requests a change in investment objectives</td><td>Update KYC immediately; reassess all existing holdings</td></tr>
+      <tr><td>Client changes residence (especially to US or another province)</td><td>Full KYC update; reassess product eligibility</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.22  PORTFOLIO IMPACT ANALYSIS
+══════════════════════════════════════════ -->
+<div class="chapter" id="s22">
+  <div class="section-header">
+    <div class="section-num">1.22</div>
+    <div class="section-title-area">
+      <h2>Portfolio Impact Analysis</h2>
+      <div class="section-sub">CLIENT CHANGES · PRODUCT/MARKET RESEARCH · ECONOMIC EVENTS · EMERGING ISSUES</div>
+    </div>
+  </div>
+
+  <p>Suitability is a living determination. Factors external to the client can change the suitability of an existing portfolio just as much as changes in the client's personal circumstances. RRs must monitor and analyze how changes in the world around them affect their clients' portfolios.</p>
+
+  <div class="diagram">
+    <div class="diagram-title">Four Categories of Change That Can Trigger Portfolio Impact Review</div>
+    <div class="grid-2">
+      <div class="grid-card">
+        <h5>👤 Material Client Changes</h5>
+        <ul>
+          <li>Job loss, career change, or income reduction</li>
+          <li>Health change affecting time horizon or liquidity needs</li>
+          <li>Divorce — major change in net worth and objectives</li>
+          <li>A client moving from accumulation to decumulation phase</li>
+          <li>A sudden windfall (inheritance, sale of business)</li>
+          <li>Change in risk tolerance due to a major life event</li>
+        </ul>
+      </div>
+      <div class="grid-card">
+        <h5>🔬 Product &amp; Market Research</h5>
+        <ul>
+          <li>A credit rating downgrade of a bond the client holds</li>
+          <li>New research revealing undisclosed risks in a structured product</li>
+          <li>A held ETF provider goes through liquidation or restructuring</li>
+          <li>A mutual fund changes its mandate, fee structure, or management team</li>
+          <li>New regulatory requirements change a product's cost or liquidity profile</li>
+        </ul>
+      </div>
+      <div class="grid-card">
+        <h5>🌐 Economic, Political &amp; Social Events</h5>
+        <ul>
+          <li>Bank of Canada rate hike cycle — impacts bond portfolio duration risk</li>
+          <li>Federal budget changes affecting tax treatment of investment income</li>
+          <li>Regulatory changes affecting specific sectors (e.g., new cannabis regulations)</li>
+          <li>Geopolitical events affecting specific sectors or foreign holdings</li>
+          <li>Currency movements affecting USD-denominated holdings for CAD investors</li>
+        </ul>
+      </div>
+      <div class="grid-card">
+        <h5>📰 Emerging Issues &amp; Financial Trends</h5>
+        <ul>
+          <li>Rise in interest rates making bonds less attractive vs. GICs</li>
+          <li>ESG investing trends requiring portfolio realignment for clients with stated ESG preferences</li>
+          <li>Artificial intelligence disruption affecting valuations in tech-heavy portfolios</li>
+          <li>Inflation trends affecting real return on fixed income positions</li>
+          <li>Demographic shifts affecting certain sectors (healthcare, real estate)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-label">💡 PRACTICAL APPLICATION</div>
+    <p>When the Bank of Canada raises interest rates, the RR should proactively review all clients holding long-duration bonds. Rising rates cause bond prices to fall — a client with a short time horizon or income needs may be materially disadvantaged. This is the type of market-event-driven suitability review CIRO expects RRs to perform proactively.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.23  CONFLICTS OF INTEREST MANAGEMENT
+══════════════════════════════════════════ -->
+<div class="chapter" id="s23">
+  <div class="section-header">
+    <div class="section-num">1.23</div>
+    <div class="section-title-area">
+      <h2>Managing Conflicts of Interest — Best Interest of Client</h2>
+      <div class="section-sub">IDENTIFY · AVOID · ADDRESS · DISCLOSE</div>
+    </div>
+  </div>
+
+  <p>Conflicts of interest are pervasive in the investment industry. The CFRs created a structured, four-step framework for managing them, with the overriding principle that the client's interest must come first.</p>
+
+  <div class="diagram">
+    <div class="diagram-title">The CFR Four-Step COI Framework</div>
+    <div class="flow">
+      <div class="flow-box gold wide">
+        <strong>STEP 1 — IDENTIFY</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,.75)">Proactively and continuously identify all actual and potential conflicts. Must include: compensation structures, proprietary products, referral arrangements, personal interests, investment banking relationships, related party transactions.</span>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box wide">
+        <strong>STEP 2 — AVOID</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,.75)">Where possible, avoid conflicts entirely. Structural changes: don't sell products where the conflict cannot be managed in the client's interest. If the conflict can be avoided, this is always preferred over managing it. Example: don't recommend a proprietary product if a non-proprietary product is clearly better for the client.</span>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box gold wide">
+        <strong>STEP 3 — ADDRESS</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,.75)">If the conflict cannot be avoided, actively manage it to ensure the client's interest comes first. Implement controls: pre-approval requirements, independent review, compensation adjustments. Example: a firm that sells proprietary products must ensure that product is genuinely suitable — not just convenient for the firm's revenue.</span>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box wide">
+        <strong>STEP 4 — DISCLOSE</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,.75)">If the conflict cannot be fully avoided or addressed, disclose it to the client in plain language. Disclosure must be specific enough for the client to understand the actual conflict — not boilerplate. However, disclosure alone does NOT discharge the obligation — it is the last resort tool, not the first.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-rule">
+    <div class="callout-label">🔴 DISCLOSURE IS NOT A MAGIC WAND</div>
+    <p>One of the most important CFR principles: <strong>disclosure alone does not resolve a conflict of interest</strong>. Even after disclosure, the RR must still put the client's interest first. Saying "I told you about the conflict" and then recommending the conflicted product anyway is still a violation if a non-conflicted alternative would have been better for the client.</p>
+  </div>
+
+  <h3 class="sh3">Common Types of Conflicts — Applied Scenarios</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Conflict Scenario</th><th>Management Approach</th></tr>
+      <tr><td>RR earns higher trailing commission on Fund A vs. Fund B (equally suitable)</td><td>Recommend Fund B (lower cost to client). Recommending Fund A without justification is a violation. Disclose trailer commission structure in RDI.</td></tr>
+      <tr><td>Dealer is underwriting an IPO and retail sales team is selling it to clients</td><td>Restricted list controls; research quiet period; suitability still assessed; dealers cannot oversell IPO based on relationship with the issuer</td></tr>
+      <tr><td>RR's spouse works for a company whose stock the RR recommends</td><td>Must disclose to compliance; may need to avoid recommending that stock; personal account trading may be restricted</td></tr>
+      <tr><td>RR receives a client referral from a mortgage broker affiliated with the dealer</td><td>Referral arrangement must be disclosed; conflicts documented; compliance pre-approval required</td></tr>
+      <tr><td>Dealer exclusively sells its own mutual funds</td><td>Must disclose this limitation to clients in RDI; clients must understand they are not getting independent product choice</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.24  OUTSIDE ACTIVITIES
+══════════════════════════════════════════ -->
+<div class="chapter" id="s24">
+  <div class="section-header">
+    <div class="section-num">1.24</div>
+    <div class="section-title-area">
+      <h2>Outside Activities</h2>
+      <div class="section-sub">DEFINITION · PRE-APPROVAL · DISCLOSURE · NRD FILING</div>
+    </div>
+  </div>
+
+  <p>An "outside activity" is any activity conducted by an Approved Person (including an RR) <strong>outside of their sponsoring dealer firm</strong> — whether paid or unpaid. CIRO rules require all outside activities to be disclosed and, where required, pre-approved by the dealer.</p>
+
+  <h3 class="sh3">Definition of Outside Activities</h3>
+  <p>Outside activities include:</p>
+  <ul class="styled-list">
+    <li>Employment with another company (part-time or full-time)</li>
+    <li>Directorship, officer position, or board membership of any company</li>
+    <li>Ownership interest in a business</li>
+    <li>Involvement in any investment fund, partnership, or financial venture</li>
+    <li>Volunteer roles where there could be a conflict of interest</li>
+    <li>Activities with affiliated, related, or subsidiary companies of the dealer</li>
+  </ul>
+
+  <div class="callout callout-tip">
+    <div class="callout-label">💡 UNPAID ACTIVITIES ALSO REQUIRE DISCLOSURE</div>
+    <p>The outside activity rules apply whether or not the RR is paid. A volunteer director position on a publicly traded company's board is a material outside activity requiring disclosure — the directorship creates potential insider access to MNPI regardless of compensation.</p>
+  </div>
+
+  <h3 class="sh3">Pre-Approval Requirements</h3>
+  <p>Before engaging in an outside activity, the RR must:</p>
+  <div class="flow">
+    <div class="flow-box gold wide"><strong>Step 1:</strong> Disclose the proposed outside activity to the designated supervisor at the dealer, using Form 33-109F4 Schedule G (Item 10 — Reportable Activities)</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box wide"><strong>Step 2:</strong> Dealer's compliance department assesses: (a) potential conflicts of interest; (b) whether the activity could create client confusion; (c) whether effective controls and qualified supervision can be maintained</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box gold wide"><strong>Step 3:</strong> Dealer approves, conditions, or refuses the outside activity. Approval is only granted when effective controls and qualified supervision can be maintained.</div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-box wide"><strong>Step 4:</strong> If approved — activity must be reported to CIRO via the National Registration Database (NRD) within 30 days of any change in outside activities</div>
+  </div>
+
+  <h3 class="sh3">Disclosure to Clients</h3>
+  <p>If an outside activity <strong>could be confused with dealer business</strong>, the RR must provide clients with clear written disclosure that the outside activity is NOT part of the dealer's business and the dealer is NOT responsible for it. This is to prevent client confusion about who they are dealing with.</p>
+
+  <div class="callout callout-rule">
+    <div class="callout-label">🔴 KEY EXAM RULE</div>
+    <p>Outside activities must be reported to CIRO within <strong>30 days</strong> of any change (commencement, modification, or termination). The dealer, not just the RR, has a supervisory responsibility over outside activities. If the outside activity creates an unmanageable conflict of interest, the dealer <strong>must refuse</strong> approval.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.25  PERSONAL FINANCIAL DEALINGS
+══════════════════════════════════════════ -->
+<div class="chapter" id="s25">
+  <div class="section-header">
+    <div class="section-num">1.25</div>
+    <div class="section-title-area">
+      <h2>Personal Financial Dealings with Clients</h2>
+      <div class="section-sub">PROHIBITIONS · BORROWING · LENDING · SETTLEMENTS · INVESTMENT CLUBS</div>
+    </div>
+  </div>
+
+  <p>The personal financial dealings rules are among the <strong>strictest conduct rules</strong> in CIRO's rulebook. They exist to prevent exploitation of the trusted position an RR holds relative to their clients. Most of these are <strong>outright prohibitions</strong>, not just disclosure requirements.</p>
+
+  <div class="diagram">
+    <div class="diagram-title">Personal Financial Dealings — What Is PROHIBITED</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="flow-box red wide">
+        <strong>❌ Accepting Any Consideration from a Client</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,.75)">An RR cannot accept gifts, loans, favours, or any financial consideration from a client beyond their normal compensation from the dealer. Receiving a client's gift of significant value (typically over nominal token gifts) is prohibited. Exception: gifts that are purely of nominal value (e.g., a small holiday gift) may be acceptable if disclosed, but this is dealer-specific policy.</span>
+      </div>
+      <div class="flow-box red wide">
+        <strong>❌ Settlement Agreements Without Firm Approval</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,.75)">An RR cannot enter into personal settlement agreements with clients (e.g., "I'll give you $5,000 from my personal account to resolve your complaint") without the prior written approval of the dealer. Such agreements create conflicts and may also violate securities law if they relate to investment losses.</span>
+      </div>
+      <div class="flow-box red wide">
+        <strong>❌ Borrowing FROM Clients</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,.75)">Strictly prohibited except in very limited circumstances (e.g., the client is a family member or a financial institution and the loan is on arm's-length commercial terms with prior firm approval). An RR who borrows money from a client exploits the position of trust and creates a serious conflict of interest. No exceptions in retail client relationships.</span>
+      </div>
+      <div class="flow-box red wide">
+        <strong>❌ Lending TO Clients</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,.75)">RRs are prohibited from personally lending money to clients. This includes guaranteeing a client's loan, co-signing on their behalf, or providing personal credit. Exception: through the dealer's properly documented margin account facility.</span>
+      </div>
+      <div class="flow-box red wide">
+        <strong>❌ Control or Authority Over Client Assets</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,.75)">An RR should not have power of attorney, executor, trustee, or signing authority over a client's personal financial accounts or estate unless: (a) the client is a family member, AND (b) prior written approval from the dealer has been obtained. Controlling a client's assets creates extreme potential for abuse.</span>
+      </div>
+      <div class="flow-box red wide">
+        <strong>❌ Commingling of Assets</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,.75)">An RR must never mix client assets with their own personal assets or the dealer's assets. Client funds must be held in properly segregated accounts at the dealer. Commingling is one of the most serious violations — it is the foundation of many investment fraud schemes.</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sh3">Business Partnerships with Clients</h3>
+  <p>An RR forming a <strong>business partnership</strong> with a client requires the prior written approval of the dealer. The conflict is obvious: if the RR's personal business interests are aligned with or opposed to the client's investment decisions, recommendations can be compromised. Such arrangements are heavily scrutinized by compliance.</p>
+
+  <h3 class="sh3">Investment Clubs</h3>
+  <p>An investment club is a group of individuals who pool resources to invest together. An RR's participation in an investment club that includes their clients raises serious conflict of interest concerns. Key rules:</p>
+  <ul class="styled-list">
+    <li>The RR must disclose participation in any investment club to the dealer</li>
+    <li>The club must not be used as a vehicle to avoid the dealer's supervisory oversight of trades</li>
+    <li>If the RR participates in the same club as a client, prior compliance approval is required</li>
+    <li>The RR cannot use their position as a securities professional to benefit personally at the expense of club members who are also clients</li>
+  </ul>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.26  COI POLICIES & PROCEDURES
+══════════════════════════════════════════ -->
+<div class="chapter" id="s26">
+  <div class="section-header">
+    <div class="section-num">1.26</div>
+    <div class="section-title-area">
+      <h2>Dealer's COI Policies, Procedures &amp; Supervision</h2>
+      <div class="section-sub">EFFECTIVE CONTROLS · QUALIFIED SUPERVISION · DUE DILIGENCE · RECORD-KEEPING</div>
+    </div>
+  </div>
+
+  <p>The Investment Dealer carries ultimate responsibility for the conduct of its Registered Representatives. CIRO requires dealers to maintain written policies and procedures that effectively manage all identified conflicts of interest. These policies must be practical, specific, and tailored to the dealer's actual business model — not boilerplate.</p>
+
+  <h3 class="sh3">Effective Controls</h3>
+  <p>Controls must be <strong>specific and actionable</strong>. CIRO has found in recent examinations that many dealers' COI policies quote the regulatory rules but provide no practical guidance on how to comply. Effective controls include:</p>
+  <ul class="styled-list">
+    <li><strong>Pre-approval requirements:</strong> Outside activities, personal financial dealings, and settlement agreements require written compliance pre-approval</li>
+    <li><strong>Compensation structure review:</strong> Regularly reviewing whether the dealer's compensation structure creates conflicts and adjusting incentives</li>
+    <li><strong>Product approval process:</strong> A documented product shelf review committee that independently assesses all products offered</li>
+    <li><strong>Information barrier protocols:</strong> Documented Chinese wall procedures with access controls and training</li>
+    <li><strong>Personal trading restrictions:</strong> Policies governing RR's personal trading to prevent front-running or misuse of client information</li>
+  </ul>
+
+  <h3 class="sh3">Qualified Supervision</h3>
+  <p>Every RR must be supervised by a qualified supervisor. The supervisor must:</p>
+  <ul class="check-list">
+    <li>Review trade activity for churning, unsuitable patterns, and policy violations</li>
+    <li>Review and approve outside activity requests and personal financial dealings</li>
+    <li>Monitor client complaints and ensure proper resolution</li>
+    <li>Conduct branch audits and random file reviews</li>
+    <li>Escalate material issues to compliance and senior management</li>
+  </ul>
+
+  <h3 class="sh3">Due Diligence for Approvals</h3>
+  <p>Before approving any arrangement that could create a conflict (referral arrangement, outside activity, personal dealing exemption), the dealer must conduct documented due diligence. This includes: (1) identifying the specific conflict; (2) assessing whether the conflict can be avoided; (3) determining what controls are needed; (4) confirming that the arrangement puts the client's interest first; (5) documenting the analysis and decision.</p>
+
+  <h3 class="sh3">Appropriate Record-Keeping</h3>
+  <p>Complete records must be maintained for:</p>
+  <ul class="check-list">
+    <li>All identified conflicts and the steps taken to manage them</li>
+    <li>All approvals and refusals of outside activities and personal dealings</li>
+    <li>All COI disclosures made to clients (method, date, content)</li>
+    <li>All supervisory reviews and their outcomes</li>
+    <li>Complaints and resolution records</li>
+    <li>Product approval records (KYP assessments)</li>
+  </ul>
+
+  <div class="callout callout-warning">
+    <div class="callout-label">⚠️ 2026 REGULATORY FINDING</div>
+    <p>CIRO's 2026 Compliance Report found that many dealers are submitting <strong>boilerplate conflict of interest disclosures</strong> on registration forms (Form 33-109F4 Schedule G) without providing specific descriptions of the actual conflicts and how they are managed. CIRO has specifically stated that vague or generic descriptions are not acceptable. All conflict disclosures must be specific, detailed, and tailored.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.27  CIRO STANDARDS OF CONDUCT
+══════════════════════════════════════════ -->
+<div class="chapter" id="s27">
+  <div class="section-header">
+    <div class="section-num">1.27</div>
+    <div class="section-title-area">
+      <h2>CIRO Standards of Conduct</h2>
+      <div class="section-sub">RR–CLIENT · RR–FIRM · FAIR DEALING · DUTY OF CARE · PROFESSIONALISM</div>
+    </div>
+  </div>
+
+  <p>CIRO's standards of conduct set the overarching ethical and professional framework within which all registered persons must operate. These standards apply in both the RR-client relationship and the RR-firm relationship.</p>
+
+  <h3 class="sh3">The Foundational Standard — Dealing Fairly, Honestly, and in Good Faith</h3>
+  <p>CIRO Rule 2.1.1 imposes a fundamental obligation on all dealer members and their Approved Persons to <mark>deal fairly, honestly and in good faith with clients.</mark> This is the bedrock of the entire regulatory framework — it underpins every specific rule, from KYC to suitability to conflict of interest management.</p>
+
+  <div class="diagram">
+    <div class="diagram-title">Standards of Conduct — Key Obligations Matrix</div>
+    <div class="grid-2">
+      <div class="grid-card">
+        <h5>RR → CLIENT Standards</h5>
+        <ul>
+          <li><strong>Duty of care:</strong> Act in the client's best interest; put client's interest first</li>
+          <li><strong>Fairness:</strong> Do not exploit information asymmetry; explain risks clearly</li>
+          <li><strong>Honesty:</strong> Do not mislead clients about products, risks, costs, or returns</li>
+          <li><strong>Confidentiality:</strong> Protect client information; do not misuse for personal gain</li>
+          <li><strong>Competence:</strong> Only provide advice on products and strategies you understand</li>
+          <li><strong>Suitability:</strong> Every action must put the client's interest first</li>
+          <li><strong>No misrepresentation:</strong> Do not make false or misleading statements about products, the firm, or yourself</li>
+        </ul>
+      </div>
+      <div class="grid-card">
+        <h5>RR → FIRM Standards</h5>
+        <ul>
+          <li><strong>Follow policies and procedures:</strong> Comply with the dealer's internal rules as well as CIRO's regulations</li>
+          <li><strong>Disclose outside activities:</strong> Full transparency with compliance about all activities outside the firm</li>
+          <li><strong>No unauthorized activity:</strong> Do not conduct securities business outside the dealer's supervision</li>
+          <li><strong>Report violations:</strong> Must report known or suspected violations of securities law or CIRO rules to compliance</li>
+          <li><strong>Support supervision:</strong> Cooperate with supervisory reviews, audits, and compliance examinations</li>
+          <li><strong>Maintain proficiency:</strong> Complete required continuing education (CE) credits; maintain registration proficiency requirements</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sh3">No Misrepresentation — Applied to Specific Scenarios</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Scenario</th><th>Standard of Conduct Violation?</th></tr>
+      <tr><td>RR tells client that a highly speculative junior mining stock is "a sure thing"</td><td>✅ Violation — misrepresentation of risk and return</td></tr>
+      <tr><td>RR tells client their RRSP is "guaranteed by the government"</td><td>✅ Violation — RRSP accounts are not government-guaranteed (only CIPF for dealer insolvency)</td></tr>
+      <tr><td>RR doesn't disclose a 2.5% trailer fee they receive on a fund they recommend</td><td>✅ Violation — material conflict of interest not disclosed</td></tr>
+      <tr><td>RR describes a new account application process accurately and completely</td><td>✓ Compliant — honest, fair and complete disclosure</td></tr>
+      <tr><td>RR recommends a client move their RRSP because the RR recently joined a new dealer</td><td>⚠️ Potential violation — if the recommendation is in the RR's interest (new commissions) rather than the client's, this requires careful conflict management and documentation</td></tr>
+    </table>
+  </div>
+
+  <h3 class="sh3">Competence and Proficiency Standards</h3>
+  <p>An RR must not give advice or recommend products outside their area of competence and registration category. Specific proficiency requirements:</p>
+  <ul class="styled-list">
+    <li><strong>Continuing Education (CE):</strong> Investment dealer RRs must complete CE requirements per CIRO Rule 900 — typically 30 credits per 3-year cycle, including Business Conduct and Compliance credits</li>
+    <li><strong>Supervision period:</strong> New RRs must complete a 6-month concurrent supervision period after commencement of trading</li>
+    <li><strong>Specialized product approvals:</strong> Recommending options, derivatives, or alternative products may require additional proficiency exams and dealer approval</li>
+    <li><strong>Retail Securities Exam (RSE):</strong> New proficiency model effective January 1, 2026 — RRs who commenced trading before this date have transition provisions (may complete RSE by December 31, 2026 or within their 30-month window)</li>
+  </ul>
+
+  <div class="callout callout-purple">
+    <div class="callout-label">🎯 BRINGING IT ALL TOGETHER</div>
+    <p>The CIRO standards of conduct are not isolated rules — they form a coherent ethical framework. Every specific rule in Element 1 (KYC, KYP, suitability, RDI, TCP, COI management, personal dealings, outside activities) flows from the foundational obligation to <strong>deal fairly, honestly and in good faith, and to put the client's interest first.</strong> On the exam, when in doubt about the correct course of action in a scenario, ask yourself: "What would a fair, honest, and competent RR acting in the client's best interest do?" That will usually lead you to the right answer.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PRACTICE QUESTIONS
+══════════════════════════════════════════ -->
+<div id="quiz-section">
+  <div class="quiz-header">Practice Exam — 50 Questions</div>
+  <div class="quiz-sub">ELEMENT 1 PART 2: SECTIONS 1.12–1.27 · EXAM-LEVEL DIFFICULTY</div>
+  <div class="quiz-stats">
+    <div class="quiz-stat"><span class="stat-val">50</span><span class="stat-label">Total</span></div>
+    <div class="quiz-stat"><span class="stat-val" id="answered-count">0</span><span class="stat-label">Answered</span></div>
+    <div class="quiz-stat"><span class="stat-val" id="correct-count">0</span><span class="stat-label">Correct</span></div>
+    <div class="quiz-stat"><span class="stat-val" id="score-pct">—</span><span class="stat-label">Score</span></div>
+  </div>
+  <div class="quiz-controls">
+    <button class="ctrl-btn ctrl-btn-primary" onclick="revealAllAnswers()">Show All Answers</button>
+    <button class="ctrl-btn ctrl-btn-outline" onclick="resetQuiz()">Reset Quiz</button>
+  </div>
+  <div id="quiz-body"></div>
+  <div class="quiz-score-panel" id="score-panel">
+    <div class="score-val" id="final-score">—</div>
+    <p>out of 50 correct</p>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+
+<div id="back-top" onclick="window.scrollToTop({behavior:'smooth'})">↑</div>
+
+<script>
+const questions = [
+  {num:1,diff:'Easy',topic:'1.12',text:'The Relationship Disclosure Information (RDI) must be provided to a retail client:',opts:['Annually at the end of each calendar year','At or before account opening','Within 30 days of the first trade in the account','Only when the client specifically requests it'],ans:1,explanation:'The RDI must be provided <strong>at or before account opening</strong> under CIRO Rule 2.2.7. Not annually — only re-provided when material changes occur.'},
+  {num:2,diff:'Easy',topic:'1.14',text:'Which of the following CORRECTLY describes what CIPF covers?',opts:['Investment losses resulting from a market decline','Losses from bad investment advice given by the RR','Missing assets in client accounts when a CIRO member firm becomes insolvent','Losses caused by fraud committed by the client'],ans:2,explanation:'CIPF covers <strong>missing client assets when a CIRO member dealer becomes insolvent</strong>. It does NOT cover market losses, bad advice, or fraud unrelated to insolvency. This is one of the most tested distinctions on the exam.'},
+  {num:3,diff:'Easy',topic:'1.14',text:'Which of the following CIRO brochures MUST be provided to all retail clients at account opening?',opts:['"Opening an Investment Account" — optional guidance brochure','CIRO Complaints Brochure and "How CIRO Protects Investors"','Only the fee schedule and derivative risk disclosure','Only "Opening an Investment Account" and the fee schedule'],ans:1,explanation:'The <strong>CIRO Complaints Brochure</strong> and <strong>"How CIRO Protects Investors"</strong> are MANDATORY disclosures. "Opening an Investment Account" is optional (may be provided). This distinction is directly tested.'},
+  {num:4,diff:'Easy',topic:'1.13',text:'What is the PRIMARY purpose of an information barrier (Chinese Wall) at an integrated investment dealer?',opts:['To prevent retail clients from contacting investment banking staff directly','To prevent Material Non-Public Information from flowing from the private-side (investment banking) to the public-side (research and sales)','To restrict communication between the compliance and trading departments','To prevent client information from being shared between RRs'],ans:1,explanation:'An information barrier prevents <strong>MNPI flowing from investment banking to the public side</strong> (research and retail sales). Without this barrier, investment bankers with knowledge of upcoming deals could contaminate retail recommendations — creating insider trading risk.'},
+  {num:5,diff:'Easy',topic:'1.19',text:'Under CIRO rules, which of the following is classified as an "investment action" requiring a suitability determination?',opts:['Sending a client their annual fee report','Deciding to CONTINUE HOLDING an existing security in a client\'s account','Processing a client\'s change of address','Providing a client with a list of available mutual funds'],ans:1,explanation:'Under the CFRs, a <strong>decision to continue holding</strong> an existing position is explicitly an investment action requiring suitability. This is one of the key CFR enhancements — suitability is not just assessed at purchase, but also when deciding whether to hold.'},
+  {num:6,diff:'Easy',topic:'1.17',text:'What is churning in the context of a client\'s investment account?',opts:['Recommending a portfolio that is too conservative for the client\'s age','Excessively trading a client\'s account primarily to generate commissions for the RR rather than to benefit the client','Failing to review a client\'s KYC information for more than 36 months','Investing a client\'s funds in illiquid securities without disclosure'],ans:1,explanation:'<strong>Churning</strong> is excessive trading of a client\'s account primarily to generate commissions for the RR. It is a serious violation of CIRO rules and the client\'s best interest standard. Each trade must be individually justifiable on suitability grounds.'},
+  {num:7,diff:'Easy',topic:'1.13',text:'A security is placed on the dealer\'s RESTRICTED list. What does this mean for the firm\'s RRs?',opts:['RRs should actively promote this security to clients','Trading in this security is generally prohibited for the firm and its clients','Only the investment banking team is restricted from trading this security','The security is restricted to institutional clients only'],ans:1,explanation:'When a security is on the <strong>restricted list</strong>, firm-wide trading is generally <strong>prohibited</strong>. The whole firm (retail, research, trading) is notified — but not necessarily the reason why. This contrasts with the grey list which is confidential and only monitored.'},
+  {num:8,diff:'Easy',topic:'1.25',text:'An RR borrows $10,000 from a retail client "just until payday." This constitutes:',opts:['An acceptable loan if the client provides written consent','A violation — borrowing from retail clients is prohibited under CIRO rules','An acceptable practice if disclosed to the dealer within 5 business days','Acceptable only if the RR pays market interest rates on the loan'],ans:1,explanation:'<strong>Borrowing from retail clients is strictly prohibited</strong> under CIRO rules. There is no disclosure or consent exception for retail client borrowings. This is an outright prohibition that protects clients from exploitation of the trust relationship.'},
+  {num:9,diff:'Medium',topic:'1.12',text:'The RDI states that all client cheques should be made payable to "RR John Smith" at the account opening appointment. What is the issue with this?',opts:['No issue — cheques payable to the RR are more convenient for processing','This is a material error — cheques must be made payable to the DEALER (firm), not to the individual RR. The RDI must be corrected.','This is acceptable as long as the RR deposits the cheques into the firm\'s account within 24 hours','No issue if the RR has signing authority on the firm\'s account'],ans:1,explanation:'CIRO rules explicitly require that cheques be payable to the <strong>dealer (the firm), not to the individual RR</strong>. This rule prevents misappropriation of client funds. An RR who accepts personal cheques is in serious violation.'},
+  {num:10,diff:'Medium',topic:'1.16',text:'Under the CFR KYP obligation, when two mutual funds are equally suitable for a client\'s objectives, what is the RR\'s obligation?',opts:['Recommend either — suitability is met by both','Recommend the one with the higher trailing commission as it indicates higher quality','Recommend the lower-cost option, or document a clear reason why the higher-cost option better serves the client\'s interest','Recommend both and let the client choose'],ans:2,explanation:'The CFRs require that when multiple products are equally suitable, the RR must consider cost. Recommending the <strong>lower-cost option</strong> when it equally meets the client\'s needs puts the client\'s interest first. Recommending a higher-cost option without a documented client-benefit reason is a violation.'},
+  {num:11,diff:'Medium',topic:'1.15',text:'In the December 2025 CFR Phase 2 Sweep, CIRO found that many firms failed in their product due diligence by:',opts:['Over-reviewing products and creating excessive documentation','Collecting product documents (prospectuses, financial statements) but showing no evidence of actual analysis of those documents','Relying on CIRO-approved product lists rather than conducting their own review','Delegating all KYP to clients via self-directed questionnaires'],ans:1,explanation:'The December 2025 CFR Phase 2 Sweep found firms collecting issuer documents but providing <strong>no documented evidence of actual analysis</strong>. Simply possessing a prospectus does not meet KYP — the firm must show it was actually reviewed and how it informed the product approval decision.'},
+  {num:12,diff:'Medium',topic:'1.13',text:'A security is on the dealer\'s GREY list. An RR asks the compliance department if they can execute a client\'s buy order for that security. What is the MOST likely response?',opts:['Absolutely not — the grey list prohibits all trading','Yes, trading is permitted but the trade will be monitored for suspicious activity','Only if the client is an institutional investor','Only if the client has been holding the security for more than 6 months'],ans:1,explanation:'The <strong>grey list</strong> does NOT prohibit trading — it is a confidential monitoring list. Trading is <strong>permitted</strong>, but the compliance department monitors for suspicious activity. The grey list means investment banking is in discussions with the issuer, but the information barrier has not been crossed yet.'},
+  {num:13,diff:'Medium',topic:'1.18',text:'A client calls and insists on buying a highly speculative cryptocurrency mining stock. The RR assesses the trade as unsuitable for the client\'s conservative risk profile. What is the BEST course of action?',opts:['Execute the trade immediately — it is the client\'s money and their right','Refuse to execute the trade under any circumstances','Inform the client of the unsuitability concern and the specific risks, recommend a more suitable alternative, document the discussion, and if the client still insists, execute the trade marking it as client-directed and unsolicited','Ask the supervisor to call the client and recommend the stock instead'],ans:2,explanation:'For an unsolicited unsuitable order: <strong>inform, advise, document, then execute if client still insists</strong>. The RR must clearly communicate the suitability concern, recommend an alternative, document the full discussion, and mark the trade as client-directed. The RR cannot simply ignore their suitability duty, but ultimately cannot override an informed adult client\'s decision.'},
+  {num:14,diff:'Medium',topic:'1.20',text:'A client opens a margin account (account appropriateness has been established). The RR recommends using the full margin capacity to purchase a single small-cap stock. This recommendation is:',opts:['Suitable because account appropriateness was already established for margin trading','Potentially unsuitable because the suitability of this specific trade must be assessed independently from account appropriateness — concentration in a single small-cap stock may not be suitable','Suitable because the client signed the margin agreement','Cannot be assessed without knowing the client\'s exact net worth'],ans:1,explanation:'Account appropriateness and suitability are <strong>separate obligations</strong>. A margin account being appropriate does not mean every trade in it is suitable. This specific trade — full margin capacity in a single small-cap stock — creates extreme concentration risk that must be assessed against the client\'s KYC profile.'},
+  {num:15,diff:'Medium',topic:'1.21',text:'A client\'s long-term RR of 12 years retires and the account is transferred to a new RR. What must the new RR do FIRST?',opts:['Begin trading based on the previous RR\'s last suitability notes','Request the client provide updated KYC and conduct a full suitability review of all existing holdings','Send a welcome letter only and wait until the client reaches out','Only reassess accounts with trades over $50,000'],ans:1,explanation:'When an account is transferred to a <strong>new RR</strong>, it is a triggering event that requires a <strong>full KYC verification and suitability review of all holdings</strong>. The new RR cannot simply inherit the previous RR\'s suitability conclusions — they must independently verify the client\'s current situation.'},
+  {num:16,diff:'Medium',topic:'1.23',text:'An RR\'s dealer exclusively offers proprietary mutual funds. A client asks if there are better options in the market. What is the correct approach?',opts:['Recommend only the proprietary funds without mentioning the limitation','Disclose in the RDI and directly to the client that the dealer only offers proprietary products; if no proprietary product is suitable, the dealer must tell the client it cannot help them','Refer the client to a competitor and earn a referral fee','Offer to open a secondary account at another dealer'],ans:1,explanation:'When a dealer only offers proprietary products, this must be <strong>disclosed in the RDI</strong>. The dealer has an obligation to tell a client if it does not have suitable products for them. Hiding this limitation from the client is a conflict of interest violation.'},
+  {num:17,diff:'Medium',topic:'1.24',text:'An RR joins the board of directors of a small private tech company (unpaid). What must the RR do?',opts:['Nothing — it is unpaid so it is not reportable','Disclose the directorship to the dealer and obtain pre-approval. Report the activity to CIRO via NRD within 30 days.','Only disclose if the company later goes public','Disclose only after one year of service on the board'],ans:1,explanation:'<strong>All outside activities must be disclosed and pre-approved</strong> by the dealer, regardless of whether compensation is received. Unpaid directorships are fully reportable — especially in a private company, as this creates access to MNPI. The activity must be reported to CIRO via NRD within <strong>30 days</strong>.'},
+  {num:18,diff:'Medium',topic:'1.22',text:'The Bank of Canada raises interest rates by 200 basis points over 6 months. Which of the following clients\' portfolios requires the MOST urgent suitability review?',opts:['A 30-year-old with a 30% allocation to long-duration government bonds in an RRSP','A 68-year-old retiree with 70% of her total savings in a long-duration bond portfolio she relies on for living expenses','A 45-year-old with 100% equities in a TFSA','A 55-year-old with 50/50 equities and short-term GICs'],ans:1,explanation:'Rising rates cause the most damage to <strong>long-duration bonds held by someone who depends on the portfolio for income and cannot wait for recovery</strong>. The 68-year-old retiree with 70% in long-duration bonds and living expense dependency is most urgently affected — this is a material change in market conditions requiring immediate suitability review.'},
+  {num:19,diff:'Medium',topic:'1.16',text:'A client currently holds mutual fund Series A (MER 2.5%) with a trailing commission. They are eligible for Series F (MER 1.0%, no trailing commission, paid via flat advisory fee). What is the RR\'s obligation?',opts:['No obligation to switch — the client is already invested','Assess whether Series F better serves the client\'s interest considering the cost difference; if the client\'s fee model supports Series F, the lower-cost option should be recommended','Always switch to Series F as it is always better','Never recommend Series F as the dealer loses trailing commission'],ans:1,explanation:'The KYP cost obligation requires the RR to assess whether a lower-cost alternative serves the client better. If the client is in a fee-based advisory account, Series F (no trailer, lower MER) likely serves them better than Series A — the RR must <strong>proactively assess and recommend the lower-cost series</strong> if it is more suitable.'},
+  {num:20,diff:'Medium',topic:'1.25',text:'An RR participates in an investment club that also includes three of her clients. What is the MOST appropriate regulatory treatment of this situation?',opts:['No action required — investment clubs are a personal activity outside of CIRO jurisdiction','The RR must immediately resign from the investment club','The RR must disclose participation to the dealer, obtain pre-approval, and ensure the club structure does not create conflicts with or benefits from her role as the clients\' RR','The RR only needs to disclose if the club holds more than $100,000 in assets'],ans:2,explanation:'Investment club participation that includes the RR\'s own clients requires <strong>dealer disclosure and pre-approval</strong>. The dealer must assess whether the arrangement creates conflicts (e.g., the RR using client information for personal gain) or exploits the advisory relationship. The RR cannot use their professional position to benefit at clients\' expense within the club.'},
+  {num:21,diff:'Hard',topic:'1.12',text:'A dealer changes its fee schedule and introduces a new $150 annual account maintenance fee, effective next quarter. What is the dealer\'s obligation with respect to the RDI?',opts:['No obligation — fee changes are disclosed in annual statements only','Update the RDI to reflect the new fee and send the updated RDI to all affected clients before the new fee takes effect, as this is a material change in disclosed information','Send a generic email notification without updating the RDI document','Disclose the fee change only to clients who actively inquire'],ans:1,explanation:'A change in the fee schedule is a <strong>material change</strong> to the RDI. The dealer must update the RDI and re-deliver it to affected clients. The RDI reflects the current state of the relationship — material changes must be proactively communicated, not buried in statements.'},
+  {num:22,diff:'Hard',topic:'1.16',text:'An RR recommends a structured product with a guaranteed minimum return of 3% over 7 years. The client is 64 years old and intends to retire in 2 years. What KYP issue is MOST relevant?',opts:['The product\'s credit risk from the guarantor — this should be assessed but is not the primary concern here','The 7-year illiquidity of the product conflicts with the client\'s 2-year time horizon — liquidity risk is the primary suitability barrier','The product\'s MER structure is the primary concern','The client\'s investment knowledge level is the primary issue'],ans:1,explanation:'The most critical KYP issue here is <strong>liquidity risk</strong>. A 7-year structured product is not suitable for a client who needs their money in 2 years for retirement. The guaranteed return is irrelevant if the client cannot access the funds when needed. Time horizon vs. liquidity profile is a core suitability failure.'},
+  {num:23,diff:'Hard',topic:'1.17',text:'An RR recommends switching a client from a well-diversified balanced fund (MER 2.2%) to a virtually identical balanced fund from a different company (MER 2.4%) because "it has slightly better recent performance." The client also pays a 2% front-end load on the new purchase. This situation MOST likely constitutes:',opts:['A suitable recommendation if recent performance data supports the switch','A potential suitability violation — the switch incurs new costs (DSC/front-end + higher MER) with no clear benefit to the client that puts their interest first. This may also indicate churning.','A suitable recommendation because the RR has exercised professional judgment','Always suitable because the client consented to the trade'],ans:1,explanation:'This scenario has hallmarks of an <strong>unsuitable switch and possible churning</strong>. The higher MER and new front-end load create a cost disadvantage for the client. "Slightly better recent performance" does not justify the cost increase — past performance is not a reliable indicator of future returns. The RR must document why this switch puts the client\'s interest first, which is very difficult to justify here.'},
+  {num:24,diff:'Hard',topic:'1.23',text:'An RR\'s dealer recently completed an underwriting for XYZ Corp. The RR wants to include XYZ Corp in a research-based recommendation to clients. What restrictions likely apply?',opts:['No restrictions — underwriting is unrelated to retail recommendations','The dealer\'s research is subject to a quiet period (typically 10 days post-offering for prospectus offerings). New research reports on XYZ cannot be published during this period. The RDI must also disclose the underwriting relationship.','The RR can recommend XYZ but must disclose the underwriting verbally','Only institutional client recommendations are restricted; retail clients can receive the recommendation freely'],ans:1,explanation:'After an underwriting, dealers must observe a <strong>research quiet period</strong> (typically 10 days post-IPO under CIRO rules). Research cannot be published on the issuer immediately after the offering to prevent the appearance that bullish research is being used to support the dealer\'s underwriting interests. After the quiet period, research can resume but the underwriting relationship must be disclosed.'},
+  {num:25,diff:'Hard',topic:'1.18',text:'An RR executes a series of client-directed trades over 3 months. Each trade is marked "unsolicited" in the system. However, the RR\'s supervisor notices the trades all benefit from the same investment thesis the RR recently discussed in a client newsletter, and all generate significant commissions. What is the supervisor\'s MOST appropriate concern?',opts:['No concern — all trades are marked unsolicited so the RR is fully compliant','The supervisor should review whether these trades are being improperly labelled as unsolicited to avoid documentation of suitability concerns and supervision requirements. A pattern of "unsolicited" trades that all follow the RR\'s own published thesis suggests they may actually be solicited.','The trades are acceptable if commissions are within normal ranges','The supervisor should immediately suspend the RR pending investigation without review'],ans:1,explanation:'A pattern of trades marked "unsolicited" that all follow the RR\'s own recommended thesis is a <strong>red flag for improper labelling of solicited trades as unsolicited</strong> to avoid compliance documentation requirements. Supervisors must investigate such patterns. Deliberately labelling solicited trades as unsolicited is a serious violation.'},
+  {num:26,diff:'Medium',topic:'1.26',text:'An RR at a small dealer asks to take on a part-time role as a real estate agent. The dealer\'s compliance department must assess this outside activity. What is the MAIN compliance concern?',opts:['Real estate agents earn too much money — this creates an inequality issue','Whether there are conflicts of interest (clients who invest and also use the RR for real estate), whether client confusion is possible, and whether the activity can be supervised appropriately','The outside activity requires CIRO registration as a real estate dealer','Real estate activities are always prohibited for CIRO-registered persons'],ans:1,explanation:'The compliance department must assess: (1) <strong>conflicts of interest</strong> — real estate clients may also be investment clients, creating leverage or dual service conflicts; (2) <strong>client confusion</strong> — does the client know whether they are dealing with the RR as a securities professional or real estate agent? (3) <strong>supervisory capacity</strong> — can the dealer adequately supervise the combined activities?'},
+  {num:27,diff:'Easy',topic:'1.14',text:'What is the maximum CIPF coverage per account category for eligible clients of a CIRO member firm in insolvency?',opts:['$250,000','$500,000','$1,000,000','$2,000,000'],ans:2,explanation:'CIPF covers up to <strong>$1,000,000 per account category</strong>. A client with an RRSP and a non-registered account each qualify for up to $1M separately — so they could receive up to $2M total across two categories if both are fully covered.'},
+  {num:28,diff:'Medium',topic:'1.13',text:'Under Canadian privacy law (PIPEDA), client information collected by an investment dealer for KYC purposes:',opts:['Can be freely shared with all affiliated companies within the dealer\'s parent group','Can only be used for the purposes for which it was collected (e.g., KYC/AML compliance and account management) — sharing requires consent','Is automatically public information once the account is opened','Can be shared with government agencies on request without client notification'],ans:1,explanation:'PIPEDA\'s principle of <strong>limiting use</strong> means client information can only be used for the purpose for which it was collected. KYC information is collected for account management and AML compliance — not for cross-selling by affiliates. Sharing client data with affiliates for marketing requires the client\'s separate, explicit consent.'},
+  {num:29,diff:'Hard',topic:'1.19',text:'A client transfers a portfolio of securities from another dealer into their account at the new dealer. The transferred portfolio includes several small-cap U.S. equity positions. What is the NEW dealer\'s obligation regarding these transferred positions?',opts:['No obligation — the previous dealer conducted suitability at purchase','Accept the transfer and only assess suitability for new purchases going forward','Conduct a full KYP assessment on the transferred securities and determine whether they are suitable for the client\'s profile at the new dealer — transferring does not exempt the dealer from its ongoing suitability obligations','Only assess the transferred positions if they represent more than 20% of the portfolio'],ans:2,explanation:'<strong>Securities transferred in from other dealers are subject to full KYP and suitability assessment</strong> at the new dealer. The CFR Phase 2 Sweep (2025) found many firms wrongly excluding transferred and client-directed securities from KYP monitoring. The new dealer must assess every position it holds for the client.'},
+  {num:30,diff:'Easy',topic:'1.27',text:'An RR tells a client that a GIC at their bank is "basically the same as CIPF-protected investments at our dealer." This statement is:',opts:['Accurate — GICs and CIPF provide equivalent protection','A misrepresentation — GICs at a bank are protected by CDIC (Canada Deposit Insurance Corporation), not CIPF. CIPF specifically covers CIRO member dealer insolvency. These are distinct protection schemes.','Accurate as long as the GIC is held in an RRSP account','Only a misrepresentation if the client actually buys a GIC based on this advice'],ans:1,explanation:'GICs at banks are covered by <strong>CDIC (Canada Deposit Insurance Corporation)</strong>, not CIPF. CIPF only applies to CIRO member firm insolvency. Conflating these is a misrepresentation of material facts — a violation of CIRO\'s standards of conduct.'},
+  {num:31,diff:'Medium',topic:'1.17',text:'Under the CFR-enhanced suitability framework, what does "putting the client\'s interest first" require beyond simply finding a "suitable" product?',opts:['Finding a product from the dealer\'s top-performing funds','Recommending a product that is suitable AND choosing the option that best serves the client\'s interest when multiple suitable options exist — considering cost, risk profile alignment, and the client\'s specific goals','Recommending the product with the highest expected return','Accepting the client\'s own choice without independent assessment'],ans:1,explanation:'The CFR enhancement goes beyond finding any suitable product. When multiple products are suitable, the RR must choose the one that <strong>best serves the client\'s interest</strong> — factoring in cost, risk alignment, and client goals. Recommending a higher-cost, higher-commission option when an equivalent lower-cost option exists is not putting the client\'s interest first.'},
+  {num:32,diff:'Hard',topic:'1.15',text:'A dealer sells its own proprietary pooled funds (related issuer products) to clients. An RR argues that since the dealer "made" the product, they already know it well and don\'t need a formal KYP assessment. According to CIRO\'s CFR Phase 2 guidance, this reasoning is:',opts:['Correct — internal product knowledge satisfies KYP requirements','Incorrect — related and connected issuer products require the same rigorous KYP process as unrelated issuers. The firm\'s involvement in creating the product does NOT substitute for a formal KYP assessment for distribution to clients.','Correct only if the dealer is also the portfolio manager for the fund','Correct for existing products but new products still require KYP'],ans:1,explanation:'The December 2025 CFR Phase 2 Sweep guidance was explicit: <strong>securities of related or connected issuers require the same KYP process as unrelated issuers</strong>. A firm\'s involvement in creating a product does NOT demonstrate adequate KYP for distribution. The firm must still assess the product as it would any external product.'},
+  {num:33,diff:'Medium',topic:'1.21',text:'An RR\'s client turns 71 years old and must convert his RRSP to a RRIF. What type of event is this and what action does it require?',opts:['Not a triggering event — age is not relevant to suitability','A triggering event requiring a full KYC review and suitability reassessment — at 71, the client\'s investment objectives, income needs, and tax situation change materially with the RRIF conversion','A triggering event but only if the client requests a review','Only relevant if the client has more than $500,000 in their RRSP'],ans:1,explanation:'Turning 71 and mandatory RRSP-to-RRIF conversion is a <strong>triggering event requiring a full KYC and suitability review</strong>. The RRIF imposes minimum annual withdrawals, changing the client\'s income, tax situation, and liquidity profile. Asset allocation must be reassessed to support income needs.'},
+  {num:34,diff:'Medium',topic:'1.16',text:'An RR recommends a DSC mutual fund to a client who mentions they "may need access to the money in the next 18 months for a possible home purchase." What is the PRIMARY suitability issue?',opts:['The mutual fund\'s equity exposure relative to risk tolerance','The DSC (deferred sales charge) structure creates a liquidity conflict with the client\'s stated 18-month potential need — if the client redeems within the DSC period, they will pay a significant redemption fee','The fund\'s MER relative to ETF alternatives','The client\'s investment knowledge level'],ans:1,explanation:'This is a clear <strong>liquidity risk issue</strong>. A DSC fund locks in the client with a redemption fee for multiple years. If the client needs the money in 18 months for a home purchase, they will pay a DSC redemption fee, directly harming their interest. The fund\'s structure conflicts with the client\'s stated liquidity needs.'},
+  {num:35,diff:'Hard',topic:'1.25',text:'An RR\'s elderly client insists on giving the RR a $5,000 gift "to thank her for years of excellent service." The RR accepts the gift and does not inform the dealer. This conduct:',opts:['Is acceptable — the client voluntarily gave the gift and it creates no conflict','Violates CIRO\'s personal financial dealings rules — accepting gifts of material value from clients is prohibited without dealer disclosure, and may be prohibited entirely depending on dealer policy. The RR must return the gift and report the incident to compliance.','Is acceptable as long as the RR reports it on their annual tax return','Is only prohibited if the RR recently recommended a trade to the client'],ans:1,explanation:'Accepting a $5,000 gift from a client <strong>violates CIRO\'s personal financial dealings rules</strong>. Even if voluntary, material gifts from clients exploit the trust relationship. The RR must return the gift and report the incident to compliance. Failure to disclose is an additional violation. Dealers typically have specific gift and entertainment policies with dollar limits.'},
+  {num:36,diff:'Medium',topic:'1.27',text:'An RR tells a prospective client that their RRSP will "definitely grow to $1 million by retirement" based on the products the RR is recommending. This statement is:',opts:['Acceptable as a long-term projection','A misrepresentation — guaranteed return projections for market-based investments violate CIRO\'s standards prohibiting false or misleading statements','Acceptable if accompanied by a disclaimer','Only problematic if the client is over 65'],ans:1,explanation:'Guaranteeing specific investment returns on market-linked products is a <strong>false and misleading statement</strong> violating CIRO\'s standards of conduct. Investment outcomes are uncertain. The RR can discuss historical performance, projected ranges, and financial planning scenarios — but cannot promise specific returns.'},
+  {num:37,diff:'Hard',topic:'1.22',text:'A client holds a large position in a Canadian bank preferred share. The Bank of Canada unexpectedly raises rates by 100 basis points. The RR notices the preferred share price has fallen 8% but takes no action, reasoning "the client hasn\'t called so they must be okay." This is:',opts:['Correct — the client bears responsibility for managing their own portfolio response to rate changes','A potential suitability failure — the rate change is a material market event that may affect the suitability of the holding. The RR has a proactive obligation to assess how market changes affect existing holdings, not just wait for the client to call.','Correct in an advisory account — the RR has no obligation to monitor between client calls','Correct as long as the preferred share remains investment grade'],ans:1,explanation:'The CFRs impose a <strong>proactive monitoring obligation</strong>. Rate changes are material economic events that affect fixed income securities. The RR cannot passively wait — they must assess whether the existing holding remains suitable given the new rate environment and contact the client if action is warranted.'},
+  {num:38,diff:'Medium',topic:'1.23',text:'An RR earns a higher salary bonus when clients are placed in Fund A (a proprietary product) vs. Fund B (an unaffiliated equally suitable product). The client\'s objectives are equally well-served by both. What is the correct approach?',opts:['Recommend Fund A — higher compensation products indicate the firm\'s preferred products','Recommend Fund B or the lower-cost option — the compensation structure creates a conflict that must be managed by putting the client\'s interest first. Recommending Fund A solely for higher compensation violates the CFR client-interest-first standard.','Recommend Fund A and disclose the bonus — disclosure satisfies the COI obligation','Let the client choose without guidance to avoid the conflict altogether'],ans:1,explanation:'The compensation structure is a conflict of interest. The CFR\'s "put the client\'s interest first" standard means recommending <strong>Fund B (or the lower-cost equally suitable option)</strong> when the only reason to prefer Fund A is higher compensation. Disclosure alone (Option C) does not resolve the conflict — the RR must still put the client\'s interest first after disclosing.'},
+  {num:39,diff:'Hard',topic:'1.14',text:'A client\'s RRSP holds $800,000 at a CIRO member dealer that becomes insolvent. The RRSP holds $650,000 of GICs issued by a bank subsidiary and $150,000 of equity ETFs. What is the MOST accurate statement about CIPF coverage?',opts:['The full $800,000 is covered by CIPF','CIPF covers the $150,000 in ETFs if they are missing. The $650,000 GICs issued by the bank subsidiary may be covered by CDIC separately. Coverage depends on whether assets are actually missing from the account.','CIPF does not cover RRSPs — only non-registered accounts are eligible','CIPF covers only cash, not securities'],ans:1,explanation:'CIPF covers <strong>missing assets</strong> in the account at the dealer — the ETFs would be covered if missing (up to $1M for registered accounts). GICs issued by a bank subsidiary may have separate CDIC coverage if the bank itself is a CDIC member. The key is always whether assets are <em>missing due to dealer insolvency</em>. CIPF does not protect against all loss types.'},
+  {num:40,diff:'Medium',topic:'1.13',text:'An analyst in the research department of an integrated dealer receives an email from their investment banking colleague sharing details of a pending merger for a public company the analyst covers. What should the analyst do?',opts:['Update their research rating to Buy to benefit from the anticipated merger announcement','Ignore the email and continue normal research activities','Immediately contact the compliance department — the email may constitute a breach of the information barrier. The analyst has received MNPI and must not trade or publish research until compliance determines how to proceed.','Reply to the banker with updated valuation models based on the merger news'],ans:2,explanation:'Receiving MNPI from investment banking to the research department is a potential <strong>breach of the information barrier</strong>. The analyst must <strong>immediately notify compliance</strong>. The analyst must not trade, publish research, or share the information. The issuer will likely be placed on the restricted list. Trading or using the information would constitute insider trading.'},
+  {num:41,diff:'Hard',topic:'1.17',text:'Which of the following BEST describes the "portfolio-level suitability" enhancement under the CFRs?',opts:['Each individual trade must be suitable on a standalone basis, regardless of portfolio context','Suitability must be assessed considering the entire account portfolio — a trade that is individually suitable may still be unsuitable if it creates over-concentration, reduces liquidity below client needs, or is dominated by cost when cheaper alternatives exist','Portfolio-level suitability only applies to managed accounts','Suitability is assessed at the portfolio level once per year during the KYC review'],ans:1,explanation:'The CFR portfolio-level enhancement means: an individual trade cannot be assessed in isolation. The RR must consider <strong>concentration (is the portfolio over-weighted after this trade?), liquidity (does the portfolio have enough liquid assets after this?), and cost (is this the most cost-efficient way to meet the objective?)</strong> across the whole portfolio.'},
+  {num:42,diff:'Medium',topic:'1.24',text:'An RR is approved for an outside activity as a financial planning consultant at a tax firm. Three months later, the tax firm is acquired by a competitor who also sells investment products. What is the RR\'s obligation?',opts:['No obligation — the original approval covers all future changes to the tax firm','The change in ownership is a material change to the outside activity — the RR must disclose the change to the dealer within 30 days and seek re-evaluation of the approval under the new circumstances','Wait until annual performance review to disclose the change','Resign from the outside activity immediately'],ans:1,explanation:'Changes to previously approved outside activities must be reported within <strong>30 days</strong>. The acquisition by a competitor who sells investment products is a material change that creates new conflicts — the dealer must re-evaluate whether the outside activity can still be approved under the new ownership structure.'},
+  {num:43,diff:'Easy',topic:'1.17',text:'Suitability determination CANNOT be satisfied by:',opts:['A detailed written rationale for why the investment puts the client\'s interest first','A client disclosure form signed at account opening waiving the suitability obligation','A thorough KYC and KYP assessment combined with professional judgment','A portfolio-level assessment considering concentration and cost'],ans:1,explanation:'CIRO\'s suitability obligation explicitly states it <strong>cannot be satisfied through disclosure or a client waiver</strong>. Even if a client signs a form saying they waive suitability, the RR is still obligated to assess and document suitability for every investment action.'},
+  {num:44,diff:'Hard',topic:'1.16',text:'A client requests to invest in a complex principal-protected note (PPN) linked to a basket of commodities. Under KYP, which of the following is MOST important for the RR to understand before recommending this product?',opts:['Only the principal protection feature — if capital is guaranteed, risk is minimal','Structure (principal protection mechanism and its conditions), features (participation rate, maturity date), costs (embedded fees and lost opportunity cost compared to direct investment), risks (counterparty risk of the guarantor, liquidity risk, and that "principal protection" may only apply at maturity — not if sold early), and parties involved (guarantor\'s credit rating)','Only the expected return based on historical commodity performance','Only whether the product has a CIRO-approved product designation'],ans:1,explanation:'A full KYP on a PPN must cover: <strong>structure</strong> (how the guarantee works — maturity vs. early redemption); <strong>costs</strong> (PPNs typically have very high embedded fees that reduce effective participation rates); <strong>risks</strong> (counterparty risk on the guarantor; liquidity risk if sold before maturity — "principal protection" may not apply early); <strong>parties</strong> (strength of the guarantor\'s credit). Many retail clients don\'t realize that selling a PPN early can result in a loss below the "protected" principal.'},
+  {num:45,diff:'Medium',topic:'1.26',text:'A dealer\'s conflict of interest policy states: "RRs must avoid situations that create a conflict of interest." CIRO\'s compliance team reviews this policy during an examination and flags it as deficient. Why?',opts:['The policy is too long and detailed','The policy quotes the rule but provides no specific, actionable guidance on HOW RRs should identify, avoid, address, and disclose conflicts in the context of this dealer\'s specific business model and products — it is boilerplate language without practical guidance','The policy should not be in writing — conflicts should be handled verbally','The policy should only be accessible to senior management'],ans:1,explanation:'CIRO\'s 2025 and 2026 compliance findings specifically criticize <strong>boilerplate COI policies</strong> that restate rules without providing practical, firm-specific guidance. An effective policy must tell RRs concretely how to identify conflicts in their day-to-day work, what steps to take when a conflict arises, who to escalate to, and how to document the resolution — tailored to the actual products and business model of the specific dealer.'},
+  {num:46,diff:'Hard',topic:'1.18',text:'A discount broker client places an unsolicited order to sell short 1,000 shares of a company they believe is overvalued. The RR at the discount broker marks it as unsolicited and executes. Six months later, the company\'s shares rise sharply and the client loses $18,000. The client complains to CIRO that the trade was unsuitable. CIRO\'s most likely finding is:',opts:['The dealer is not responsible — the trade was unsolicited and client-directed','The dealer is not responsible only if the trade was marked unsolicited at the time of execution','The dealer must still assess whether the unsolicited trade was suitable — if the client\'s KYC profile showed no experience with short selling and a conservative risk profile, the RR had an obligation to communicate the suitability concern, even at a discount broker, before executing. An unsolicited label does not eliminate suitability obligation.','Discount brokers are fully exempt from suitability obligations for unsolicited trades'],ans:2,explanation:'Even at a discount broker, <strong>suitability obligations apply to unsolicited trades</strong>. The fact that a trade is unsolicited does not eliminate the duty to assess suitability and communicate concerns — especially for complex strategies like short selling. If the client\'s KYC showed no short-selling experience and conservative objectives, the RR should have discussed the risks before executing.'},
+  {num:47,diff:'Medium',topic:'1.27',text:'An RR is approached by a client asking for a personal loan of $20,000 because they "trust the RR more than a bank." The RR thinks this is a great opportunity to earn interest. What should the RR do?',opts:['Make the loan — client trust is paramount and earning interest is legal','Refer the client to a bank or financial institution for the loan and take no personal financial role in the arrangement. Personal lending to clients is prohibited under CIRO\'s personal financial dealings rules.','Make the loan but disclose it to the dealer immediately after','Make the loan if the client signs an independent legal agreement'],ans:1,explanation:'<strong>Lending to clients is prohibited</strong> under CIRO rules. An RR cannot make personal loans to clients, regardless of the client\'s consent or desire. The correct action is to refer the client to appropriate financial institutions. The RR has no role in arranging or facilitating the personal loan from their own funds.'},
+  {num:48,diff:'Hard',topic:'1.22',text:'A client\'s portfolio holds a 15% position in a private placement of a technology startup. New government regulations are announced that will significantly limit the startup\'s primary revenue source. What is the RR\'s MOST important obligation?',opts:['Wait for the client to call when they see the news','Send the client a generic market update newsletter','Conduct an immediate KYP reassessment of the private placement in light of the regulatory change; assess the impact on portfolio concentration and suitability; contact the client proactively to discuss the position and potential action — document all steps','Only reassess if the company issues a press release about the regulatory impact'],ans:2,explanation:'New regulations materially affecting a held security are a <strong>triggering event requiring immediate KYP reassessment and portfolio suitability review</strong>. The RR must proactively assess impact, contact the client with a recommendation, and document. A private placement that now has constrained revenues is a materially changed product — the suitability of continuing to hold must be reassessed.'},
+  {num:49,diff:'Medium',topic:'1.14',text:'A client opens a new options account and is provided with the Derivative Risk Disclosure Document. The client hands it back unsigned, saying "I\'ve read it, I don\'t need to sign it." What should the RR do?',opts:['Accept the unsigned document — verbal confirmation is sufficient','Allow the client to trade options — their verbal acknowledgement meets the requirement','Explain to the client that a signed acknowledgement that they received and understood the Derivative Risk Disclosure Document is required before options trading can be permitted — the account cannot be activated for options without the signed acknowledgement','Open the options account but restrict it to covered calls only until signed'],ans:2,explanation:'Options trading requires a <strong>signed acknowledgement</strong> of the Derivative Risk Disclosure Document. A verbal statement is not sufficient. The account cannot be enabled for options trading until the signed documentation is on file. This is a non-negotiable documentation requirement.'},
+  {num:50,diff:'Hard',topic:'1.20',text:'An RR has an advisory client whose account appropriateness was assessed as suitable for options trading at account opening 3 years ago. The client has since retired, lost significant net worth in an unrelated business failure, and is now dependent on the portfolio for living expenses. The client wants to continue trading options. What is the MOST appropriate action?',opts:['Continue trading options — the account appropriateness was already established at opening and does not need to be re-assessed','Reassess account appropriateness given the material changes in the client\'s circumstances (retirement, significant loss of net worth, income dependence) — the account may no longer be appropriate for options. Even if account appropriateness remains, each options trade must still pass the suitability test under the client\'s new profile.','Continue as long as the client signs a new risk waiver','The RR has no obligation to reassess — account appropriateness is a permanent determination'],ans:1,explanation:'Account appropriateness must be <strong>reassessed when there are material changes to the client\'s circumstances</strong>. Retirement, significant net worth loss, and income dependence are exactly the type of material changes that may make an options account no longer appropriate. The RR must conduct a full reassessment. This is a triggering event under 1.21 that requires both KYC update and account appropriateness re-evaluation.'}
+];
+
+let answered = {};
+let correct = 0;
+
+function buildQuiz(){
+  const container = document.getElementById('quiz-body');
+  container.innerHTML = '';
+  questions.forEach((q)=>{
+    const d = document.createElement('div');
+    d.className = 'q-item';
+    d.id = 'q'+q.num;
+    const dc = q.diff==='Easy'?'diff-easy':q.diff==='Medium'?'diff-medium':'diff-hard';
+    let opts = q.opts.map((o,j)=>`<li onclick="selectOption(${q.num},${j})" id="opt-${q.num}-${j}">${String.fromCharCode(65+j)}) ${o}</li>`).join('');
+    d.innerHTML = `<div class="q-meta"><span class="q-num">Q${q.num}</span><span class="q-diff ${dc}">${q.diff}</span><span class="q-topic">§${q.topic}</span></div><div class="q-text">${q.text}</div><ul class="q-options">${opts}</ul><button class="show-ans-btn" onclick="toggleAnswer(${q.num})">Show Explanation</button><div class="q-answer" id="ans-${q.num}"><strong>Correct Answer: ${String.fromCharCode(65+q.ans)})</strong> ${q.opts[q.ans]}<br><br>${q.explanation}</div>`;
+    container.appendChild(d);
+  });
+}
+
+function selectOption(qnum,selected){
+  if(answered[qnum]!==undefined)return;
+  answered[qnum]=selected;
+  const q=questions[qnum-1];
+  const isCorrect=selected===q.ans;
+  if(isCorrect)correct++;
+  q.opts.forEach((_,j)=>{
+    const el=document.getElementById(`opt-${qnum}-${j}`);
+    if(j===selected&&isCorrect)el.classList.add('correct');
+    else if(j===selected&&!isCorrect)el.classList.add('wrong');
+    if(j===q.ans&&!isCorrect)el.classList.add('reveal-correct');
+  });
+  updateStats();
+}
+
+function toggleAnswer(qnum){document.getElementById('ans-'+qnum).classList.toggle('show');}
+
+function updateStats(){
+  const total=Object.keys(answered).length;
+  document.getElementById('answered-count').textContent=total;
+  document.getElementById('correct-count').textContent=correct;
+  document.getElementById('score-pct').textContent=total>0?Math.round((correct/total)*100)+'%':'—';
+  if(total===50){document.getElementById('score-panel').style.display='block';document.getElementById('final-score').textContent=correct;}
+}
+
+function revealAllAnswers(){
+  questions.forEach(q=>{
+    document.getElementById('ans-'+q.num).classList.add('show');
+    if(answered[q.num]===undefined)document.getElementById(`opt-${q.num}-${q.ans}`).classList.add('reveal-correct');
+  });
+}
+
+function resetQuiz(){
+  answered={};correct=0;
+  document.getElementById('answered-count').textContent=0;
+  document.getElementById('correct-count').textContent=0;
+  document.getElementById('score-pct').textContent='—';
+  document.getElementById('score-panel').style.display='none';
+  buildQuiz();
+}
+
+buildQuiz();
+
+function scrollToSection(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function filterNav(query){const q=query.toLowerCase();document.querySelectorAll('.nav-item').forEach(n=>{n.style.display=n.textContent.toLowerCase().includes(q)?'':'none';});}
+
+window.addEventListener('scroll',()=>{
+  const docH=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('prog-fill').style.width=Math.min(100,(window.scrollY/docH)*100)+'%';
+  document.getElementById('back-top').classList.toggle('visible',window.scrollY>400);
+  const secs=['hero','s12','s13','s14','s15','s16','s17','s18','s19','s20','s21','s22','s23','s24','s25','s26','s27','quiz-section'];
+  secs.forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;
+    const r=el.getBoundingClientRect();
+    if(r.top<=100&&r.bottom>=100){document.querySelectorAll('.nav-item').forEach(n=>{n.classList.toggle('active',n.getAttribute('onclick')&&n.getAttribute('onclick').includes(id));});}
+  });
+});
+</script>
+</body>
+</html>

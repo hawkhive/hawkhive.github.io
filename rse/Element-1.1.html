@@ -1,0 +1,2276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSE Study Book — Element 1: Know-Your-Client & Suitability</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6WNH68TS65"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6WNH68TS65');
+</script>
+<style>
+  :root {
+    --navy: #0d1b2e;
+    --navy-mid: #142035;
+    --gold: #c9973a;
+    --gold-light: #e8b96a;
+    --cream: #f8f4ed;
+    --cream-dark: #ede8df;
+    --text: #1a1a2e;
+    --text-muted: #5a5a6e;
+    --green: #1a6b4a;
+    --green-light: #e8f5ef;
+    --red: #8b1a1a;
+    --red-light: #fdf0f0;
+    --blue: #1a3a6b;
+    --blue-light: #e8f0fd;
+    --amber: #7a4f1a;
+    --amber-light: #fef6e8;
+    --sidebar-w: 300px;
+    --header-h: 64px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Serif 4', serif;
+    background: var(--cream);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--navy);
+    position: fixed;
+    left: 0; top: 0;
+    z-index: 100;
+    border-right: 2px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) var(--navy-mid);
+  }
+
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-track { background: var(--navy-mid); }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--gold); }
+
+  .sidebar-brand {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid rgba(201,151,58,0.3);
+  }
+  .sidebar-brand .brand-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .sidebar-brand h2 {
+    font-family: 'Playfair Display', serif;
+    color: white;
+    font-size: 15px;
+    line-height: 1.3;
+  }
+  .sidebar-brand .element-badge {
+    display: inline-block;
+    margin-top: 8px;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 2px;
+    letter-spacing: 1px;
+  }
+
+  .sidebar-search {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(201,151,58,0.2);
+  }
+  .sidebar-search input {
+    width: 100%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(201,151,58,0.3);
+    border-radius: 4px;
+    padding: 7px 10px;
+    color: white;
+    font-family: 'Source Serif 4', serif;
+    font-size: 13px;
+    outline: none;
+  }
+  .sidebar-search input::placeholder { color: rgba(255,255,255,0.3); font-style: italic; }
+  .sidebar-search input:focus { border-color: var(--gold); }
+
+  #nav-links {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-section-label {
+    padding: 14px 16px 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--gold-light);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .nav-item {
+    display: block;
+    padding: 9px 16px 9px 20px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1.4;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .nav-item:hover {
+    color: white;
+    border-left-color: var(--gold-light);
+    background: rgba(201,151,58,0.08);
+  }
+  .nav-item.active {
+    color: var(--gold-light);
+    border-left-color: var(--gold);
+    background: rgba(201,151,58,0.12);
+  }
+  .nav-item .nav-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    margin-right: 6px;
+    opacity: 0.9;
+  }
+  .nav-item.sub {
+    padding-left: 36px;
+    font-size: 12px;
+    opacity: 0.75;
+  }
+  .nav-item.sub:hover { opacity: 1; }
+
+  .nav-divider {
+    height: 1px;
+    background: rgba(201,151,58,0.15);
+    margin: 8px 16px;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px;
+    border-top: 1px solid rgba(201,151,58,0.2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    text-align: center;
+  }
+
+  /* ── MAIN ── */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-height: 100vh;
+  }
+
+  #top-bar {
+    background: var(--navy);
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    border-bottom: 2px solid var(--gold);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    gap: 16px;
+  }
+  #top-bar .breadcrumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+  }
+  #top-bar .breadcrumb span { color: var(--gold); }
+  #top-bar .progress-area {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  #top-bar .prog-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+  }
+  #top-bar .prog-bar {
+    width: 120px;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+  }
+  #top-bar .prog-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.4s;
+  }
+
+  /* ── CONTENT ── */
+  #content {
+    padding: 0 60px 80px;
+    max-width: 960px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 60px 0 40px;
+    border-bottom: 1px solid var(--cream-dark);
+    margin-bottom: 48px;
+  }
+  .hero .element-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 680px;
+    line-height: 1.7;
+    font-style: italic;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .hero-meta .meta-chip {
+    background: var(--navy);
+    color: var(--gold-light);
+    padding: 6px 14px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  /* Section headings */
+  .chapter {
+    margin-bottom: 64px;
+    scroll-margin-top: 80px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--cream-dark);
+  }
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--cream-dark);
+    line-height: 1;
+    min-width: 56px;
+  }
+  .section-title-area h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .section-title-area .section-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  /* Subsection */
+  .subsection {
+    margin-bottom: 36px;
+    scroll-margin-top: 80px;
+  }
+  .subsection h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 12px;
+    padding-left: 12px;
+    border-left: 3px solid var(--gold);
+  }
+  .subsection h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 16px 0 8px;
+    font-family: 'Source Serif 4', serif;
+  }
+
+  p { line-height: 1.8; margin-bottom: 14px; font-size: 15.5px; }
+
+  /* Callout boxes */
+  .callout {
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin: 20px 0;
+    border-left: 4px solid;
+  }
+  .callout-exam {
+    background: var(--blue-light);
+    border-color: var(--blue);
+  }
+  .callout-exam .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--blue);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .callout-tip {
+    background: var(--green-light);
+    border-color: var(--green);
+  }
+  .callout-tip .callout-label { color: var(--green); }
+  .callout-warning {
+    background: var(--amber-light);
+    border-color: var(--amber);
+  }
+  .callout-warning .callout-label { color: var(--amber); }
+  .callout-rule {
+    background: var(--red-light);
+    border-color: var(--red);
+  }
+  .callout-rule .callout-label { color: var(--red); }
+  .callout p { margin-bottom: 0; font-size: 14.5px; }
+  .callout-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; font-weight: 500; }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 6px; border: 1px solid var(--cream-dark); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { background: var(--navy); color: var(--gold-light); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; padding: 12px 16px; text-align: left; }
+  td { padding: 11px 16px; border-bottom: 1px solid var(--cream-dark); vertical-align: top; line-height: 1.6; }
+  tr:nth-child(even) td { background: rgba(0,0,0,0.02); }
+  tr:last-child td { border-bottom: none; }
+
+  /* Definition list */
+  .def-list { margin: 16px 0; }
+  .def-item { display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--cream-dark); font-size: 14.5px; }
+  .def-item:last-child { border-bottom: none; }
+  .def-term { font-weight: 600; color: var(--navy); font-size: 13.5px; }
+
+  /* Diagram/visual boxes */
+  .diagram {
+    background: var(--navy);
+    border-radius: 8px;
+    padding: 28px 24px;
+    margin: 24px 0;
+    color: white;
+  }
+  .diagram-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  /* Flow diagram */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .flow-box {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(201,151,58,0.4);
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 13px;
+    text-align: center;
+    min-width: 120px;
+    line-height: 1.4;
+  }
+  .flow-box.gold { background: rgba(201,151,58,0.2); border-color: var(--gold); }
+  .flow-box.green { background: rgba(26,107,74,0.25); border-color: #2ecc71; }
+  .flow-box.red { background: rgba(139,26,26,0.25); border-color: #e74c3c; }
+  .flow-arrow { color: var(--gold); font-size: 20px; }
+  .flow-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    text-align: center;
+    margin: 4px 0;
+  }
+
+  /* Grid layout for diagrams */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .grid-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(201,151,58,0.3);
+    border-radius: 6px;
+    padding: 16px;
+  }
+  .grid-card h5 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .grid-card p { font-size: 13px; color: rgba(255,255,255,0.75); margin: 0; line-height: 1.6; }
+  .grid-card ul { padding-left: 16px; }
+  .grid-card li { font-size: 12.5px; color: rgba(255,255,255,0.75); margin-bottom: 4px; line-height: 1.5; }
+
+  /* Risk triangle */
+  .risk-triangle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px;
+  }
+  .risk-tier {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  /* Bullet points styled */
+  .styled-list { list-style: none; padding: 0; margin: 14px 0; }
+  .styled-list li {
+    padding: 6px 0 6px 22px;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.7;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+  .styled-list li:last-child { border-bottom: none; }
+  .styled-list li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 18px;
+    font-weight: 700;
+    top: 4px;
+  }
+  .styled-list li strong { color: var(--navy); }
+
+  .check-list { list-style: none; padding: 0; margin: 14px 0; }
+  .check-list li {
+    padding: 5px 0 5px 26px;
+    position: relative;
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+  .check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  /* Quiz section */
+  #quiz-section {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 40px 44px;
+    margin-top: 60px;
+    scroll-margin-top: 80px;
+  }
+  .quiz-header {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    color: white;
+    margin-bottom: 8px;
+  }
+  .quiz-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 28px;
+  }
+  .quiz-stats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .quiz-stat {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(201,151,58,0.3);
+    border-radius: 6px;
+    padding: 12px 18px;
+    text-align: center;
+  }
+  .quiz-stat .stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--gold-light);
+    display: block;
+  }
+  .quiz-stat .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .q-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .q-item:hover { border-color: rgba(201,151,58,0.3); }
+  .q-meta {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  .q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+  }
+  .q-diff {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 1px;
+  }
+  .diff-easy { background: rgba(26,107,74,0.25); color: #5dda9a; }
+  .diff-medium { background: rgba(201,151,58,0.2); color: var(--gold-light); }
+  .diff-hard { background: rgba(139,26,26,0.25); color: #ff8a8a; }
+  .q-topic {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    margin-left: auto;
+    letter-spacing: 1px;
+  }
+  .q-text {
+    color: white;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .q-options { list-style: none; padding: 0; margin: 0 0 14px; }
+  .q-options li {
+    padding: 8px 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 5px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .q-options li:hover { background: rgba(201,151,58,0.1); border-color: rgba(201,151,58,0.3); }
+  .q-options li.correct { background: rgba(26,107,74,0.25); border-color: #2ecc71; color: #5dda9a; }
+  .q-options li.wrong { background: rgba(139,26,26,0.25); border-color: #e74c3c; color: #ff8a8a; }
+  .q-options li.reveal-correct { background: rgba(26,107,74,0.15); border-color: rgba(46,204,113,0.5); color: rgba(93,218,154,0.8); }
+  .q-answer {
+    display: none;
+    background: rgba(201,151,58,0.08);
+    border: 1px solid rgba(201,151,58,0.2);
+    border-radius: 5px;
+    padding: 12px 14px;
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.65;
+  }
+  .q-answer.show { display: block; }
+  .q-answer strong { color: var(--gold-light); }
+  .show-ans-btn {
+    background: none;
+    border: 1px solid rgba(201,151,58,0.4);
+    color: var(--gold-light);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .show-ans-btn:hover { background: rgba(201,151,58,0.15); }
+
+  .quiz-score-panel {
+    background: rgba(201,151,58,0.1);
+    border: 1px solid rgba(201,151,58,0.3);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-top: 24px;
+    display: none;
+    text-align: center;
+  }
+  .quiz-score-panel .score-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    color: var(--gold-light);
+  }
+  .quiz-score-panel p { color: rgba(255,255,255,0.7); margin: 0; }
+
+  .quiz-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .ctrl-btn {
+    padding: 9px 20px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none;
+  }
+  .ctrl-btn-primary { background: var(--gold); color: var(--navy); }
+  .ctrl-btn-primary:hover { background: var(--gold-light); }
+  .ctrl-btn-outline { background: transparent; border: 1px solid rgba(201,151,58,0.4); color: var(--gold-light); }
+  .ctrl-btn-outline:hover { background: rgba(201,151,58,0.1); }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-right: 6px;
+    margin-bottom: 4px;
+  }
+  .tag-navy { background: var(--navy); color: var(--gold-light); }
+  .tag-gold { background: rgba(201,151,58,0.15); color: var(--amber); border: 1px solid rgba(201,151,58,0.4); }
+  .tag-green { background: var(--green-light); color: var(--green); }
+  .tag-red { background: var(--red-light); color: var(--red); }
+
+  /* Back to top */
+  #back-top {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--navy);
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    width: 42px;
+    height: 42px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 200;
+  }
+  #back-top.visible { opacity: 1; }
+
+  /* Scrollbar on main */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--cream-dark); border-radius: 3px; }
+
+  /* Highlight */
+  mark {
+    background: rgba(201,151,58,0.25);
+    color: inherit;
+    border-radius: 2px;
+    padding: 0 2px;
+  }
+
+  /* Comparison */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .cmp-card {
+    border: 1px solid var(--cream-dark);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .cmp-card-head {
+    background: var(--navy);
+    color: var(--gold-light);
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+  .cmp-card-body { padding: 14px 16px; }
+  .cmp-card-body p { font-size: 13.5px; margin-bottom: 8px; }
+  .pro-label { color: var(--green); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+  .con-label { color: var(--red); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; display: block; margin-bottom: 4px; margin-top: 10px; }
+
+  hr.section-rule { border: none; border-top: 1px solid var(--cream-dark); margin: 48px 0; }
+
+  /* Mobile note */
+  @media (max-width: 900px) {
+    #sidebar { transform: translateX(-100%); }
+    #main { margin-left: 0; }
+    #content { padding: 0 24px 60px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .def-item { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-tag">CIRO · RSE Prep</div>
+    <h2>Know-Your-Client &amp; Suitability</h2>
+    <span class="element-badge">ELEMENT 01</span>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" id="nav-search" placeholder="Search topics…" oninput="filterNav(this.value)">
+  </div>
+  <div id="nav-links">
+    <div class="nav-section-label">Overview</div>
+    <a class="nav-item" onclick="scrollToSection('hero')"><span class="nav-num">—</span>Introduction</a>
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Content</div>
+    <a class="nav-item" onclick="scrollToSection('s1')"><span class="nav-num">1.1</span>Firm–Client Relationship</a>
+    <a class="nav-item sub" onclick="scrollToSection('s1-crm')">Client Relationship Model</a>
+    <a class="nav-item sub" onclick="scrollToSection('s1-trust')">Trust, Agency &amp; COI</a>
+    <a class="nav-item sub" onclick="scrollToSection('s1-us')">US Clients &amp; Snowbirds</a>
+    <a class="nav-item sub" onclick="scrollToSection('s1-res')">Changes in Residence</a>
+    <a class="nav-item" onclick="scrollToSection('s2')"><span class="nav-num">1.2</span>KYC Information</a>
+    <a class="nav-item sub" onclick="scrollToSection('s2-fin')">Financial Circumstances</a>
+    <a class="nav-item sub" onclick="scrollToSection('s2-pers')">Personal Circumstances</a>
+    <a class="nav-item sub" onclick="scrollToSection('s2-obj')">Objectives &amp; Constraints</a>
+    <a class="nav-item" onclick="scrollToSection('s3')"><span class="nav-num">1.3</span>Risk Profile Assessment</a>
+    <a class="nav-item sub" onclick="scrollToSection('s3-tol')">Risk Tolerance</a>
+    <a class="nav-item sub" onclick="scrollToSection('s3-cap')">Risk Capacity</a>
+    <a class="nav-item sub" onclick="scrollToSection('s3-need')">Risk Need</a>
+    <a class="nav-item sub" onclick="scrollToSection('s3-res')">Resolving Conflicts</a>
+    <a class="nav-item" onclick="scrollToSection('s4')"><span class="nav-num">1.4</span>Business Structures</a>
+    <a class="nav-item" onclick="scrollToSection('s5')"><span class="nav-num">1.5</span>Documentation</a>
+    <a class="nav-item" onclick="scrollToSection('s6')"><span class="nav-num">1.6</span>Trusted Contact Person</a>
+    <a class="nav-item sub" onclick="scrollToSection('s6-est')">Establishing a TCP</a>
+    <a class="nav-item sub" onclick="scrollToSection('s6-holds')">Temporary Holds</a>
+    <a class="nav-item" onclick="scrollToSection('s7')"><span class="nav-num">1.7</span>Primary Responsibility</a>
+    <a class="nav-item" onclick="scrollToSection('s8')"><span class="nav-num">1.8</span>Account Records</a>
+    <a class="nav-item" onclick="scrollToSection('s9')"><span class="nav-num">1.9</span>Account Appropriateness</a>
+    <a class="nav-item" onclick="scrollToSection('s10')"><span class="nav-num">1.10</span>Account Types</a>
+    <a class="nav-item" onclick="scrollToSection('s11')"><span class="nav-num">1.11</span>Account Documentation</a>
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Practice</div>
+    <a class="nav-item" onclick="scrollToSection('quiz-section')"><span class="nav-num">★</span>50 Exam Questions</a>
+  </div>
+  <div class="sidebar-footer">CIRO RSE · Element 1 of 9</div>
+</nav>
+
+<!-- TOP BAR -->
+<div id="main">
+<div id="top-bar">
+  <div class="breadcrumb">RSE Exam Prep &rsaquo; <span>Element 1</span></div>
+  <div class="progress-area">
+    <span class="prog-label">READING PROGRESS</span>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="content">
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <div class="element-tag">ELEMENT 1 OF 9 · RETAIL SECURITIES EXAM · CIRO</div>
+  <h1>Know-Your-Client<br>&amp; Suitability</h1>
+  <p>A Registered Representative's relationship with their client is the foundation of ethical practice. This element covers KYC processes, risk profiling, account types, the trusted contact person framework, and suitability obligations.</p>
+  <div class="hero-meta">
+    <span class="meta-chip">11 LEARNING OUTCOMES</span>
+    <span class="meta-chip">CFR COMPLIANT · 2025</span>
+    <span class="meta-chip">50 PRACTICE QUESTIONS</span>
+    <span class="meta-chip">CIRO IDPC RULES 3200–3400</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.1  FIRM–CLIENT RELATIONSHIP
+══════════════════════════════════════════ -->
+<div class="chapter" id="s1">
+  <div class="section-header">
+    <div class="section-num">1.1</div>
+    <div class="section-title-area">
+      <h2>The Firm–Client Relationship</h2>
+      <div class="section-sub">CLIENT RELATIONSHIP MODEL · TRUST · AGENCY · FOREIGN CLIENTS</div>
+    </div>
+  </div>
+
+  <div class="subsection" id="s1-crm">
+    <h3>The Client Relationship Model (CRM)</h3>
+    <p>The <strong>Client Relationship Model</strong> is a set of regulatory reforms introduced by the Canadian Securities Administrators (CSA) and enforced through CIRO that fundamentally changed how investment dealers must interact with clients. CRM introduced clear rules around <mark>pre-trade disclosure, account statements, performance reporting, and fee transparency.</mark></p>
+
+    <p>Under CRM, a Registered Representative (RR) must, before or at account opening:</p>
+    <ul class="styled-list">
+      <li><strong>Disclose the nature of the relationship</strong> — Is the firm acting as an agent or a principal? What services are offered?</li>
+      <li><strong>Disclose all fees, charges, and compensation</strong> — including commissions, trailer fees, DSC charges, and account fees.</li>
+      <li><strong>Describe all conflicts of interest</strong> — including proprietary products, referral arrangements, and compensation structures.</li>
+      <li><strong>Provide ongoing reporting</strong> — annual performance reports, cost reports, and regular account statements.</li>
+    </ul>
+
+    <div class="diagram">
+      <div class="diagram-title">CRM — Key Pillars</div>
+      <div class="grid-3">
+        <div class="grid-card">
+          <h5>📋 Pre-Relationship</h5>
+          <ul>
+            <li>Relationship Disclosure Information (RDI)</li>
+            <li>Services offered</li>
+            <li>Fee schedule</li>
+            <li>Conflict of interest disclosure</li>
+          </ul>
+        </div>
+        <div class="grid-card">
+          <h5>🔄 Ongoing</h5>
+          <ul>
+            <li>KYC reviews (min. every 36 months for advisory; annually for managed)</li>
+            <li>Trade confirmations</li>
+            <li>Quarterly account statements</li>
+            <li>Suitability reviews at triggering events</li>
+          </ul>
+        </div>
+        <div class="grid-card">
+          <h5>📊 Annual Reporting</h5>
+          <ul>
+            <li>Annual performance report (money-weighted return)</li>
+            <li>Annual fee and charges report</li>
+            <li>Relationship disclosure updates if material changes occur</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-exam">
+      <div class="callout-label">📌 EXAM FOCUS</div>
+      <p>The exam tests whether you understand <strong>what CRM requires to be disclosed, when</strong>, and who is responsible. Remember: the Relationship Disclosure Information (RDI) must be provided <strong>before or at account opening</strong>, not after. If material changes occur, the RDI must be updated.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s1-trust">
+    <h3>Trust, Agency, and Conflicts of Interest</h3>
+
+    <h4>Trust</h4>
+    <p>The client–RR relationship is built on trust. Clients entrust their financial futures to their advisors. This creates both a <strong>legal duty of care</strong> and an <strong>ethical obligation</strong> to act in the client's best interest — not just to recommend suitable products, but to <mark>put the client's interest first</mark> (the enhanced suitability standard introduced by the Client Focused Reforms, effective June 2021).</p>
+
+    <h4>Agency</h4>
+    <p>When an RR acts as an <strong>agent</strong>, they are acting on behalf of the client to execute trades in the market. The dealer does not own the securities being bought or sold — they facilitate the transaction. This is the typical relationship in an advisory account.</p>
+    <p>When a dealer acts as a <strong>principal</strong>, the firm is buying from or selling to the client directly from its own inventory. This is common in fixed income (bond) trading. When acting as principal, the dealer must disclose this and ensure the price is fair.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Role</th><th>Description</th><th>Example</th><th>Disclosure Required?</th></tr>
+        <tr><td><strong>Agent</strong></td><td>RR acts on client's behalf; executes in market</td><td>Buying 100 shares of RY on TSX for client</td><td>Yes — commission</td></tr>
+        <tr><td><strong>Principal</strong></td><td>Firm sells from own inventory to client</td><td>Selling a bond to client from dealer's book</td><td>Yes — markup/markdown</td></tr>
+      </table>
+    </div>
+
+    <h4>Conflicts of Interest (COI)</h4>
+    <p>A conflict of interest exists whenever the interests of the RR or firm <strong>could interfere</strong> with their duty to act in the client's best interest. Under the Client Focused Reforms (CFRs), firms must <mark>identify, address, and disclose</mark> all material conflicts.</p>
+
+    <ul class="styled-list">
+      <li><strong>Identify:</strong> Proactively look for situations where interests diverge — e.g., recommending a proprietary fund that pays higher trailer fees.</li>
+      <li><strong>Address:</strong> Determine how to resolve the conflict in the client's favour. Not all conflicts can be disclosed away — some must be avoided entirely.</li>
+      <li><strong>Disclose:</strong> If the conflict cannot be avoided, it must be clearly explained to the client in a way they can understand.</li>
+    </ul>
+
+    <div class="callout callout-warning">
+      <div class="callout-label">⚠️ KEY DISTINCTION</div>
+      <p>The CFRs created a hierarchy: <strong>Avoid → Address → Disclose</strong>. Disclosure alone is <em>not</em> sufficient if the conflict can be avoided or addressed. This "address first" approach is tested frequently on the exam.</p>
+    </div>
+
+    <p><strong>Common examples of conflicts of interest:</strong></p>
+    <ul class="check-list">
+      <li>Recommending proprietary mutual funds that generate higher revenue for the dealer</li>
+      <li>Referring clients to affiliated companies (insurance, mortgage) for referral fees</li>
+      <li>Selling securities from the firm's inventory (acting as principal)</li>
+      <li>Receiving gifts or entertainment from product manufacturers</li>
+      <li>Being personally invested in a security recommended to clients</li>
+    </ul>
+  </div>
+
+  <div class="subsection" id="s1-us">
+    <h3>Clients Residing in the United States — Snowbirds &amp; Foreign Jurisdictions</h3>
+
+    <p>Canadian RRs are not automatically permitted to deal with clients who reside outside of Canada. Serving US-resident clients raises cross-border regulatory issues governed by both CIRO rules and US securities law (primarily the <strong>Securities Exchange Act of 1934</strong> and FINRA rules).</p>
+
+    <h4>The "Snowbird" Issue</h4>
+    <p>A <strong>snowbird</strong> is a Canadian who spends part of the year in the US (typically winters in Florida, Arizona, etc.) but is <strong>not a US resident</strong> for regulatory purposes. The key question is: <mark>where does the client legally reside?</mark></p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Client Type</th><th>Regulatory Status</th><th>Canadian RR Can Serve?</th><th>Key Consideration</th></tr>
+        <tr><td>Canadian temporarily in US (snowbird)</td><td>Canadian resident — accounts remain Canadian</td><td>✅ Generally yes</td><td>No change to account; normal KYC applies</td></tr>
+        <tr><td>Canadian who has relocated to US</td><td>Becomes a US resident</td><td>⚠️ Restricted — special rules apply</td><td>Must comply with SEC/FINRA; many Canadian dealers restrict service</td></tr>
+        <tr><td>US Citizen living in Canada</td><td>Canadian resident but US citizen</td><td>✅ Can serve, but extra obligations</td><td>FATCA reporting; US tax obligations follow citizens globally</td></tr>
+        <tr><td>Non-resident client (other jurisdictions)</td><td>Foreign resident</td><td>⚠️ Case-by-case</td><td>Local securities laws of that country may apply</td></tr>
+      </table>
+    </div>
+
+    <h4>Serving US-Resident Clients</h4>
+    <p>To legally deal with US-resident clients, a Canadian dealer typically must either:</p>
+    <ul class="styled-list">
+      <li>Be <strong>registered with the SEC or FINRA</strong> in the US, OR</li>
+      <li>Qualify for the <strong>International Dealer Exemption</strong> (available in some US states for dealing with major institutional clients), OR</li>
+      <li>Rely on <strong>firm-specific policies</strong> that restrict what products/services can be offered to US residents.</li>
+    </ul>
+
+    <div class="callout callout-rule">
+      <div class="callout-label">🔴 REGULATORY NOTE</div>
+      <p>Most Canadian retail dealers choose to <strong>restrict or close accounts</strong> when a client permanently relocates to the US, rather than navigating dual registration requirements. The RR must immediately notify their compliance department when a client indicates a change in residency to the US.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s1-res">
+    <h3>Considerations for Changes in Residence</h3>
+    <p>When a client changes their province or country of residence, the RR must take specific steps:</p>
+    <ul class="styled-list">
+      <li><strong>Update KYC immediately</strong> — Change of address, tax residency, and applicable provincial securities laws must be updated promptly.</li>
+      <li><strong>Reassess account suitability</strong> — Provincial rules can differ (e.g., Québec has different regulations via the AMF). Some products may not be eligible for sale in the new province.</li>
+      <li><strong>Notify compliance</strong> — Any cross-border relocation (especially to the US) must be reported to the compliance department, as it may trigger a restriction or closure of the account.</li>
+      <li><strong>Tax residency changes</strong> — A change of country may affect withholding taxes, RRSP contribution room (non-residents lose RRSP contribution room), and TFSA eligibility (non-residents cannot contribute to TFSAs).</li>
+    </ul>
+
+    <div class="callout callout-tip">
+      <div class="callout-label">💡 PRACTICAL TIP</div>
+      <p>If a client moves to Québec, their account must comply with both CIRO rules <em>and</em> the Autorité des marchés financiers (AMF) rules. Some products may not be registerable in Québec. Always flag this to compliance.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.2  KYC INFORMATION
+══════════════════════════════════════════ -->
+<div class="chapter" id="s2">
+  <div class="section-header">
+    <div class="section-num">1.2</div>
+    <div class="section-title-area">
+      <h2>KYC Information — Content &amp; Importance</h2>
+      <div class="section-sub">FINANCIAL CIRCUMSTANCES · RISK PROFILE · INVESTMENT OBJECTIVES · CONSTRAINTS</div>
+    </div>
+  </div>
+
+  <p>Know-Your-Client (KYC) is the <strong>cornerstone of the advisory relationship</strong>. Without a thorough understanding of the client, no meaningful suitability assessment can be made. CIRO rules require RRs to collect and maintain a comprehensive picture of each client's unique situation. The KYC obligation is <mark>specific to each individual client</mark> — you cannot attribute a spouse's characteristics (income, experience, risk tolerance) to the other spouse.</p>
+
+  <div class="subsection" id="s2-fin">
+    <h3>Financial Circumstances</h3>
+
+    <h4>Income</h4>
+    <p>Income is the client's regular flow of money — salary, business income, pension, CPP/OAS, rental income, dividends, etc. Understanding income helps assess:</p>
+    <ul class="check-list">
+      <li>Whether the client can sustain ongoing contributions to their portfolio</li>
+      <li>How dependent they are on investment returns to fund their lifestyle</li>
+      <li>Their marginal tax bracket (which affects product selection — e.g., Canadian dividends are tax-advantaged for higher earners)</li>
+    </ul>
+
+    <h4>Liquidity Needs</h4>
+    <p>Liquidity refers to how quickly a client may need to convert investments to cash. A client with high liquidity needs (upcoming tuition, home purchase, medical expenses) should hold more liquid assets and should <strong>not</strong> be placed in illiquid investments like limited partnerships, private equity, or long-term locked-in GICs.</p>
+
+    <h4>Financial Assets</h4>
+    <p>This includes the total value of all investment accounts — RRSP, TFSA, non-registered, RESP, pension plans, company stock options, business interests, real estate (non-primary), GICs, and any other investable assets. This provides the full investment picture and is essential for <strong>portfolio construction and asset allocation.</strong></p>
+
+    <h4>Liabilities</h4>
+    <p>Liabilities include mortgages, car loans, credit card debt, student loans, margin loans, business debt, and personal guarantees. High liabilities relative to assets reduce risk capacity and liquidity. An RR must understand the complete debt picture to avoid recommending investments that could be jeopardized by debt servicing obligations.</p>
+
+    <h4>Net Worth</h4>
+    <p>Net worth = Total Assets − Total Liabilities. Net worth is a key indicator of financial stability and risk capacity. A client with high net worth can generally absorb more investment loss without it materially affecting their lifestyle.</p>
+
+    <div class="diagram">
+      <div class="diagram-title">Net Worth Calculation — Example</div>
+      <div class="grid-2">
+        <div class="grid-card">
+          <h5>✅ Assets</h5>
+          <ul>
+            <li>RRSP: $180,000</li>
+            <li>TFSA: $45,000</li>
+            <li>Non-registered portfolio: $90,000</li>
+            <li>Primary residence: $750,000</li>
+            <li>Savings account: $20,000</li>
+            <li><strong style="color:#e8b96a">Total Assets: $1,085,000</strong></li>
+          </ul>
+        </div>
+        <div class="grid-card">
+          <h5>❌ Liabilities</h5>
+          <ul>
+            <li>Mortgage: $380,000</li>
+            <li>Car loan: $22,000</li>
+            <li>Credit card: $5,000</li>
+            <li>&nbsp;</li>
+            <li><strong style="color:#ff8a8a">Total Liabilities: $407,000</strong></li>
+            <li style="margin-top:8px"><strong style="color:#5dda9a">Net Worth: $678,000</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h4>Borrowing to Invest (Leveraged Investing)</h4>
+    <p>If a client is borrowing money to invest (using a margin account, home equity line of credit, or investment loan), this creates <strong>significant additional risk</strong>. The RR must:</p>
+    <ul class="styled-list">
+      <li>Specifically document that the client is borrowing to invest</li>
+      <li>Assess whether this is suitable given the client's risk profile</li>
+      <li>Ensure the client understands that <mark>losses are amplified</mark> when leverage is used — they must still repay the loan even if the investment loses value</li>
+      <li>Recommend only investments with sufficient expected return to justify the borrowing cost</li>
+    </ul>
+
+    <div class="callout callout-rule">
+      <div class="callout-label">🔴 IMPORTANT RULE</div>
+      <p>Borrowing to invest is <strong>not suitable for all clients</strong>. It is generally only appropriate for clients with high income, high net worth, long time horizons, and <em>high risk tolerance and capacity</em>. CIRO requires specific KYC documentation when leverage is involved.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s2-pers">
+    <h3>Personal Circumstances</h3>
+    <p>Personal circumstances include all non-financial details that affect the client's investment needs and suitability. Key factors include:</p>
+
+    <div class="def-list">
+      <div class="def-item"><div class="def-term">Age &amp; Life Stage</div><div>A 28-year-old has a different investment horizon and risk profile than a 68-year-old. Life stage (starting career, family formation, pre-retirement, retirement) heavily shapes investment strategy.</div></div>
+      <div class="def-item"><div class="def-term">Employment Status</div><div>Employed, self-employed, retired, or unemployed. Stability of income affects risk capacity and liquidity needs.</div></div>
+      <div class="def-item"><div class="def-term">Family Situation</div><div>Single, married, divorced, dependents (children, elderly parents). A client with dependents may need life insurance, education savings (RESP), and more conservative investments.</div></div>
+      <div class="def-item"><div class="def-term">Tax Situation</div><div>Marginal tax rate, registered account room (RRSP contribution room, TFSA room), capital loss carryforwards, US person status (FATCA). Tax considerations influence account type and product selection.</div></div>
+      <div class="def-item"><div class="def-term">Health</div><div>A client with a serious illness may have a much shorter effective time horizon and higher liquidity needs for medical expenses.</div></div>
+      <div class="def-item"><div class="def-term">Expected Inheritance / Windfall</div><div>An expected large inheritance could reduce the need for aggressive growth investing.</div></div>
+    </div>
+
+    <h4>Investment Knowledge</h4>
+    <p>Investment knowledge assesses how well the client understands financial products, markets, and risk. CIRO typically categorizes knowledge as:</p>
+    <ul class="styled-list">
+      <li><strong>None / Limited:</strong> Little to no investing experience; needs full explanation of all products and risks</li>
+      <li><strong>Good:</strong> Some experience, understands basic concepts (stocks, bonds, mutual funds, risk/return)</li>
+      <li><strong>Sophisticated:</strong> Experienced investor who understands complex products including options, derivatives, leveraged ETFs</li>
+    </ul>
+    <p>Investment knowledge is <strong>separate from risk tolerance</strong>. A client can have low knowledge but a high risk tolerance (which actually increases suitability risk) or vice versa. The RR must not assume that a client who is willing to take risk also understands the risks they're taking.</p>
+  </div>
+
+  <div class="subsection" id="s2-obj">
+    <h3>Investment Objectives, Constraints, &amp; Time Horizon</h3>
+
+    <h4>Investment Objectives</h4>
+    <p>Investment objectives describe what the client wants to achieve with their portfolio. The most common objectives are:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Objective</th><th>Description</th><th>Typical Products</th><th>Risk Level</th></tr>
+        <tr><td><strong>Safety of Capital</strong></td><td>Preserve principal above all else; cannot afford to lose money</td><td>GICs, T-bills, money market funds, government bonds</td><td>Very Low</td></tr>
+        <tr><td><strong>Income</strong></td><td>Generate regular cash flow from investments</td><td>Bonds, dividend stocks, REITs, preferred shares</td><td>Low–Medium</td></tr>
+        <tr><td><strong>Growth</strong></td><td>Increase portfolio value over time; some income acceptable</td><td>Balanced funds, blue-chip equities, ETFs</td><td>Medium–High</td></tr>
+        <tr><td><strong>Aggressive Growth</strong></td><td>Maximum capital appreciation; willing to accept high volatility</td><td>Small caps, emerging markets, sector ETFs, options</td><td>High–Very High</td></tr>
+        <tr><td><strong>Speculation</strong></td><td>Willing to risk loss of capital for potentially large gains</td><td>Junior miners, crypto, options, futures</td><td>Very High</td></tr>
+      </table>
+    </div>
+
+    <h4>Investment Constraints &amp; Restrictions</h4>
+    <p>Clients may have specific restrictions on what they want or are willing to hold. The Client Focused Reforms now explicitly require RRs to consider these:</p>
+
+    <h4>Equity, Diversity &amp; Inclusion (EDI) Considerations</h4>
+    <p>Some clients may wish to invest in companies or funds that prioritize <strong>diversity in leadership, equitable employment practices, and inclusive business models</strong>. While not strictly ESG (which is environmental/social/governance), EDI focuses specifically on workforce and governance diversity metrics.</p>
+
+    <h4>Environmental, Social &amp; Governance (ESG) Criteria</h4>
+    <p>ESG investing has grown dramatically in Canada. Clients may wish to exclude certain sectors (fossil fuels, tobacco, weapons) or specifically include companies with high ESG ratings. The RR must document these preferences and apply them to product selection. Key points:</p>
+    <ul class="check-list">
+      <li>ESG preferences are not a replacement for financial suitability — an ESG-screened portfolio must still meet the client's risk, return, and liquidity objectives</li>
+      <li>There is no single universal ESG standard — different ratings agencies (MSCI, Sustainalytics) use different methodologies</li>
+      <li>Greenwashing is a compliance risk — do not describe products as "ESG" without substantiation</li>
+      <li>SRI (Socially Responsible Investing) and ESG are related but not identical terms</li>
+    </ul>
+
+    <h4>Other Personal Preferences</h4>
+    <p>A client may have religious investing constraints (e.g., <strong>Shariah-compliant investing</strong> which prohibits interest-bearing instruments and certain industries), ethical preferences, or cultural values that shape their investment decisions. These must be documented and respected.</p>
+
+    <h4>Investment Time Horizon</h4>
+    <p>The time horizon is the period over which the client expects to keep their money invested before needing it. Time horizon is one of the most critical factors in suitability because it directly affects how much short-term volatility the portfolio can absorb.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Time Horizon</th><th>Duration</th><th>General Implication</th></tr>
+        <tr><td><strong>Short</strong></td><td>&lt; 3 years</td><td>Low risk tolerance required; protect capital; liquidity important</td></tr>
+        <tr><td><strong>Medium</strong></td><td>3–10 years</td><td>Balanced approach; can accept moderate volatility for growth</td></tr>
+        <tr><td><strong>Long</strong></td><td>&gt; 10 years</td><td>Higher risk acceptable; time to recover from market downturns</td></tr>
+      </table>
+    </div>
+
+    <div class="callout callout-exam">
+      <div class="callout-label">📌 EXAM FOCUS</div>
+      <p>A client with a <strong>3-year time horizon who says they want aggressive growth</strong> presents a conflict — the time horizon does not support aggressive growth. The RR must resolve this conflict by educating the client and documenting the discussion. The final risk profile should reflect the <strong>lower of risk tolerance and risk capacity</strong>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.3  RISK PROFILE
+══════════════════════════════════════════ -->
+<div class="chapter" id="s3">
+  <div class="section-header">
+    <div class="section-num">1.3</div>
+    <div class="section-title-area">
+      <h2>Risk Profile Assessment</h2>
+      <div class="section-sub">RISK TOLERANCE · RISK CAPACITY · RISK NEED · CONFLICT RESOLUTION</div>
+    </div>
+  </div>
+
+  <p>Under the Client Focused Reforms, the risk profile is no longer a simple "low/medium/high" checkbox. RRs must understand and document three distinct but related dimensions of risk: <strong>tolerance, capacity, and need</strong>. The final overall risk profile should represent a thoughtful assessment of all three.</p>
+
+  <div class="diagram">
+    <div class="diagram-title">The Three Dimensions of Risk — Framework</div>
+    <div class="grid-3">
+      <div class="grid-card">
+        <h5>⚡ Risk Tolerance</h5>
+        <p>Willingness to accept risk<br><em>(Psychological/behavioural)</em></p>
+        <p style="margin-top:10px;font-size:12px;color:rgba(255,255,255,0.5)">Driven by: personality, past experience, investment knowledge, emotional response to loss</p>
+      </div>
+      <div class="grid-card">
+        <h5>💪 Risk Capacity</h5>
+        <p>Ability to endure loss<br><em>(Financial/objective)</em></p>
+        <p style="margin-top:10px;font-size:12px;color:rgba(255,255,255,0.5)">Driven by: income, net worth, liquidity needs, time horizon, other assets</p>
+      </div>
+      <div class="grid-card">
+        <h5>🎯 Risk Need</h5>
+        <p>Risk required to meet goals<br><em>(Goal-based)</em></p>
+        <p style="margin-top:10px;font-size:12px;color:rgba(255,255,255,0.5)">Driven by: target return, retirement income goals, consequence of shortfall</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px;font-size:13px;color:rgba(255,255,255,0.6)">
+      ↓
+    </div>
+    <div style="text-align:center;margin-top:8px">
+      <div class="flow-box gold" style="display:inline-block">
+        Overall Risk Profile = Thoughtful integration of all three, resolving conflicts in client's best interest
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection" id="s3-tol">
+    <h3>Risk Tolerance — Willingness to Accept Risk</h3>
+    <p>Risk tolerance is a <strong>psychological construct</strong> — it measures how emotionally and mentally comfortable a client is with the possibility of losing money or seeing their portfolio decline in value. It is influenced by:</p>
+
+    <div class="def-list">
+      <div class="def-item"><div class="def-term">Preference</div><div>What does the client <em>prefer</em>? Some clients genuinely prefer stability and sleep better with lower-risk portfolios, even if they could financially absorb losses.</div></div>
+      <div class="def-item"><div class="def-term">Knowledge &amp; Experience</div><div>A client who lived through the 2008 financial crisis and held steady is likely more risk tolerant than one who panic-sold. Past investment behavior is an important indicator.</div></div>
+      <div class="def-item"><div class="def-term">Emotional Reaction to Loss</div><div>How does the client react when their portfolio drops 15%? Do they call the RR in a panic, or do they stay calm? This "gut check" behaviour is a key risk tolerance signal.</div></div>
+      <div class="def-item"><div class="def-term">Behavioural Biases</div><div>Clients may suffer from loss aversion (losses feel worse than equivalent gains feel good), overconfidence in bull markets, or anchoring to past portfolio highs. RRs should identify these tendencies.</div></div>
+    </div>
+
+    <div class="callout callout-warning">
+      <div class="callout-label">⚠️ IMPORTANT</div>
+      <p>Risk tolerance can change with market conditions. A client who says they're "high risk" in a bull market may panic in a correction. The RR must probe deeper — ask about past experience during downturns, not just current preferences.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s3-cap">
+    <h3>Risk Capacity — Ability to Endure Financial Loss</h3>
+    <p>Risk capacity is the <strong>objective, financial measurement</strong> of how much loss a client can actually afford to sustain without material impact on their life goals or financial obligations. Unlike risk tolerance (which is psychological), risk capacity is determined by hard financial facts:</p>
+
+    <ul class="styled-list">
+      <li><strong>Financial situation:</strong> Net worth, income stability, and existing assets. A client with $2M in assets who needs $50K/year to live has more capacity to absorb losses than one with $150K who needs $60K/year.</li>
+      <li><strong>Current investments:</strong> Is the portfolio being assessed the client's only savings, or one of many? A concentrated bet in a single account is riskier when no other assets exist.</li>
+      <li><strong>Investment horizon:</strong> Longer time horizons = higher capacity, because markets tend to recover over time. Short horizons dramatically reduce capacity.</li>
+      <li><strong>Need for liquidity:</strong> If the client may need the money back quickly, capacity for risk is reduced. Illiquid or volatile investments are inappropriate.</li>
+    </ul>
+
+    <div class="callout callout-rule">
+      <div class="callout-label">🔴 REGULATORY RULE — CRITICAL</div>
+      <p>CIRO rules require that when risk tolerance and risk capacity <strong>conflict</strong>, the overall risk profile must reflect the <strong>lower of the two</strong>. Example: A client says they want high-risk investments (high tolerance) but their financial situation shows they cannot afford significant losses (low capacity) — the profile must be set to <strong>low risk</strong> and the conflict must be documented and explained to the client.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s3-need">
+    <h3>Risk Need — How Much Risk Is Required to Meet Goals</h3>
+    <p>Risk need asks the question: <em>What rate of return does the client need to achieve their financial goals, and how much risk must they take to potentially achieve that return?</em></p>
+
+    <div class="def-list">
+      <div class="def-item"><div class="def-term">Required Rate of Return</div><div>If a client needs 8% annual returns to retire comfortably, a low-risk GIC portfolio at 4% will not be sufficient. The required return implies a minimum level of risk that must be accepted.</div></div>
+      <div class="def-item"><div class="def-term">Market Risk Environment</div><div>In a low-interest-rate environment, achieving target returns may require moving further out on the risk spectrum than previously necessary. The current market context matters.</div></div>
+      <div class="def-item"><div class="def-term">Consequence of Failure</div><div>If the client <em>must</em> hit their return target (e.g., to fund retirement or a child's education), the consequence of falling short is severe. But if there's flexibility (they could work longer, spend less), the risk profile can be more conservative.</div></div>
+    </div>
+  </div>
+
+  <div class="subsection" id="s3-res">
+    <h3>Resolving Conflicts Between Client Expectations and Risk Profile</h3>
+    <p>It is common for a client's stated wishes to conflict with their assessed risk profile. For example:</p>
+    <ul class="styled-list">
+      <li>Client says "I want 20% returns" but has a short time horizon and low net worth (expectations vs. capacity conflict)</li>
+      <li>Client wants to avoid all risk but needs 7% returns to meet retirement goals (tolerance vs. need conflict)</li>
+      <li>Client checks "high risk" on questionnaire but panics at the first 10% drawdown (stated vs. revealed preference conflict)</li>
+    </ul>
+
+    <p>The RR's obligations when conflicts arise:</p>
+    <div class="flow">
+      <div class="flow-box gold">Step 1: Identify the conflict clearly</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box">Step 2: Educate the client — explain the conflict and its implications</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box">Step 3: Set the profile at the more conservative level (lower of tolerance/capacity)</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box gold">Step 4: Document everything — the conflict, the discussion, and the resolution</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.4  BUSINESS STRUCTURES
+══════════════════════════════════════════ -->
+<div class="chapter" id="s4">
+  <div class="section-header">
+    <div class="section-num">1.4</div>
+    <div class="section-title-area">
+      <h2>Business Structures &amp; Investment Opportunities</h2>
+      <div class="section-sub">SOLE PROPRIETOR · PARTNERSHIP · CORPORATION · CO-OPERATIVE</div>
+    </div>
+  </div>
+
+  <p>When opening accounts for non-individual clients, the RR must understand the legal structure of the entity. The structure affects who can authorize trades, what documentation is required, what investment opportunities are available, and how the entity is taxed.</p>
+
+  <div class="comparison-grid">
+    <div class="cmp-card">
+      <div class="cmp-card-head">SOLE PROPRIETORSHIP</div>
+      <div class="cmp-card-body">
+        <p>A business owned and operated by one individual. There is no legal separation between the owner and the business.</p>
+        <span class="pro-label">✓ KEY FEATURES</span>
+        <p>• Business income taxed as personal income<br>• Owner has unlimited personal liability<br>• Account opened under owner's personal SIN<br>• Only one authorized trader</p>
+        <span class="con-label">⚠ KYC NOTES</span>
+        <p>• Must obtain business registration documents<br>• Personal KYC of the owner required<br>• No corporate tax structure</p>
+      </div>
+    </div>
+    <div class="cmp-card">
+      <div class="cmp-card-head">PARTNERSHIP</div>
+      <div class="cmp-card-body">
+        <p>Two or more individuals or entities sharing ownership of a business.</p>
+        <span class="pro-label">✓ TYPES</span>
+        <p>• <strong>General Partnership:</strong> All partners have unlimited liability and share management<br>• <strong>Limited Partnership (LP):</strong> General partners manage; limited partners have liability limited to their investment<br>• <strong>LLP:</strong> Used by professionals (lawyers, accountants)</p>
+        <span class="con-label">⚠ KYC NOTES</span>
+        <p>• Partnership agreement required<br>• KYC for all general partners<br>• All authorized partners must be documented<br>• Partnership income flows through to partners' personal taxes</p>
+      </div>
+    </div>
+    <div class="cmp-card">
+      <div class="cmp-card-head">CORPORATION</div>
+      <div class="cmp-card-body">
+        <p>A separate legal entity from its owners (shareholders). Provides limited liability protection.</p>
+        <span class="pro-label">✓ PRIVATE vs. PUBLIC</span>
+        <p><strong>Private Corporation:</strong> Shares not publicly traded; maximum 50 shareholders (federally); eligible for Small Business Deduction on first $500K of active business income (15% federal rate)<br><br><strong>Public Corporation:</strong> Shares listed on stock exchange; subject to continuous disclosure obligations; different tax treatment</p>
+        <span class="con-label">⚠ KYC NOTES</span>
+        <p>• Certificate of incorporation required<br>• Corporate resolution authorizing account opening<br>• List of directors and signing officers<br>• Beneficial ownership info (25%+ owners)<br>• Must identify ultimate beneficial owner (UBO)</p>
+      </div>
+    </div>
+    <div class="cmp-card">
+      <div class="cmp-card-head">CO-OPERATIVE</div>
+      <div class="cmp-card-body">
+        <p>An organization owned and democratically operated by its members for their mutual benefit.</p>
+        <span class="pro-label">✓ KEY FEATURES</span>
+        <p>• One member, one vote (regardless of capital contribution)<br>• Surpluses distributed to members as patronage dividends<br>• Common in agricultural (FCC), financial (credit unions), and housing sectors<br>• Distinct legal entity with limited liability</p>
+        <span class="con-label">⚠ KYC NOTES</span>
+        <p>• Co-operative incorporation documents required<br>• Board resolution needed for account opening<br>• Identify signing officers and authorized individuals<br>• Different investment restrictions may apply</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-exam">
+    <div class="callout-label">📌 EXAM FOCUS</div>
+    <p>Key exam distinctions: (1) Only a <strong>corporation</strong> provides <em>separate legal personality</em> and limited liability to all owners. (2) A <strong>private corporation</strong> cannot have more than 50 shareholders (federally) and restricts share transfers. (3) <strong>AML/KYC requirements</strong> for corporations require identifying the <em>ultimate beneficial owner</em> — individuals who directly or indirectly own or control 25% or more of the entity.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.5  DOCUMENTATION
+══════════════════════════════════════════ -->
+<div class="chapter" id="s5">
+  <div class="section-header">
+    <div class="section-num">1.5</div>
+    <div class="section-title-area">
+      <h2>Documentation of Client Discussions</h2>
+      <div class="section-sub">ACCURACY · CLIENT CONFIRMATION · RECORD-KEEPING</div>
+    </div>
+  </div>
+
+  <p>Accurate documentation is one of the most important—and most tested—obligations of a Registered Representative. CIRO rules require that discussions with clients be documented promptly, accurately, and completely. Documentation is both a regulatory requirement and your best protection in the event of a client dispute.</p>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin:20px 0 12px;padding-left:12px;border-left:3px solid var(--gold)">What Must Be Documented?</h3>
+  <ul class="styled-list">
+    <li><strong>All KYC information</strong> collected or updated, with date and method of collection (in-person, phone, email)</li>
+    <li><strong>Investment objectives and constraints</strong> discussed with the client</li>
+    <li><strong>Suitability assessments</strong> — the rationale for why a recommended product is suitable for that specific client</li>
+    <li><strong>Conflicts identified and resolved</strong> — e.g., when a client's stated risk tolerance exceeds their capacity</li>
+    <li><strong>Client instructions</strong> — particularly for unsolicited trades and any client overrides of RR recommendations</li>
+    <li><strong>Trusted Contact Person discussions</strong> — including if the client refuses to provide one</li>
+    <li><strong>Changes to KYC information</strong> — whenever client circumstances change</li>
+  </ul>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin:20px 0 12px;padding-left:12px;border-left:3px solid var(--gold)">Client Confirmation of KYC Accuracy</h3>
+  <p>After collecting or updating KYC information, the RR must have the client <strong>confirm the accuracy of the information on file</strong>. This is typically done through a KYC update form or account statement that shows the KYC details, which the client must sign (wet or electronic signature).</p>
+
+  <div class="callout callout-rule">
+    <div class="callout-label">🔴 KEY RULE</div>
+    <p>An RR must <strong>never manipulate or alter KYC information</strong> to make an unsuitable investment appear suitable. This is a serious regulatory violation that can result in registration suspension or cancellation. Equally, an RR cannot accept client instructions to "just put anything" in the risk tolerance field — the RR has an independent duty to ensure KYC information is accurate.</p>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-label">💡 PRACTICAL GUIDANCE</div>
+    <p>The standard in CIRO reviews is: <em>"If it's not documented, it didn't happen."</em> Verbal discussions, even if they occurred, are of limited evidentiary value without contemporaneous notes. Always make call notes immediately after client conversations.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.6  TRUSTED CONTACT PERSON
+══════════════════════════════════════════ -->
+<div class="chapter" id="s6">
+  <div class="section-header">
+    <div class="section-num">1.6</div>
+    <div class="section-title-area">
+      <h2>The Trusted Contact Person (TCP)</h2>
+      <div class="section-sub">ESTABLISH · PERMITS · REFUSAL · FINANCIAL EXPLOITATION · TEMPORARY HOLDS</div>
+    </div>
+  </div>
+
+  <p>The Trusted Contact Person (TCP) framework was introduced to protect <strong>vulnerable clients</strong> — particularly seniors and those who may be experiencing cognitive decline or financial exploitation. It is one of the most heavily tested areas in Element 1.</p>
+
+  <div class="subsection" id="s6-est">
+    <h3>How to Establish a Trusted Contact Person</h3>
+    <p>At or before account opening, the RR must make <strong>reasonable efforts</strong> to have the client name a trusted contact person. The TCP is not required — but the RR must attempt to obtain one and document the attempt. To establish a TCP:</p>
+
+    <ul class="styled-list">
+      <li>Explain to the client what a TCP is and why it is beneficial</li>
+      <li>Request the TCP's full name, relationship to the client, and contact information (phone number, email)</li>
+      <li>Have the client consent in writing to the TCP designation</li>
+      <li>Record the TCP information in the client file</li>
+    </ul>
+
+    <h4>What a TCP Permits — and What It Does NOT Permit</h4>
+
+    <div class="diagram">
+      <div class="diagram-title">TCP — Permitted vs. Not Permitted</div>
+      <div class="grid-2">
+        <div class="grid-card">
+          <h5 style="color:#5dda9a">✅ A TCP PERMITS</h5>
+          <ul>
+            <li>Confirming the client's current contact information</li>
+            <li>Confirming the client's health status (if relevant)</li>
+            <li>Confirming the name and contact info of the client's legal representative, power of attorney, or trusted family member</li>
+            <li>Discussing concerns about possible financial exploitation of the client</li>
+            <li>Discussing concerns about the client's mental capacity to make financial decisions</li>
+          </ul>
+        </div>
+        <div class="grid-card">
+          <h5 style="color:#ff8a8a">❌ A TCP DOES NOT PERMIT</h5>
+          <ul>
+            <li>The TCP to give investment instructions on behalf of the client</li>
+            <li>The TCP to access account information</li>
+            <li>The TCP to authorize trades or withdrawals</li>
+            <li>The TCP to override the client's own instructions</li>
+            <li>The RR to share detailed account information with the TCP without client consent</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-exam">
+      <div class="callout-label">📌 EXAM FOCUS — CRITICAL DISTINCTION</div>
+      <p>A TCP is <strong>NOT a power of attorney</strong> and is <strong>NOT an authorized trader</strong>. Contacting the TCP does not give them any control over the account. The TCP is strictly a <em>point of contact</em> for welfare and exploitation concerns only. This distinction is heavily tested.</p>
+    </div>
+
+    <h4>If the Client Refuses to Provide a TCP</h4>
+    <p>If a client refuses to provide a trusted contact person, the RR:</p>
+    <ul class="check-list">
+      <li>Must <strong>not deny account opening</strong> or service solely because the client refused</li>
+      <li>Must <strong>document the refusal</strong> in the client file (this becomes a "record of trusted contact person refusal")</li>
+      <li>Should attempt again at the next KYC review</li>
+    </ul>
+
+    <h4>When to Contact the Trusted Contact Person</h4>
+    <p>The TCP should be contacted when the RR has <strong>reasonable grounds to believe</strong> one of the following:</p>
+    <ul class="styled-list">
+      <li>The client may be <strong>experiencing financial exploitation</strong> (e.g., unusual large withdrawals, pressure from a third party, suspicious transaction requests)</li>
+      <li>There are concerns about the client's <strong>mental capacity</strong> to make financial decisions (cognitive decline, dementia, confusion)</li>
+      <li>The client cannot be reached and there is concern for their well-being</li>
+    </ul>
+  </div>
+
+  <div class="subsection" id="s6-holds">
+    <h3>Recognizing Financial Exploitation &amp; Capacity Concerns</h3>
+
+    <h4>Red Flags for Financial Exploitation</h4>
+    <ul class="styled-list">
+      <li>Sudden large, unusual withdrawals especially to third parties</li>
+      <li>A third party appearing to control or direct client decisions</li>
+      <li>Client appears fearful, confused, or under duress when giving instructions</li>
+      <li>Client requests to transfer funds to someone claiming to be a government official, CRA, or law enforcement</li>
+      <li>Account activity inconsistent with the client's established patterns</li>
+      <li>Requests for gift cards, cryptocurrency, or wire transfers to unfamiliar accounts</li>
+    </ul>
+
+    <h4>Red Flags for Capacity Concerns</h4>
+    <ul class="styled-list">
+      <li>Client forgets recent discussions or instructions they gave</li>
+      <li>Client makes inconsistent or contradictory decisions</li>
+      <li>Client appears confused about the nature or value of their accounts</li>
+      <li>Noticeable deterioration in the client's ability to understand financial concepts they previously understood</li>
+      <li>Third party begins attending all meetings and answering on behalf of the client</li>
+    </ul>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin:24px 0 12px;padding-left:12px;border-left:3px solid var(--gold)">Temporary Holds</h3>
+    <p>A <strong>temporary hold</strong> allows an RR (or the dealer) to temporarily delay processing a transaction or disbursement when there are reasonable grounds to believe that the client is being financially exploited or lacks the capacity to make the decision. Key conditions:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Requirement</th><th>Detail</th></tr>
+        <tr><td><strong>Reasonable Grounds</strong></td><td>Must have specific, documented reasons to believe exploitation or incapacity — not just a "feeling." Red flags must be present.</td></tr>
+        <tr><td><strong>Duration</strong></td><td>CIRO rules allow a hold for a reasonable period while the situation is investigated — typically up to 30 days depending on circumstances</td></tr>
+        <tr><td><strong>Notification</strong></td><td>The client must be notified of the hold (unless notification would cause further harm). The TCP may be contacted.</td></tr>
+        <tr><td><strong>Supervisory Approval</strong></td><td>A temporary hold typically requires supervisor approval and must be escalated through proper internal channels</td></tr>
+        <tr><td><strong>Documentation</strong></td><td>All steps taken, reasons, parties contacted, and outcomes must be fully documented</td></tr>
+        <tr><td><strong>Outcome</strong></td><td>Either the hold is lifted (transaction proceeds) or it is escalated to compliance/legal/law enforcement</td></tr>
+      </table>
+    </div>
+
+    <div class="callout callout-rule">
+      <div class="callout-label">🔴 IMPORTANT</div>
+      <p>A temporary hold is a <strong>protective measure</strong> — it does not permanently freeze the account. It buys time to investigate. If the RR wrongly delays a legitimate transaction, this could also create liability — documentation of the specific red flags is essential.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.7  PRIMARY RESPONSIBILITY
+══════════════════════════════════════════ -->
+<div class="chapter" id="s7">
+  <div class="section-header">
+    <div class="section-num">1.7</div>
+    <div class="section-title-area">
+      <h2>Primary Responsibility &amp; Prohibition on KYC Delegation</h2>
+      <div class="section-sub">NON-DELEGABLE DUTY · KEEPING KYC CURRENT · REVIEW TIMELINES</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin:0 0 12px;padding-left:12px;border-left:3px solid var(--gold)">Who Is Responsible for KYC?</h3>
+  <p>The primary responsibility for collecting, maintaining, and acting on KYC information rests with the <strong>Registered Representative and the Investment Dealer</strong>. This responsibility <mark>cannot be delegated</mark> to the client, to a third party, or to a junior employee who is not registered.</p>
+
+  <div class="callout callout-rule">
+    <div class="callout-label">🔴 NON-DELEGABLE OBLIGATION</div>
+    <p>An RR cannot say "the client filled out their own KYC form so it's their responsibility." The RR must independently verify and assess the accuracy of all KYC information. If an RR accepts KYC information they know (or should know) to be inaccurate, they are in violation of CIRO rules.</p>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin:24px 0 12px;padding-left:12px;border-left:3px solid var(--gold)">Keeping KYC Information Current — Review Timelines</h3>
+  <p>KYC is not a one-time collection exercise. It must be <strong>actively maintained and updated</strong> throughout the client relationship. CIRO requires KYC to be reviewed:</p>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Triggering Event</th><th>KYC Review Required?</th></tr>
+      <tr><td>At account opening</td><td>✅ Always — full KYC collection</td></tr>
+      <tr><td>Regularly scheduled reviews</td><td>✅ At minimum every <strong>36 months</strong> for advisory accounts; <strong>annually</strong> for managed accounts</td></tr>
+      <tr><td>Client informs RR of life change (marriage, divorce, job loss, retirement, inheritance)</td><td>✅ Immediate update required</td></tr>
+      <tr><td>Significant market event affecting suitability</td><td>✅ Review and document suitability assessment</td></tr>
+      <tr><td>Client requests change in investment objectives</td><td>✅ Update KYC; reassess suitability</td></tr>
+      <tr><td>Change in residence (province or country)</td><td>✅ Immediate update required</td></tr>
+      <tr><td>Client turns a significant age (e.g., 65, 71 — RRSP conversion to RRIF)</td><td>✅ Review required; objectives and needs change</td></tr>
+    </table>
+  </div>
+
+  <p>Additionally, when the RR has a <strong>reasonable basis to believe KYC has changed</strong>, they must update the records even if the client has not directly informed them.</p>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.8  CLIENT ACCOUNT RECORDS
+══════════════════════════════════════════ -->
+<div class="chapter" id="s8">
+  <div class="section-header">
+    <div class="section-num">1.8</div>
+    <div class="section-title-area">
+      <h2>Types of Client Account Records</h2>
+      <div class="section-sub">IDENTITY VERIFICATION · KYC · DISCLOSURES · DOCUMENTATION</div>
+    </div>
+  </div>
+
+  <p>CIRO requires dealers to maintain a complete and accurate set of records for every client account. These records form the audit trail for regulatory examinations and are essential for compliance. There are five primary categories:</p>
+
+  <div class="diagram">
+    <div class="diagram-title">Client Account Record — Five Components</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="flow-box gold" style="width:100%;text-align:left;padding:14px 20px">
+        <strong>1. Verification of Identity</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,0.75)">Government-issued photo ID (passport, driver's licence). Two pieces of ID or dual-process verification. For corporations: incorporation documents + verification of directors/UBOs. Required under PCMLTFA (anti-money laundering legislation).</span>
+      </div>
+      <div class="flow-box" style="width:100%;text-align:left;padding:14px 20px">
+        <strong>2. Account Appropriateness Assessment</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,0.75)">A separate assessment of whether the account type (e.g., margin, options) is appropriate for this client, based on their KYC information. This is distinct from suitability of individual securities — it assesses whether the account itself is suitable.</span>
+      </div>
+      <div class="flow-box gold" style="width:100%;text-align:left;padding:14px 20px">
+        <strong>3. KYC Information</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,0.75)">The full KYC file — financial circumstances, personal circumstances, investment knowledge, risk profile, investment objectives, constraints, and time horizon. Must be complete, accurate, and current. Client must confirm accuracy.</span>
+      </div>
+      <div class="flow-box" style="width:100%;text-align:left;padding:14px 20px">
+        <strong>4. Acknowledgement of Disclosures</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,0.75)">Signed client acknowledgement that they received and understood: Relationship Disclosure Information (RDI), fee schedules, conflicts of interest disclosure, margin agreement (if applicable), options agreement (if applicable).</span>
+      </div>
+      <div class="flow-box" style="width:100%;text-align:left;padding:14px 20px">
+        <strong>5. Record of TCP Refusal</strong><br>
+        <span style="font-size:12px;color:rgba(255,255,255,0.75)">If the client refused to provide a trusted contact person, this refusal must be specifically documented. This protects the dealer and demonstrates that the RR made the required effort to obtain a TCP.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-label">💡 IDENTITY VERIFICATION — METHOD DETAILS</div>
+    <p>CIRO and FINTRAC (under PCMLTFA) require client identity verification. Acceptable methods include: <br>
+    <strong>(1) Government photo ID method:</strong> One piece of government-issued photo ID (passport, driver's licence, health card in some provinces).<br>
+    <strong>(2) Dual-process method:</strong> Two pieces of ID from different sources (e.g., credit card + utility bill) — used when photo ID is unavailable.<br>
+    <strong>(3) Credit file method:</strong> Verification using a credit bureau check.<br>
+    <strong>(4) Attestation method:</strong> A commissioner of oaths or guarantor attests to the identity — for non-face-to-face accounts.<br>
+    Identity must be re-verified when there is doubt about accuracy of prior verification.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.9  ACCOUNT APPROPRIATENESS
+══════════════════════════════════════════ -->
+<div class="chapter" id="s9">
+  <div class="section-header">
+    <div class="section-num">1.9</div>
+    <div class="section-title-area">
+      <h2>Account Appropriateness Obligation</h2>
+      <div class="section-sub">ACCOUNT-LEVEL SUITABILITY · APPLYING TO SCENARIOS</div>
+    </div>
+  </div>
+
+  <p>Account appropriateness is a <strong>separate obligation from securities suitability</strong> introduced more clearly under the Client Focused Reforms. While suitability asks "is this specific trade suitable for this client?", account appropriateness asks "<mark>is this type of account appropriate for this client's overall objectives and circumstances?</mark>"</p>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin:20px 0 12px;padding-left:12px;border-left:3px solid var(--gold)">Key Principles of Account Appropriateness</h3>
+  <ul class="styled-list">
+    <li>An <strong>options account</strong> is not appropriate for a client with no investment knowledge, low risk tolerance, and a capital preservation objective — even if the client requests it.</li>
+    <li>A <strong>margin account</strong> is not appropriate for a retiree on fixed income who cannot afford to meet a margin call.</li>
+    <li>A <strong>discretionary account</strong> requires specific written authorization and is only appropriate when the client has explicitly agreed to give the dealer full discretion over trading decisions.</li>
+    <li>Account appropriateness must be assessed at account opening AND must be reassessed periodically or when circumstances change.</li>
+  </ul>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin:20px 0 12px;padding-left:12px;border-left:3px solid var(--gold)">Scenario Application</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Scenario</th><th>Account Appropriate?</th><th>Reasoning</th></tr>
+      <tr><td>60-year-old retiree with $80K savings wants a margin account to "boost returns"</td><td>❌ Not appropriate</td><td>Cannot sustain margin calls; income-focused objectives; approaching retirement</td></tr>
+      <tr><td>35-year-old software engineer, $250K savings, high income, sophisticated knowledge requests options account</td><td>✅ Potentially appropriate</td><td>Financial capacity, knowledge, and long time horizon support it; must document suitability of each options strategy</td></tr>
+      <tr><td>A small holding company with passive income wants a non-registered investment account</td><td>✅ Appropriate with proper documentation</td><td>Corporate account with appropriate authority documentation is standard</td></tr>
+      <tr><td>Client with gambling history and impulsive investment decisions wants a discretionary account</td><td>⚠️ Requires careful assessment</td><td>Discretionary account removes client control — this can actually protect against impulsive behaviour if the PM is disciplined</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.10  ACCOUNT TYPES
+══════════════════════════════════════════ -->
+<div class="chapter" id="s10">
+  <div class="section-header">
+    <div class="section-num">1.10</div>
+    <div class="section-title-area">
+      <h2>Types of Client Accounts</h2>
+      <div class="section-sub">ADVISORY · MANAGED · DISCRETIONARY · CASH vs. MARGIN</div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>Advisory (Non-Managed) Accounts</h3>
+    <p>In an advisory account, the RR provides <strong>recommendations and advice</strong>, but the <strong>client makes all final investment decisions</strong>. The RR does not have discretion to trade without client approval for each transaction.</p>
+
+    <h4>Fee-Based Advisory Accounts</h4>
+    <p>Instead of charging a commission per trade, the client pays a <strong>flat percentage fee</strong> (typically 1–2% of assets under management annually). This aligns the RR's compensation with account growth rather than trading volume.</p>
+    <ul class="styled-list">
+      <li><strong>Advantage:</strong> Reduces conflict of interest (RR not incentivized to churn the account)</li>
+      <li><strong>Advantage:</strong> Predictable cost for clients who trade frequently</li>
+      <li><strong>Disadvantage:</strong> Can be expensive for clients who rarely trade or hold long-term static portfolios</li>
+      <li><strong>Disadvantage:</strong> Even in flat/down markets, the fee is still charged</li>
+    </ul>
+
+    <h4>Commission-Based Advisory Accounts</h4>
+    <p>The RR earns a commission for each transaction executed. The commission must be disclosed and is typically a percentage of the trade value or a flat fee per trade.</p>
+    <ul class="styled-list">
+      <li><strong>Advantage:</strong> Client only pays when transactions occur; better for buy-and-hold investors</li>
+      <li><strong>Disadvantage:</strong> Creates conflict of interest — RR may be incentivized to trade more (churning)</li>
+      <li><strong>Regulatory safeguard:</strong> Excessive trading (churning) is prohibited and results in regulatory action</li>
+    </ul>
+  </div>
+
+  <div class="subsection">
+    <h3>Managed Accounts</h3>
+    <p>A managed account is one where a <strong>Portfolio Manager (PM)</strong> or registered individual has been granted authority to make investment decisions <strong>without requiring client approval for each trade</strong>. This is a higher level of service typically for clients with larger portfolios.</p>
+
+    <h4>Key Features of Managed Accounts:</h4>
+    <ul class="check-list">
+      <li>Client signs an Investment Policy Statement (IPS) setting out objectives, risk profile, and constraints</li>
+      <li>The PM has full discretion within the IPS parameters</li>
+      <li>KYC must be reviewed <strong>annually</strong> (more frequently than advisory accounts)</li>
+      <li>Performance reporting is on a <strong>money-weighted return</strong> (MWR) basis</li>
+      <li>Higher regulatory obligations on the PM (portfolio manager registration required)</li>
+    </ul>
+  </div>
+
+  <div class="subsection">
+    <h3>Discretionary Accounts</h3>
+    <p>A discretionary account is one where the RR or dealer has been given written authority by the client to make investment decisions without consulting the client for each trade. This is similar to a managed account but the term is sometimes used more broadly in the industry.</p>
+
+    <div class="callout callout-rule">
+      <div class="callout-label">🔴 KEY RULE</div>
+      <p>Discretionary trading <strong>requires explicit written client authorization</strong>. A verbal agreement is NOT sufficient. Without this written authorization, executing trades without client approval for each trade constitutes <strong>unauthorized trading</strong> — a serious violation. Supervisors must also approve the discretionary arrangement.</p>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>Cash Accounts vs. Margin Accounts</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Feature</th><th>Cash Account</th><th>Margin Account</th></tr>
+        <tr><td><strong>Funding</strong></td><td>Client must pay full value of securities at settlement</td><td>Client can borrow from dealer to purchase securities (leverage)</td></tr>
+        <tr><td><strong>Short Selling</strong></td><td>❌ Not permitted</td><td>✅ Permitted (with restrictions)</td></tr>
+        <tr><td><strong>Settlement</strong></td><td>Must settle by standard settlement date (T+1 for equities in Canada)</td><td>Securities can be held as collateral; more flexibility</td></tr>
+        <tr><td><strong>Risk</strong></td><td>Loss limited to amount invested</td><td>Losses can exceed initial investment; margin calls possible</td></tr>
+        <tr><td><strong>Interest</strong></td><td>No interest charges</td><td>Interest charged on borrowed amount (the debit balance)</td></tr>
+        <tr><td><strong>Margin Call</strong></td><td>N/A</td><td>If account value falls below maintenance margin, dealer can demand additional cash or sell securities</td></tr>
+        <tr><td><strong>Suitability</strong></td><td>Appropriate for all investors</td><td>Only appropriate for investors who understand leverage and can afford to meet margin calls</td></tr>
+      </table>
+    </div>
+
+    <h4>How Margin Works — Example</h4>
+    <div class="callout callout-tip">
+      <div class="callout-label">💡 MARGIN EXAMPLE</div>
+      <p>Client wants to buy $10,000 of Royal Bank (RY) shares. With a 50% initial margin requirement:<br><br>
+      • Client must deposit: <strong>$5,000 (50% of $10,000)</strong><br>
+      • Dealer lends: $5,000<br>
+      • If RY falls 30% → portfolio is worth $7,000<br>
+      • Loan is still $5,000 → Client's equity = $2,000 (only 28.6%)<br>
+      • If maintenance margin is 30%, client receives a <strong>margin call</strong> → must deposit cash or securities<br>
+      • If client cannot meet margin call → dealer can sell securities without client approval</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     1.11  ACCOUNT DOCUMENTATION
+══════════════════════════════════════════ -->
+<div class="chapter" id="s11">
+  <div class="section-header">
+    <div class="section-num">1.11</div>
+    <div class="section-title-area">
+      <h2>Account-Related Documentation &amp; Account Opening</h2>
+      <div class="section-sub">BUSINESS MODEL · PRODUCT OFFERINGS · MULTIPLE ACCOUNTS</div>
+    </div>
+  </div>
+
+  <p>The documentation collected at account opening must be calibrated to <strong>the dealer's business model, the products and services offered, and the nature of the client relationship</strong>. There is no one-size-fits-all documentation approach — CIRO's guidance recognizes that different dealers have different business models that may require different documentation.</p>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin:20px 0 12px;padding-left:12px;border-left:3px solid var(--gold)">Investment Dealer's Business Model</h3>
+  <p>The documentation and depth of KYC collection will vary based on:</p>
+  <ul class="styled-list">
+    <li><strong>Full-service dealer:</strong> Offers broad investment advice; requires comprehensive KYC including full financial picture, ESG preferences, detailed objectives</li>
+    <li><strong>Discount / Self-directed dealer:</strong> Minimal advice; client makes own decisions; documentation is lighter but still requires identity verification, basic KYC, and account appropriateness for specialized accounts (margin, options)</li>
+    <li><strong>Online / Robo-advisor:</strong> May use algorithm-driven KYC questionnaires; must still meet CIRO minimum KYC requirements</li>
+  </ul>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin:20px 0 12px;padding-left:12px;border-left:3px solid var(--gold)">Relationship with Clients &amp; Products Offered</h3>
+  <p>The documentation must reflect <strong>what products and services the dealer offers</strong>. A dealer that offers only mutual funds has a different documentation obligation than one that offers equities, fixed income, derivatives, and alternative investments.</p>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin:20px 0 12px;padding-left:12px;border-left:3px solid var(--gold)">Conditions for One Set of KYC for Multiple Accounts</h3>
+  <p>A client may have multiple accounts at the same dealer (e.g., RRSP + TFSA + Non-registered). CIRO permits a <strong>single set of KYC information</strong> to apply to multiple accounts when:</p>
+  <ul class="check-list">
+    <li>The same individual is the account holder for all accounts</li>
+    <li>The same KYC information applies across all accounts (same objectives, same risk profile, same constraints)</li>
+    <li>The client has explicitly confirmed the KYC information is accurate for all accounts</li>
+    <li>The accounts share the same investment mandate and objectives</li>
+  </ul>
+
+  <div class="callout callout-warning">
+    <div class="callout-label">⚠️ EXCEPTION</div>
+    <p>A <strong>single KYC cannot be used</strong> when accounts have different mandates. For example, if a client's RRSP is "growth-oriented" but their non-registered account is set up for "income" purposes — separate KYC must reflect the specific objectives of each account. Similarly, if one account is managed and another is advisory, they have different regulatory requirements and separate documentation is needed.</p>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin:20px 0 12px;padding-left:12px;border-left:3px solid var(--gold)">Joint Accounts</h3>
+  <p>Joint accounts require KYC for <strong>each account holder</strong>. The RR cannot assume that all joint holders have identical financial situations, risk tolerances, or objectives. The RR must:</p>
+  <ul class="check-list">
+    <li>Collect full KYC for each individual on the account</li>
+    <li>Clarify whether the account is "joint with right of survivorship" (JTWROS) or "tenants in common" (TIC) — this affects estate planning</li>
+    <li>Determine who is the authorized person to give trade instructions</li>
+    <li>Identify any conflicts in objectives between joint holders and document resolution</li>
+  </ul>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PRACTICE QUESTIONS
+══════════════════════════════════════════ -->
+<div id="quiz-section">
+  <div class="quiz-header">Practice Exam — 50 Questions</div>
+  <div class="quiz-sub">ELEMENT 1: KNOW-YOUR-CLIENT &amp; SUITABILITY · EXAM-LEVEL DIFFICULTY</div>
+  <div class="quiz-stats">
+    <div class="quiz-stat"><span class="stat-val">50</span><span class="stat-label">Total Questions</span></div>
+    <div class="quiz-stat"><span class="stat-val" id="answered-count">0</span><span class="stat-label">Answered</span></div>
+    <div class="quiz-stat"><span class="stat-val" id="correct-count">0</span><span class="stat-label">Correct</span></div>
+    <div class="quiz-stat"><span class="stat-val" id="score-pct">—</span><span class="stat-label">Score</span></div>
+  </div>
+  <div class="quiz-controls">
+    <button class="ctrl-btn ctrl-btn-primary" onclick="revealAllAnswers()">Show All Answers</button>
+    <button class="ctrl-btn ctrl-btn-outline" onclick="resetQuiz()">Reset Quiz</button>
+  </div>
+
+  <div id="quiz-body"></div>
+
+  <div class="quiz-score-panel" id="score-panel">
+    <div class="score-val" id="final-score">—</div>
+    <p>out of 50 correct</p>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+
+<div id="back-top" onclick="window.scrollToSection({top:0,behavior:'smooth'})">↑</div>
+
+<script>
+// ── QUESTIONS DATA ──
+const questions = [
+  {
+    num:1, diff:'Easy', topic:'1.1',
+    text:'What does CRM stand for in the context of Canadian securities regulation?',
+    opts:['Credit Risk Management','Client Relationship Model','Compliance and Regulatory Monitoring','Client Revenue Mechanism'],
+    ans:1,
+    explanation:'CRM stands for <strong>Client Relationship Model</strong> — a set of regulatory reforms by the CSA/CIRO requiring enhanced disclosure, performance reporting, and fee transparency in the client–dealer relationship.'
+  },
+  {
+    num:2, diff:'Easy', topic:'1.2',
+    text:'Which of the following is NOT a component of a client\'s financial circumstances under KYC requirements?',
+    opts:['Income','Investment time horizon','Liabilities','Net worth'],
+    ans:1,
+    explanation:'<strong>Investment time horizon</strong> is a separate KYC category — it is part of investment objectives/constraints, not financial circumstances. Financial circumstances include income, liquidity needs, financial assets, liabilities, net worth, and whether the client is borrowing to invest.'
+  },
+  {
+    num:3, diff:'Easy', topic:'1.6',
+    text:'A trusted contact person (TCP) is permitted to do which of the following?',
+    opts:['Place trades on behalf of the client','Provide the RR with the client\'s current contact information','Access full account statements','Override the client\'s investment instructions'],
+    ans:1,
+    explanation:'A TCP can be contacted to <strong>confirm the client\'s contact information</strong>, confirm health status, identify a legal representative, and discuss concerns about exploitation or capacity. A TCP cannot trade, access account details, or override client instructions.'
+  },
+  {
+    num:4, diff:'Easy', topic:'1.3',
+    text:'When a client\'s risk tolerance is higher than their risk capacity, the RR should set the overall risk profile at:',
+    opts:['The higher of the two (risk tolerance)','The average of the two','The lower of the two (risk capacity)','Whichever level the client requests'],
+    ans:2,
+    explanation:'CIRO requires that when risk tolerance and risk capacity conflict, the overall risk profile be set at the <strong>lower of the two</strong>. The conflict must be documented and explained to the client.'
+  },
+  {
+    num:5, diff:'Easy', topic:'1.10',
+    text:'In which account type does the client retain final decision-making authority over all trades?',
+    opts:['Managed account','Discretionary account','Advisory account','Portfolio management account'],
+    ans:2,
+    explanation:'In an <strong>advisory account</strong>, the RR provides advice and recommendations, but the client makes all final investment decisions. In managed and discretionary accounts, the dealer or PM can trade without client approval for each transaction.'
+  },
+  {
+    num:6, diff:'Easy', topic:'1.4',
+    text:'Which business structure provides limited liability protection to ALL of its owners?',
+    opts:['General partnership','Sole proprietorship','Corporation','Limited partnership (for general partners)'],
+    ans:2,
+    explanation:'A <strong>corporation</strong> provides limited liability to all shareholders. In a general partnership, all partners have unlimited liability. A sole proprietor has unlimited personal liability. In a limited partnership, only limited partners have limited liability — general partners still have unlimited liability.'
+  },
+  {
+    num:7, diff:'Easy', topic:'1.7',
+    text:'How frequently must KYC information be reviewed for an advisory account, at a minimum?',
+    opts:['Every 12 months','Every 24 months','Every 36 months','Every 48 months'],
+    ans:2,
+    explanation:'CIRO requires KYC information for <strong>advisory accounts</strong> to be reviewed at a minimum every <strong>36 months</strong>. Managed accounts require annual KYC reviews. Reviews must also occur sooner when triggering events (life changes, etc.) occur.'
+  },
+  {
+    num:8, diff:'Medium', topic:'1.1',
+    text:'Under the Client Focused Reforms (CFRs), what is the correct hierarchy for managing conflicts of interest?',
+    opts:['Disclose → Address → Avoid','Avoid → Address → Disclose','Address → Disclose → Avoid','Identify → Disclose → Eliminate'],
+    ans:1,
+    explanation:'The CFR hierarchy for conflicts is <strong>Avoid → Address → Disclose</strong>. Disclosure alone is not sufficient if the conflict can be avoided. Only after trying to avoid and address a conflict should disclosure be used as the remaining safeguard.'
+  },
+  {
+    num:9, diff:'Medium', topic:'1.1',
+    text:'A Canadian client who owns a condominium in Florida and spends 5 months per year there approaches their RR for investment advice. Which statement is MOST accurate?',
+    opts:['The client is a US resident and the RR cannot serve them','The client is a snowbird and their account remains a Canadian account subject to normal Canadian rules','The client must open a US-registered investment account','The RR must immediately transfer the account to a US-registered dealer'],
+    ans:1,
+    explanation:'A <strong>snowbird</strong> who spends time in the US but maintains Canadian legal residence is treated as a Canadian client. The account remains subject to Canadian rules. Permanent relocation to the US would change this analysis.'
+  },
+  {
+    num:10, diff:'Medium', topic:'1.2',
+    text:'A client tells their RR they want to invest in only companies that score highly on ESG criteria. How should the RR handle this?',
+    opts:['Ignore the preference as it is not a financial consideration','Document the ESG preference as a constraint and factor it into product recommendations, while still ensuring suitability','Only recommend funds explicitly labelled as "ESG" without further assessment','Ask the client to sign a waiver that removes suitability requirements'],
+    ans:1,
+    explanation:'Under the CFRs, ESG preferences are a recognized <strong>investment constraint</strong> that must be documented and factored into product recommendations. However, ESG alignment does not override suitability requirements — recommended products must still meet the client\'s financial objectives and risk profile.'
+  },
+  {
+    num:11, diff:'Medium', topic:'1.6',
+    text:'A client refuses to provide a trusted contact person. What is the CORRECT course of action?',
+    opts:['Refuse to open the account','Open the account but restrict it to cash-only investments','Document the refusal and proceed with account opening','Report the refusal to CIRO immediately'],
+    ans:2,
+    explanation:'If a client refuses to name a TCP, the RR must <strong>document the refusal</strong> in the client file and proceed with account opening. Service cannot be denied solely because the client declined to provide a TCP. The RR should attempt to obtain a TCP again at the next review.'
+  },
+  {
+    num:12, diff:'Medium', topic:'1.6',
+    text:'Which of the following scenarios would MOST likely justify contacting a trusted contact person?',
+    opts:['The client requests to add a new stock to their portfolio','The client is travelling and requests a $500 withdrawal','The client appears confused and is requesting an unusual $50,000 wire transfer to an unfamiliar overseas account','The client\'s portfolio has declined 10% in value'],
+    ans:2,
+    explanation:'An unusual large wire transfer to an unfamiliar overseas account, combined with client confusion, are <strong>red flags for financial exploitation</strong>. This justifies contacting the TCP. Normal portfolio management activities or market-related declines would not warrant a TCP contact.'
+  },
+  {
+    num:13, diff:'Medium', topic:'1.10',
+    text:'An RR executes trades in a client\'s account without client approval for each trade, based on a general understanding from a conversation 6 months ago. This constitutes:',
+    opts:['Proper discretionary trading under implied authorization','Unauthorized trading — a regulatory violation','Acceptable practice in a managed account','Standard advisory account practice'],
+    ans:1,
+    explanation:'Trading without client approval for each transaction without <strong>explicit written discretionary authorization</strong> constitutes <strong>unauthorized trading</strong>. Verbal agreements or general understandings are not sufficient. This is a serious CIRO violation.'
+  },
+  {
+    num:14, diff:'Medium', topic:'1.3',
+    text:'A client with a 3-year time horizon states that their investment objective is aggressive growth. What is the MOST appropriate response from the RR?',
+    opts:['Accept the aggressive growth objective and build an appropriate portfolio','Refuse to serve the client due to the contradictory information','Educate the client on how the short time horizon conflicts with aggressive growth, document the discussion, and set a more appropriate profile','Set the objective to aggressive growth since the client is an adult and can make their own decisions'],
+    ans:2,
+    explanation:'When there is a conflict between client expectations and their profile (short time horizon + aggressive growth), the RR must <strong>educate the client</strong>, explain the conflict, document the discussion, and set a risk profile that reflects actual capacity. The RR cannot simply accept instructions that are inconsistent with the KYC.'
+  },
+  {
+    num:15, diff:'Medium', topic:'1.8',
+    text:'Which record specifically documents that the client received and understood information about the dealer\'s fees, services, and conflicts of interest?',
+    opts:['KYC form','Account appropriateness assessment','Acknowledgement of disclosures','Record of TCP refusal'],
+    ans:2,
+    explanation:'The <strong>acknowledgement of disclosures</strong> (which includes the signed Relationship Disclosure Information) documents that the client received and understood the dealer\'s fees, services, conflict disclosures, and other required information.'
+  },
+  {
+    num:16, diff:'Medium', topic:'1.11',
+    text:'A client has three accounts at the same dealer: an RRSP, a TFSA, and a non-registered account. Under what condition can the dealer use a SINGLE set of KYC information for all three accounts?',
+    opts:['Never — each account always requires its own KYC','When all three accounts have the same objectives, mandate, and risk profile, and the client confirms the KYC applies to all accounts','Only when the client specifically requests it','When the combined value of all accounts exceeds $500,000'],
+    ans:1,
+    explanation:'A single KYC can apply to multiple accounts when the <strong>same individual holds all accounts</strong>, the <strong>same KYC information applies to all</strong>, and the client <strong>confirms the information for all accounts</strong>. If accounts have different mandates or objectives, separate KYC is required.'
+  },
+  {
+    num:17, diff:'Medium', topic:'1.2',
+    text:'Which of the following BEST describes the difference between investment knowledge and risk tolerance?',
+    opts:['They are the same concept measured differently','Investment knowledge is objective (what the client knows); risk tolerance is psychological (how they feel about risk)','Risk tolerance is objective; investment knowledge is psychological','Investment knowledge refers only to past performance; risk tolerance refers only to future expectations'],
+    ans:1,
+    explanation:'<strong>Investment knowledge</strong> is an objective assessment of what financial products and concepts the client understands. <strong>Risk tolerance</strong> is a psychological measure of how comfortable the client is with the possibility of loss. A client can have high knowledge but low tolerance, or vice versa.'
+  },
+  {
+    num:18, diff:'Hard', topic:'1.1',
+    text:'A Canadian registered dealer receives instructions from a US-resident client to execute a large equity trade. The dealer has no SEC or FINRA registration. What is the MOST appropriate course of action?',
+    opts:['Execute the trade as it is for a Canadian security listed on the TSX','Immediately transfer the account to a US-registered dealer without notifying the client','Consult compliance before executing; the dealer may need to restrict or close the account due to cross-border regulatory issues','Execute only the fixed income portion of the trade as fixed income is exempt from US registration requirements'],
+    ans:2,
+    explanation:'Without US registration, a Canadian dealer generally <strong>cannot legally deal with US-resident clients</strong> on an ongoing basis. The RR must escalate to compliance immediately. The firm\'s policy may require restriction or closure of the account. No assumption about specific product exemptions should be made without legal/compliance guidance.'
+  },
+  {
+    num:19, diff:'Hard', topic:'1.3',
+    text:'An 55-year-old client approaching retirement has a high net worth ($3M) with $500K liquid assets, but relies on investment income to fund her $90,000/year lifestyle. She says she is comfortable with high risk. Her existing portfolio has declined 35% in the past year. What risk profile is MOST defensible?',
+    opts:['High risk — she said she is comfortable with it and has high net worth','Aggressive — net worth supports significant risk','Medium — while she has assets, her dependence on investment income for lifestyle significantly constrains her risk capacity','Low — she cannot take any risk due to income dependence'],
+    ans:2,
+    explanation:'Despite high net worth, this client\'s <strong>dependence on $90K/year investment income</strong> materially constrains her risk capacity. A 35% portfolio decline threatens that income. High stated tolerance (willingness) must yield to lower capacity. The MOST defensible profile is <strong>medium</strong>, balancing some growth potential with the real constraint of income dependence. The RR must document the conflict between stated tolerance and actual capacity.'
+  },
+  {
+    num:20, diff:'Hard', topic:'1.6',
+    text:'An elderly client calls requesting an urgent $75,000 wire transfer to an account she has never used before. She explains that a "government official" told her she owes this amount to avoid arrest. The RR suspects a scam. Which combination of actions is MOST appropriate?',
+    opts:['Execute the transfer immediately as it is the client\'s money and she has the right to direct it','Place a temporary hold, contact the trusted contact person, notify the supervisor, and document all steps — do NOT execute the transfer until the situation is investigated','Contact the client\'s family without placing a hold, as the hold requires court approval','Report to CIRO directly and await their instruction before taking any action'],
+    ans:1,
+    explanation:'This is a classic financial exploitation scenario (government impersonation scam). The correct response is to <strong>place a temporary hold</strong>, <strong>contact the TCP</strong> (if one exists), <strong>notify the supervisor</strong>, and <strong>document everything</strong>. Do not execute the transfer until the situation is investigated. CIRO\'s temporary hold provisions exist precisely for this type of situation.'
+  },
+  {
+    num:21, diff:'Hard', topic:'1.11',
+    text:'Which of the following MOST accurately describes the difference between account appropriateness and suitability?',
+    opts:['They are the same obligation described with different terminology','Account appropriateness assesses whether the TYPE of account is suitable for the client overall; suitability assesses whether a SPECIFIC security or trade is appropriate for the client','Suitability applies only to managed accounts; account appropriateness applies to advisory accounts','Account appropriateness is assessed only at account opening; suitability is assessed daily'],
+    ans:1,
+    explanation:'<strong>Account appropriateness</strong> is an account-level assessment — is this type of account (e.g., margin, options, discretionary) appropriate for this client\'s overall profile? <strong>Suitability</strong> is a transaction-level assessment — is this specific security or trade appropriate for this client? Both are required under the CFRs but are distinct obligations.'
+  },
+  {
+    num:22, diff:'Medium', topic:'1.4',
+    text:'When opening an account for a private corporation, which document is MOST critical to verify who has authority to give trading instructions?',
+    opts:['The corporation\'s audited financial statements','A corporate resolution signed by authorized signing officers','The personal tax returns of all shareholders','The corporation\'s marketing materials'],
+    ans:1,
+    explanation:'A <strong>corporate resolution</strong> is required to establish who is authorized to give trading instructions on behalf of the corporation. The RR must also collect incorporation documents and identify the ultimate beneficial owners (UBOs) — those owning 25%+ of the corporation.'
+  },
+  {
+    num:23, diff:'Medium', topic:'1.2',
+    text:'A client mentions they are taking out a $100,000 home equity line of credit to invest in the stock market. What is the RR\'s MOST important obligation?',
+    opts:['Execute the investment immediately to avoid the client seeking another RR','Specifically document that the client is borrowing to invest, assess suitability with leverage in mind, and ensure the client understands amplified risk','Recommend only GICs as they are guaranteed','Decline to serve the client as leveraged investing is always prohibited'],
+    ans:1,
+    explanation:'Borrowing to invest must be <strong>specifically documented in KYC</strong>. The RR must assess whether leveraged investing is suitable given the client\'s profile, and ensure the client fully understands that losses are amplified — they must repay the loan regardless of investment performance. Leveraged investing is not prohibited but requires heightened suitability scrutiny.'
+  },
+  {
+    num:24, diff:'Easy', topic:'1.10',
+    text:'Which account type allows the dealer to purchase securities from its own inventory and sell them to clients?',
+    opts:['Advisory commission-based account (acting as agent)','Advisory account (acting as principal)','Cash account','Margin account'],
+    ans:1,
+    explanation:'When a dealer acts as <strong>principal</strong>, it is trading from its own inventory. This must be disclosed to the client. Commission-based advisory accounts where the RR acts as an agent execute trades in the open market on behalf of the client.'
+  },
+  {
+    num:25, diff:'Medium', topic:'1.3',
+    text:'Which of the following BEST illustrates the concept of "risk need"?',
+    opts:['A client who panics when their portfolio falls 5%','A client who needs 9% annual returns to fund retirement but whose conservative portfolio historically returns 4%','A client who has only $10,000 in total savings','A client who invests exclusively in government bonds'],
+    ans:1,
+    explanation:'<strong>Risk need</strong> refers to how much risk a client must take to achieve their financial goals. A client needing 9% returns but holding a 4%-returning portfolio has a high risk need — their goals require taking more risk than they currently are. This creates a planning challenge.'
+  },
+  {
+    num:26, diff:'Hard', topic:'1.7',
+    text:'An RR uses a standardized KYC questionnaire and accepts all client-provided answers without independent verification or follow-up questions. This practice most likely violates which principle?',
+    opts:['The prohibition on collecting KYC in written form','The non-delegable KYC obligation — the RR has an independent duty to assess accuracy','The requirement for annual KYC reviews','The requirement to use CIRO-standardized forms only'],
+    ans:1,
+    explanation:'The KYC obligation is <strong>non-delegable</strong>. The RR cannot simply pass a form to the client and accept answers uncritically. The RR has an independent duty to verify information, probe for accuracy, and ensure completeness. Simply collecting filled-out forms is not sufficient to meet this obligation.'
+  },
+  {
+    num:27, diff:'Medium', topic:'1.1',
+    text:'Which of the following is an example of the dealer acting as a PRINCIPAL in a transaction?',
+    opts:['Executing a client\'s buy order for Shopify shares on the TSX on behalf of the client','Selling bonds from the dealer\'s own inventory to a client at a marked-up price','Charging the client a commission to purchase a mutual fund','Placing a client\'s sell order on the market and collecting a flat fee'],
+    ans:1,
+    explanation:'When the dealer sells bonds from its <strong>own inventory</strong> at a marked-up price, it is acting as a <strong>principal</strong> — buying from or selling to the client for the dealer\'s own account. The markup is the dealer\'s compensation and must be disclosed. Executing orders on the market on behalf of the client is acting as an agent.'
+  },
+  {
+    num:28, diff:'Medium', topic:'1.6',
+    text:'Under CIRO rules, a temporary hold on a client transaction can be placed for how long before additional steps must be taken?',
+    opts:['Only 24 hours — all holds expire automatically','A reasonable period (generally up to 30 days) while the situation is investigated and appropriate parties notified','Indefinitely until CIRO provides guidance','Until the client provides written consent to proceed'],
+    ans:1,
+    explanation:'A temporary hold is meant to be short-term — generally <strong>up to approximately 30 days</strong> while the situation is investigated. The hold is not permanent. The dealer must take action (lift the hold, escalate to compliance, contact law enforcement, etc.) within this window.'
+  },
+  {
+    num:29, diff:'Easy', topic:'1.5',
+    text:'An RR discusses a complex investment strategy with a client over the phone. What is the RR\'s documentation obligation?',
+    opts:['No documentation is needed for phone calls','Document the key points of the discussion, including any advice given, client questions, and decisions made, as soon as possible after the call','Document only if the trade is executed','Ask the client to send a follow-up email confirming the discussion, and only document once received'],
+    ans:1,
+    explanation:'The RR must <strong>document all substantive client discussions</strong>, including phone calls, as soon as possible after they occur. Waiting for client confirmation is insufficient — the RR must make contemporaneous notes of the discussion.'
+  },
+  {
+    num:30, diff:'Hard', topic:'1.9',
+    text:'A self-directed (discount) brokerage client with no investment knowledge and capital preservation objectives requests to open an options account. Under the account appropriateness obligation, what is the MOST appropriate action?',
+    opts:['Open the account immediately as it is self-directed and the client bears all risk','Open the account but restrict it to covered calls only','Assess account appropriateness — an options account requires sufficient knowledge and appropriate objectives. This client likely does not qualify and the account should be declined.','Open the account and provide basic educational materials on options'],
+    ans:2,
+    explanation:'Account appropriateness applies even to self-directed accounts. An options account requires demonstrated <strong>investment knowledge and objectives consistent with options strategies</strong>. A client with no knowledge and a capital preservation objective does not meet the threshold for an options account. The dealer must decline to open the account in this form and explain why.'
+  },
+  {
+    num:31, diff:'Medium', topic:'1.2',
+    text:'Which of the following statements about ESG investing under CIRO\'s KYC framework is CORRECT?',
+    opts:['ESG preferences override all other suitability considerations','ESG preferences must be documented as a constraint and factored into recommendations, but cannot override financial suitability requirements','ESG preferences need not be documented unless the client invests more than $100,000','RRs are prohibited from recommending ESG products without specialized certification'],
+    ans:1,
+    explanation:'ESG preferences are a <strong>documented investment constraint</strong>. They must be captured in KYC and reflected in recommendations. However, ESG constraints cannot override suitability — a product that meets ESG criteria but is financially unsuitable for the client cannot be recommended.'
+  },
+  {
+    num:32, diff:'Hard', topic:'1.3',
+    text:'A client questionnaire shows moderate risk tolerance. However, in reviewing the client\'s finances, the RR finds that the client is retired, has no pension, relies entirely on their $400K portfolio for income, has no other assets, and has a $180K outstanding mortgage. What risk assessment is MOST defensible?',
+    opts:['Moderate — matching the questionnaire result','High — the client needs growth to sustain retirement income','Low to Low-Medium — the client\'s risk capacity is severely constrained by reliance on the portfolio for all income with significant debt outstanding','Medium-High — the client has a long potential life expectancy and needs growth'],
+    ans:2,
+    explanation:'Despite moderate stated tolerance, this client\'s risk <strong>capacity is very low</strong>: total assets = $400K, liabilities = $180K (net worth $220K), no pension, no other income. A significant loss would devastate their retirement. The RR must override the questionnaire result and set the profile at <strong>Low to Low-Medium</strong>, document the conflict, and explain this to the client.'
+  },
+  {
+    num:33, diff:'Medium', topic:'1.4',
+    text:'A client operates a farming co-operative with 200 members. For KYC purposes, which of the following is MOST important to obtain?',
+    opts:['Personal KYC for all 200 members','Co-operative incorporation documents and board resolution authorizing the account, plus KYC for signing officers','Only the co-operative\'s financial statements','The personal tax returns of the co-operative chair'],
+    ans:1,
+    explanation:'For a co-operative, the RR must obtain the <strong>co-operative\'s incorporation/registration documents and board resolution</strong> authorizing the account opening, along with KYC/identity for the authorized signing officers. KYC is not required for all 200 members — only those who are authorized to give instructions on the account.'
+  },
+  {
+    num:34, diff:'Easy', topic:'1.10',
+    text:'What happens when a client\'s margin account falls below the maintenance margin requirement?',
+    opts:['The account is automatically closed','The client receives a margin call, requiring them to deposit additional funds or securities; if they fail to do so, the dealer can liquidate positions without client consent','The client is charged a penalty fee and the account continues unchanged','The RR must personally fund the shortfall'],
+    ans:1,
+    explanation:'When an account falls below the maintenance margin, the dealer issues a <strong>margin call</strong>. If the client cannot meet it, the dealer has the right to <strong>sell securities in the account without prior client consent</strong> to bring the account back into compliance.'
+  },
+  {
+    num:35, diff:'Medium', topic:'1.11',
+    text:'Under what circumstances is a discount broker required to perform the same depth of KYC as a full-service broker?',
+    opts:['Never — discount brokers have no KYC obligations','Always — both must meet identical KYC requirements for all products','For specialized account types (margin, options) where account appropriateness must be assessed, regardless of the business model','Only for accounts over $1 million in value'],
+    ans:2,
+    explanation:'While CIRO acknowledges different business models require different depths of KYC, <strong>all dealers must assess account appropriateness</strong> for specialized accounts (margin, options, discretionary). A discount broker cannot skip this step simply because they do not offer advice. The KYC depth varies by service, but minimum requirements always apply.'
+  },
+  {
+    num:36, diff:'Hard', topic:'1.1',
+    text:'A client moves from Ontario to Quebec. Which statement is MOST accurate regarding the RR\'s obligations?',
+    opts:['No action required — Canadian securities law is uniform across all provinces','The RR must immediately update the client\'s address and reassess product suitability, as some products may not be registerable in Quebec under AMF rules. Compliance must be notified.','The account must be closed as cross-provincial accounts are not permitted','Only the address field in the system needs updating — no other action required'],
+    ans:1,
+    explanation:'A change of province requires immediate <strong>address and KYC update</strong> plus a <strong>product suitability reassessment</strong>. Quebec is regulated by the AMF (Autorité des marchés financiers) in addition to CIRO, and some products or account types may have different requirements. Compliance must be notified of cross-provincial changes.'
+  },
+  {
+    num:37, diff:'Medium', topic:'1.6',
+    text:'An RR notices that over the past 3 months, an elderly client has called frequently, seems confused during conversations, and has made several contradictory trade requests that are out of character. What is the MOST appropriate first step?',
+    opts:['Assume the client is acting rationally and execute all requested trades without question','Continue as normal and wait for the client to disclose a health issue','Recognize potential capacity concerns, document observations, discuss with supervisor, and consider contacting the trusted contact person','Immediately freeze the account and report to CIRO'],
+    ans:2,
+    explanation:'These are clear <strong>capacity concern red flags</strong>. The RR should: <strong>document observations</strong>, <strong>discuss with supervisor</strong>, and consider <strong>contacting the TCP</strong>. Immediately freezing the account without following proper procedures would be an overreach. Ignoring the signs entirely would be a violation of the RR\'s duty of care.'
+  },
+  {
+    num:38, diff:'Easy', topic:'1.8',
+    text:'Which of the following identity verification methods is acceptable for a non-face-to-face account opening?',
+    opts:['Verbal confirmation of name and date of birth','Attestation method — a commissioner of oaths or guarantor verifies the client\'s identity','Credit card number provided over the phone','Email from the client\'s personal email address'],
+    ans:1,
+    explanation:'For non-face-to-face account openings, the <strong>attestation method</strong> (a commissioner of oaths or guarantor verifies identity) is an acceptable FINTRAC-compliant method. Simple verbal confirmation or email is not sufficient under AML identity verification requirements.'
+  },
+  {
+    num:39, diff:'Hard', topic:'1.2',
+    text:'A client says "just put my risk tolerance as high — I don\'t care about the form." The RR suspects this may not reflect the client\'s true situation. What is the MOST appropriate response?',
+    opts:['Accept "high risk" as the client is an adult and has the right to self-determine','Accept "high risk" but note the client\'s comment in file','Explain to the client the purpose of accurate KYC, independently assess risk tolerance and capacity through further discussion, and document the client\'s instruction and the RR\'s own assessment','Mark "high risk" and proceed — the client signed the form so liability is theirs'],
+    ans:2,
+    explanation:'An RR cannot simply accept a client\'s instruction to complete the form arbitrarily. The RR has an <strong>independent, non-delegable obligation</strong> to ensure KYC accuracy. The RR must <strong>educate the client</strong>, conduct a proper assessment through discussion and probing questions, document the client\'s instruction, and record the RR\'s independent assessment. KYC cannot be manipulated to match client preferences.'
+  },
+  {
+    num:40, diff:'Medium', topic:'1.10',
+    text:'A client in a fee-based advisory account makes very few trades — averaging only 2 per year. What is the MOST relevant concern for the RR to consider?',
+    opts:['Churning — the account needs more trades to justify the fee','Account appropriateness — a commission-based account may actually be more cost-effective for this low-activity client, and this should be discussed','That the client may not be getting enough advice for their fee','No concern — fee-based accounts are always superior to commission-based accounts'],
+    ans:1,
+    explanation:'For a very low-activity client, a <strong>commission-based account may be more cost-effective</strong> than paying a percentage-of-assets fee for only 2 trades per year. The RR should consider whether the fee-based account remains appropriate and discuss this with the client. This is part of the account appropriateness obligation.'
+  },
+  {
+    num:41, diff:'Hard', topic:'1.3',
+    text:'A client says their goal is "to not lose any money" but their required rate of return to fund their retirement in 15 years is 8% per year. How should the RR address this conflict?',
+    opts:['Recommend a 100% GIC portfolio to match the stated preference for no loss','Ignore the goal conflict and build an aggressive portfolio since the return is more important','Educate the client on the relationship between risk and return, explain that 8% returns require accepting market risk, explore if goals can be adjusted (retire later, spend less), document the full discussion, and find a mutually agreeable risk profile','Tell the client they must choose between their two contradictory goals before service can proceed'],
+    ans:2,
+    explanation:'This is a classic <strong>risk need vs. risk tolerance conflict</strong>. The RR must: educate the client, explore goal flexibility (retire later, reduce expenses, save more), find a compromise risk profile the client can genuinely accept, and document everything. Ignoring either side of the conflict or forcing a binary choice is inappropriate.'
+  },
+  {
+    num:42, diff:'Medium', topic:'1.4',
+    text:'Under Canadian federal law, what is the maximum number of shareholders a private corporation can have?',
+    opts:['25','50','100','No limit'],
+    ans:1,
+    explanation:'Under the Canada Business Corporations Act (CBCA), a <strong>private corporation (non-distributing corporation)</strong> may have no more than <strong>50 shareholders</strong>, and it restricts the transfer of shares. Public corporations have no such limit.'
+  },
+  {
+    num:43, diff:'Hard', topic:'1.6',
+    text:'An RR places a temporary hold on a client\'s $30,000 transfer after suspecting exploitation. The supervisor approves the hold. The client calls, demanding the transfer be processed immediately and threatening to complain to CIRO. What is the MOST appropriate response?',
+    opts:['Immediately release the hold to avoid the complaint — client satisfaction is paramount','Maintain the hold, explain to the client (without revealing all investigation details) that the hold is a temporary protective measure, document the client\'s objection, and continue investigating according to procedures','Transfer the funds and note the complaint in the file','Ask the client to obtain a lawyer\'s letter before the funds can be released'],
+    ans:1,
+    explanation:'Once a supervisor-approved temporary hold is in place for a legitimate reason, the RR should <strong>maintain it</strong> despite client pressure. The client should be informed that it is a temporary protective measure. The <strong>threat of a complaint does not override the protective obligation</strong>. All communications must be documented. Releasing the hold under pressure without resolving the exploitation concern would be a serious failure.'
+  },
+  {
+    num:44, diff:'Easy', topic:'1.7',
+    text:'A client\'s adult child calls the RR and says "Mom told me to sell all her bonds — please do it." The RR has no documentation authorizing the child to give trading instructions. What should the RR do?',
+    opts:['Execute the trade since it involves a family member','Execute the trade but document the child\'s instruction','Decline to execute the trade and contact the client directly to verify the instructions and obtain proper authorization','Ask the child to provide their mother\'s SIN as verification and proceed'],
+    ans:2,
+    explanation:'Trading instructions can only be accepted from <strong>authorized individuals</strong> — the account holder, or someone with documented legal authority (e.g., power of attorney). An adult child has no authority without proper documentation. The RR must <strong>contact the client directly</strong> to verify and must obtain proper authorization before proceeding.'
+  },
+  {
+    num:45, diff:'Medium', topic:'1.9',
+    text:'Which of the following BEST describes the account appropriateness obligation for a margin account?',
+    opts:['Any client can have a margin account if they request one','The RR must assess whether the client has the financial means to meet margin calls, understands leverage risk, and has objectives consistent with leveraged investing','Margin accounts are appropriate only for clients with over $500,000 in assets','Margin accounts are inappropriate for all retail clients under CIRO rules'],
+    ans:1,
+    explanation:'For a margin account, the <strong>account appropriateness assessment</strong> must confirm the client understands margin risk, has the financial capacity to meet margin calls (income and net worth to sustain losses), and has investment objectives consistent with the use of leverage. There is no minimum asset threshold in CIRO rules, but suitability must be assessed.'
+  },
+  {
+    num:46, diff:'Hard', topic:'1.11',
+    text:'A full-service dealer opens a new account for a sophisticated investor. The client states they want to invest in alternative investments, structured products, and private placements. What additional documentation is MOST important in this scenario?',
+    opts:['A simple new account application form is sufficient','In addition to standard KYC, accredited investor status verification, enhanced suitability documentation for each complex product, and specific risk disclosures for alternative investments are required','Only the client\'s net worth statement is required','Standard KYC plus a verbal confirmation of risk tolerance is sufficient'],
+    ans:1,
+    explanation:'Complex and alternative products require <strong>enhanced documentation</strong>: confirmation of accredited investor status (under securities law), product-specific suitability assessments for each alternative investment type, specific risk disclosures, and KYC showing the client has the knowledge, capacity, and objectives to justify these products.'
+  },
+  {
+    num:47, diff:'Medium', topic:'1.2',
+    text:'A client\'s spouse has sophisticated investment knowledge and high risk tolerance. Can the RR apply these characteristics to the client\'s KYC profile?',
+    opts:['Yes — spouses typically share the same financial profile','Yes — if the spouse is also a joint account holder','No — KYC must reflect the specific individual client\'s own characteristics; a spouse\'s attributes cannot be attributed to the other','Yes — with written consent from both spouses'],
+    ans:2,
+    explanation:'CIRO rules are explicit: KYC is <strong>specific to each individual client</strong>. The RR cannot attribute a spouse\'s investment experience, knowledge, or risk tolerance to the other spouse. Each client must be assessed on their own individual circumstances.'
+  },
+  {
+    num:48, diff:'Hard', topic:'1.3',
+    text:'A 42-year-old client with $500,000 in investments, $120,000 annual income, no debt, and a 20-year investment horizon scores moderate on a risk tolerance questionnaire but insists they want an aggressive growth mandate. What is the MOST defensible course of action?',
+    opts:['Set the profile to moderate and override the client\'s request','Accept aggressive growth as the mandate since the client\'s financial capacity clearly supports it and the long time horizon allows recovery from losses — document the discussion and the rationale','Always use the lower of stated and assessed risk','Refer the client to a portfolio manager as this is too complex for an advisory account'],
+    ans:1,
+    explanation:'This is a case where <strong>risk capacity clearly supports</strong> a higher risk level (high income, no debt, long horizon, significant assets). The conflict is between moderate stated tolerance (questionnaire) and aggressive preference. The RR should explore why the questionnaire showed moderate when the client wants aggressive, educate the client, and if the client genuinely understands and accepts the risks of aggressive growth, it can be set to <strong>aggressive — with the full discussion documented</strong>. The rule is the lower of capacity and tolerance — if tolerance is actually moderate, that limits it; but the RR must probe carefully.'
+  },
+  {
+    num:49, diff:'Easy', topic:'1.1',
+    text:'Under the Client Relationship Model, which of the following disclosures must be provided to a new client BEFORE or AT the time of account opening?',
+    opts:['Annual performance report','Relationship Disclosure Information (RDI) — covering services, fees, and conflicts','Quarterly account statement','Monthly trading summary'],
+    ans:1,
+    explanation:'The <strong>Relationship Disclosure Information (RDI)</strong> must be provided at or before account opening. It covers the nature of the relationship, services offered, fee schedule, and conflict of interest disclosures. The annual performance report and fee report are provided annually after account opening.'
+  },
+  {
+    num:50, diff:'Hard', topic:'1.6',
+    text:'Which combination of factors MOST clearly indicates that a temporary hold is warranted on a client\'s account?',
+    opts:['Client requests a routine dividend reinvestment change; client has not called in 6 months','Client asks to add a new beneficiary to their RRSP; client is on vacation','Client appears confused on a call, is requesting a $60,000 wire to an unfamiliar overseas account, and mentions someone told them they "must do this today or face legal consequences"','Client requests a withdrawal equal to 5% of their portfolio for a home renovation'],
+    ans:2,
+    explanation:'The combination of <strong>client confusion + unusual large wire transfer + unfamiliar account + external pressure with urgency</strong> are multiple simultaneous red flags for financial exploitation (a classic scam pattern). This strongly justifies a temporary hold while the situation is investigated and the TCP is contacted. Routine transactions, modest withdrawals, or normal account changes do not warrant a hold.'
+  }
+];
+
+let answered = {};
+let correct = 0;
+
+function buildQuiz(){
+  const container = document.getElementById('quiz-body');
+  container.innerHTML = '';
+  questions.forEach((q,i)=>{
+    const d = document.createElement('div');
+    d.className = 'q-item';
+    d.id = 'q'+q.num;
+    const diffClass = q.diff==='Easy'?'diff-easy':q.diff==='Medium'?'diff-medium':'diff-hard';
+    let opts = q.opts.map((o,j)=>`<li onclick="selectOption(${q.num},${j})" id="opt-${q.num}-${j}">${String.fromCharCode(65+j)}) ${o}</li>`).join('');
+    d.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">Q${q.num}</span>
+        <span class="q-diff ${diffClass}">${q.diff}</span>
+        <span class="q-topic">§${q.topic}</span>
+      </div>
+      <div class="q-text">${q.text}</div>
+      <ul class="q-options">${opts}</ul>
+      <button class="show-ans-btn" onclick="toggleAnswer(${q.num})">Show Explanation</button>
+      <div class="q-answer" id="ans-${q.num}"><strong>Correct Answer: ${String.fromCharCode(65+q.ans)})</strong> ${q.opts[q.ans]}<br><br>${q.explanation}</div>
+    `;
+    container.appendChild(d);
+  });
+}
+
+function selectOption(qnum, selected){
+  if(answered[qnum] !== undefined) return;
+  answered[qnum] = selected;
+  const q = questions[qnum-1];
+  const isCorrect = selected === q.ans;
+  if(isCorrect) correct++;
+
+  // Mark options
+  q.opts.forEach((_,j)=>{
+    const el = document.getElementById(`opt-${qnum}-${j}`);
+    if(j===selected && isCorrect) el.classList.add('correct');
+    else if(j===selected && !isCorrect) el.classList.add('wrong');
+    if(j===q.ans && !isCorrect) el.classList.add('reveal-correct');
+  });
+
+  updateStats();
+}
+
+function toggleAnswer(qnum){
+  const el = document.getElementById('ans-'+qnum);
+  el.classList.toggle('show');
+}
+
+function updateStats(){
+  const total = Object.keys(answered).length;
+  document.getElementById('answered-count').textContent = total;
+  document.getElementById('correct-count').textContent = correct;
+  const pct = total > 0 ? Math.round((correct/total)*100)+'%' : '—';
+  document.getElementById('score-pct').textContent = pct;
+  if(total===50){
+    const panel = document.getElementById('score-panel');
+    panel.style.display='block';
+    document.getElementById('final-score').textContent = correct;
+  }
+}
+
+function revealAllAnswers(){
+  questions.forEach(q=>{
+    document.getElementById('ans-'+q.num).classList.add('show');
+    if(answered[q.num]===undefined){
+      document.getElementById(`opt-${q.num}-${q.ans}`).classList.add('reveal-correct');
+    }
+  });
+}
+
+function resetQuiz(){
+  answered = {};
+  correct = 0;
+  document.getElementById('answered-count').textContent=0;
+  document.getElementById('correct-count').textContent=0;
+  document.getElementById('score-pct').textContent='—';
+  document.getElementById('score-panel').style.display='none';
+  buildQuiz();
+}
+
+buildQuiz();
+
+// ── NAVIGATION ──
+function scrollToSection(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+}
+
+function filterNav(query){
+  const q = query.toLowerCase();
+  document.querySelectorAll('.nav-item').forEach(item=>{
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+
+// ── SCROLL PROGRESS ──
+window.addEventListener('scroll',()=>{
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = Math.min(100, (window.scrollY/docH)*100);
+  document.getElementById('prog-fill').style.width = pct+'%';
+  const btn = document.getElementById('back-top');
+  btn.classList.toggle('visible', window.scrollY > 400);
+
+  // Active nav highlight
+  const sections = ['hero','s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s11','quiz-section'];
+  sections.forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    const rect = el.getBoundingClientRect();
+    if(rect.top <= 100 && rect.bottom >= 100){
+      document.querySelectorAll('.nav-item').forEach(n=>{
+        n.classList.toggle('active', n.getAttribute('onclick') && n.getAttribute('onclick').includes(id));
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>
