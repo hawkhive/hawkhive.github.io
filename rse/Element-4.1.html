@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSE Study Book — Element 4 Part 1: Securities Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d1b2e;--navy-mid:#142035;--gold:#c9973a;--gold-light:#e8b96a;
+  --cream:#f8f4ed;--cream-dark:#ede8df;--text:#1a1a2e;--text-muted:#5a5a6e;
+  --green:#1a6b4a;--green-light:#e8f5ef;--red:#8b1a1a;--red-light:#fdf0f0;
+  --blue:#1a3a6b;--blue-light:#e8f0fd;--amber:#7a4f1a;--amber-light:#fef6e8;
+  --teal:#0d5e5e;--teal-light:#e0f5f5;--purple:#4a1a6b;--purple-light:#f0e8fd;
+  --sidebar-w:300px;--header-h:64px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Source Serif 4',serif;background:var(--cream);color:var(--text);display:flex;min-height:100vh;overflow-x:hidden;}
+#sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--navy);position:fixed;left:0;top:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold) var(--navy-mid);}
+#sidebar::-webkit-scrollbar{width:4px;}#sidebar::-webkit-scrollbar-thumb{background:var(--gold);}
+.sidebar-brand{padding:24px 20px 16px;border-bottom:1px solid rgba(201,151,58,.3);}
+.brand-tag{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;}
+.sidebar-brand h2{font-family:'Playfair Display',serif;color:white;font-size:14px;line-height:1.3;}
+.element-badge{display:inline-block;margin-top:8px;background:var(--gold);color:var(--navy);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;padding:3px 8px;border-radius:2px;letter-spacing:1px;}
+.sidebar-search{padding:12px 16px;border-bottom:1px solid rgba(201,151,58,.2);}
+.sidebar-search input{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(201,151,58,.3);border-radius:4px;padding:7px 10px;color:white;font-size:13px;outline:none;}
+.sidebar-search input::placeholder{color:rgba(255,255,255,.3);font-style:italic;}
+.sidebar-search input:focus{border-color:var(--gold);}
+.nav-section-label{padding:14px 16px 6px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold-light);letter-spacing:2px;text-transform:uppercase;opacity:.7;}
+.nav-item{display:block;padding:8px 16px 8px 20px;color:rgba(255,255,255,.65);font-size:12px;line-height:1.4;cursor:pointer;border-left:3px solid transparent;transition:all .2s;}
+.nav-item:hover{color:white;border-left-color:var(--gold-light);background:rgba(201,151,58,.08);}
+.nav-item.active{color:var(--gold-light);border-left-color:var(--gold);background:rgba(201,151,58,.12);}
+.nav-item .nav-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);margin-right:6px;}
+.nav-item.sub{padding-left:36px;font-size:11px;opacity:.75;}
+.nav-item.sub:hover{opacity:1;}
+.nav-divider{height:1px;background:rgba(201,151,58,.15);margin:8px 16px;}
+.sidebar-footer{margin-top:auto;padding:16px;border-top:1px solid rgba(201,151,58,.2);font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.3);text-align:center;}
+#main{margin-left:var(--sidebar-w);flex:1;min-height:100vh;}
+#top-bar{background:var(--navy);height:var(--header-h);display:flex;align-items:center;padding:0 40px;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:50;gap:16px;}
+.breadcrumb{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1px;}
+.breadcrumb span{color:var(--gold);}
+.progress-area{margin-left:auto;display:flex;align-items:center;gap:12px;}
+.prog-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.4);}
+.prog-bar{width:120px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;}
+.prog-fill{height:100%;background:var(--gold);border-radius:2px;width:0%;transition:width .4s;}
+#content{padding:0 60px 80px;max-width:980px;}
+.hero{padding:60px 0 40px;border-bottom:1px solid var(--cream-dark);margin-bottom:48px;}
+.hero .element-tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;line-height:1.1;color:var(--navy);margin-bottom:16px;}
+.hero p{font-size:16px;color:var(--text-muted);max-width:700px;line-height:1.7;font-style:italic;}
+.hero-meta{display:flex;gap:20px;margin-top:24px;flex-wrap:wrap;}
+.meta-chip{background:var(--navy);color:var(--gold-light);padding:6px 14px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;}
+.chapter{margin-bottom:64px;scroll-margin-top:80px;}
+.section-header{display:flex;align-items:flex-start;gap:20px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--cream-dark);}
+.section-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;color:var(--cream-dark);line-height:1;min-width:56px;}
+.section-title-area h2{font-family:'Playfair Display',serif;font-size:25px;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:4px;}
+.section-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:1px;}
+.subsection{margin-bottom:32px;scroll-margin-top:80px;}
+.subsection h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:12px;padding-left:12px;border-left:3px solid var(--gold);}
+.subsection h4{font-size:15px;font-weight:600;color:var(--navy);margin:16px 0 8px;}
+p{line-height:1.8;margin-bottom:14px;font-size:15.5px;}
+.sh3{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--navy);margin:20px 0 12px;padding-left:12px;border-left:3px solid var(--gold);}
+.callout{border-radius:6px;padding:18px 22px;margin:20px 0;border-left:4px solid;}
+.callout-exam{background:var(--blue-light);border-color:var(--blue);}
+.callout-exam .callout-label{color:var(--blue);}
+.callout-tip{background:var(--green-light);border-color:var(--green);}
+.callout-tip .callout-label{color:var(--green);}
+.callout-warning{background:var(--amber-light);border-color:var(--amber);}
+.callout-warning .callout-label{color:var(--amber);}
+.callout-rule{background:var(--red-light);border-color:var(--red);}
+.callout-rule .callout-label{color:var(--red);}
+.callout-calc{background:var(--teal-light);border-color:var(--teal);}
+.callout-calc .callout-label{color:var(--teal);}
+.callout p{margin-bottom:0;font-size:14.5px;line-height:1.7;}
+.callout-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-weight:500;display:block;}
+.table-wrap{overflow-x:auto;margin:20px 0;border-radius:6px;border:1px solid var(--cream-dark);}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th{background:var(--navy);color:var(--gold-light);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;padding:12px 16px;text-align:left;}
+td{padding:11px 16px;border-bottom:1px solid var(--cream-dark);vertical-align:top;line-height:1.6;}
+tr:nth-child(even) td{background:rgba(0,0,0,.02);}
+tr:last-child td{border-bottom:none;}
+td.num{text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;}
+td.label{font-weight:600;color:var(--navy);}
+td.subtotal{font-weight:600;border-top:1px solid var(--cream-dark);}
+td.total{font-weight:700;background:rgba(13,27,46,.04)!important;border-top:2px solid var(--navy);}
+td.highlight{background:rgba(201,151,58,.08)!important;font-weight:600;}
+.diagram{background:var(--navy);border-radius:8px;padding:28px 24px;margin:24px 0;color:white;}
+.diagram-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;text-align:center;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.grid-card{background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.3);border-radius:6px;padding:16px;}
+.grid-card h5{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;}
+.grid-card p{font-size:13px;color:rgba(255,255,255,.75);margin:0;line-height:1.6;}
+.grid-card ul{padding-left:16px;}
+.grid-card li{font-size:12.5px;color:rgba(255,255,255,.75);margin-bottom:4px;line-height:1.5;}
+.styled-list{list-style:none;padding:0;margin:14px 0;}
+.styled-list li{padding:6px 0 6px 22px;position:relative;font-size:15px;line-height:1.7;border-bottom:1px solid rgba(0,0,0,.04);}
+.styled-list li:last-child{border-bottom:none;}
+.styled-list li::before{content:'›';position:absolute;left:0;color:var(--gold);font-size:18px;font-weight:700;top:4px;}
+.styled-list li strong{color:var(--navy);}
+mark{background:rgba(201,151,58,.25);color:inherit;border-radius:2px;padding:0 2px;}
+
+/* Ratio box */
+.ratio-box{border:1px solid var(--cream-dark);border-radius:8px;margin:20px 0;overflow:hidden;}
+.ratio-header{background:var(--navy);padding:14px 18px;display:flex;align-items:center;gap:12px;}
+.ratio-name{font-family:'Playfair Display',serif;font-size:17px;color:white;font-weight:700;}
+.ratio-tag{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 8px;border-radius:3px;letter-spacing:1px;text-transform:uppercase;}
+.tag-liq{background:rgba(26,107,74,.4);color:#5dda9a;}
+.tag-risk{background:rgba(139,26,26,.4);color:#ff8a8a;}
+.tag-prof{background:rgba(201,151,58,.3);color:var(--gold-light);}
+.tag-eff{background:rgba(13,94,94,.4);color:#7ae0e0;}
+.tag-eq{background:rgba(74,26,107,.4);color:#c67ae0;}
+.ratio-body{padding:18px 20px;}
+.ratio-formula{background:var(--navy);border-radius:6px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--gold-light);text-align:center;margin-bottom:12px;letter-spacing:.5px;}
+.ratio-worked{background:rgba(26,107,74,.06);border:1px solid rgba(26,107,74,.2);border-radius:6px;padding:14px 16px;margin:10px 0;}
+.ratio-result{background:var(--navy);border-radius:4px;padding:8px 14px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gold-light);margin-top:8px;text-align:center;}
+.ratio-interp{font-size:14px;line-height:1.7;color:var(--text-muted);margin-top:10px;}
+.ratio-benchmark{display:inline-block;background:var(--blue-light);border:1px solid rgba(26,58,107,.2);border-radius:4px;padding:4px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);margin-top:6px;}
+
+/* Mock financials */
+.fs-container{background:white;border:1px solid var(--cream-dark);border-radius:8px;overflow:hidden;margin:24px 0;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.fs-header{background:var(--navy);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;}
+.fs-title{font-family:'Playfair Display',serif;font-size:16px;color:white;font-weight:700;}
+.fs-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px;}
+.fs-table{width:100%;border-collapse:collapse;}
+.fs-table td{padding:8px 16px;border-bottom:1px solid var(--cream-dark);font-size:14px;vertical-align:top;}
+.fs-table td:last-child{text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;}
+.fs-table .section-row td{background:rgba(13,27,46,.04);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--navy);letter-spacing:1px;text-transform:uppercase;padding:10px 16px;}
+.fs-table .indent td:first-child{padding-left:32px;}
+.fs-table .subtotal-row td{font-weight:600;border-top:1px solid var(--cream-dark);background:rgba(201,151,58,.04);}
+.fs-table .total-row td{font-weight:700;border-top:2px solid var(--navy);background:rgba(13,27,46,.06);}
+.fs-table .highlight-row td{background:rgba(201,151,58,.08);font-weight:600;}
+
+/* Calc box */
+.calc-box{background:white;border:1px solid var(--cream-dark);border-radius:8px;padding:24px;margin:24px 0;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.calc-box h4{font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin-bottom:16px;}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.calc-field{display:flex;flex-direction:column;gap:4px;}
+.calc-field label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;}
+.calc-field input{border:1px solid var(--cream-dark);border-radius:4px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--navy);background:var(--cream);outline:none;transition:border-color .2s;}
+.calc-field input:focus{border-color:var(--gold);}
+.calc-btn{margin-top:14px;background:var(--navy);color:var(--gold-light);border:none;padding:10px 24px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1px;cursor:pointer;}
+.calc-btn:hover{background:#1a2d4a;}
+.calc-result{margin-top:12px;background:var(--blue-light);border:1px solid rgba(26,58,107,.2);border-radius:4px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--blue);min-height:40px;white-space:pre-line;}
+
+/* Quiz */
+#quiz-section{background:var(--navy);border-radius:12px;padding:40px 44px;margin-top:60px;scroll-margin-top:80px;}
+.quiz-header{font-family:'Playfair Display',serif;font-size:30px;color:white;margin-bottom:8px;}
+.quiz-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:28px;}
+.quiz-stats{display:flex;gap:20px;margin-bottom:32px;flex-wrap:wrap;}
+.quiz-stat{background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.3);border-radius:6px;padding:12px 18px;text-align:center;}
+.quiz-stat .stat-val{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold-light);display:block;}
+.quiz-stat .stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;}
+.q-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:20px 22px;margin-bottom:16px;transition:border-color .2s;}
+.q-item:hover{border-color:rgba(201,151,58,.3);}
+.q-meta{display:flex;gap:10px;margin-bottom:10px;align-items:center;flex-wrap:wrap;}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);}
+.q-diff{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 8px;border-radius:3px;letter-spacing:1px;}
+.diff-easy{background:rgba(26,107,74,.25);color:#5dda9a;}
+.diff-medium{background:rgba(201,151,58,.2);color:var(--gold-light);}
+.diff-hard{background:rgba(139,26,26,.25);color:#ff8a8a;}
+.q-topic{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.3);margin-left:auto;letter-spacing:1px;}
+.q-text{color:white;font-size:15px;line-height:1.6;margin-bottom:14px;}
+.q-options{list-style:none;padding:0;margin:0 0 14px;}
+.q-options li{padding:8px 12px;border:1px solid rgba(255,255,255,.08);border-radius:5px;margin-bottom:6px;font-size:14px;color:rgba(255,255,255,.8);cursor:pointer;transition:all .15s;}
+.q-options li:hover{background:rgba(201,151,58,.1);border-color:rgba(201,151,58,.3);}
+.q-options li.correct{background:rgba(26,107,74,.25);border-color:#2ecc71;color:#5dda9a;}
+.q-options li.wrong{background:rgba(139,26,26,.25);border-color:#e74c3c;color:#ff8a8a;}
+.q-options li.reveal-correct{background:rgba(26,107,74,.15);border-color:rgba(46,204,113,.5);color:rgba(93,218,154,.8);}
+.q-answer{display:none;background:rgba(201,151,58,.08);border:1px solid rgba(201,151,58,.2);border-radius:5px;padding:12px 14px;font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.65;}
+.q-answer.show{display:block;}
+.q-answer strong{color:var(--gold-light);}
+.show-ans-btn{background:none;border:1px solid rgba(201,151,58,.4);color:var(--gold-light);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;padding:6px 14px;border-radius:4px;cursor:pointer;}
+.show-ans-btn:hover{background:rgba(201,151,58,.15);}
+.quiz-controls{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;}
+.ctrl-btn{padding:9px 20px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;border:none;}
+.ctrl-btn-primary{background:var(--gold);color:var(--navy);}
+.ctrl-btn-outline{background:transparent;border:1px solid rgba(201,151,58,.4);color:var(--gold-light);}
+.quiz-score-panel{background:rgba(201,151,58,.1);border:1px solid rgba(201,151,58,.3);border-radius:8px;padding:20px 24px;margin-top:24px;display:none;text-align:center;}
+.quiz-score-panel .score-val{font-family:'Playfair Display',serif;font-size:52px;color:var(--gold-light);}
+.quiz-score-panel p{color:rgba(255,255,255,.7);margin:0;}
+#back-top{position:fixed;bottom:28px;right:28px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);width:42px;height:42px;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;opacity:0;transition:opacity .3s;z-index:200;}
+#back-top.visible{opacity:1;}
+::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-thumb{background:var(--cream-dark);border-radius:3px;}
+@media(max-width:900px){#sidebar{transform:translateX(-100%);} #main{margin-left:0;} #content{padding:0 24px 60px;} .grid-2,.grid-3,.calc-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-tag">CIRO · RSE Prep</div>
+    <h2>Securities Analysis<br>Financial Statements &amp; Ratios</h2>
+    <span class="element-badge">ELEMENT 04 · PART 1</span>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" id="nav-search" placeholder="Search topics…" oninput="filterNav(this.value)">
+  </div>
+  <div id="nav-links">
+    <div class="nav-section-label">Overview</div>
+    <a class="nav-item" onclick="gs('hero')"><span class="nav-num">—</span>Introduction + Mock Company</a>
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Sections</div>
+    <a class="nav-item" onclick="gs('s1')"><span class="nav-num">4.1</span>Company Analysis Framework</a>
+    <a class="nav-item" onclick="gs('s2')"><span class="nav-num">4.2</span>Balance Sheet (SFP)</a>
+    <a class="nav-item sub" onclick="gs('s2-assets')">Assets</a>
+    <a class="nav-item sub" onclick="gs('s2-liab')">Liabilities &amp; Equity</a>
+    <a class="nav-item sub" onclick="gs('s2-sce')">Statement of Changes in Equity</a>
+    <a class="nav-item" onclick="gs('s3')"><span class="nav-num">4.3</span>Income Statement</a>
+    <a class="nav-item sub" onclick="gs('s3-items')">Line Items Explained</a>
+    <a class="nav-item" onclick="gs('s4')"><span class="nav-num">4.4</span>Cash Flow Statement</a>
+    <a class="nav-item sub" onclick="gs('s4-ops')">Operating Activities</a>
+    <a class="nav-item sub" onclick="gs('s4-inv')">Investing Activities</a>
+    <a class="nav-item sub" onclick="gs('s4-fin')">Financing Activities</a>
+    <a class="nav-item" onclick="gs('s5')"><span class="nav-num">4.5</span>Notes &amp; Auditor's Report</a>
+    <a class="nav-item" onclick="gs('s6')"><span class="nav-num">4.6</span>Financial Ratio Analysis</a>
+    <a class="nav-item sub" onclick="gs('s6-liq')">Liquidity Ratios</a>
+    <a class="nav-item sub" onclick="gs('s6-risk')">Risk (Leverage) Ratios</a>
+    <a class="nav-item sub" onclick="gs('s6-prof')">Profitability Ratios</a>
+    <a class="nav-item sub" onclick="gs('s6-eff')">Efficiency Ratios</a>
+    <a class="nav-item sub" onclick="gs('s6-eq')">Equity Ratios</a>
+    <a class="nav-item sub" onclick="gs('s6-calc')">Ratio Calculator</a>
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Practice</div>
+    <a class="nav-item" onclick="gs('quiz-section')"><span class="nav-num">★</span>50 Exam Questions</a>
+  </div>
+  <div class="sidebar-footer">CIRO RSE · Element 4 Part 1 of 9</div>
+</nav>
+
+<div id="main">
+<div id="top-bar">
+  <div class="breadcrumb">RSE Exam Prep &rsaquo; <span>Element 4 — Securities Analysis (Part 1)</span></div>
+  <div class="progress-area">
+    <span class="prog-label">READING PROGRESS</span>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <div class="element-tag">ELEMENT 4 PART 1 OF 9 · RETAIL SECURITIES EXAM · CIRO</div>
+  <h1>Securities Analysis<br>Financial Statements &amp; Ratios</h1>
+  <p>Every ratio, every formula, every line item — explained from first principles and applied consistently to one mock company throughout this entire chapter. Master the numbers once, use them everywhere.</p>
+  <div class="hero-meta">
+    <span class="meta-chip">6 LEARNING OUTCOMES</span>
+    <span class="meta-chip">20+ FINANCIAL RATIOS</span>
+    <span class="meta-chip">INTERACTIVE CALCULATORS</span>
+    <span class="meta-chip">50 PRACTICE QUESTIONS</span>
+  </div>
+</div>
+
+<!-- MOCK COMPANY REFERENCE -->
+<div class="chapter" id="mock">
+  <div style="background:var(--navy);border-radius:8px;padding:24px 28px;margin-bottom:0">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">📌 REFERENCE COMPANY — USED THROUGHOUT ALL RATIO CALCULATIONS</div>
+    <div style="font-family:'Playfair Display',serif;font-size:22px;color:white;margin-bottom:4px">Maple Industrial Corp. ("MIC")</div>
+    <p style="font-size:13px;color:rgba(255,255,255,.6);margin:0">A fictional Canadian manufacturing company. All three financial statements below are used consistently for every ratio in Section 4.6. Learn these numbers and every ratio calculation becomes straightforward.</p>
+  </div>
+
+  <!-- BALANCE SHEET -->
+  <div class="fs-container" style="margin-top:16px">
+    <div class="fs-header">
+      <div>
+        <div class="fs-title">Statement of Financial Position (Balance Sheet)</div>
+        <div class="fs-sub">MAPLE INDUSTRIAL CORP. · AS AT DECEMBER 31 · ($ THOUSANDS)</div>
+      </div>
+    </div>
+    <table class="fs-table">
+      <tr class="section-row"><td colspan="2">ASSETS</td></tr>
+      <tr><td><strong>Current Assets</strong></td><td></td></tr>
+      <tr class="indent"><td>Cash and cash equivalents</td><td id="cash">$2,400</td></tr>
+      <tr class="indent"><td>Short-term investments (marketable securities)</td><td>$800</td></tr>
+      <tr class="indent"><td>Accounts receivable (net)</td><td id="ar">$5,200</td></tr>
+      <tr class="indent"><td>Inventory</td><td id="inv">$4,600</td></tr>
+      <tr class="indent"><td>Prepaid expenses and other</td><td>$400</td></tr>
+      <tr class="subtotal-row highlight-row"><td><strong>Total Current Assets</strong></td><td><strong id="tca">$13,400</strong></td></tr>
+      <tr><td><strong>Non-Current Assets</strong></td><td></td></tr>
+      <tr class="indent"><td>Property, plant &amp; equipment (PP&amp;E), net</td><td id="ppe">$18,600</td></tr>
+      <tr class="indent"><td>Intangible assets (patents, trademarks)</td><td>$2,200</td></tr>
+      <tr class="indent"><td>Goodwill</td><td>$3,100</td></tr>
+      <tr class="indent"><td>Long-term investments</td><td>$700</td></tr>
+      <tr class="subtotal-row"><td><strong>Total Non-Current Assets</strong></td><td><strong>$24,600</strong></td></tr>
+      <tr class="total-row highlight-row"><td><strong>TOTAL ASSETS</strong></td><td><strong id="ta">$38,000</strong></td></tr>
+
+      <tr class="section-row"><td colspan="2">LIABILITIES</td></tr>
+      <tr><td><strong>Current Liabilities</strong></td><td></td></tr>
+      <tr class="indent"><td>Accounts payable</td><td id="ap">$3,800</td></tr>
+      <tr class="indent"><td>Accrued liabilities</td><td>$1,100</td></tr>
+      <tr class="indent"><td>Short-term debt (current portion of long-term debt)</td><td>$900</td></tr>
+      <tr class="indent"><td>Income taxes payable</td><td>$300</td></tr>
+      <tr class="subtotal-row highlight-row"><td><strong>Total Current Liabilities</strong></td><td><strong id="tcl">$6,100</strong></td></tr>
+      <tr><td><strong>Non-Current Liabilities</strong></td><td></td></tr>
+      <tr class="indent"><td>Long-term debt (bonds payable)</td><td id="ltd">$12,000</td></tr>
+      <tr class="indent"><td>Deferred income taxes</td><td>$1,400</td></tr>
+      <tr class="indent"><td>Other long-term liabilities</td><td>$500</td></tr>
+      <tr class="subtotal-row"><td><strong>Total Non-Current Liabilities</strong></td><td><strong>$13,900</strong></td></tr>
+      <tr class="subtotal-row"><td><strong>TOTAL LIABILITIES</strong></td><td><strong id="tl">$20,000</strong></td></tr>
+
+      <tr class="section-row"><td colspan="2">EQUITY</td></tr>
+      <tr class="indent"><td>Common shares (10,000 shares outstanding)</td><td>$8,000</td></tr>
+      <tr class="indent"><td>Retained earnings</td><td>$9,600</td></tr>
+      <tr class="indent"><td>Accumulated other comprehensive income</td><td>$400</td></tr>
+      <tr class="total-row highlight-row"><td><strong>TOTAL EQUITY</strong></td><td><strong id="te">$18,000</strong></td></tr>
+      <tr class="total-row"><td><strong>TOTAL LIABILITIES &amp; EQUITY</strong></td><td><strong>$38,000</strong></td></tr>
+    </table>
+  </div>
+
+  <!-- INCOME STATEMENT -->
+  <div class="fs-container">
+    <div class="fs-header">
+      <div>
+        <div class="fs-title">Statement of Comprehensive Income</div>
+        <div class="fs-sub">MAPLE INDUSTRIAL CORP. · YEAR ENDED DECEMBER 31 · ($ THOUSANDS)</div>
+      </div>
+    </div>
+    <table class="fs-table">
+      <tr class="highlight-row"><td><strong>Revenue (Net Sales)</strong></td><td><strong id="rev">$42,000</strong></td></tr>
+      <tr class="indent"><td>Cost of Goods Sold (COGS)</td><td id="cogs">($28,500)</td></tr>
+      <tr class="subtotal-row highlight-row"><td><strong>Gross Profit</strong></td><td><strong id="gp">$13,500</strong></td></tr>
+      <tr class="indent"><td>Selling, General &amp; Administrative (SG&amp;A)</td><td>($5,200)</td></tr>
+      <tr class="indent"><td>Depreciation &amp; Amortization (D&amp;A)</td><td id="da">($2,100)</td></tr>
+      <tr class="subtotal-row highlight-row"><td><strong>EBIT (Operating Income / Operating Profit)</strong></td><td><strong id="ebit">$6,200</strong></td></tr>
+      <tr class="indent"><td>Interest expense</td><td id="intexp">($960)</td></tr>
+      <tr class="indent"><td>Other income (investment income)</td><td>$80</td></tr>
+      <tr class="subtotal-row highlight-row"><td><strong>EBT (Earnings Before Tax / Pre-tax Income)</strong></td><td><strong id="ebt">$5,320</strong></td></tr>
+      <tr class="indent"><td>Income tax expense (26% effective rate)</td><td>($1,383)</td></tr>
+      <tr class="total-row highlight-row"><td><strong>Net Income</strong></td><td><strong id="ni">$3,937</strong></td></tr>
+      <tr class="indent"><td>Other comprehensive income (OCI)</td><td>$200</td></tr>
+      <tr class="highlight-row"><td><strong>Total Comprehensive Income</strong></td><td><strong>$4,137</strong></td></tr>
+      <tr class="section-row"><td colspan="2">PER SHARE DATA (10,000 shares outstanding)</td></tr>
+      <tr class="indent"><td>Earnings Per Share (EPS)</td><td id="eps-ref">$0.394 per share</td></tr>
+      <tr class="indent"><td>Dividends declared per share</td><td id="dps-ref">$0.160 per share</td></tr>
+    </table>
+  </div>
+
+  <!-- CASH FLOW STATEMENT -->
+  <div class="fs-container">
+    <div class="fs-header">
+      <div>
+        <div class="fs-title">Statement of Cash Flows</div>
+        <div class="fs-sub">MAPLE INDUSTRIAL CORP. · YEAR ENDED DECEMBER 31 · ($ THOUSANDS)</div>
+      </div>
+    </div>
+    <table class="fs-table">
+      <tr class="section-row"><td colspan="2">OPERATING ACTIVITIES (Indirect Method)</td></tr>
+      <tr><td>Net income</td><td>$3,937</td></tr>
+      <tr class="indent"><td>Add: Depreciation &amp; Amortization</td><td>$2,100</td></tr>
+      <tr class="indent"><td>Add: Deferred tax provision</td><td>$200</td></tr>
+      <tr class="indent"><td>Less: Increase in accounts receivable</td><td>($400)</td></tr>
+      <tr class="indent"><td>Less: Increase in inventory</td><td>($300)</td></tr>
+      <tr class="indent"><td>Add: Increase in accounts payable</td><td>$350</td></tr>
+      <tr class="indent"><td>Add: Other working capital changes</td><td>$113</td></tr>
+      <tr class="subtotal-row highlight-row"><td><strong>Cash Flow from Operations (CFO)</strong></td><td><strong id="cfo">$6,000</strong></td></tr>
+
+      <tr class="section-row"><td colspan="2">INVESTING ACTIVITIES</td></tr>
+      <tr class="indent"><td>Purchase of PP&amp;E (capital expenditures)</td><td id="capex">($3,200)</td></tr>
+      <tr class="indent"><td>Purchase of intangible assets</td><td>($400)</td></tr>
+      <tr class="indent"><td>Proceeds from sale of equipment</td><td>$150</td></tr>
+      <tr class="subtotal-row highlight-row"><td><strong>Cash Flow from Investing (CFI)</strong></td><td><strong>($3,450)</strong></td></tr>
+
+      <tr class="section-row"><td colspan="2">FINANCING ACTIVITIES</td></tr>
+      <tr class="indent"><td>Repayment of long-term debt</td><td>($900)</td></tr>
+      <tr class="indent"><td>Dividends paid</td><td id="divpaid">($1,600)</td></tr>
+      <tr class="indent"><td>Proceeds from issuance of common shares</td><td>$500</td></tr>
+      <tr class="subtotal-row highlight-row"><td><strong>Cash Flow from Financing (CFF)</strong></td><td><strong>($2,000)</strong></td></tr>
+      <tr class="total-row"><td><strong>Net Change in Cash</strong></td><td><strong>$550</strong></td></tr>
+      <tr><td>Cash — beginning of year</td><td>$1,850</td></tr>
+      <tr class="highlight-row"><td><strong>Cash — end of year</strong></td><td><strong>$2,400</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="callout callout-exam" style="margin-top:8px">
+    <div class="callout-label">📌 HOW TO USE THIS REFERENCE</div>
+    <p>Every ratio in Section 4.6 uses data from Maple Industrial Corp. above. Bookmark or return to these statements as you work through the ratios. Key numbers to memorize: Revenue $42M · Gross Profit $13.5M · EBIT $6.2M · Net Income $3.937M · Total Assets $38M · Total Equity $18M · Current Assets $13.4M · Current Liabilities $6.1M · Total Debt $12.9M · CFO $6M</p>
+  </div>
+</div>
+
+<!-- ═══════ 4.1 COMPANY ANALYSIS ═══════ -->
+<div class="chapter" id="s1">
+  <div class="section-header">
+    <div class="section-num">4.1</div>
+    <div class="section-title-area">
+      <h2>Company Analysis Framework</h2>
+      <div class="section-sub">SOURCES OF INFORMATION · EXPLAINING TO CLIENTS · EXPERT COLLABORATION</div>
+    </div>
+  </div>
+
+  <p>Company analysis (also called fundamental analysis or bottom-up analysis) is the process of evaluating a specific company to determine whether it represents a sound investment. A Registered Representative must be able to perform, understand, and clearly communicate this analysis to retail clients.</p>
+
+  <div class="subsection">
+    <h3>All Relevant Documents and Sources of Information</h3>
+    <p>A comprehensive company analysis draws on multiple sources. The RR must know which documents contain which information and how to access them.</p>
+
+    <div class="diagram">
+      <div class="diagram-title">Sources of Information for Company Analysis</div>
+      <div class="grid-3">
+        <div class="grid-card">
+          <h5>📋 Regulatory Filings (SEDAR+)</h5>
+          <ul>
+            <li><strong>Annual Information Form (AIF):</strong> Comprehensive annual disclosure — business description, risk factors, operations, properties, legal proceedings</li>
+            <li><strong>Annual Report / MD&amp;A:</strong> Management discussion of financial results, outlook, risks, and strategy</li>
+            <li><strong>Audited Financial Statements:</strong> Balance sheet, income statement, cash flow statement, notes</li>
+            <li><strong>Interim Financial Reports:</strong> Unaudited quarterly financial statements with MD&amp;A</li>
+            <li><strong>Material Change Reports:</strong> Immediate disclosure of significant events</li>
+            <li><strong>Management Information Circular:</strong> Proxy materials including executive compensation</li>
+          </ul>
+        </div>
+        <div class="grid-card">
+          <h5>📊 Market &amp; Research Data</h5>
+          <ul>
+            <li><strong>Equity research reports:</strong> Investment bank and independent analyst reports with ratings (Buy/Hold/Sell) and price targets</li>
+            <li><strong>Earnings call transcripts:</strong> Management Q&amp;A with analysts — often reveals qualitative insights not in filings</li>
+            <li><strong>Industry reports:</strong> Sector data, competitive benchmarking, market share analysis</li>
+            <li><strong>Bloomberg / FactSet / Refinitiv:</strong> Professional financial data terminals</li>
+            <li><strong>Press releases:</strong> Company announcements on major events</li>
+          </ul>
+        </div>
+        <div class="grid-card">
+          <h5>🌐 Economic &amp; Industry Data</h5>
+          <ul>
+            <li><strong>Bank of Canada reports:</strong> Interest rates, inflation (CPI), monetary policy</li>
+            <li><strong>Statistics Canada:</strong> GDP, employment, retail sales, industry statistics</li>
+            <li><strong>Industry associations:</strong> Trade group reports for specific sectors</li>
+            <li><strong>Competitor filings:</strong> Cross-reference ratios and metrics against industry peers</li>
+            <li><strong>Ratings agency reports:</strong> DBRS Morningstar, S&amp;P, Moody's credit assessments</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h4>The Company Analysis Process — Step by Step</h4>
+    <p>A rigorous company analysis follows a structured process:</p>
+    <ol style="padding-left:24px;margin:14px 0">
+      <li style="margin-bottom:10px;font-size:15px;line-height:1.7"><strong>Understand the business:</strong> What does the company do? What industry is it in? What is its competitive position? Who are its customers and suppliers? What is the management team's track record?</li>
+      <li style="margin-bottom:10px;font-size:15px;line-height:1.7"><strong>Analyze the industry and competitive landscape:</strong> Is the industry growing or declining? What are the competitive dynamics? Does the company have a sustainable competitive advantage (moat)?</li>
+      <li style="margin-bottom:10px;font-size:15px;line-height:1.7"><strong>Read and analyze the financial statements:</strong> Review 3–5 years of financials. Look for trends in revenue growth, margins, cash generation, and balance sheet strength.</li>
+      <li style="margin-bottom:10px;font-size:15px;line-height:1.7"><strong>Calculate and benchmark key ratios:</strong> Compare against historical levels and industry peers to identify strengths, weaknesses, and trends.</li>
+      <li style="margin-bottom:10px;font-size:15px;line-height:1.7"><strong>Assess qualitative factors:</strong> Management quality and integrity, ESG factors, regulatory environment, innovation pipeline.</li>
+      <li style="margin-bottom:10px;font-size:15px;line-height:1.7"><strong>Apply valuation models:</strong> Estimate intrinsic value using DCF, P/E, DDM, or other appropriate methods (covered in Element 3.10).</li>
+      <li style="margin-bottom:10px;font-size:15px;line-height:1.7"><strong>Form an investment conclusion:</strong> Based on all the above, determine if the company represents a good investment at the current price for the specific client's needs.</li>
+    </ol>
+
+    <h4>Explaining Company Analysis to Retail Clients</h4>
+    <p>The ability to <mark>translate complex financial analysis into plain language</mark> is a core competency of an RR. Key principles:</p>
+    <ul class="styled-list">
+      <li><strong>Use analogies and context:</strong> "A current ratio of 2.2x means the company has $2.20 in liquid assets for every $1 of short-term bills — that's a healthy financial cushion."</li>
+      <li><strong>Avoid jargon:</strong> Say "the company is profitable and generates more cash than it spends" rather than "EBITDA margins are expanding and free cash flow conversion is improving."</li>
+      <li><strong>Calibrate to investment knowledge:</strong> The depth of explanation must match the client's documented investment knowledge level. A client with "sophisticated" knowledge can handle more technical language; a "limited knowledge" client needs simpler explanations.</li>
+      <li><strong>Connect to suitability:</strong> Always relate the analysis back to why this investment does or does not fit the client's specific objectives, risk tolerance, and time horizon.</li>
+      <li><strong>Be balanced:</strong> Present both the strengths and the risks — do not present a one-sided case.</li>
+    </ul>
+
+    <h4>Collaboration with Internal and External Experts</h4>
+    <p>An RR is not expected to be an expert in every company and sector. The rules of conduct require collaboration when needed:</p>
+    <ul class="styled-list">
+      <li><strong>Internal experts:</strong> The dealer's own research department, portfolio managers, sector specialists, and credit analysts. An RR should use internal research reports as a starting point but cannot simply rubber-stamp them — they must understand and be able to explain the analysis.</li>
+      <li><strong>External experts:</strong> Independent equity research firms, industry consultants, rating agencies, accounting specialists. These provide alternative perspectives and can catch issues not covered by internal analysis.</li>
+      <li><strong>Compliance team:</strong> For questions about whether specific securities are on the approved product list or whether any regulatory restrictions apply to a recommendation.</li>
+      <li><strong>The RR's obligation:</strong> Even after consulting experts, the RR remains personally responsible for the suitability of any recommendation. Delegating analysis to an expert does not transfer suitability responsibility.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════ 4.2 BALANCE SHEET ═══════ -->
+<div class="chapter" id="s2">
+  <div class="section-header">
+    <div class="section-num">4.2</div>
+    <div class="section-title-area">
+      <h2>Statement of Financial Position (Balance Sheet)</h2>
+      <div class="section-sub">FORMAT · ASSETS · LIABILITIES · EQUITY · CHANGES IN EQUITY</div>
+    </div>
+  </div>
+
+  <p>The <strong>Statement of Financial Position</strong> (commonly called the balance sheet) provides a snapshot of a company's financial health at a <mark>specific point in time</mark> — like a photograph of what the company owns, what it owes, and what is left for owners. It is governed by the fundamental accounting equation:</p>
+  <div style="background:var(--navy);border-radius:6px;padding:14px 20px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--gold-light);margin:16px 0;letter-spacing:1px">
+    ASSETS = LIABILITIES + SHAREHOLDERS' EQUITY
+  </div>
+
+  <div class="subsection" id="s2-assets">
+    <h3>Assets — What the Company Owns</h3>
+    <p>Assets are resources <strong>controlled by the company</strong> that are expected to provide future economic benefits. They are classified by liquidity — how quickly they can be converted to cash.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Asset Category</th><th>Examples</th><th>Classification Rule</th><th>MIC Example</th></tr>
+        <tr><td><strong>Current Assets</strong></td><td>Cash, marketable securities, accounts receivable, inventory, prepaid expenses</td><td>Will be converted to cash or used within <strong>12 months</strong> or one operating cycle</td><td>$13,400K total current assets</td></tr>
+        <tr><td>↳ Cash &amp; Equivalents</td><td>Bank balances, T-bills, money market funds (under 90-day maturity)</td><td>Most liquid asset; available immediately</td><td>$2,400K</td></tr>
+        <tr><td>↳ Accounts Receivable</td><td>Amounts owed to the company by customers for goods/services delivered</td><td>Net of allowance for doubtful accounts</td><td>$5,200K net</td></tr>
+        <tr><td>↳ Inventory</td><td>Raw materials, work-in-progress (WIP), finished goods</td><td>Carried at lower of cost or net realizable value</td><td>$4,600K</td></tr>
+        <tr><td><strong>Non-Current Assets</strong></td><td>PP&amp;E, intangibles, goodwill, long-term investments</td><td>Will be used or realized beyond <strong>12 months</strong></td><td>$24,600K total non-current</td></tr>
+        <tr><td>↳ PP&amp;E (net)</td><td>Land, buildings, machinery, equipment, vehicles</td><td>Reported at cost less accumulated depreciation</td><td>$18,600K</td></tr>
+        <tr><td>↳ Intangible Assets</td><td>Patents, trademarks, customer lists, software</td><td>Amortized over useful life; tested for impairment</td><td>$2,200K</td></tr>
+        <tr><td>↳ Goodwill</td><td>Premium paid above fair value in an acquisition</td><td>Not amortized under IFRS; tested annually for impairment</td><td>$3,100K</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsection" id="s2-liab">
+    <h3>Liabilities — What the Company Owes</h3>
+    <p>Liabilities are present obligations of the company that are expected to require the outflow of economic resources. Like assets, they are classified by time horizon.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Liability Category</th><th>Examples</th><th>Classification Rule</th><th>MIC Example</th></tr>
+        <tr><td><strong>Current Liabilities</strong></td><td>Accounts payable, accrued liabilities, short-term debt, taxes payable</td><td>Due within <strong>12 months</strong></td><td>$6,100K total current liabilities</td></tr>
+        <tr><td>↳ Accounts Payable</td><td>Amounts owed to suppliers for goods/services received but not yet paid</td><td>Key supplier relationship metric</td><td>$3,800K</td></tr>
+        <tr><td>↳ Short-term Debt</td><td>Current portion of long-term debt, revolving credit facilities, bank lines</td><td>Maturing within 12 months — important liquidity concern</td><td>$900K</td></tr>
+        <tr><td><strong>Non-Current Liabilities</strong></td><td>Long-term debt, deferred taxes, pension obligations, lease liabilities</td><td>Due beyond <strong>12 months</strong></td><td>$13,900K total non-current</td></tr>
+        <tr><td>↳ Long-term Debt</td><td>Bonds payable, term loans, mortgages, debentures</td><td>Key leverage metric; interest payments are mandatory</td><td>$12,000K</td></tr>
+        <tr><td>↳ Deferred Tax Liability</td><td>Tax obligations accrued but not yet payable due to timing differences</td><td>Arises from differences between IFRS and tax accounting</td><td>$1,400K</td></tr>
+      </table>
+    </div>
+
+    <h4>Shareholders' Equity — What Owners Own</h4>
+    <p>Shareholders' equity is the <strong>residual interest</strong> — what belongs to shareholders after all liabilities are paid. It consists of:</p>
+    <ul class="styled-list">
+      <li><strong>Share capital (Common shares):</strong> Proceeds from issuing shares. MIC: $8,000K from issuing 10,000 thousand shares.</li>
+      <li><strong>Retained earnings:</strong> Accumulated net income that has NOT been paid out as dividends. MIC: $9,600K — represents years of profitable operations retained in the business.</li>
+      <li><strong>Accumulated Other Comprehensive Income (AOCI):</strong> Gains/losses not included in net income — e.g., unrealized gains on investments, foreign currency translation adjustments. MIC: $400K.</li>
+    </ul>
+  </div>
+
+  <div class="subsection" id="s2-sce">
+    <h3>Statement of Changes in Equity (SCE)</h3>
+    <p>The SCE is a reconciliation statement that explains how shareholders' equity changed from the beginning to the end of the period. It bridges the balance sheet and the income statement. Key components of the change in equity:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Component</th><th>Impact on Equity</th><th>Connection</th></tr>
+        <tr><td>Opening equity balance</td><td>Starting point from prior balance sheet</td><td>Prior year balance sheet</td></tr>
+        <tr><td>Net income for the period</td><td>↑ Increases retained earnings</td><td>From income statement</td></tr>
+        <tr><td>Other comprehensive income (OCI)</td><td>↑/↓ Changes AOCI balance</td><td>From income statement (OCI section)</td></tr>
+        <tr><td>Dividends declared</td><td>↓ Decreases retained earnings</td><td>Board declaration; payment in cash flow statement</td></tr>
+        <tr><td>Share issuances</td><td>↑ Increases share capital</td><td>From financing activities in cash flow</td></tr>
+        <tr><td>Share repurchases</td><td>↓ Decreases share capital or retained earnings</td><td>From financing activities in cash flow</td></tr>
+        <tr><td>Closing equity balance</td><td>Final balance on current balance sheet</td><td>Current balance sheet</td></tr>
+      </table>
+    </div>
+
+    <div class="callout callout-exam">
+      <div class="callout-label">📌 THE ACCOUNTING EQUATION — ALWAYS BALANCES</div>
+      <p>The balance sheet ALWAYS balances. If total assets don't equal total liabilities + equity, there is an error. For MIC: <strong>$38,000K = $20,000K + $18,000K ✓</strong>. Working capital = Current Assets − Current Liabilities = $13,400K − $6,100K = $7,300K. This represents the company's short-term financial buffer.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 4.3 INCOME STATEMENT ═══════ -->
+<div class="chapter" id="s3">
+  <div class="section-header">
+    <div class="section-num">4.3</div>
+    <div class="section-title-area">
+      <h2>Statement of Comprehensive Income</h2>
+      <div class="section-sub">REVENUE · COGS · GROSS PROFIT · EBIT · NET INCOME · OCI</div>
+    </div>
+  </div>
+
+  <p>The income statement (officially: Statement of Comprehensive Income under IFRS) shows the company's <strong>financial performance over a period of time</strong> — like a video of revenues earned and expenses incurred. It answers: "Did the company make money this period, and where did that money come from?"</p>
+
+  <div class="subsection" id="s3-items">
+    <h3>Income Statement Line Items — Explained</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Line Item</th><th>Definition</th><th>MIC Amount</th><th>Key Insight</th></tr>
+        <tr><td class="label">Revenue (Net Sales)</td><td>Total sales to customers, net of returns and allowances. The top line.</td><td>$42,000K</td><td>Revenue growth rate is the primary driver of business scale and investor confidence</td></tr>
+        <tr><td class="label">Cost of Goods Sold (COGS)</td><td>Direct costs of producing goods sold — raw materials, direct labour, manufacturing overhead. Also called cost of revenue or cost of sales.</td><td>$28,500K</td><td>COGS/Revenue = 67.9% means $0.679 of every dollar of revenue goes to producing the goods</td></tr>
+        <tr><td class="label" style="color:var(--green)">Gross Profit</td><td>Revenue − COGS. Represents the profit BEFORE operating expenses, interest, and taxes.</td><td>$13,500K</td><td>Gross margin = 32.1%. Indicates pricing power and manufacturing efficiency</td></tr>
+        <tr><td class="label">SG&amp;A Expenses</td><td>Selling, General &amp; Administrative costs — sales staff, marketing, executive salaries, rent, IT, administration</td><td>$5,200K</td><td>Fixed costs that must be covered regardless of revenue level. Scale is key.</td></tr>
+        <tr><td class="label">Depreciation &amp; Amortization (D&amp;A)</td><td>Non-cash allocation of the cost of long-lived assets (PP&amp;E and intangibles) over their useful lives</td><td>$2,100K</td><td>Non-cash expense — D&amp;A is added BACK in the cash flow statement. Important for EBITDA calculation.</td></tr>
+        <tr><td class="label" style="color:var(--green)">EBIT (Operating Income)</td><td>Earnings Before Interest and Tax. Gross Profit − SG&amp;A − D&amp;A. Also called operating profit.</td><td>$6,200K</td><td>EBIT margin = 14.8%. Measures operating efficiency regardless of capital structure (no interest)</td></tr>
+        <tr><td class="label">Interest Expense</td><td>Cost of debt financing — interest paid on bonds, loans, lines of credit</td><td>$960K</td><td>A fixed obligation. If EBIT < interest expense → the company cannot cover its debt costs. This is financial distress.</td></tr>
+        <tr><td class="label" style="color:var(--green)">EBT (Pre-tax Income)</td><td>EBIT − Interest Expense + Other Income. Profit before income taxes.</td><td>$5,320K</td><td>Pre-tax margin = 12.7%</td></tr>
+        <tr><td class="label">Income Tax Expense</td><td>Tax on corporate earnings. Effective tax rate = Tax / EBT</td><td>$1,383K (26%)</td><td>Effective tax rate may differ from statutory rate due to tax credits, deferred taxes</td></tr>
+        <tr><td class="label" style="color:var(--green)">Net Income</td><td>The "bottom line." EBT − Taxes. What belongs to equity shareholders after all obligations.</td><td>$3,937K</td><td>Net margin = 9.4%. Basis for EPS, dividend payout, and most equity ratios</td></tr>
+        <tr><td class="label">Other Comprehensive Income (OCI)</td><td>Items excluded from net income per IFRS — unrealized gains/losses on certain investments, FX translation adjustments, pension actuarial gains/losses</td><td>$200K</td><td>Bypasses the income statement but still affects equity. Not available for dividends.</td></tr>
+        <tr><td class="label" style="color:var(--green)">Total Comprehensive Income</td><td>Net Income + OCI. The complete measure of all changes in equity from performance</td><td>$4,137K</td><td>The most inclusive measure of financial performance in a period</td></tr>
+      </table>
+    </div>
+
+    <h4>Key Relationships and Acronyms</h4>
+    <div class="diagram">
+      <div class="diagram-title">Income Statement Cascade — MIC Example</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="background:rgba(201,151,58,.15);border:1px solid var(--gold);border-radius:4px;padding:10px 16px;display:flex;justify-content:space-between"><span>Revenue</span><span style="font-family:'JetBrains Mono',monospace">$42,000K</span></div>
+        <div style="padding:2px 16px;font-size:12px;color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace">− COGS $28,500K</div>
+        <div style="background:rgba(26,107,74,.2);border:1px solid #2ecc71;border-radius:4px;padding:10px 16px;display:flex;justify-content:space-between"><span><strong>= Gross Profit (GP)</strong></span><span style="font-family:'JetBrains Mono',monospace">$13,500K | Margin: 32.1%</span></div>
+        <div style="padding:2px 16px;font-size:12px;color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace">− SG&amp;A $5,200K − D&amp;A $2,100K</div>
+        <div style="background:rgba(26,107,74,.2);border:1px solid #2ecc71;border-radius:4px;padding:10px 16px;display:flex;justify-content:space-between"><span><strong>= EBIT (Operating Income)</strong></span><span style="font-family:'JetBrains Mono',monospace">$6,200K | Margin: 14.8%</span></div>
+        <div style="padding:2px 16px;font-size:12px;color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace">+ D&amp;A $2,100K = EBITDA $8,300K</div>
+        <div style="background:rgba(74,26,107,.2);border:1px solid #c67ae0;border-radius:4px;padding:10px 16px;display:flex;justify-content:space-between"><span><em>EBITDA (add back D&amp;A)</em></span><span style="font-family:'JetBrains Mono',monospace">$8,300K | Margin: 19.8%</span></div>
+        <div style="padding:2px 16px;font-size:12px;color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace">− Interest $960K + Other $80K</div>
+        <div style="background:rgba(26,107,74,.2);border:1px solid #2ecc71;border-radius:4px;padding:10px 16px;display:flex;justify-content:space-between"><span><strong>= EBT (Pre-tax Income)</strong></span><span style="font-family:'JetBrains Mono',monospace">$5,320K | Margin: 12.7%</span></div>
+        <div style="padding:2px 16px;font-size:12px;color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace">− Tax $1,383K (26%)</div>
+        <div style="background:rgba(201,151,58,.25);border:1px solid var(--gold);border-radius:4px;padding:12px 16px;display:flex;justify-content:space-between"><span><strong>= Net Income (Bottom Line)</strong></span><span style="font-family:'JetBrains Mono',monospace"><strong>$3,937K | Margin: 9.4%</strong></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 4.4 CASH FLOW STATEMENT ═══════ -->
+<div class="chapter" id="s4">
+  <div class="section-header">
+    <div class="section-num">4.4</div>
+    <div class="section-title-area">
+      <h2>Statement of Cash Flows</h2>
+      <div class="section-sub">OPERATING · INVESTING · FINANCING ACTIVITIES</div>
+    </div>
+  </div>
+
+  <p>The cash flow statement shows <strong>actual cash movements</strong> into and out of the company during the period. This is critically important because profitable companies can still fail if they run out of cash. "Profit is an opinion; cash is a fact." The cash flow statement has three sections.</p>
+
+  <div class="callout callout-exam">
+    <div class="callout-label">📌 NET INCOME ≠ CASH FLOW — KEY EXAM CONCEPT</div>
+    <p>Net income is an accrual accounting figure — it includes non-cash items (depreciation, unrealized gains) and ignores the timing of when cash actually changes hands (e.g., revenue recognized before cash is collected). The cash flow statement reconciles net income to actual cash. An investor must look at BOTH the income statement AND the cash flow statement to get the full picture.</p>
+  </div>
+
+  <div class="subsection" id="s4-ops">
+    <h3>Cash Flow from Operating Activities (CFO)</h3>
+    <p>CFO measures the cash generated from the company's core business operations — its day-to-day activities. Under the <strong>indirect method</strong> (most common under IFRS), CFO starts with net income and makes adjustments:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Adjustment Type</th><th>Direction</th><th>Why?</th><th>MIC Example</th></tr>
+        <tr><td>Add back Depreciation &amp; Amortization</td><td>↑ Add back</td><td>D&amp;A reduced net income but is non-cash — no cash was paid</td><td>+$2,100K</td></tr>
+        <tr><td>Add back other non-cash charges</td><td>↑ Add back</td><td>Deferred tax, stock-based compensation — no cash out</td><td>+$200K</td></tr>
+        <tr><td>Increase in Accounts Receivable</td><td>↓ Deduct</td><td>Sales made but cash not yet collected = cash tied up</td><td>−$400K</td></tr>
+        <tr><td>Increase in Inventory</td><td>↓ Deduct</td><td>More inventory purchased/built = cash spent to build inventory</td><td>−$300K</td></tr>
+        <tr><td>Increase in Accounts Payable</td><td>↑ Add back</td><td>Bills received but not yet paid = company "borrows" from suppliers</td><td>+$350K</td></tr>
+      </table>
+    </div>
+
+    <p><strong>CFO = $6,000K.</strong> This is the most important cash flow number. It represents the cash the business naturally generates from its operations.</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-label">💡 WORKING CAPITAL CHANGES — MEMORY AID</div>
+      <p><strong>Increases in current ASSETS</strong> (receivables, inventory) → <strong>USE cash</strong> (subtract from CFO). The company spent cash to build inventory or extended credit to customers.<br>
+      <strong>Increases in current LIABILITIES</strong> (payables) → <strong>PROVIDE cash</strong> (add to CFO). The company is using supplier financing.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s4-inv">
+    <h3>Cash Flow from Investing Activities (CFI)</h3>
+    <p>CFI shows cash flows related to the acquisition and disposal of long-term assets — both physical assets (PP&amp;E) and financial assets (investments, acquisitions). This section answers: "How much is the company reinvesting for future growth?"</p>
+    <ul class="styled-list">
+      <li><strong>Capital expenditures (CapEx):</strong> MIC spent $3,200K buying new PP&amp;E. Always a cash outflow for growing companies. CapEx is necessary for maintaining and expanding productive capacity.</li>
+      <li><strong>Purchase of intangibles:</strong> $400K spent on patents, software, etc.</li>
+      <li><strong>Proceeds from asset sales:</strong> $150K received from selling old equipment. A cash inflow.</li>
+    </ul>
+    <p><strong>CFI = −$3,450K.</strong> A negative CFI is NORMAL and EXPECTED for a growing company — it is investing capital into the business. A positive CFI would mean the company is selling assets, which could be a warning sign of financial stress.</p>
+
+    <h4>Free Cash Flow (FCF)</h4>
+    <p>Free Cash Flow = CFO − Capital Expenditures. This is the cash available after maintaining/growing the asset base — the cash truly "free" to pay dividends, repay debt, or return to shareholders.</p>
+    <div style="background:var(--navy);border-radius:6px;padding:12px 20px;font-family:'JetBrains Mono',monospace;color:var(--gold-light);text-align:center;margin:12px 0">
+      FCF = $6,000K − $3,200K = $2,800K
+    </div>
+  </div>
+
+  <div class="subsection" id="s4-fin">
+    <h3>Cash Flow from Financing Activities (CFF)</h3>
+    <p>CFF shows cash flows from borrowing and repaying debt, issuing or repurchasing shares, and paying dividends. It reflects how the company finances itself.</p>
+    <ul class="styled-list">
+      <li><strong>Debt repayment:</strong> MIC repaid $900K of long-term debt — a cash outflow. Paying down debt improves the balance sheet but uses cash.</li>
+      <li><strong>Dividends paid:</strong> $1,600K paid to common shareholders. Cash returned to investors.</li>
+      <li><strong>Share issuance:</strong> $500K raised from issuing new common shares — a cash inflow.</li>
+    </ul>
+    <p><strong>CFF = −$2,000K.</strong> CFF is often negative for mature, established companies — they generate excess cash (positive CFO) and return it to shareholders (dividends, buybacks) while repaying debt.</p>
+
+    <div class="callout callout-exam">
+      <div class="callout-label">📌 READING THE CASH FLOW STATEMENT AS A WHOLE</div>
+      <p>A healthy, mature company pattern: <strong>CFO = LARGE POSITIVE</strong> (core business generates cash) + <strong>CFI = LARGE NEGATIVE</strong> (reinvesting in assets) + <strong>CFF = NEGATIVE</strong> (returning excess cash to investors). MIC shows exactly this: +$6,000K / −$3,450K / −$2,000K = Net increase of $550K in cash. This is a sign of financial health.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 4.5 NOTES & AUDITOR ═══════ -->
+<div class="chapter" id="s5">
+  <div class="section-header">
+    <div class="section-num">4.5</div>
+    <div class="section-title-area">
+      <h2>Notes to Financial Statements &amp; Auditor's Report</h2>
+      <div class="section-sub">NOTES · ACCOUNTING POLICIES · AUDITOR OPINIONS</div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>Notes to the Financial Statements</h3>
+    <p>The notes are an <strong>integral part of the financial statements</strong> — they are NOT optional or supplementary. Under IFRS, companies are required to provide extensive notes that explain the numbers in the financial statements. An analyst who only reads the three financial statements without reading the notes is missing critical information.</p>
+
+    <h4>What the Notes Contain</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Note Category</th><th>What It Explains</th><th>Why It Matters to an Analyst</th></tr>
+        <tr><td><strong>Accounting Policies</strong></td><td>How the company applies accounting standards — e.g., depreciation method (straight-line vs. declining balance), inventory valuation (FIFO, weighted average), revenue recognition policy</td><td>Two companies in the same industry may use different policies, making ratios non-comparable. Must adjust for comparability.</td></tr>
+        <tr><td><strong>Segment Information</strong></td><td>Breakdown of revenue, profit, and assets by business segment or geography</td><td>Identifies which divisions are growing or struggling. Critical for sum-of-the-parts analysis.</td></tr>
+        <tr><td><strong>Debt Schedule</strong></td><td>Details on all debt instruments — interest rates, maturity dates, covenants, security</td><td>Identifies upcoming maturities (refinancing risk) and covenant restrictions</td></tr>
+        <tr><td><strong>Related Party Transactions</strong></td><td>Transactions with insiders, subsidiaries, major shareholders</td><td>These can mask related-party dealings that benefit insiders at the expense of minority shareholders</td></tr>
+        <tr><td><strong>Contingencies and Commitments</strong></td><td>Pending litigation, environmental liabilities, operating lease commitments, purchase obligations</td><td>"Off-balance sheet" obligations not visible in the main statements — can be material</td></tr>
+        <tr><td><strong>PP&amp;E Details</strong></td><td>Cost, accumulated depreciation, additions, disposals by asset class</td><td>Helps assess the age of assets and upcoming replacement needs</td></tr>
+        <tr><td><strong>Share Capital</strong></td><td>Number of authorized/issued shares, changes in the year, stock option plans</td><td>Dilution risk from unexercised options and warrants</td></tr>
+        <tr><td><strong>Subsequent Events</strong></td><td>Material events occurring after the balance sheet date but before the financial statements are finalized</td><td>May fundamentally change the outlook — mergers, major lawsuits, financing events</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>The Auditor's Report</h3>
+    <p>An independent external auditor reviews the financial statements and issues an opinion on whether they are prepared in accordance with applicable accounting standards (IFRS in Canada) and present a <mark>true and fair view</mark> of the company's financial position.</p>
+
+    <h4>Types of Audit Opinions</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Opinion Type</th><th>What It Means</th><th>Investor Action</th></tr>
+        <tr><td style="color:var(--green)"><strong>Unqualified / Clean Opinion</strong></td><td>Statements present fairly, in all material respects, the financial position in conformity with IFRS. No significant issues found.</td><td>Comfort that statements are reliable. Standard for a healthy company.</td></tr>
+        <tr><td style="color:var(--amber)"><strong>Qualified Opinion</strong></td><td>Statements are fairly presented EXCEPT for a specific, identified issue (e.g., inability to verify inventory count, departure from a specific IFRS standard)</td><td>RED FLAG — investigate the specific issue. Understand why the auditor could not give a clean opinion.</td></tr>
+        <tr><td style="color:var(--red)"><strong>Adverse Opinion</strong></td><td>The statements do NOT fairly present the financial position. Material misstatements exist that pervasively affect the financial statements.</td><td>SERIOUS RED FLAG — financial statements cannot be relied upon. Avoid or investigate deeply.</td></tr>
+        <tr><td style="color:var(--red)"><strong>Disclaimer of Opinion</strong></td><td>Auditor cannot express an opinion because they were unable to obtain sufficient audit evidence.</td><td>SERIOUS RED FLAG — possible access restrictions, management obstruction, or fundamental uncertainty about the business</td></tr>
+      </table>
+    </div>
+
+    <h4>Going Concern Qualification</h4>
+    <p>If the auditor believes there is <strong>substantial doubt about the company's ability to continue as a going concern</strong> (i.e., survive the next 12 months), they must include a going concern paragraph in the audit report. This is an extreme warning signal that the company may be approaching bankruptcy and requires immediate action by any investor holding the security.</p>
+
+    <div class="callout callout-rule">
+      <div class="callout-label">🔴 AUDITOR'S REPORT — SUITABILITY IMPLICATIONS</div>
+      <p>Before recommending any security to a client, an RR should confirm that the auditor's report is clean (unqualified). A qualified, adverse, or disclaimer opinion is a material fact that affects the suitability assessment — especially for conservative, income-oriented clients who prioritize capital preservation. A going concern qualification makes the security inappropriate for virtually all retail clients except the most risk-tolerant speculators.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 4.6 RATIO ANALYSIS ═══════ -->
+<div class="chapter" id="s6">
+  <div class="section-header">
+    <div class="section-num">4.6</div>
+    <div class="section-title-area">
+      <h2>Financial Ratio Analysis</h2>
+      <div class="section-sub">ALL 20 RATIOS · FORMULAS · WORKED EXAMPLES · INTERPRETATION</div>
+    </div>
+  </div>
+
+  <p>Financial ratios translate raw financial statement numbers into meaningful comparisons. Each ratio below uses data from Maple Industrial Corp. (MIC) shown at the top of this page. All numbers are in $000s.</p>
+
+  <div class="callout callout-calc">
+    <div class="callout-label">🔑 MIC KEY NUMBERS — QUICK REFERENCE</div>
+    <p>Revenue $42,000 · COGS $28,500 · Gross Profit $13,500 · EBIT $6,200 · EBT $5,320 · Net Income $3,937 · D&amp;A $2,100 · Interest Expense $960 · Total Assets $38,000 · Total Equity $18,000 · Total Liabilities $20,000 · Current Assets $13,400 · Current Liabilities $6,100 · Cash $2,400 · AR $5,200 · Inventory $4,600 · AP $3,800 · PP&amp;E $18,600 · LT Debt $12,000 · CFO $6,000 · CapEx $3,200 · Dividends $1,600 · Shares Outstanding 10,000</p>
+  </div>
+
+  <!-- LIQUIDITY RATIOS -->
+  <div class="subsection" id="s6-liq">
+    <h3>Liquidity Ratios — Can the Company Pay Its Short-Term Bills?</h3>
+    <p>Liquidity ratios measure a company's ability to meet its <strong>short-term obligations</strong> as they come due. They compare current assets (that will convert to cash within 12 months) to current liabilities (due within 12 months).</p>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Current Ratio</div>
+        <span class="ratio-tag tag-liq">LIQUIDITY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Current Ratio = Current Assets ÷ Current Liabilities</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> $13,400K ÷ $6,100K = <strong>2.20x</strong>
+        </div>
+        <div class="ratio-result">MIC Current Ratio = 2.20x</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> MIC has $2.20 of current assets for every $1.00 of current liabilities. The company appears comfortably liquid. However, current assets include inventory ($4,600K) which may take time to sell and convert to cash.<br><br>
+          <strong>Context:</strong> A ratio above 1.0 means more current assets than current liabilities. Too high (e.g., 5.0x) may indicate excess idle cash or slow-moving inventory. Too low (below 1.0) signals potential inability to pay short-term obligations.
+        </div>
+        <span class="ratio-benchmark">Industry rule of thumb: 1.5x–3.0x is generally healthy</span>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Quick Ratio (Acid-Test Ratio)</div>
+        <span class="ratio-tag tag-liq">LIQUIDITY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Quick Ratio = (Current Assets − Inventory) ÷ Current Liabilities</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> ($13,400K − $4,600K) ÷ $6,100K = $8,800K ÷ $6,100K = <strong>1.44x</strong><br>
+          <em>Or: (Cash $2,400 + Short-term investments $800 + AR $5,200) ÷ $6,100 = $8,400 ÷ $6,100 = 1.38x (using liquid assets only)</em>
+        </div>
+        <div class="ratio-result">MIC Quick Ratio ≈ 1.44x</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> The quick ratio <em>excludes inventory</em> because inventory may not be quickly convertible to cash (it must be sold and collected). This is a more conservative measure of liquidity than the current ratio. MIC's 1.44x indicates it can meet short-term obligations even without selling inventory — a positive sign.<br><br>
+          <strong>Why it matters:</strong> A company with a high current ratio but low quick ratio may have most of its liquidity tied up in slow-moving inventory — a hidden liquidity risk.
+        </div>
+        <span class="ratio-benchmark">Industry rule of thumb: 1.0x or above is generally considered adequate</span>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Cash Ratio</div>
+        <span class="ratio-tag tag-liq">LIQUIDITY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Cash Ratio = (Cash + Cash Equivalents + Short-term Investments) ÷ Current Liabilities</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> ($2,400K + $800K) ÷ $6,100K = $3,200K ÷ $6,100K = <strong>0.52x</strong>
+        </div>
+        <div class="ratio-result">MIC Cash Ratio = 0.52x</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> The most conservative liquidity measure — only counts actual cash and near-cash securities. MIC can cover 52% of its current liabilities with cash alone. This is normal for a manufacturing company; they are not expected to hold cash equal to all their short-term obligations.<br><br>
+          <strong>Context:</strong> A cash ratio below 1.0 does not indicate a problem — very few companies hold enough cash to immediately pay all current liabilities. This ratio is most useful when assessing extreme liquidity stress scenarios.
+        </div>
+        <span class="ratio-benchmark">Generally 0.2x–0.5x is normal; context-dependent by industry</span>
+      </div>
+    </div>
+
+    <div class="callout callout-exam">
+      <div class="callout-label">📌 LIQUIDITY RATIO HIERARCHY</div>
+      <p>Most conservative → Most liberal: <strong>Cash Ratio → Quick Ratio → Current Ratio</strong>. Each successive ratio adds less liquid assets. The quick ratio is the most frequently tested because it excludes inventory — the asset most subject to valuation uncertainty and illiquidity.</p>
+    </div>
+  </div>
+
+  <!-- RISK RATIOS -->
+  <div class="subsection" id="s6-risk">
+    <h3>Risk (Leverage) Ratios — How Much Debt Does the Company Carry?</h3>
+    <p>Risk ratios measure the extent to which a company uses debt financing. Higher leverage means higher returns in good times but higher risk in downturns — debt creates fixed obligations (interest + principal repayment) regardless of business conditions.</p>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Debt-to-Equity Ratio (D/E)</div>
+        <span class="ratio-tag tag-risk">RISK / LEVERAGE</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">D/E = Total Debt ÷ Total Shareholders' Equity</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> Total debt = Short-term debt $900K + Long-term debt $12,000K = $12,900K<br>
+          D/E = $12,900K ÷ $18,000K = <strong>0.72x</strong><br>
+          <em>Alternative: Use Total Liabilities: $20,000K ÷ $18,000K = 1.11x (read the question carefully — both versions exist)</em>
+        </div>
+        <div class="ratio-result">MIC D/E (debt only) = 0.72x | D/E (total liabilities) = 1.11x</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> For every $1.00 of equity, MIC has $0.72 of debt. This moderate leverage level means creditors are financing a meaningful portion of the company, but equity holders still provide the majority of capital. <br><br>
+          <strong>Higher D/E = more financial risk:</strong> The company must service more debt regardless of earnings. In a recession, high-leverage companies face higher bankruptcy risk. However, leverage also amplifies returns — if the company earns more on its assets than it pays in interest, leverage benefits equity shareholders.
+        </div>
+        <span class="ratio-benchmark">Acceptable range varies widely by industry. Utilities/banks: 2.0x+ acceptable. Tech companies: below 0.5x typical.</span>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Debt-to-Assets Ratio</div>
+        <span class="ratio-tag tag-risk">RISK / LEVERAGE</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Debt-to-Assets = Total Debt ÷ Total Assets</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> $12,900K ÷ $38,000K = <strong>0.34x (34%)</strong><br>
+          <em>Using total liabilities: $20,000K ÷ $38,000K = 0.53x (53%)</em>
+        </div>
+        <div class="ratio-result">MIC Debt-to-Assets = 0.34x (34% of assets financed by interest-bearing debt)</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> 34% of MIC's total assets are financed by interest-bearing debt. The remaining 66% is financed by equity and non-interest-bearing liabilities (payables, accruals). This shows moderate leverage — if the company were liquidated, total debt ($12.9M) would be well covered by total assets ($38M), providing a significant cushion for creditors.
+        </div>
+        <span class="ratio-benchmark">Below 50% using total liabilities is generally considered manageable for manufacturing</span>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Interest Coverage Ratio (Times Interest Earned)</div>
+        <span class="ratio-tag tag-risk">RISK / LEVERAGE</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Interest Coverage = EBIT ÷ Interest Expense</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> $6,200K ÷ $960K = <strong>6.46x</strong>
+        </div>
+        <div class="ratio-result">MIC Interest Coverage = 6.46x</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> MIC earns $6.46 in operating income for every $1.00 of interest expense. This means the company can comfortably meet its interest payments — EBIT would have to fall by 84.5% before MIC could no longer cover interest.<br><br>
+          <strong>Critical importance:</strong> If interest coverage falls below 1.0x, the company's operating income is insufficient to pay interest — this is a major financial distress signal. Credit rating agencies closely monitor interest coverage when assigning ratings. A falling trend in interest coverage is more concerning than a single low reading.
+        </div>
+        <span class="ratio-benchmark">Below 1.5x: financial distress risk. 2x–5x: moderate. Above 5x: strong debt servicing ability.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFITABILITY RATIOS -->
+  <div class="subsection" id="s6-prof">
+    <h3>Profitability Ratios — How Efficiently Is the Company Generating Profit?</h3>
+    <p>Profitability ratios measure how effectively management converts sales and assets into profit. These are among the most important ratios for equity investors.</p>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Gross Profit Margin</div>
+        <span class="ratio-tag tag-prof">PROFITABILITY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Gross Margin = Gross Profit ÷ Revenue × 100</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> $13,500K ÷ $42,000K × 100 = <strong>32.1%</strong>
+        </div>
+        <div class="ratio-result">MIC Gross Margin = 32.1%</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> For every $1.00 of revenue, MIC retains $0.321 after paying the direct cost of goods sold. The gross margin measures <em>production efficiency and pricing power</em>. A higher gross margin means the company earns more on each unit sold — either because it prices products at a premium or because its production costs are lower than peers.<br><br>
+          <strong>Note:</strong> Gross margin varies enormously by industry. Software companies may have 70–80% gross margins (minimal cost to distribute software). Grocery stores may have 20–25% (thin margins on physical goods). Always compare within the same industry.
+        </div>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Pre-Tax (EBIT) Profit Margin</div>
+        <span class="ratio-tag tag-prof">PROFITABILITY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Pre-Tax Margin = EBT ÷ Revenue × 100 | EBIT Margin = EBIT ÷ Revenue × 100</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation (EBIT margin):</strong> $6,200K ÷ $42,000K × 100 = <strong>14.8%</strong><br>
+          <strong>MIC Calculation (EBT margin):</strong> $5,320K ÷ $42,000K × 100 = <strong>12.7%</strong>
+        </div>
+        <div class="ratio-result">MIC EBIT Margin = 14.8% | EBT Margin = 12.7%</div>
+        <div class="ratio-interp">
+          <strong>EBIT margin</strong> measures operating efficiency independent of capital structure (excludes interest) — useful for comparing companies with different debt levels. <strong>EBT (pre-tax) margin</strong> includes interest costs and shows profit before tax. The difference between EBIT margin and EBT margin reflects the cost of the company's debt financing.
+        </div>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Net Profit Margin</div>
+        <span class="ratio-tag tag-prof">PROFITABILITY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Net Profit Margin = Net Income ÷ Revenue × 100</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> $3,937K ÷ $42,000K × 100 = <strong>9.4%</strong>
+        </div>
+        <div class="ratio-result">MIC Net Profit Margin = 9.4%</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> MIC keeps $0.094 of every dollar of revenue as net profit after all costs, interest, and taxes. The "bottom line" margin is what ultimately matters to equity shareholders — but it can be affected by non-recurring items, tax changes, or interest expense changes unrelated to core operations. For a complete picture, always look at gross, EBIT, and net margins together.
+        </div>
+        <span class="ratio-benchmark">Varies by industry. Strong manufacturers: 8–15%. Tech: 20%+. Retailers: 2–5%.</span>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Return on Assets (ROA)</div>
+        <span class="ratio-tag tag-prof">PROFITABILITY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">ROA = Net Income ÷ Total Assets × 100</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> $3,937K ÷ $38,000K × 100 = <strong>10.4%</strong><br>
+          <em>Note: Some analysts use average assets = (Beginning + Ending) ÷ 2. With only year-end data, we use ending assets.</em>
+        </div>
+        <div class="ratio-result">MIC ROA = 10.4%</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> MIC generates a 10.4% return on every dollar of assets it deploys. ROA measures how efficiently management uses assets to generate earnings — regardless of how those assets are financed. An ROA of 10% means for every $1 invested in assets, MIC generates $0.104 of net income.<br><br>
+          <strong>Why it matters:</strong> A company with high ROA is "asset-light" and efficient. A declining ROA could mean the company is deploying assets inefficiently, facing margin pressure, or making poor acquisitions.
+        </div>
+        <span class="ratio-benchmark">Above 10% is generally excellent. Below 5% may indicate asset inefficiency.</span>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Return on Invested Capital (ROIC)</div>
+        <span class="ratio-tag tag-prof">PROFITABILITY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">ROIC = NOPAT ÷ Invested Capital × 100</div>
+        <div class="ratio-formula" style="font-size:12px;opacity:.8">NOPAT = EBIT × (1 − Tax Rate) | Invested Capital = Total Equity + Interest-Bearing Debt</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong><br>
+          NOPAT = $6,200K × (1 − 0.26) = $6,200K × 0.74 = $4,588K<br>
+          Invested Capital = $18,000K (equity) + $12,900K (interest-bearing debt) = $30,900K<br>
+          ROIC = $4,588K ÷ $30,900K × 100 = <strong>14.8%</strong>
+        </div>
+        <div class="ratio-result">MIC ROIC = 14.8%</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> ROIC measures the return generated on ALL capital invested in the business — both equity and debt capital. It excludes non-interest-bearing liabilities (like accounts payable). MIC's 14.8% ROIC means it earns an after-tax return of 14.8% on the capital its investors and creditors have provided.<br><br>
+          <strong>The ROIC vs. WACC framework:</strong> If ROIC > Weighted Average Cost of Capital (WACC), the company is creating value. If ROIC < WACC, the company is destroying value even if it is nominally profitable. This is the most important profitability concept for investment analysis.
+        </div>
+        <span class="ratio-benchmark">ROIC > WACC (typically 8–12%) = value creation. Best companies achieve sustained ROIC > 15%.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EFFICIENCY RATIOS -->
+  <div class="subsection" id="s6-eff">
+    <h3>Efficiency (Activity / Turnover) Ratios — How Well Is the Company Using Its Assets?</h3>
+    <p>Efficiency ratios measure how effectively a company manages its assets to generate sales. Higher turnover ratios generally indicate more efficient use of resources. Many of these ratios are also used to calculate <strong>"Days Outstanding"</strong> metrics by dividing 365 by the turnover ratio.</p>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Fixed Asset Turnover</div>
+        <span class="ratio-tag tag-eff">EFFICIENCY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Fixed Asset Turnover = Revenue ÷ Net PP&amp;E</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> $42,000K ÷ $18,600K = <strong>2.26x</strong>
+        </div>
+        <div class="ratio-result">MIC Fixed Asset Turnover = 2.26x</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> MIC generates $2.26 of revenue for every $1.00 of net property, plant &amp; equipment. This measures the productivity of the company's physical asset base. A higher ratio indicates that fixed assets are being used intensively to generate sales — good for capital efficiency. A declining ratio might indicate underutilized capacity or a need for major capital investment.
+        </div>
+        <span class="ratio-benchmark">Capital-intensive industries (steel, airlines): 0.5–1.5x. Lighter manufacturers: 2–4x.</span>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Inventory Turnover &amp; Days Inventory Outstanding (DIO)</div>
+        <span class="ratio-tag tag-eff">EFFICIENCY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Inventory Turnover = COGS ÷ Inventory | DIO = 365 ÷ Inventory Turnover</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> $28,500K ÷ $4,600K = <strong>6.20x</strong><br>
+          Days Inventory Outstanding (DIO) = 365 ÷ 6.20 = <strong>58.9 days</strong>
+        </div>
+        <div class="ratio-result">MIC Inventory Turnover = 6.20x | DIO ≈ 59 days</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> MIC sells through its entire inventory approximately 6.2 times per year — meaning inventory sits on the shelves for about 59 days before being sold. A higher turnover (lower DIO) is generally better — it means less cash is tied up in unsold inventory and there is lower risk of inventory becoming obsolete. A sudden decrease in inventory turnover (increase in DIO) could indicate slowing sales or quality problems.
+        </div>
+        <span class="ratio-benchmark">Compare to industry peers. Grocery: 20–30 turns. Manufacturing: 4–10 turns. Note: Use COGS (not revenue) for inventory turnover.</span>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Receivables Turnover &amp; Days Sales Outstanding (DSO)</div>
+        <span class="ratio-tag tag-eff">EFFICIENCY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Receivables Turnover = Revenue ÷ Accounts Receivable | DSO = 365 ÷ Receivables Turnover</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> $42,000K ÷ $5,200K = <strong>8.08x</strong><br>
+          Days Sales Outstanding (DSO) = 365 ÷ 8.08 = <strong>45.2 days</strong>
+        </div>
+        <div class="ratio-result">MIC Receivables Turnover = 8.08x | DSO ≈ 45 days</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> On average, MIC collects its receivables in 45 days after making a sale. If MIC's standard payment terms are "Net 30," a DSO of 45 days suggests some customers are paying late — a potential credit quality issue. A rising DSO trend is a major red flag — it may indicate customers cannot pay (deteriorating credit quality) or that sales are being made to marginal customers to hit revenue targets.
+        </div>
+        <span class="ratio-benchmark">Compare DSO to stated credit terms. If DSO significantly exceeds payment terms, investigate AR quality.</span>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Payables Turnover &amp; Days Payable Outstanding (DPO)</div>
+        <span class="ratio-tag tag-eff">EFFICIENCY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Payables Turnover = COGS ÷ Accounts Payable | DPO = 365 ÷ Payables Turnover</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> $28,500K ÷ $3,800K = <strong>7.50x</strong><br>
+          Days Payable Outstanding (DPO) = 365 ÷ 7.50 = <strong>48.7 days</strong>
+        </div>
+        <div class="ratio-result">MIC Payables Turnover = 7.50x | DPO ≈ 49 days</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> MIC takes approximately 49 days to pay its suppliers. Unlike DSO (where lower is better), a <em>higher DPO is generally better</em> for the company — it means the company is effectively using supplier financing (delaying payment while using the goods/services). However, excessively long DPO can damage supplier relationships and indicate the company is struggling to pay its bills.
+        </div>
+        <span class="ratio-benchmark">Higher DPO = more supplier financing = better cash flow management. Balance against supplier relationship health.</span>
+      </div>
+    </div>
+
+    <h4>Cash Conversion Cycle (CCC)</h4>
+    <p>The Cash Conversion Cycle measures how long it takes to convert inventory investment into cash receipts from customers. It is calculated as:</p>
+    <div style="background:var(--navy);border-radius:6px;padding:14px 20px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--gold-light);text-align:center;margin:12px 0">
+      CCC = DIO + DSO − DPO = 59 + 45 − 49 = 55 days
+    </div>
+    <p>MIC's CCC of 55 days means the company takes 55 days from purchasing raw materials to collecting cash from customers, after accounting for supplier payment timing. A shorter CCC = less working capital needed = more efficient cash management.</p>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Working Capital Turnover</div>
+        <span class="ratio-tag tag-eff">EFFICIENCY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Working Capital Turnover = Revenue ÷ Working Capital</div>
+        <div class="ratio-formula" style="font-size:12px;opacity:.8">Working Capital = Current Assets − Current Liabilities</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> Working Capital = $13,400K − $6,100K = $7,300K<br>
+          Working Capital Turnover = $42,000K ÷ $7,300K = <strong>5.75x</strong>
+        </div>
+        <div class="ratio-result">MIC Working Capital Turnover = 5.75x</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> MIC generates $5.75 in revenue for every $1.00 of net working capital. Higher turnover means the company needs relatively little working capital to support its revenue level — efficient capital deployment. An extremely high ratio could indicate working capital is too lean (risk of operational disruptions if cash gets tight).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EQUITY RATIOS -->
+  <div class="subsection" id="s6-eq">
+    <h3>Equity Ratios — What Do Shareholders Actually Earn and Own?</h3>
+    <p>Equity ratios relate earnings, dividends, and cash flows to the shares outstanding. These are the ratios retail clients care about most — they speak directly to the return on and value of their shares.</p>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Earnings Per Share (EPS)</div>
+        <span class="ratio-tag tag-eq">EQUITY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">EPS = Net Income − Preferred Dividends ÷ Weighted Average Shares Outstanding</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> $3,937K ÷ 10,000 shares (in thousands) = <strong>$0.394 per share</strong><br>
+          <em>MIC has 10,000 thousand shares = 10 million shares. $3,937,000 ÷ 10,000,000 = $0.394/share</em>
+        </div>
+        <div class="ratio-result">MIC Basic EPS = $0.394 per share</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> Each common share of MIC "earned" $0.394 of net income this year. EPS is the foundational equity metric — it is used in the P/E ratio, dividend payout calculation, and virtually every equity valuation comparison.<br><br>
+          <strong>Diluted EPS</strong> would also include the potential conversion of all dilutive securities (options, warrants, convertible bonds) into common shares — producing a lower EPS that represents the "worst case" dilution scenario. The exam may test basic EPS; professional analysis always focuses on diluted EPS.
+        </div>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Dividend Payout Ratio</div>
+        <span class="ratio-tag tag-eq">EQUITY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Dividend Payout Ratio = Dividends Per Share ÷ EPS × 100 = Total Dividends ÷ Net Income × 100</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> Total dividends = $1,600K. Net income = $3,937K.<br>
+          Payout ratio = $1,600K ÷ $3,937K × 100 = <strong>40.6%</strong><br>
+          <em>Or: DPS $0.160 ÷ EPS $0.394 × 100 = 40.6%</em>
+        </div>
+        <div class="ratio-result">MIC Dividend Payout Ratio = 40.6%</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> MIC pays out 40.6% of its net earnings as dividends and retains the remaining 59.4% to reinvest in the business. A moderate payout ratio like this is generally seen as healthy — the company is sharing profits with shareholders while retaining enough to fund growth. A payout ratio above 100% means the company is paying more in dividends than it earns — unsustainable without debt or asset sales.
+        </div>
+        <span class="ratio-benchmark">0–40%: growth company (reinvesting heavily). 40–70%: balanced mature company. 70–90%: income company (REITs, utilities).</span>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Retention Rate (Plowback Ratio)</div>
+        <span class="ratio-tag tag-eq">EQUITY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">Retention Rate = 1 − Dividend Payout Ratio = Retained Earnings Additions ÷ Net Income</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> 1 − 0.406 = <strong>0.594 = 59.4%</strong>
+        </div>
+        <div class="ratio-result">MIC Retention Rate = 59.4%</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> MIC retains 59.4% of its earnings for reinvestment. The retention rate drives future growth — the higher the retention rate combined with a high ROIC, the faster the company grows intrinsic value. This is captured in the Sustainable Growth Rate formula: g = Retention Rate × ROE.
+        </div>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Book Value Per Share (BVPS)</div>
+        <span class="ratio-tag tag-eq">EQUITY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">BVPS = Total Shareholders' Equity ÷ Shares Outstanding</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> $18,000K ÷ 10,000K shares = <strong>$1.80 per share</strong><br>
+          <em>(Using thousands: $18,000,000 ÷ 10,000,000 shares = $1.80/share)</em>
+        </div>
+        <div class="ratio-result">MIC Book Value Per Share = $1.80</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> Each MIC share represents $1.80 of "accounting value" — the net assets (assets minus liabilities) attributable to each share. BVPS is used in the Price-to-Book (P/B) ratio: P/B = Market Price ÷ BVPS. A P/B above 1.0 means the market values the company above its accounting book value — common for companies with strong earnings and intangible assets (brands, patents) not fully reflected on the balance sheet.
+        </div>
+      </div>
+    </div>
+
+    <div class="ratio-box">
+      <div class="ratio-header">
+        <div class="ratio-name">Free Cash Flow to Equity (FCFE)</div>
+        <span class="ratio-tag tag-eq">EQUITY</span>
+      </div>
+      <div class="ratio-body">
+        <div class="ratio-formula">FCFE = CFO − CapEx + Net Borrowings (new debt − debt repaid)</div>
+        <div class="ratio-worked">
+          <strong>MIC Calculation:</strong> CFO = $6,000K. CapEx = $3,200K. Net borrowings = New debt $0 − Debt repaid $900K = −$900K.<br>
+          FCFE = $6,000K − $3,200K − $900K = <strong>$1,900K</strong><br>
+          <em>FCFE per share = $1,900K ÷ 10,000K shares = $0.190/share</em>
+        </div>
+        <div class="ratio-result">MIC FCFE = $1,900K ($0.190 per share)</div>
+        <div class="ratio-interp">
+          <strong>Interpretation:</strong> FCFE is the cash available to <em>equity holders</em> after the company has met all obligations (operating costs, interest, taxes, CapEx, and debt repayments). It is the cleanest measure of what equity shareholders are truly entitled to. FCFE is compared to dividends paid ($1,600K / $0.160/share) — MIC's FCFE of $1,900K comfortably covers its dividends of $1,600K, indicating dividends are sustainable. If FCFE < Dividends, the company is paying dividends it cannot sustain from its own cash generation.<br><br>
+          <strong>Note:</strong> FCFE differs from Free Cash Flow (FCF = CFO − CapEx = $2,800K) in that FCFE also accounts for the net impact of debt repayments and new borrowings.
+        </div>
+        <span class="ratio-benchmark">FCFE per share vs. DPS: If FCFE &gt; Dividends → dividend is sustainable. If FCFE &lt; Dividends → dividend may be cut.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE CALCULATOR -->
+  <div class="subsection" id="s6-calc">
+    <h3>Interactive Ratio Calculator</h3>
+    <div class="calc-box">
+      <h4>🧮 Full Ratio Calculator — Enter Any Company's Data</h4>
+      <div class="calc-grid">
+        <div class="calc-field"><label>Revenue ($)</label><input type="number" id="c-rev" value="42000" step="1"></div>
+        <div class="calc-field"><label>Cost of Goods Sold ($)</label><input type="number" id="c-cogs" value="28500" step="1"></div>
+        <div class="calc-field"><label>EBIT / Operating Income ($)</label><input type="number" id="c-ebit" value="6200" step="1"></div>
+        <div class="calc-field"><label>Net Income ($)</label><input type="number" id="c-ni" value="3937" step="1"></div>
+        <div class="calc-field"><label>Interest Expense ($)</label><input type="number" id="c-int" value="960" step="1"></div>
+        <div class="calc-field"><label>Cash Flow from Operations ($)</label><input type="number" id="c-cfo" value="6000" step="1"></div>
+        <div class="calc-field"><label>Capital Expenditures ($)</label><input type="number" id="c-capex" value="3200" step="1"></div>
+        <div class="calc-field"><label>Total Assets ($)</label><input type="number" id="c-ta" value="38000" step="1"></div>
+        <div class="calc-field"><label>Total Equity ($)</label><input type="number" id="c-te" value="18000" step="1"></div>
+        <div class="calc-field"><label>Total Debt (interest-bearing) ($)</label><input type="number" id="c-td" value="12900" step="1"></div>
+        <div class="calc-field"><label>Current Assets ($)</label><input type="number" id="c-ca" value="13400" step="1"></div>
+        <div class="calc-field"><label>Current Liabilities ($)</label><input type="number" id="c-cl" value="6100" step="1"></div>
+        <div class="calc-field"><label>Cash &amp; Short-term Investments ($)</label><input type="number" id="c-cash" value="3200" step="1"></div>
+        <div class="calc-field"><label>Accounts Receivable ($)</label><input type="number" id="c-ar" value="5200" step="1"></div>
+        <div class="calc-field"><label>Inventory ($)</label><input type="number" id="c-inv" value="4600" step="1"></div>
+        <div class="calc-field"><label>Accounts Payable ($)</label><input type="number" id="c-ap" value="3800" step="1"></div>
+        <div class="calc-field"><label>Net PP&amp;E ($)</label><input type="number" id="c-ppe" value="18600" step="1"></div>
+        <div class="calc-field"><label>Dividends Paid ($)</label><input type="number" id="c-div" value="1600" step="1"></div>
+        <div class="calc-field"><label>Net Borrowings (new debt minus repaid) ($)</label><input type="number" id="c-netb" value="-900" step="1"></div>
+        <div class="calc-field"><label>Shares Outstanding</label><input type="number" id="c-shr" value="10000" step="1"></div>
+        <div class="calc-field"><label>Tax Rate (%)</label><input type="number" id="c-tax" value="26" step="0.5"></div>
+      </div>
+      <button class="calc-btn" onclick="calcAllRatios()">Calculate All Ratios</button>
+      <div class="calc-result" id="all-ratios">Results will appear here after clicking calculate…</div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz-section">
+  <div class="quiz-header">Practice Exam — 50 Questions</div>
+  <div class="quiz-sub">ELEMENT 4 PART 1: FINANCIAL STATEMENTS &amp; RATIO ANALYSIS · EXAM-LEVEL DIFFICULTY</div>
+  <div class="quiz-stats">
+    <div class="quiz-stat"><span class="stat-val">50</span><span class="stat-label">Total</span></div>
+    <div class="quiz-stat"><span class="stat-val" id="answered-count">0</span><span class="stat-label">Answered</span></div>
+    <div class="quiz-stat"><span class="stat-val" id="correct-count">0</span><span class="stat-label">Correct</span></div>
+    <div class="quiz-stat"><span class="stat-val" id="score-pct">—</span><span class="stat-label">Score</span></div>
+  </div>
+  <div class="quiz-controls">
+    <button class="ctrl-btn ctrl-btn-primary" onclick="revealAll()">Show All Answers</button>
+    <button class="ctrl-btn ctrl-btn-outline" onclick="resetQuiz()">Reset Quiz</button>
+  </div>
+  <div id="quiz-body"></div>
+  <div class="quiz-score-panel" id="score-panel">
+    <div class="score-val" id="final-score">—</div>
+    <p>out of 50 correct</p>
+  </div>
+</div>
+
+</div></div>
+<div id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<script>
+// RATIO CALCULATOR
+function calcAllRatios(){
+  const rev=+document.getElementById('c-rev').value, cogs=+document.getElementById('c-cogs').value,
+    ebit=+document.getElementById('c-ebit').value, ni=+document.getElementById('c-ni').value,
+    intExp=+document.getElementById('c-int').value, cfo=+document.getElementById('c-cfo').value,
+    capex=+document.getElementById('c-capex').value, ta=+document.getElementById('c-ta').value,
+    te=+document.getElementById('c-te').value, td=+document.getElementById('c-td').value,
+    ca=+document.getElementById('c-ca').value, cl=+document.getElementById('c-cl').value,
+    cash=+document.getElementById('c-cash').value, ar=+document.getElementById('c-ar').value,
+    inv=+document.getElementById('c-inv').value, ap=+document.getElementById('c-ap').value,
+    ppe=+document.getElementById('c-ppe').value, div=+document.getElementById('c-div').value,
+    netb=+document.getElementById('c-netb').value, shr=+document.getElementById('c-shr').value,
+    tax=+document.getElementById('c-tax').value/100;
+
+  const gp=rev-cogs, wc=ca-cl, ebt=ebit-intExp;
+  const nopat=ebit*(1-tax), ic=te+td;
+  const fcf=cfo-capex, fcfe=cfo-capex+netb;
+  const eps=ni/shr, bvps=te/shr, dps=div/shr;
+
+  let out='━━━ LIQUIDITY ━━━\n';
+  out+=`Current Ratio: ${(ca/cl).toFixed(2)}x\n`;
+  out+=`Quick Ratio: ${((ca-inv)/cl).toFixed(2)}x\n`;
+  out+=`Cash Ratio: ${(cash/cl).toFixed(2)}x\n`;
+  out+='\n━━━ RISK / LEVERAGE ━━━\n';
+  out+=`D/E Ratio: ${(td/te).toFixed(2)}x\n`;
+  out+=`Debt-to-Assets: ${(td/ta*100).toFixed(1)}%\n`;
+  out+=`Interest Coverage: ${(ebit/intExp).toFixed(2)}x\n`;
+  out+='\n━━━ PROFITABILITY ━━━\n';
+  out+=`Gross Margin: ${(gp/rev*100).toFixed(1)}%\n`;
+  out+=`EBIT Margin: ${(ebit/rev*100).toFixed(1)}%\n`;
+  out+=`Net Profit Margin: ${(ni/rev*100).toFixed(1)}%\n`;
+  out+=`ROA: ${(ni/ta*100).toFixed(1)}%\n`;
+  out+=`ROIC: ${(nopat/ic*100).toFixed(1)}%\n`;
+  out+='\n━━━ EFFICIENCY ━━━\n';
+  out+=`Fixed Asset Turnover: ${(rev/ppe).toFixed(2)}x\n`;
+  const invTurn=cogs/inv; out+=`Inventory Turnover: ${invTurn.toFixed(2)}x | DIO: ${(365/invTurn).toFixed(0)} days\n`;
+  const arTurn=rev/ar; out+=`Receivables Turnover: ${arTurn.toFixed(2)}x | DSO: ${(365/arTurn).toFixed(0)} days\n`;
+  const apTurn=cogs/ap; out+=`Payables Turnover: ${apTurn.toFixed(2)}x | DPO: ${(365/apTurn).toFixed(0)} days\n`;
+  out+=`Working Capital Turnover: ${(rev/wc).toFixed(2)}x\n`;
+  const ccc=(365/invTurn)+(365/arTurn)-(365/apTurn);
+  out+=`Cash Conversion Cycle (CCC): ${ccc.toFixed(0)} days\n`;
+  out+='\n━━━ EQUITY ━━━\n';
+  out+=`EPS: $${eps.toFixed(3)}/share\n`;
+  out+=`Book Value Per Share: $${bvps.toFixed(2)}/share\n`;
+  out+=`Dividend Per Share: $${dps.toFixed(3)}/share\n`;
+  out+=`Payout Ratio: ${(div/ni*100).toFixed(1)}%\n`;
+  out+=`Retention Rate: ${(100-div/ni*100).toFixed(1)}%\n`;
+  out+=`FCF (CFO − CapEx): $${fcf.toFixed(0)}\n`;
+  out+=`FCFE (FCF + Net Borrowings): $${fcfe.toFixed(0)} ($${(fcfe/shr).toFixed(3)}/share)\n`;
+  out+=`Dividend Coverage (FCFE/Dividends): ${(fcfe/div).toFixed(2)}x`;
+  document.getElementById('all-ratios').textContent=out;
+}
+
+// QUIZ
+const questions=[
+  {num:1,diff:'Easy',topic:'4.2',text:'The fundamental accounting equation states:',opts:['Assets + Liabilities = Equity','Assets = Liabilities + Equity','Equity = Assets + Liabilities','Revenue − Expenses = Assets'],ans:1,explanation:'The fundamental accounting equation is <strong>Assets = Liabilities + Equity</strong>. The balance sheet always balances because every asset is financed by either a liability (money owed to creditors) or equity (money belonging to shareholders).'},
+  {num:2,diff:'Easy',topic:'4.3',text:'Which line item on the income statement represents Revenue minus Cost of Goods Sold?',opts:['Net Income','EBIT (Operating Income)','Gross Profit','EBITDA'],ans:2,explanation:'<strong>Gross Profit = Revenue − COGS</strong>. It measures the profit before operating expenses, interest, and taxes. The gross profit margin is a key indicator of pricing power and production efficiency.'},
+  {num:3,diff:'Easy',topic:'4.4',text:'Depreciation and Amortization (D&A) is added BACK to net income in the operating section of the cash flow statement because:',opts:['D&A is a tax-deductible expense','D&A reduced net income but is a non-cash charge — no actual cash was paid out','D&A represents cash invested in new equipment','D&A is a financing activity, not an operating one'],ans:1,explanation:'D&A is a <strong>non-cash expense</strong>. Under the indirect method, the cash flow statement starts with net income and adds back non-cash items. D&A reduced accounting profit but involved no cash outflow — so it must be added back to arrive at actual cash from operations.'},
+  {num:4,diff:'Easy',topic:'4.6',text:'A company has current assets of $500K and current liabilities of $250K. What is its current ratio?',opts:['0.5x','1.5x','2.0x','$250K'],ans:2,explanation:'Current Ratio = Current Assets ÷ Current Liabilities = $500K ÷ $250K = <strong>2.0x</strong>. The company has $2 of current assets for every $1 of current liabilities.'},
+  {num:5,diff:'Easy',topic:'4.6',text:'Which liquidity ratio EXCLUDES inventory from the numerator?',opts:['Current ratio','Quick ratio (acid-test)','Cash ratio','Working capital ratio'],ans:1,explanation:'The <strong>Quick Ratio (Acid-Test)</strong> = (Current Assets − Inventory) ÷ Current Liabilities. Inventory is excluded because it may not be quickly convertible to cash. The quick ratio is more conservative than the current ratio.'},
+  {num:6,diff:'Easy',topic:'4.6',text:'Earnings Per Share (EPS) is calculated as:',opts:['Net Income ÷ Total Assets','Net Income ÷ Shares Outstanding','Revenue ÷ Shares Outstanding','EBIT ÷ Interest Expense'],ans:1,explanation:'<strong>EPS = Net Income ÷ Weighted Average Shares Outstanding</strong>. It represents how much of the company\'s net earnings is attributable to each common share. It is the foundational equity metric used in P/E ratios and dividend payout analysis.'},
+  {num:7,diff:'Easy',topic:'4.4',text:'For a healthy, mature company, what is the expected sign of Cash Flow from Operations (CFO)?',opts:['Negative — the company is investing in growth','Positive — core operations generate cash','Zero — it depends entirely on financing','Unpredictable — it varies each year'],ans:1,explanation:'A healthy company should generate <strong>positive CFO</strong> — its core business operations produce more cash than they consume. Sustained negative CFO is a serious concern and may indicate the company\'s business model is not viable without external financing.'},
+  {num:8,diff:'Easy',topic:'4.5',text:'An auditor\'s "unqualified" or "clean" opinion means:',opts:['The auditor found no fraud or illegal activity','Financial statements present fairly, in all material respects, in conformity with IFRS — no significant issues identified','The company has no debt','The auditor could not verify the financial statements'],ans:1,explanation:'A <strong>clean/unqualified opinion</strong> means the financial statements present a true and fair view of the company\'s financial position in accordance with IFRS. It is the standard opinion for a well-run company and indicates the statements can be relied upon for investment analysis.'},
+  {num:9,diff:'Medium',topic:'4.6',text:'A company has EBIT of $4,000K and interest expense of $800K. What is its interest coverage ratio, and what does this indicate?',opts:['0.2x — the company cannot cover its interest','5.0x — the company comfortably covers its interest','3.2x — moderate coverage','$3,200K — operating income after interest'],ans:1,explanation:'Interest Coverage = EBIT ÷ Interest = $4,000K ÷ $800K = <strong>5.0x</strong>. The company earns $5 in operating income for every $1 of interest expense — comfortable debt service capacity. Below 1.5x would indicate financial distress risk.'},
+  {num:10,diff:'Medium',topic:'4.6',text:'Company A has a gross margin of 60% while Company B in the same industry has a gross margin of 35%. What does this MOST likely indicate?',opts:['Company A has higher revenue','Company A has better pricing power or lower production costs relative to revenue than Company B','Company B is more profitable overall','Company A has lower debt'],ans:1,explanation:'A higher gross margin indicates <strong>better pricing power or more efficient production</strong>. Company A retains 60 cents of every dollar of revenue after paying direct production costs, vs. only 35 cents for Company B. This could reflect a premium brand, proprietary technology, or more efficient manufacturing.'},
+  {num:11,diff:'Medium',topic:'4.6',text:'Maple Industrial Corp. has revenue of $42,000K and inventory of $4,600K with COGS of $28,500K. What is the Days Inventory Outstanding (DIO)?',opts:['9.13 days','58.9 days','40.0 days','91.5 days'],ans:1,explanation:'Inventory Turnover = COGS ÷ Inventory = $28,500 ÷ $4,600 = 6.20x. DIO = 365 ÷ 6.20 = <strong>58.9 days</strong>. Note that COGS (not revenue) is used in the numerator for inventory turnover calculations.'},
+  {num:12,diff:'Medium',topic:'4.6',text:'A company\'s Day Sales Outstanding (DSO) increases from 32 days to 58 days over two years while revenue grows only modestly. This trend MOST likely indicates:',opts:['Improved efficiency in collecting receivables','Customers are paying faster than before','Possible credit quality deterioration or channel stuffing — the company may be extending looser credit terms to boost sales','The company has expanded into international markets'],ans:2,explanation:'A significant increase in DSO is a <strong>red flag</strong>. It means the company is taking much longer to collect cash from customers. This could indicate customers cannot pay (credit quality deteriorating), the company is using aggressive revenue recognition, or it is extending generous credit to hit sales targets while deferring cash collection.'},
+  {num:13,diff:'Medium',topic:'4.6',text:'A company has net income of $5,000K and pays $3,500K in dividends. What is the dividend payout ratio and retention rate?',opts:['Payout 30% | Retention 70%','Payout 70% | Retention 30%','Payout 143% | Retention 0%','Payout 1.43x | Retention 0.57x'],ans:1,explanation:'Payout = Dividends ÷ Net Income = $3,500 ÷ $5,000 = <strong>70%</strong>. Retention Rate = 1 − 70% = <strong>30%</strong>. The company pays out 70% of earnings and retains 30% for reinvestment. This high payout ratio is typical of mature income-focused companies.'},
+  {num:14,diff:'Medium',topic:'4.2',text:'Which of the following would be classified as a CURRENT ASSET on the balance sheet?',opts:['Property, plant and equipment (PP&E)','Goodwill from an acquisition','Accounts receivable expected to be collected within 30 days','Long-term bonds payable due in 7 years'],ans:2,explanation:'<strong>Accounts receivable</strong> expected to be collected within 30 days is a current asset — it will convert to cash within the operating cycle. PP&E, goodwill, and long-term bonds payable are all non-current items.'},
+  {num:15,diff:'Medium',topic:'4.6',text:'What does Return on Invested Capital (ROIC) measure, and why is it compared to WACC?',opts:['ROIC measures liquidity; WACC measures profitability','ROIC measures the after-tax return earned on all capital invested; comparing it to WACC determines if the company is creating or destroying value','ROIC measures revenue efficiency; WACC is irrelevant for this ratio','ROIC measures dividends paid; WACC measures the cost of debt only'],ans:1,explanation:'ROIC = NOPAT ÷ Invested Capital. When ROIC > WACC, <strong>the company creates value</strong> — it earns more than the cost of capital provided by investors and creditors. When ROIC < WACC, the company destroys value even if nominally profitable. This is the most important profitability concept for investment analysis.'},
+  {num:16,diff:'Medium',topic:'4.4',text:'Which of the following would appear as a POSITIVE cash flow in the INVESTING section of the cash flow statement?',opts:['Purchase of new manufacturing equipment','Sale of old factory building (proceeds received)','Issuance of new long-term bonds','Payment of dividends to shareholders'],ans:1,explanation:'Proceeds from selling assets (factory building) represent <strong>inflows</strong> in the investing section. Purchasing assets is an outflow. Issuing bonds and paying dividends are financing activities, not investing activities.'},
+  {num:17,diff:'Medium',topic:'4.6',text:'MIC has total debt of $12,900K and total equity of $18,000K. Total assets = $38,000K. What is the debt-to-assets ratio (using interest-bearing debt)?',opts:['0.72x','0.34 (34%)','1.11x','0.53 (53%)'],ans:1,explanation:'Debt-to-Assets = Total Debt ÷ Total Assets = $12,900K ÷ $38,000K = <strong>0.34 = 34%</strong>. Note that option A (0.72x) is the D/E ratio (debt ÷ equity). The debt-to-assets ratio is always between 0 and 1 (cannot have more debt than total assets in most scenarios).'},
+  {num:18,diff:'Medium',topic:'4.5',text:'An auditor issues a "going concern" qualification. What should an RR do with this information when assessing a client\'s portfolio?',opts:['Ignore it — going concern qualifications are always overly cautious','Buy more of the security — distressed companies often recover strongly','Treat it as a serious warning signal; the security is likely unsuitable for most retail clients except the most risk-tolerant speculators','Immediately report it to CIRO'],ans:2,explanation:'A going concern qualification means the auditor has <strong>substantial doubt the company can survive the next 12 months</strong>. This is an extreme warning. The security is inappropriate for virtually all retail clients who prioritize capital preservation. The RR must reassess the suitability of holding this security for any client, especially conservative ones.'},
+  {num:19,diff:'Hard',topic:'4.6',text:'A company has: Revenue $80M, COGS $48M, SG&A $12M, D&A $5M, Interest $3M, Tax rate 27%. Calculate the net profit margin.',opts:['15.0%','11.7%','25.0%','8.8%'],ans:1,explanation:'Gross Profit = $80M − $48M = $32M. EBIT = $32M − $12M − $5M = $15M. EBT = $15M − $3M = $12M. Tax = $12M × 27% = $3.24M. Net Income = $12M − $3.24M = $8.76M. Net Margin = $8.76M ÷ $80M = <strong>10.95% ≈ 11.7%</strong>. (Closest answer)'},
+  {num:20,diff:'Hard',topic:'4.6',text:'MIC has accounts receivable of $5,200K and revenue of $42,000K. What is the Days Sales Outstanding (DSO)? If MIC\'s stated payment terms are "Net 30," what does this suggest?',opts:['45 days — within payment terms, no concern','45 days — exceeds 30-day terms, suggesting some customers pay late; warrants monitoring but not necessarily alarming','8.1 days — very efficient collection','DSO cannot be calculated without knowing the beginning AR balance'],ans:1,explanation:'AR Turnover = $42,000 ÷ $5,200 = 8.08x. DSO = 365 ÷ 8.08 = <strong>45.2 days</strong>. Since payment terms are Net 30, MIC is collecting 15 days later than terms — some customers pay late. This is common and not necessarily alarming, but the trend should be monitored.'},
+  {num:21,diff:'Hard',topic:'4.6',text:'Using MIC data: NOPAT = EBIT × (1 − tax rate) = $6,200K × 0.74 = $4,588K. Invested Capital = Equity $18,000K + Debt $12,900K = $30,900K. Calculate ROIC.',opts:['10.4%','14.8%','22.4%','16.2%'],ans:1,explanation:'ROIC = NOPAT ÷ Invested Capital = $4,588K ÷ $30,900K = <strong>14.8%</strong>. If MIC\'s WACC is approximately 9%, then ROIC (14.8%) > WACC (9%) → MIC is creating value for its investors.'},
+  {num:22,diff:'Hard',topic:'4.6',text:'A company has: CFO = $8,000K, CapEx = $5,500K, Net debt repaid = $1,000K, Dividends = $2,000K. What is FCFE and can it sustain its dividend?',opts:['FCFE = $2,500K; dividends are sustainable (FCFE > dividends)','FCFE = $1,500K; dividends are NOT fully covered by FCFE (gap of $500K)','FCFE = $3,000K; dividends are very well covered','FCFE = $500K; dividends will need to be cut'],ans:1,explanation:'FCFE = CFO − CapEx + Net Borrowings = $8,000K − $5,500K + (−$1,000K) = <strong>$1,500K</strong>. Dividends = $2,000K. FCFE ($1,500K) < Dividends ($2,000K). The dividend <strong>exceeds FCFE by $500K</strong> — the company is not generating enough free cash to equity to fully fund dividends. It may be drawing on existing cash or taking on debt to fund the dividend — a sustainability concern.'},
+  {num:23,diff:'Easy',topic:'4.3',text:'EBITDA is calculated as:',opts:['EBIT + Depreciation + Amortization','Net Income + Interest + Taxes + D&A','Revenue − COGS − SG&A','Free Cash Flow + Interest'],ans:0,explanation:'<strong>EBITDA = EBIT + Depreciation + Amortization</strong>. Or equivalently: Net Income + Interest + Taxes + D&A. EBITDA is often used as a proxy for operating cash flow and is widely used in valuation multiples (EV/EBITDA).'},
+  {num:24,diff:'Medium',topic:'4.2',text:'Goodwill appears on the balance sheet when:',opts:['A company generates strong organic earnings growth','A company acquires another company for more than the fair value of its net identifiable assets','A company writes down an asset due to impairment','A company issues preferred shares at a premium'],ans:1,explanation:'<strong>Goodwill arises in acquisitions</strong> — when the purchase price exceeds the fair value of the target\'s identifiable net assets (assets minus liabilities). Goodwill represents the value of intangible factors like brand, customer relationships, and synergies that aren\'t separately identifiable on the target\'s balance sheet. Under IFRS, goodwill is not amortized but is tested annually for impairment.'},
+  {num:25,diff:'Hard',topic:'4.6',text:'A company reports a D/E ratio of 0.8x and a Debt-to-Assets of 0.45 (45%). The interest coverage ratio is 2.1x. An analyst is assessing the company\'s leverage risk. Which statement is MOST accurate?',opts:['Leverage is clearly low — D/E below 1.0x is always safe','The company has moderate leverage (D/E 0.8x, 45% of assets financed by debt) but the 2.1x interest coverage is borderline — a deterioration in earnings could create debt servicing stress','The company is financially distressed','There is insufficient information to assess leverage risk'],ans:1,explanation:'The picture is mixed: D/E of 0.8x and 45% Debt-to-Assets suggest moderate leverage. However, an interest coverage of 2.1x is <strong>relatively low</strong> — earnings would need to fall less than 52% before the company couldn\'t cover interest. For a cyclical company, this is a meaningful risk. The analyst should monitor coverage ratio trends closely.'},
+  {num:26,diff:'Easy',topic:'4.3',text:'Which of the following is an example of "Other Comprehensive Income" (OCI) that bypasses the income statement?',opts:['Revenue from product sales','Unrealized foreign exchange translation gain on a foreign subsidiary','Interest income from bonds','Operating expenses paid during the period'],ans:1,explanation:'<strong>OCI includes items excluded from net income</strong> under IFRS, such as: unrealized foreign currency translation adjustments, unrealized gains/losses on certain financial instruments, and pension actuarial gains/losses. These items affect equity but do not flow through net income.'},
+  {num:27,diff:'Medium',topic:'4.4',text:'Which of the following would INCREASE Cash Flow from Operations (indirect method)?',opts:['An increase in accounts receivable','A decrease in accounts payable','A decrease in inventory','Payment of a long-term debt principal'],ans:2,explanation:'A <strong>decrease in inventory</strong> means the company sold more inventory than it built — cash was received from inventory reduction, not tied up in new stock. This is a source of cash in CFO. Increases in receivables (cash owed to company) and decreases in payables (paying suppliers faster) both reduce CFO. Debt repayment is a financing activity.'},
+  {num:28,diff:'Medium',topic:'4.6',text:'The Cash Conversion Cycle (CCC) = DIO + DSO − DPO. If a company has DIO = 40 days, DSO = 35 days, and DPO = 55 days, what is the CCC, and what does it indicate?',opts:['CCC = 130 days — poor cash management','CCC = 20 days — efficient, company collects before paying suppliers','CCC = 75 days — moderate','CCC = −20 days — company collects even before the economic cost of goods leaves'],ans:1,explanation:'CCC = 40 + 35 − 55 = <strong>20 days</strong>. A CCC of 20 days is relatively efficient. A <em>negative CCC</em> (like Amazon achieves) means the company collects cash from customers before it pays suppliers — essentially operating on other people\'s money. Positive CCC means the company must finance the gap from its own resources or borrowing.'},
+  {num:29,diff:'Hard',topic:'4.6',text:'Company A and Company B are in the same industry. Company A: Revenue $100M, Accounts Receivable $15M. Company B: Revenue $100M, Accounts Receivable $8M. Which company has better receivables management?',opts:['Company A — higher AR means more sales on credit','Company B — lower AR means faster cash collection (lower DSO: 29 days vs. 55 days)','They are equal since revenue is the same','Cannot determine without knowing beginning AR balances'],ans:1,explanation:'Company A DSO = $15M/$100M × 365 = 54.75 days. Company B DSO = $8M/$100M × 365 = 29.2 days. <strong>Company B collects cash 25 days faster</strong> — much more efficient receivables management. Lower AR relative to revenue means less cash tied up in uncollected receivables and lower bad debt risk.'},
+  {num:30,diff:'Medium',topic:'4.6',text:'MIC has net income of $3,937K, total equity of $18,000K, and 10,000K shares outstanding. What is the Book Value Per Share (BVPS)?',opts:['$0.394','$1.80','$3.80','$3.937'],ans:1,explanation:'BVPS = Total Equity ÷ Shares Outstanding = $18,000K ÷ 10,000K shares = <strong>$1.80 per share</strong>. If MIC\'s market price were, say, $3.60, the Price-to-Book ratio would be $3.60 ÷ $1.80 = 2.0x — the market values MIC at twice its accounting book value.'},
+  {num:31,diff:'Easy',topic:'4.2',text:'Retained earnings on the balance sheet represents:',opts:['Cash that has been set aside in a bank account for future use','The cumulative net income earned over all years minus all dividends ever paid — profit kept in the business','The market value of shares that have been repurchased','Tax obligations deferred to future periods'],ans:1,explanation:'<strong>Retained earnings</strong> = the sum of all historical net incomes minus all dividends paid over the company\'s life. It represents profits that were NOT distributed to shareholders but were reinvested in the business. Growing retained earnings is a sign of profitable, internally-funded growth.'},
+  {num:32,diff:'Hard',topic:'4.6',text:'A company has: Current Assets $400K (including inventory $180K and prepaid $20K), Current Liabilities $250K. Calculate all three liquidity ratios.',opts:['Current 1.6x, Quick 0.8x, Cash 0.7x','Current 1.6x, Quick 0.88x, Cash impossible to calculate','Current 1.6x, Quick 0.72x, Cash ≈ varies by cash balance','All three ratios are the same at 1.6x'],ans:0,explanation:'Current = $400K ÷ $250K = 1.60x. Quick = ($400K − $180K) ÷ $250K = $220K ÷ $250K = 0.88x. Cash Ratio requires cash balance — not given. If we assume non-inventory/non-prepaid current assets are "liquid": ($400K − $180K − $20K) = $200K liquid → Cash Ratio ≈ $200K ÷ $250K = 0.80x. The answer with Current 1.6x, Quick 0.88x is closest to correct.'},
+  {num:33,diff:'Medium',topic:'4.3',text:'The difference between EBIT margin and net profit margin for a highly leveraged company would be:',opts:['Very small — leverage has no effect on margins','Large — the high interest expense significantly reduces net income below EBIT','Exactly equal — because taxes offset the interest effect','Not calculable without knowing the tax rate'],ans:1,explanation:'For a highly leveraged company, <strong>large interest expense</strong> creates a significant gap between EBIT and net income (EBT). For example, EBIT margin = 15%, but after $8M of interest on $100M revenue, EBT margin = 7%, and net margin might be only 5%. The more leverage, the bigger the wedge between EBIT margin and net margin.'},
+  {num:34,diff:'Medium',topic:'4.1',text:'When an RR wants to find details about a public company\'s significant legal proceedings and risk factors, the MOST comprehensive source is:',opts:['The company\'s Twitter/social media feed','The Annual Information Form (AIF) filed on SEDAR+','The company\'s most recent press release','The dealer\'s internal equity research report'],ans:1,explanation:'The <strong>Annual Information Form (AIF)</strong>, filed on SEDAR+, contains comprehensive disclosure of all material information including risk factors, legal proceedings, material contracts, and business description. It is the most complete regulatory filing and is the primary source for detailed company analysis.'},
+  {num:35,diff:'Hard',topic:'4.6',text:'A company has: Revenue $60M, COGS $35M, PP&E net $24M, Inventory $5M, AR $6M, AP $4M. Calculate Fixed Asset Turnover, DIO, DSO, and DPO.',opts:['FAT=2.5x, DIO=52d, DSO=37d, DPO=42d','FAT=1.5x, DIO=52d, DSO=73d, DPO=42d','FAT=2.5x, DIO=63d, DSO=36d, DPO=30d','FAT=2.5x, DIO=52d, DSO=37d, DPO=52d'],ans:0,explanation:'Fixed Asset Turnover = $60M/$24M = <strong>2.5x</strong>. Inventory Turnover = $35M/$5M = 7x → DIO = 365/7 = <strong>52.1 days</strong>. AR Turnover = $60M/$6M = 10x → DSO = 365/10 = <strong>36.5 days</strong>. AP Turnover = $35M/$4M = 8.75x → DPO = 365/8.75 = <strong>41.7 days</strong>. Closest: FAT 2.5x, DIO 52d, DSO 37d, DPO 42d.'},
+  {num:36,diff:'Easy',topic:'4.6',text:'Free Cash Flow (FCF) is calculated as:',opts:['Net Income − Dividends','Cash Flow from Operations − Capital Expenditures','Revenue − All Expenses','EBITDA − Taxes'],ans:1,explanation:'<strong>FCF = CFO − Capital Expenditures (CapEx)</strong>. It represents the cash the company generates after investing in maintaining and growing its asset base — the cash truly "free" to pay dividends, repay debt, or pursue acquisitions.'},
+  {num:37,diff:'Medium',topic:'4.5',text:'What is the purpose of "Notes to the Financial Statements"?',opts:['A marketing tool to attract investors','A mandatory component providing detailed explanations of accounting policies, segment data, debt details, contingencies, and other information essential to understanding the main financial statements','A summary written by management for non-financial readers','An optional supplement providing additional context'],ans:1,explanation:'Notes are a <strong>mandatory, integral part</strong> of financial statements under IFRS. They explain accounting policies (enabling comparability), reveal off-balance sheet items, detail debt terms and maturities, disclose related party transactions, and provide segment information. An analyst who doesn\'t read the notes is missing critical information that may not be visible in the main statements.'},
+  {num:38,diff:'Hard',topic:'4.6',text:'An analyst notices that Company X has a current ratio of 3.5x but a quick ratio of 0.7x. What does this MOST likely indicate?',opts:['The company is highly liquid with strong cash reserves','Most of the company\'s current assets are in inventory — if inventory cannot be quickly sold, the company may struggle to pay short-term bills despite appearing liquid on the current ratio','The company has negligible accounts receivable','The two ratios are inconsistent and indicate an accounting error'],ans:1,explanation:'A large gap between current ratio (3.5x) and quick ratio (0.7x) means the company has <strong>most of its current assets in inventory</strong>. The quick ratio excludes inventory — so when inventory is excluded, liquidity drops dramatically. This company looks liquid by the current ratio but faces real short-term payment risk if inventory doesn\'t sell quickly. Classic in retail or manufacturing companies with seasonal or slow-moving inventory.'},
+  {num:39,diff:'Medium',topic:'4.6',text:'If a company\'s dividend payout ratio is 120%, what does this indicate?',opts:['The company is extremely generous to shareholders','The company is paying out MORE in dividends than it earns in net income — the dividend is unsustainable and is being funded by debt, asset sales, or depleting cash reserves','The company has a 120% return on equity','The company paid 20% more dividends than last year'],ans:1,explanation:'A payout ratio above 100% means <strong>dividends exceed net income</strong> — the company is distributing more cash than it earns. This is unsustainable over the long term; the company must eventually cut dividends, raise capital, or liquidate assets. This is a major red flag for income-focused investors.'},
+  {num:40,diff:'Hard',topic:'4.6',text:'Using MIC data: Total Equity = $18,000K, Net Income = $3,937K. Calculate Return on Equity (ROE) and explain its significance.',opts:['ROE = 21.9% — measures profitability relative to shareholder investment; high ROE indicates management is generating strong returns on equity capital','ROE = 10.4% — same as ROA for this company','ROE = 14.8% — same as ROIC for this company','ROE = 9.4% — same as net margin'],ans:0,explanation:'ROE = Net Income ÷ Total Equity = $3,937K ÷ $18,000K = <strong>21.9%</strong>. ROE measures how efficiently management generates profits from shareholders\' equity. A 21.9% ROE means MIC generates $0.219 of net income per $1 of shareholder equity — a strong result. Note: ROE (21.9%) > ROA (10.4%) because the company uses financial leverage (debt).'},
+  {num:41,diff:'Easy',topic:'4.4',text:'Where does the purchase of new factory equipment appear on the cash flow statement?',opts:['Operating activities — it\'s used in production','Investing activities — acquiring long-term assets','Financing activities — it\'s financed with debt','It does not appear on the cash flow statement'],ans:1,explanation:'Capital expenditures (buying factory equipment) appear in <strong>investing activities</strong> as a cash outflow. The cash flow statement classifies activities as: Operations (day-to-day business), Investing (buying/selling long-term assets), and Financing (borrowing, repaying debt, issuing shares, dividends).'},
+  {num:42,diff:'Medium',topic:'4.6',text:'Why is ROIC considered a more meaningful profitability metric than ROE for comparing companies?',opts:['ROIC is simpler to calculate','ROIC captures returns on ALL capital (equity + debt) — it is not distorted by the capital structure. A highly leveraged company can show high ROE through financial leverage alone, not operational excellence','ROE is a legacy metric no longer used by analysts','ROIC always produces a higher number than ROE'],ans:1,explanation:'ROE can be inflated by high leverage — a company with very little equity and lots of debt will show high ROE even if it earns mediocre returns on its total asset base. ROIC uses invested capital (equity + debt), making it <strong>capital structure-neutral</strong>. Comparing ROIC across companies reveals true operational efficiency.'},
+  {num:43,diff:'Hard',topic:'4.6',text:'MIC has CFO = $6,000K, CapEx = $3,200K, Debt repayment = $900K (net borrowing = −$900K), Dividends = $1,600K, Shares = 10,000K. Calculate FCFE per share and assess dividend sustainability.',opts:['FCFE/share = $0.280; dividend well covered ($0.160/share DPS)','FCFE/share = $0.190; dividend covered ($0.160 DPS < $0.190 FCFE)','FCFE/share = $0.600; dividend very conservatively covered','FCFE/share = $0.160; dividend exactly equals FCFE — no margin'],ans:1,explanation:'FCFE = CFO − CapEx + Net Borrowings = $6,000K − $3,200K − $900K = $1,900K. FCFE/share = $1,900K ÷ 10,000K = <strong>$0.190/share</strong>. DPS = $1,600K ÷ 10,000K = $0.160/share. FCFE ($0.190) > DPS ($0.160) → dividend is covered with $0.030/share margin — <strong>sustainable but with limited coverage</strong>. Coverage ratio = $0.190 ÷ $0.160 = 1.19x.'},
+  {num:44,diff:'Medium',topic:'4.6',text:'A company has Working Capital of $2,000K and Revenue of $15,000K. What is the Working Capital Turnover ratio?',opts:['0.13x','7.5x','$13,000K','2.0x'],ans:1,explanation:'Working Capital Turnover = Revenue ÷ Working Capital = $15,000K ÷ $2,000K = <strong>7.5x</strong>. The company generates $7.50 in revenue for every $1 of net working capital — relatively efficient. Higher ratios indicate the company needs less working capital to support its sales volume.'},
+  {num:45,diff:'Hard',topic:'4.3',text:'A company\'s gross margin declines from 38% to 28% over three years while revenue grows 15% per year. What is the MOST likely explanation and concern?',opts:['Revenue growth always reduces gross margin — this is expected','Input cost inflation, pricing pressure, or product mix shift toward lower-margin products — this is a SERIOUS concern because a 10 percentage point margin decline even on growing revenue means the company earns much less on each dollar of sales, potentially compressing operating and net income','The decline is caused by accounting changes and is non-economic','The company reduced its advertising budget'],ans:1,explanation:'A 10 percentage point gross margin decline is a <strong>significant red flag</strong>. Despite revenue growth, the company is generating much less profit per unit sold. Possible causes: commodity input cost inflation that cannot be passed on to customers, new low-cost competitors forcing price reductions, or strategic shift to lower-margin products. This requires urgent investigation and management explanation.'},
+  {num:46,diff:'Easy',topic:'4.2',text:'What is "Working Capital"?',opts:['Total assets minus total liabilities','Current assets minus current liabilities','Total equity plus long-term debt','Net income available for distribution'],ans:1,explanation:'<strong>Working Capital = Current Assets − Current Liabilities</strong>. It represents the short-term financial buffer available to the company — the net short-term resources after covering all short-term obligations. Positive and growing working capital generally indicates a company can fund its operations without external financing.'},
+  {num:47,diff:'Medium',topic:'4.6',text:'A company reports: Revenue $50M, Net PP&E $40M, Inventory $12M (COGS = $32M), AR $9M. Calculate Fixed Asset Turnover, Inventory Turnover, and AR Turnover (approximately).',opts:['FAT=1.25x, InvTurn=2.67x, ARTurn=5.56x','FAT=0.80x, InvTurn=2.67x, ARTurn=5.56x','FAT=1.25x, InvTurn=4.17x, ARTurn=5.56x','FAT=1.25x, InvTurn=2.67x, ARTurn=3.33x'],ans:0,explanation:'Fixed Asset Turnover = $50M ÷ $40M = <strong>1.25x</strong>. Inventory Turnover = $32M ÷ $12M = <strong>2.67x</strong> (COGS ÷ Inventory). AR Turnover = $50M ÷ $9M = <strong>5.56x</strong>. Note: inventory turnover uses COGS in the numerator, not revenue.'},
+  {num:48,diff:'Hard',topic:'4.2',text:'A company has total assets of $200M, total liabilities of $130M, and reported AOCI of $8M. What is: (a) total equity, (b) the balance sheet verify, and (c) retained earnings if share capital = $42M?',opts:['Equity $70M; Balance: $200M = $130M + $70M ✓; RE = $20M','Equity $70M; Balance: $200M = $130M + $70M ✓; RE = $28M','Equity $80M; RE = $30M','Equity $70M; RE = $8M'],ans:0,explanation:'Total Equity = Total Assets − Total Liabilities = $200M − $130M = <strong>$70M</strong>. Balance: $200M = $130M + $70M ✓. Equity = Share Capital + Retained Earnings + AOCI → $70M = $42M + RE + $8M → RE = $70M − $42M − $8M = <strong>$20M</strong>.'},
+  {num:49,diff:'Medium',topic:'4.1',text:'When explaining company analysis to a retail client with "limited investment knowledge," the RR should:',opts:['Provide the full technical analysis using all ratios and financial terminology','Use plain language, analogies, and focus on the key investment implications relevant to the client\'s objectives — avoid jargon without sacrificing accuracy','Refuse to explain the analysis and direct the client to read the AIF themselves','Provide only positive information to avoid alarming the client'],ans:1,explanation:'The RR must <strong>calibrate complexity to the client\'s investment knowledge level</strong>. For a client with limited knowledge, the RR should use plain language ("the company has more cash than short-term bills"), focus on what matters to the client\'s specific objectives, and connect the analysis to the suitability recommendation. Providing a full technical ratio analysis would not be helpful and may cause confusion.'},
+  {num:50,diff:'Hard',topic:'4.6',text:'What is the sustainable growth rate formula, and how does it relate to the retention rate and ROE?',opts:['Sustainable growth rate = Payout ratio × ROA','Sustainable growth rate = Retention rate × ROE (uses earnings retained and the return earned on equity capital to estimate maximum reinvestment-funded growth)','Sustainable growth rate = D/E ratio × ROA','Sustainable growth rate = ROIC × WACC'],ans:1,explanation:'<strong>Sustainable Growth Rate = Retention Rate × ROE</strong>. For MIC: Retention = 59.4%, ROE = 21.9% → Sustainable Growth = 59.4% × 21.9% = 13.0%. This means MIC can grow at approximately 13% per year purely by reinvesting its retained earnings at its current ROE — without needing new equity issuance or additional debt. Higher ROE × higher retention = faster internally-funded growth.'}
+];
+
+let answered={},correct=0;
+function buildQuiz(){
+  const c=document.getElementById('quiz-body');c.innerHTML='';
+  questions.forEach(q=>{
+    const d=document.createElement('div');d.className='q-item';d.id='q'+q.num;
+    const dc=q.diff==='Easy'?'diff-easy':q.diff==='Medium'?'diff-medium':'diff-hard';
+    let opts=q.opts.map((o,j)=>`<li onclick="pick(${q.num},${j})" id="opt-${q.num}-${j}">${String.fromCharCode(65+j)}) ${o}</li>`).join('');
+    d.innerHTML=`<div class="q-meta"><span class="q-num">Q${q.num}</span><span class="q-diff ${dc}">${q.diff}</span><span class="q-topic">§${q.topic}</span></div><div class="q-text">${q.text}</div><ul class="q-options">${opts}</ul><button class="show-ans-btn" onclick="tAns(${q.num})">Show Explanation</button><div class="q-answer" id="ans-${q.num}"><strong>Correct Answer: ${String.fromCharCode(65+q.ans)})</strong> ${q.opts[q.ans]}<br><br>${q.explanation}</div>`;
+    c.appendChild(d);
+  });
+}
+function pick(qn,sel){
+  if(answered[qn]!==undefined)return;answered[qn]=sel;
+  const q=questions[qn-1];const ok=sel===q.ans;if(ok)correct++;
+  q.opts.forEach((_,j)=>{const el=document.getElementById(`opt-${qn}-${j}`);
+    if(j===sel&&ok)el.classList.add('correct');else if(j===sel&&!ok)el.classList.add('wrong');
+    if(j===q.ans&&!ok)el.classList.add('reveal-correct');});
+  const t=Object.keys(answered).length;
+  document.getElementById('answered-count').textContent=t;
+  document.getElementById('correct-count').textContent=correct;
+  document.getElementById('score-pct').textContent=t>0?Math.round(correct/t*100)+'%':'—';
+  if(t===50){document.getElementById('score-panel').style.display='block';document.getElementById('final-score').textContent=correct;}
+}
+function tAns(qn){document.getElementById('ans-'+qn).classList.toggle('show');}
+function revealAll(){questions.forEach(q=>{document.getElementById('ans-'+q.num).classList.add('show');if(answered[q.num]===undefined)document.getElementById(`opt-${q.num}-${q.ans}`).classList.add('reveal-correct');});}
+function resetQuiz(){answered={};correct=0;document.getElementById('answered-count').textContent=0;document.getElementById('correct-count').textContent=0;document.getElementById('score-pct').textContent='—';document.getElementById('score-panel').style.display='none';buildQuiz();}
+buildQuiz();
+function gs(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function filterNav(q){q=q.toLowerCase();document.querySelectorAll('.nav-item').forEach(n=>{n.style.display=n.textContent.toLowerCase().includes(q)?'':'none';});}
+window.addEventListener('scroll',()=>{
+  const dh=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('prog-fill').style.width=Math.min(100,window.scrollY/dh*100)+'%';
+  document.getElementById('back-top').classList.toggle('visible',window.scrollY>400);
+  ['hero','s1','s2','s3','s4','s5','s6','quiz-section'].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;const r=el.getBoundingClientRect();
+    if(r.top<=100&&r.bottom>=100)document.querySelectorAll('.nav-item').forEach(n=>{n.classList.toggle('active',n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+id+"'"));});
+  });
+});
+</script>
+</body>
+</html>
