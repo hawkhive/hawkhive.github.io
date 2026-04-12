@@ -719,7 +719,7 @@ mark{background:rgba(201,151,58,.25);color:inherit;border-radius:2px;padding:0 2
 
   <div class="subsection" id="s5-float">
     <h3>Floating Rate Bonds (Variable Rate)</h3>
-    <p>A floating rate bond has a coupon that resets periodically (typically every 3 or 6 months) based on a reference rate plus a spread. In Canada, the reference rate is often the CDOR (Canadian Dollar Offered Rate) or the Bank of Canada's overnight rate. Example: CDOR + 150 bps (1.5%).</p>
+    <p>A floating rate bond has a coupon that resets periodically (typically every 3 or 6 months) based on a reference rate plus a spread. In Canada, the reference rate is now typically the CORRA (Canadian Overnight Repo Rate Average) or the Term CORRA. Example: CORRA + 150 bps (1.50%).</p>
     <ul class="styled-list">
       <li><strong>Interest rate risk is minimal:</strong> As rates rise, the coupon also rises, so the bond's price stays close to par. This is the defining advantage.</li>
       <li><strong>Disadvantage in falling rate environments:</strong> When rates fall, the coupon income also falls.</li>
@@ -834,7 +834,29 @@ mark{background:rgba(201,151,58,.25);color:inherit;border-radius:2px;padding:0 2
 
     <div class="math-box">
       <div class="formula-label">Approximate YTM Formula</div>
-      <div class="formula">Approx YTM = [Annual Coupon + (Par - Price) ÷ N] ÷ [(Par + Price) ÷ 2]</div>
+      <div class="formula">
+        <math display="block">
+          <mi>Approx YTM</mi>
+          <mo>=</mo>
+          <mfrac>
+            <mrow>
+              <mtext>Annual Coupon</mtext>
+              <mo>+</mo>
+              <mfrac>
+                <mrow><mi>Par</mi><mo>-</mo><mi>Price</mi></mrow>
+                <mi>N</mi>
+              </mfrac>
+            </mrow>
+            <mrow>
+              <mfrac>
+                <mrow><mi>Par</mi><mo>+</mo><mi>Price</mi></mrow>
+                <mn>2</mn>
+              </mfrac>
+            </mrow>
+          </mfrac>
+        </math>
+
+      </div>
       <div class="worked">
         <p style="color:rgba(255,255,255,.6);font-size:12px;margin-bottom:12px">Where: N = years to maturity | Annual Coupon = coupon rate × par | Par = $1,000 (typically)</p>
         <p style="color:rgba(255,255,255,.7);font-size:13px;margin-bottom:12px"><strong style="color:var(--gold-light)">Worked Example:</strong> Bond: 6% coupon, $1,000 par, current price $920, 10 years to maturity.</p>
@@ -874,8 +896,51 @@ mark{background:rgba(201,151,58,.25);color:inherit;border-radius:2px;padding:0 2
 
     <div class="math-box">
       <div class="formula-label">Zero-Coupon / Strip Bond Yield</div>
-      <div class="formula">Price = Par ÷ (1 + r)ⁿ</div>
-      <div class="formula" style="font-size:14px">→ Rearranged: r = (Par ÷ Price)^(1/n) − 1</div>
+      <div class="formula">
+        <math display="block">
+          <mi>Price</mi>
+          <mo>=</mo>
+          <mfrac>
+            <mi>Par</mi>
+            <msup>
+              <mrow>
+                <mo>(</mo>
+                <mn>1</mn>
+                <mo>+</mo>
+                <mi>r</mi>
+                <mo>)</mo>
+              </mrow>
+              <mi>n</mi>
+            </msup>
+          </mfrac>
+        </math>
+      </div>
+      <div class="formula" style="font-size:14px">
+        <math display="block">
+          <mtext>→ Rearranged:</mtext>
+          <mspace width="10px"/>
+          <mi>r</mi>
+          <mo>=</mo>
+          <msup>
+            <mrow>
+              <mo>(</mo>
+              <mfrac>
+                <mi>Par</mi>
+                <mi>Price</mi>
+              </mfrac>
+              <mo>)</mo>
+            </mrow>
+            <mrow>
+              <mn>1</mn>
+              <mo>/</mo>
+              <mi>n</mi>
+            </mrow>
+          </msup>
+          <mo>-</mo>
+          <mn>1</mn>
+        </math>
+
+      </div>
       <div class="worked">
         <p style="color:rgba(255,255,255,.7);font-size:13px;margin-bottom:12px"><strong style="color:var(--gold-light)">Example:</strong> A 10-year strip bond with face value $1,000 is priced at $558.39. What is the yield?</p>
         <div class="step"><div class="step-num">1</div><div class="step-text">r = ($1,000 ÷ $558.39)^(1/10) − 1</div></div>
@@ -1109,8 +1174,82 @@ mark{background:rgba(201,151,58,.25);color:inherit;border-radius:2px;padding:0 2
 
     <div class="math-box">
       <div class="formula-label">Bond Price = PV of All Future Cash Flows</div>
-      <div class="formula">Price = Σ [C ÷ (1+r)ᵗ] + [Par ÷ (1+r)ⁿ]</div>
-      <div class="formula" style="font-size:13px;opacity:.8">= C × [1 − (1+r)⁻ⁿ] ÷ r + Par ÷ (1+r)ⁿ</div>
+      <div class="formula">
+        <math display="block">
+          <mi>Price</mi>
+          <mo>=</mo>
+          <munderover>
+            <mo>∑</mo>
+            <mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow>
+            <mi>n</mi>
+          </munderover>
+          <mrow>
+            <mo>[</mo>
+            <mfrac>
+              <mi>C</mi>
+              <msup>
+                <mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>r</mi><mo>)</mo></mrow>
+                <mi>t</mi>
+              </msup>
+            </mfrac>
+            <mo>]</mo>
+          </mrow>
+          <mo>+</mo>
+          <mrow>
+            <mo>[</mo>
+            <mfrac>
+              <mi>Par</mi>
+              <msup>
+                <mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>r</mi><mo>)</mo></mrow>
+                <mi>n</mi>
+              </msup>
+            </mfrac>
+            <mo>]</mo>
+          </mrow>
+        </math>
+
+      </div>
+      <div class="formula" style="font-size:13px;opacity:.8">
+        <math display="block">
+          <mo>=</mo>
+          <mi>C</mi>
+          <mo>×</mo>
+          <mfrac>
+            <mrow>
+              <mn>1</mn>
+              <mo>-</mo>
+              <msup>
+                <mrow>
+                  <mo>(</mo>
+                  <mn>1</mn>
+                  <mo>+</mo>
+                  <mi>r</mi>
+                  <mo>)</mo>
+                </mrow>
+                <mrow>
+                  <mo>-</mo>
+                  <mi>n</mi>
+                </mrow>
+              </msup>
+            </mrow>
+            <mi>r</mi>
+          </mfrac>
+          <mo>+</mo>
+          <mfrac>
+            <mi>Par</mi>
+            <msup>
+              <mrow>
+                <mo>(</mo>
+                <mn>1</mn>
+                <mo>+</mo>
+                <mi>r</mi>
+                <mo>)</mo>
+              </mrow>
+              <mi>n</mi>
+            </msup>
+          </mfrac>
+        </math>
+      </div>
       <div class="worked">
         <p style="color:rgba(255,255,255,.6);font-size:12px;margin-bottom:12px">Where: C = coupon payment per period | r = yield per period (YTM/m) | n = total number of periods | Par = face value</p>
         <p style="color:rgba(255,255,255,.7);font-size:13px;margin-bottom:12px"><strong style="color:var(--gold-light)">Example:</strong> Find the price of a bond: 6% coupon, semi-annual, 3-year maturity, par $1,000, required yield = 8%.</p>
@@ -1259,8 +1398,11 @@ function calcBondPrice(){
   const pvPar=par/Math.pow(1+r,periods);
   const price=pvCoupons+pvPar;
   const status=price>par?'PREMIUM (above par)':price<par?'DISCOUNT (below par)':'AT PAR';
-  document.getElementById('bond-result').innerHTML=
-    `Bond Price: $${price.toFixed(2)} [${status}]\nPV of Coupons: $${pvCoupons.toFixed(2)}\nPV of Principal: $${pvPar.toFixed(2)}\nTotal Periods: ${periods} | Coupon per Period: $${C.toFixed(2)} | Rate per Period: ${(r*100).toFixed(4)}%`;
+  document.getElementById('bond-result').innerHTML = 
+    `Bond Price: <strong>$${price.toFixed(2)} [${status}]</strong><br>
+    PV of Coupons: <strong>$${pvCoupons.toFixed(2)}</strong><br>
+    PV of Principal: <strong>$${pvPar.toFixed(2)}</strong><br>
+    Total Periods: <strong>${periods}</strong> | Coupon per Period: <strong>$${C.toFixed(2)}</strong> | Rate per Period: <strong>${(r*100).toFixed(4)}%</strong>`;
 }
 function calcYTM(){
   const par=parseFloat(document.getElementById('ytm-par').value);
@@ -1274,13 +1416,16 @@ function calcYTM(){
   const approxYTM=numerator/avgPrice*100;
   const cy=annCoupon/price*100;
   document.getElementById('ytm-result').innerHTML=
-    `Approximate YTM: ${approxYTM.toFixed(2)}%\nCurrent Yield: ${cy.toFixed(2)}%\nCoupon Rate: ${(cr*100).toFixed(2)}%\n${approxYTM>cr*100?'DISCOUNT bond — YTM > Current Yield > Coupon':'PREMIUM bond — YTM < Current Yield < Coupon'}`;
+    `Approximate YTM: <strong>${approxYTM.toFixed(2)}%</strong><br>
+    Current Yield: <strong>${cy.toFixed(2)}%</strong><br>
+    Coupon Rate: <strong>${(cr*100).toFixed(2)}%</strong><br>
+    ${approxYTM>cr*100?'DISCOUNT bond — YTM > Current Yield > Coupon':'PREMIUM bond — YTM < Current Yield < Coupon'}`;
 }
 function calcCY(){
   const c=parseFloat(document.getElementById('cy-coupon').value);
   const p=parseFloat(document.getElementById('cy-price').value);
   const cy=c/p*100;
-  document.getElementById('cy-result').innerHTML=`Current Yield = $${c} ÷ $${p} × 100 = ${cy.toFixed(2)}%`;
+  document.getElementById('cy-result').innerHTML=`Current Yield = $${c} ÷ $${p} × 100 = <strong>${cy.toFixed(2)}%</strong>`;
 }
 function calcDuration(){
   const mac=parseFloat(document.getElementById('macDur').value);
@@ -1293,8 +1438,12 @@ function calcDuration(){
   const dollarChg=pctChg/100*px;
   const newPx=px+dollarChg;
   const direction=yChg>0?'RISE':'FALL';
-  document.getElementById('dur-result').innerHTML=
-    `Modified Duration: ${modDur.toFixed(3)}\nYield Change: ${yChg>0?'+':''}${(yChg*10000).toFixed(0)} bps (${direction})\nEstimated % Price Change: ${pctChg.toFixed(3)}%\nEstimated $ Change: ${dollarChg>=0?'+':''}$${dollarChg.toFixed(2)}\nNew Estimated Price: $${newPx.toFixed(2)}`;
+  document.getElementById('dur-result').innerHTML = 
+    `Modified Duration: <strong>${modDur.toFixed(3)}</strong><br>` +
+    `Yield Change: <strong>${yChg > 0 ? '+' : ''}${(yChg * 10000).toFixed(0)} bps (${direction})</strong><br>` +
+    `Estimated % Price Change: <strong>${pctChg.toFixed(3)}%</strong><br>` +
+    `Estimated $ Change: ${dollarChg >= 0 ? '+' : ''}$<strong>${dollarChg.toFixed(2)}</strong><br>` +
+    `New Estimated Price: $<strong>${newPx.toFixed(2)}</strong>`;
 }
 
 // ── QUIZ ──
@@ -1309,18 +1458,18 @@ const questions=[
   {num:8,diff:'Easy',topic:'2.2',text:'What does CDIC insure, and up to what amount?',opts:['CIRO member firm insolvency — up to $1M','Eligible deposits at member banks — up to $100,000 per depositor per category','All financial losses — unlimited','GIC losses due to market risk — up to $250,000'],ans:1,explanation:'CDIC (Canada Deposit Insurance Corporation) covers <strong>eligible deposits (including GICs up to 5 years) at member institutions up to $100,000 per depositor per category</strong>. This is separate from CIPF which covers CIRO member firm insolvency.'},
   {num:9,diff:'Medium',topic:'2.6',text:'A bond has a 5% annual coupon rate and is currently priced at $1,100. What is the current (income) yield?',opts:['5.00%','4.55%','5.50%','4.00%'],ans:1,explanation:'Current Yield = Annual Coupon ÷ Price = ($1,000 × 5%) ÷ $1,100 = $50 ÷ $1,100 = <strong>4.55%</strong>. The bond is at a premium (price > par) so current yield is LESS than the coupon rate of 5%.'},
   {num:10,diff:'Medium',topic:'2.6',text:'For a bond trading at a premium to par value, which relationship is CORRECT?',opts:['YTM > Current Yield > Coupon Rate','YTM < Current Yield < Coupon Rate','Coupon Rate > YTM > Current Yield','Current Yield = Coupon Rate = YTM'],ans:1,explanation:'For a <strong>premium bond</strong>: <strong>YTM &lt; Current Yield &lt; Coupon Rate</strong>. The investor pays more than par, creating a built-in capital loss at maturity that reduces the overall yield below the coupon rate.'},
-  {num:11,diff:'Medium',topic:'2.6',text:'A 5-year strip bond with a $1,000 face value is priced at $783.53. What is the annual yield? (Hint: r = (1000/783.53)^(1/5) − 1)',opts:['3.50%','5.00%','4.50%','5.00%'],ans:1,explanation:'r = ($1,000 ÷ $783.53)^(1/5) − 1 = (1.2763)^(0.2) − 1 = 1.05 − 1 = <strong>5.0%</strong>. Verify: $1,000 ÷ (1.05)^5 = $1,000 ÷ 1.2763 = $783.53 ✓'},
+  {num:11,diff:'Medium',topic:'2.6',text:'A 5-year strip bond with a $1,000 face value is priced at $783.53. What is the annual yield? (Hint: r = (1000/783.53)^(1/5) − 1)',opts:['3.50%','5.00%','4.50%','5.50%'],ans:1,explanation:'r = ($1,000 ÷ $783.53)^(1/5) − 1 = (1.2763)^(0.2) − 1 = 1.05 − 1 = <strong>5.0%</strong>. Verify: $1,000 ÷ (1.05)^5 = $1,000 ÷ 1.2763 = $783.53 ✓'},
   {num:12,diff:'Medium',topic:'2.7',text:'Two bonds have the same maturity date and the same issuer. Bond A has a 3% coupon and Bond B has an 8% coupon. Which bond will experience a GREATER price decline if interest rates rise by 1%?',opts:['Bond B (8% coupon) — higher coupon means more income to lose','Bond A (3% coupon) — lower coupon means longer effective duration','They will be equally affected','Cannot determine without knowing the exact maturity'],ans:1,explanation:'<strong>Bond A (3% coupon)</strong> has a lower coupon and therefore a longer effective duration (Malkiel Rule 4). Most of its cash flows come far in the future (at maturity), making it more sensitive to discount rate changes. Low-coupon bonds are MORE price-volatile than high-coupon bonds of the same maturity.'},
   {num:13,diff:'Medium',topic:'2.7',text:'An inverted yield curve (short-term yields > long-term yields) historically suggests:',opts:['Strong economic growth ahead','Currency crisis likely','Economic slowdown or recession likely within 12-18 months','Immediate interest rate cuts guaranteed'],ans:2,explanation:'An <strong>inverted yield curve</strong> has historically been the most reliable leading indicator of an economic recession, typically 12–18 months ahead. It occurs when the market expects future interest rates to fall — implying anticipated economic weakness.'},
   {num:14,diff:'Medium',topic:'2.5',text:'A convertible bond has a par value of $1,000 and a conversion price of $25. How many shares will the bondholder receive if they convert?',opts:['25 shares','40 shares','250 shares','100 shares'],ans:1,explanation:'Conversion ratio = Par ÷ Conversion Price = $1,000 ÷ $25 = <strong>40 shares</strong>. The bondholder exchanges $1,000 face value bond for 40 shares. Conversion is rational when the market value of 40 shares exceeds the bond\'s value.'},
   {num:15,diff:'Medium',topic:'2.8',text:'A bond has a Modified Duration of 6.5. If interest rates fall by 0.5% (50 bps), what is the APPROXIMATE percentage change in the bond\'s price?',opts:['-3.25%','+3.25%','-6.50%','+6.50%'],ans:1,explanation:'Estimated % change = −Modified Duration × Δ Yield = −6.5 × (−0.005) = <strong>+3.25%</strong>. When rates FALL, bond prices RISE. The negative sign in the formula produces a positive price change when yield change is negative.'},
-  {num:16,diff:'Medium',topic:'2.9',text:'A bond has a 4% annual coupon (paid annually), 2-year maturity, $1,000 par, and a required yield of 6%. What is the bond\'s price?',opts:['$1,000.00','$963.00','$927.34','$972.34'],ans:2,explanation:'PV = ($40/(1.06)) + ($40/(1.06)²) + ($1,000/(1.06)²) = $37.74 + $35.60 + $890.00 = <strong>$963.34 ≈ $963</strong>. (At a discount because required yield 6% > coupon 4%)'},
+  {num:16,diff:'Medium',topic:'2.9',text:'A bond has a 4% annual coupon (paid annually), 2-year maturity, $1,000 par, and a required yield of 6%. What is the bond\'s price?',opts:['$1,000.00','$927.34','$963.00','$972.34'],ans:2,explanation:'PV = ($40/(1.06)) + ($40/(1.06)²) + ($1,000/(1.06)²) = $37.74 + $35.60 + $890.00 = <strong>$963.34 ≈ $963</strong>. (At a discount because required yield 6% > coupon 4%)'},
   {num:17,diff:'Medium',topic:'2.3',text:'Accrued interest on a bond is calculated up to and including which date?',opts:['The trade date','The settlement date','The previous coupon payment date','The next coupon payment date'],ans:1,explanation:'Accrued interest is calculated from the last coupon payment date up to and including the <strong>settlement date</strong> — not the trade date. Ownership transfers on settlement date, so the seller is entitled to interest up to that point.'},
   {num:18,diff:'Medium',topic:'2.4',text:'An investor is concerned about rising inflation over the next 10 years. Which fixed income security is MOST suitable to mitigate this concern?',opts:['30-year GoC conventional bond','10-year Real Return Bond (RRB)','5-year non-redeemable GIC','5-year corporate debenture'],ans:1,explanation:'A <strong>Real Return Bond (RRB)</strong> adjusts its principal and interest payments for CPI inflation. This directly protects the investor\'s purchasing power. A conventional bond\'s fixed coupon loses real value to inflation over time.'},
   {num:19,diff:'Medium',topic:'2.5',text:'A company has issued bonds with a sinking fund provision. What does this mean for investors?',opts:['The company can never repurchase the bonds early','The company is required to periodically retire a portion of the outstanding bonds, reducing default risk but creating reinvestment risk for investors whose bonds are selected','The company can call all bonds at once at par whenever convenient','Investors have the right to sell bonds back to the company at par'],ans:1,explanation:'A <strong>sinking fund</strong> requires the issuer to periodically retire bonds. This reduces default risk (less debt outstanding) but creates reinvestment risk — investors whose bonds are randomly selected for early retirement may be forced to reinvest coupons at prevailing (possibly lower) rates.'},
   {num:20,diff:'Medium',topic:'2.3',text:'A bond covenant that restricts the issuer from paying dividends if its debt/equity ratio exceeds a specified threshold is an example of a:',opts:['Positive (affirmative) covenant','Negative (restrictive) covenant','Sinking fund provision','Call provision'],ans:1,explanation:'A restriction on what the issuer CANNOT DO is a <strong>negative (restrictive) covenant</strong>. Positive covenants require the issuer to DO something (e.g., maintain financial ratios, provide reports). The dividend restriction protects bondholders from value being stripped out of the company.'},
-  {num:21,diff:'Hard',topic:'2.6',text:'A 6% coupon bond (semi-annual, par $1,000) is priced at $950 with 8 years to maturity. Calculate the approximate YTM.',opts:['6.00%','6.87%','7.14%','5.26%'],ans:1,explanation:'Approx YTM = [Annual Coupon + (Par−Price)/N] ÷ [(Par+Price)/2] = [$60 + ($1,000−$950)/8] ÷ [($1,000+$950)/2] = [$60 + $6.25] ÷ [$975] = $66.25 ÷ $975 = <strong>6.79% ≈ 6.87%</strong> (closest option). Discount bond so YTM > coupon rate ✓'},
-  {num:22,diff:'Hard',topic:'2.8',text:'A bond has Macaulay Duration of 8 years, YTM of 6% (semi-annual payments). Yields rise by 75 bps. The current price is $1,050. What is the estimated new price?',opts:['$1,100.63','$1,000.37','$1,049.25','$999.73'],ans:1,explanation:'Step 1: Modified Duration = 8 ÷ (1 + 0.06/2) = 8 ÷ 1.03 = 7.767. Step 2: Yield change = +0.0075. Step 3: % change = −7.767 × 0.0075 = −5.825%. Step 4: $ change = −5.825% × $1,050 = −$61.16. New price = $1,050 − $61.16 = <strong>$988.84 ≈ closest to $1,000.37</strong>. (Select closest available — the math shows approximately $989)'},
+  {num:21,diff:'Hard',topic:'2.6',text:'A 6% coupon bond (semi-annual, par $1,000) is priced at $950 with 8 years to maturity. Calculate the approximate YTM.',opts:['6.00%','6.80%','7.15%','5.25%'],ans:1,explanation:'Approx YTM = [Annual Coupon + (Par−Price)/N] ÷ [(Par+Price)/2] = [$60 + ($1,000−$950)/8] ÷ [($1,000+$950)/2] = [$60 + $6.25] ÷ [$975] = $66.25 ÷ $975 = <strong>6.79% ≈ 6.87%</strong> (closest option). Discount bond so YTM > coupon rate ✓'},
+  {num:22,diff:'Hard',topic:'2.8',text:'A bond has Macaulay Duration of 8 years, YTM of 6% (semi-annual payments). Yields rise by 75 bps. The current price is $1,050. What is the estimated new price?',opts:['$1,111.10','$988.90','$1,049.25','$999.73'],ans:1,explanation:'Step 1: Modified Duration = 8 ÷ (1 + 0.06/2) = 8 ÷ 1.03 = 7.767. Step 2: Yield change = +0.0075. Step 3: % change = −7.767 × 0.0075 = −5.825%. Step 4: $ change = −5.825% × $1,050 = −$61.16. New price = $1,050 − $61.16 = <strong>$988.84 ≈ closest to $988.90</strong>. (Select closest available — the math shows approximately $989)'},
   {num:23,diff:'Hard',topic:'2.9',text:'What is the price of a 4% semi-annual coupon bond, 5-year maturity, $1,000 par, required yield 5%?',opts:['$956.71','$1,000.00','$1,043.97','$912.40'],ans:0,explanation:'Semi-annual coupon C = $20, r = 2.5%, n = 10 periods. PV coupons = $20 × [1−(1.025)⁻¹⁰]/0.025 = $20 × 8.752 = $175.04. PV par = $1,000/(1.025)¹⁰ = $781.20. Price = $175.04 + $781.20 = <strong>$956.24 ≈ $956.71</strong> (discount because required yield > coupon)'},
   {num:24,diff:'Hard',topic:'2.7',text:'Bond A: 5% coupon, 20-year maturity. Bond B: 5% coupon, 5-year maturity. Both are priced to yield 5% (at par). Interest rates rise by 2%. Which bond falls MORE in price, and why?',opts:['Bond B — it has a shorter maturity so it recovers faster','Bond A — longer maturity means longer duration and greater price sensitivity to rate changes','They fall by the same amount since they have the same coupon rate','Bond A — because it has more coupon payments to lose'],ans:1,explanation:'<strong>Bond A (20-year)</strong> falls more. Malkiel Rule 2: longer maturity bonds experience greater price changes for a given yield change. Bond A has a much longer duration than Bond B — most of its value lies in cash flows far in the future, which are more heavily discounted when yields rise.'},
   {num:25,diff:'Hard',topic:'2.1',text:'A dealer sells corporate bonds to a retail client from its own inventory at a price that is materially higher than where those bonds are trading with other dealers. This is MOST likely a violation of:',opts:['CIRO\'s suitability requirements','CIRO\'s fair pricing requirements for OTC debt markets — requiring the markup to be reasonable and fair relative to current market conditions','CIRO\'s KYC requirements','CIRO\'s outside activity rules'],ans:1,explanation:'The dealer is required to charge a <strong>fair and reasonable markup</strong> on bonds sold from inventory. Selling bonds at a materially above-market price is a violation of CIRO\'s debt market fair pricing obligations. This is one of the key prohibited practices in the OTC bond market.'},
@@ -1332,13 +1481,13 @@ const questions=[
   {num:31,diff:'Easy',topic:'2.2',text:'Which provincial bond issuer is typically considered the HIGHEST credit risk among Canadian provinces?',opts:['Ontario — largest issuer, most debt','Quebec — historical political uncertainty','Smaller provinces (e.g., P.E.I., N.B.) — smaller economies with fewer revenue sources','British Columbia — resource-dependent economy'],ans:2,explanation:'Smaller provinces with smaller economic bases and fewer revenue diversification options typically carry <strong>higher credit risk and wider spreads</strong> than Ontario and Quebec. However, all Canadian provinces are investment-grade. The question tests understanding of relative credit quality within the Canadian government bond space.'},
   {num:32,diff:'Medium',topic:'2.3',text:'A bond\'s "dirty price" is its:',opts:['Price when the bond issuer is in financial distress','Quoted clean price PLUS accrued interest since the last coupon date','Price below par value in a discount situation','Price inclusive of the dealer\'s markup'],ans:1,explanation:'The <strong>dirty price</strong> is the actual total price paid by the buyer = <strong>clean price (quoted price) + accrued interest</strong>. The clean price is what is quoted in the market; the dirty price is what changes hands. The buyer pays for the accrued interest since the last coupon and recovers it through the next coupon payment.'},
   {num:33,diff:'Hard',topic:'2.9',text:'An investor needs $500,000 in exactly 10 years. They currently have $250,000 to invest. What annual compound interest rate do they need to achieve this goal?',opts:['5.00%','7.18%','8.00%','10.00%'],ans:1,explanation:'r = (FV/PV)^(1/n) − 1 = ($500,000/$250,000)^(1/10) − 1 = (2)^(0.1) − 1 = 1.07177 − 1 = <strong>7.18%</strong> per year. They need to earn 7.18% annually to double their money in 10 years. (Rule of 72: 72/10 = 7.2% — close approximation ✓)'},
-  {num:34,diff:'Medium',topic:'2.5',text:'A floating rate bond has a coupon of CDOR + 1.5%. The reference rate rises by 2%. What happens to the bond\'s price?',opts:['The bond price rises significantly because income is higher','The bond price stays close to par because the coupon adjusts upward to reflect the new rate environment','The bond price falls by approximately 2% × duration','The bond is immediately called by the issuer'],ans:1,explanation:'A <strong>floating rate bond</strong> resets its coupon periodically to match current market rates. When rates rise, the coupon increases proportionally, so the bond\'s price remains close to par. This is the key advantage of floating rate bonds — minimal interest rate (price) risk.'},
+  {num:34,diff:'Medium',topic:'2.5',text:'A floating rate bond has a coupon of CORRA + 1.5%. The reference rate rises by 2%. What happens to the bond\'s price?',opts:['The bond price rises significantly because income is higher','The bond price stays close to par because the coupon adjusts upward to reflect the new rate environment','The bond price falls by approximately 2% × duration','The bond is immediately called by the issuer'],ans:1,explanation:'A <strong>floating rate bond</strong> resets its coupon periodically to match current market rates. When rates rise, the coupon increases proportionally, so the bond\'s price remains close to par. This is the key advantage of floating rate bonds — minimal interest rate (price) risk.'},
   {num:35,diff:'Easy',topic:'2.2',text:'What is the term for a corporate bond that is NOT secured by any specific asset?',opts:['Mortgage bond','Equipment trust certificate','Debenture','Real Return Bond'],ans:2,explanation:'A <strong>debenture</strong> is an unsecured corporate bond backed only by the general creditworthiness of the issuer. It is the most common form of corporate bond. Because it has no specific asset backing, debentures carry more risk than mortgage bonds and therefore must offer a higher yield.'},
   {num:36,diff:'Hard',topic:'2.6',text:'What does a WIDENING credit spread between corporate bonds and Government of Canada bonds typically signal?',opts:['Improving economic conditions — investors are optimistic','Increasing investor demand for corporate bonds','Deteriorating credit conditions or economic stress — investors are demanding more compensation for default risk','Government borrowing is declining, reducing supply of government bonds'],ans:2,explanation:'<strong>Widening credit spreads</strong> signal that investors perceive increased risk in corporate bonds relative to risk-free government bonds. This typically occurs during economic stress, rising default expectations, or market "risk-off" sentiment. Spreads widen as corporate bond prices fall (yields rise) while government bond prices rise (yields fall).'},
   {num:37,diff:'Medium',topic:'2.5',text:'An investor wants to protect against falling interest rates leading to their bonds being called away. Which type of bond should they PREFER?',opts:['Callable bonds — they benefit from the call option','Non-callable bonds — eliminates the risk that the issuer redeems early in a low-rate environment','Puttable bonds — they can put the bond back','Floating rate bonds — their coupon will fall with rates'],ans:1,explanation:'<strong>Non-callable bonds</strong> cannot be redeemed early by the issuer. If rates fall, the investor continues to receive the higher original coupon and the bond\'s price rises. Callable bonds expose investors to reinvestment risk when rates fall — the issuer calls the bond and the investor must reinvest at lower prevailing rates.'},
   {num:38,diff:'Medium',topic:'2.4',text:'Why is an investor in a long-term bond ESPECIALLY exposed to inflation risk compared to a short-term bond investor?',opts:['Long-term bonds always have lower credit quality','The fixed coupon payments and principal repayment of a long-term bond lose more purchasing power over a longer period of inflation. Short-term bonds mature sooner, allowing reinvestment at rates that reflect current inflation.','Long-term bonds cannot be sold in the secondary market','Short-term bonds benefit from inverted yield curves'],ans:1,explanation:'Long-term bond holders receive fixed coupon payments for many years. If inflation rises, each dollar of coupon buys less and less. A <strong>short-term investor</strong> reinvests at maturity at interest rates that have adjusted upward to reflect inflation, protecting purchasing power. This is why long-duration bonds carry the highest inflation risk.'},
   {num:39,diff:'Easy',topic:'2.7',text:'According to Malkiel\'s bond price rules, which bond would have the LONGEST Macaulay Duration?',opts:['10-year, 8% coupon bond','10-year zero-coupon bond','5-year, 2% coupon bond','20-year, 10% coupon bond'],ans:1,explanation:'A <strong>10-year zero-coupon (strip) bond</strong> has a Macaulay Duration equal to its term to maturity = 10 years. No coupon payments mean ALL cash flow occurs at maturity. The 20-year 10% coupon bond has a maturity of 20 years but pays large coupons along the way, pulling the weighted average cash flow date significantly earlier than 20 years.'},
-  {num:40,diff:'Hard',topic:'2.9',text:'A zero-coupon bond matures in 8 years with a face value of $1,000 and a required yield of 5.5% (annual compounding). What is its price?',opts:['$651.60','$652.54','$580.41','$746.22'],ans:1,explanation:'Price = Par ÷ (1+r)ⁿ = $1,000 ÷ (1.055)⁸ = $1,000 ÷ 1.5347 = <strong>$651.60</strong>. The bond is purchased at a deep discount; the investor earns the full return from the $348.40 discount over 8 years.'},
+  {num:40,diff:'Hard',topic:'2.9',text:'A zero-coupon bond matures in 8 years with a face value of $1,000 and a required yield of 5.5% (annual compounding). What is its price?',opts:['$652.54','$651.60','$580.41','$746.22'],ans:1,explanation:'Price = Par ÷ (1+r)ⁿ = $1,000 ÷ (1.055)⁸ = $1,000 ÷ 1.5347 = <strong>$651.60</strong>. The bond is purchased at a deep discount; the investor earns the full return from the $348.40 discount over 8 years.'},
   {num:41,diff:'Medium',topic:'2.1',text:'CIRO requires investment dealers to report bond trades to promote what aspect of the debt market?',opts:['Market exclusivity for CIRO member firms','Price transparency and market integrity in the OTC bond market','Real-time exchange listing of all bonds','Standardized bond pricing across all dealers'],ans:1,explanation:'CIRO requires post-trade reporting of bond transactions to its bond reporting system to promote <strong>price transparency in the OTC market</strong>. Unlike exchange-traded equities, OTC bond prices are not publicly visible in real-time — mandatory reporting gives regulators and participants access to market pricing data.'},
   {num:42,diff:'Medium',topic:'2.5',text:'An extendable bond allows:',opts:['The issuer to extend the bond\'s term at their discretion','The investor to extend the maturity of the bond at a preset rate, protecting against falling reinvestment rates','The bond to extend its maturity automatically if the issuer defaults','The investor to convert the bond to equity at maturity'],ans:1,explanation:'An <strong>extendable bond</strong> gives the <strong>investor the option to extend</strong> the bond\'s maturity beyond the original date, typically at a pre-set new coupon. This is advantageous if market rates have fallen — the investor can lock in the higher original coupon for a longer period instead of reinvesting at lower rates.'},
   {num:43,diff:'Hard',topic:'2.8',text:'Two bonds both have a Modified Duration of 5. Bond A is priced at $900; Bond B is priced at $1,100. Yields rise by 1%. Which bond experiences the larger DOLLAR price change?',opts:['Bond A — it is at a greater discount so it falls more','Bond B — it has a higher price so 5% of $1,100 > 5% of $900','They experience the same dollar change','Cannot determine without knowing their coupons'],ans:1,explanation:'Dollar price change = −Modified Duration × Δ Yield × Price. Bond A: −5 × 0.01 × $900 = −$45. Bond B: −5 × 0.01 × $1,100 = <strong>−$55</strong>. <strong>Bond B has the larger dollar change</strong> because the same percentage change applies to a higher base price. The percentage change is the same (5%) but the dollar amount differs.'},
