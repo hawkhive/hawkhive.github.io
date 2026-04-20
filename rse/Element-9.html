@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSE Study Book — Element 9: Monitoring & Client Relationships</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1b2e;--navy-mid:#142035;--gold:#c9973a;--gold-light:#e8b96a;--cream:#f8f4ed;--cream-dark:#ede8df;--text:#1a1a2e;--text-muted:#5a5a6e;--green:#1a6b4a;--green-light:#e8f5ef;--red:#8b1a1a;--red-light:#fdf0f0;--blue:#1a3a6b;--blue-light:#e8f0fd;--amber:#7a4f1a;--amber-light:#fef6e8;--teal:#0d5e5e;--teal-light:#e0f5f5;--sidebar-w:300px;--header-h:64px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Source Serif 4',serif;background:var(--cream);color:var(--text);display:flex;min-height:100vh;overflow-x:hidden;}
+#sidebar{width:var(--sidebar-w);height:100vh;background:var(--navy);position:fixed;left:0;top:0;z-index:100;border-right:2px solid var(--gold);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold) var(--navy-mid);}
+#sidebar::-webkit-scrollbar{width:4px;}
+#sidebar::-webkit-scrollbar-thumb{background:var(--gold);}
+.sidebar-brand{padding:24px 20px 16px;border-bottom:1px solid rgba(201,151,58,.3);}
+.sidebar-brand .brand-tag{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;}
+.sidebar-brand h2{font-family:'Playfair Display',serif;color:white;font-size:14px;line-height:1.3;}
+.element-badge{display:inline-block;margin-top:8px;background:var(--gold);color:var(--navy);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;padding:3px 8px;border-radius:2px;letter-spacing:1px;}
+.sidebar-search{padding:12px 16px;border-bottom:1px solid rgba(201,151,58,.2);}
+.sidebar-search input{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(201,151,58,.3);border-radius:4px;padding:7px 10px;color:white;font-family:'Source Serif 4',serif;font-size:13px;outline:none;}
+.sidebar-search input::placeholder{color:rgba(255,255,255,.3);font-style:italic;}
+#nav-links{flex:1;overflow-y:auto;padding-bottom:16px;-webkit-overflow-scrolling:touch;}
+.nav-section-label{padding:14px 16px 6px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold-light);letter-spacing:2px;text-transform:uppercase;opacity:.7;}
+.nav-item{display:block;padding:9px 16px 9px 20px;color:rgba(255,255,255,.65);text-decoration:none;font-size:12.5px;line-height:1.4;cursor:pointer;border-left:3px solid transparent;transition:all .2s;}
+.nav-item:hover{color:white;border-left-color:var(--gold-light);background:rgba(201,151,58,.08);}
+.nav-item.active{color:var(--gold-light);border-left-color:var(--gold);background:rgba(201,151,58,.12);}
+.nav-item .nav-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);margin-right:6px;}
+.nav-item.sub{padding-left:36px;font-size:11.5px;opacity:.75;}
+.nav-item.sub:hover{opacity:1;}
+.nav-divider{height:1px;background:rgba(201,151,58,.15);margin:8px 16px;}
+.sidebar-footer{margin-top:auto;padding:16px;border-top:1px solid rgba(201,151,58,.2);font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.3);text-align:center;}
+#main{margin-left:var(--sidebar-w);flex:1;min-height:100vh;}
+#top-bar{background:var(--navy);height:var(--header-h);display:flex;align-items:center;padding:0 40px;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:50;gap:16px;}
+#top-bar .breadcrumb{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1px;}
+#top-bar .breadcrumb span{color:var(--gold);}
+#top-bar .progress-area{margin-left:auto;display:flex;align-items:center;gap:12px;}
+#top-bar .prog-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.4);}
+#top-bar .prog-bar{width:120px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;}
+#top-bar .prog-fill{height:100%;background:var(--gold);border-radius:2px;width:25%;transition:width .4s;}
+#content{padding:0 60px 80px;max-width:960px;}
+.hero{padding:60px 0 40px;border-bottom:1px solid var(--cream-dark);margin-bottom:48px;}
+.hero .element-tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:46px;font-weight:900;line-height:1.1;color:var(--navy);margin-bottom:16px;}
+.hero p{font-size:16px;color:var(--text-muted);max-width:700px;line-height:1.7;font-style:italic;}
+.hero-meta{display:flex;gap:20px;margin-top:24px;flex-wrap:wrap;}
+.hero-meta .meta-chip{background:var(--navy);color:var(--gold-light);padding:6px 14px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;}
+.chapter{margin-bottom:64px;scroll-margin-top:80px;}
+.section-header{display:flex;align-items:flex-start;gap:20px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--cream-dark);}
+.section-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;color:var(--cream-dark);line-height:1;min-width:56px;}
+.section-title-area h2{font-family:'Playfair Display',serif;font-size:25px;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:4px;}
+.section-title-area .section-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:1px;}
+.subsection{margin-bottom:32px;scroll-margin-top:80px;}
+.subsection h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:12px;padding-left:12px;border-left:3px solid var(--gold);}
+.subsection h4{font-size:15px;font-weight:600;color:var(--navy);margin:16px 0 8px;}
+p{line-height:1.8;margin-bottom:14px;font-size:15.5px;}
+.callout{border-radius:6px;padding:18px 22px;margin:20px 0;border-left:4px solid;}
+.callout-exam{background:var(--blue-light);border-color:var(--blue);}
+.callout-exam .callout-label{color:var(--blue);}
+.callout-tip{background:var(--green-light);border-color:var(--green);}
+.callout-tip .callout-label{color:var(--green);}
+.callout-warning{background:var(--amber-light);border-color:var(--amber);}
+.callout-warning .callout-label{color:var(--amber);}
+.callout p{margin-bottom:0;font-size:14.5px;line-height:1.7;}
+.callout-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-weight:500;display:block;}
+.styled-list{list-style:none;padding:0;margin:14px 0;}
+.styled-list li{padding:6px 0 6px 22px;position:relative;font-size:15px;line-height:1.7;border-bottom:1px solid rgba(0,0,0,.04);}
+.styled-list li:last-child{border-bottom:none;}
+.styled-list li::before{content:'›';position:absolute;left:0;color:var(--gold);font-size:18px;font-weight:700;top:4px;}
+.styled-list li strong{color:var(--navy);}
+.note{background:var(--green-light);border-left:4px solid var(--green);border-radius:12px;padding:20px 24px;margin:24px 0;font-size:15px;color:var(--navy);}
+#back-top{position:fixed;bottom:28px;right:28px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);width:42px;height:42px;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;opacity:0;transition:opacity .3s;z-index:200;}
+#back-top.visible{opacity:1;}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-thumb{background:var(--cream-dark);border-radius:3px;}
+@media(max-width:900px){#sidebar{transform:translateX(-100%);} #main{margin-left:0;} #content{padding:0 24px 60px;} .subsection h3{padding-left:8px;}.section-header{flex-direction:column;}}
+</style>
+</head>
+<body>
+<nav id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-tag">CIRO · RSE Prep</div>
+    <h2>Monitoring & Client Relationships</h2>
+    <span class="element-badge">ELEMENT 09</span>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" id="nav-search" placeholder="Search topics…">
+  </div>
+  <div id="nav-links">
+    <div class="nav-section-label">Overview</div>
+    <a class="nav-item" href="#hero"><span class="nav-num">—</span>Introduction</a>
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Quick links</div>
+    <a class="nav-item" href="Element-8.html"><span class="nav-num">←</span>Element 8</a>
+    <a class="nav-item" href="index.html#elements"><span class="nav-num">→</span>All Elements</a>
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Resources</div>
+    <a class="nav-item" href="index.html">RSE Hub</a>
+    <a class="nav-item" href="Element-7.2.html">Element 7.2</a>
+  </div>
+  <div class="sidebar-footer">CIRO RSE · Placeholder page</div>
+</nav>
+<div id="main">
+<div id="top-bar">
+  <div class="breadcrumb">RSE Exam Prep › <span>Element 9 — Monitoring & Relationships</span></div>
+  <div class="progress-area">
+    <span class="prog-label">READING PROGRESS</span>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+  </div>
+</div>
+<div id="content">
+<div class="hero" id="hero">
+  <div class="element-tag">ELEMENT 09 · UNDER DEVELOPMENT</div>
+  <h1>Monitoring, Reporting & Client Relationships</h1>
+  <p>This placeholder uses the same RSE element theme while the Element 9 page is completed. Core exam topics will include monitoring obligations and client relationship standards.</p>
+  <div class="hero-meta">
+    <span class="meta-chip">MONITORING</span>
+    <span class="meta-chip">REPORTING</span>
+    <span class="meta-chip">CLIENT CARE</span>
+  </div>
+</div>
+<div class="chapter" id="details">
+  <div class="section-header">
+    <div class="section-num">9</div>
+    <div class="section-title-area">
+      <h2>Overview of the topic</h2>
+      <div class="section-sub">CLIENT OVERSIGHT · ACCOUNT REPORTING · RECORDKEEPING</div>
+    </div>
+  </div>
+  <p>Element 9 focuses on the ongoing responsibilities of a Registered Representative after an investment recommendation has been made. It tests the ability to monitor portfolios, report changes, and maintain strong client relationships through clear communication.</p>
+  <div class="subsection">
+    <h3>What this placeholder covers</h3>
+    <p>The final page will explain:</p>
+    <ul class="styled-list">
+      <li>monitoring client portfolios and performance</li>
+      <li>meeting reporting requirements for trades and account changes</li>
+      <li>keeping proper documentation and records</li>
+      <li>supporting strong client relationships through reviews and updates</li>
+    </ul>
+  </div>
+  <div class="callout callout-exam">
+    <div class="callout-label">📌 RSE CONTEXT</div>
+    <p>Element 9 links the recommendation process to the long-term client relationship. The exam may ask whether the representative has met reporting, monitoring, and documentation obligations after a trade or change in circumstances.</p>
+  </div>
+</div>
+<div class="note">Full notes, examples, and exam-style practice for Element 9 are coming soon. This page is currently a placeholder to keep the RSE study set consistent.</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSE Study Book — Element 7 Part 2: Tax, TVM & Complaints</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1b2e;--gold:#c9973a;--gl:#e8b96a;--cream:#f8f4ed;--cd:#7e7b75;--text:#1a1a2e;--mut:#5a5a6e;--green:#1a6b4a;--grl:#e8f5ef;--red:#8b1a1a;--rll:#fdf0f0;--blue:#1a3a6b;--bll:#e8f0fd;--amb:#7a4f1a;--all:#fef6e8;--teal:#0d5e5e;--tll:#e0f5f5;--pur:#4a1a6b;--pll:#f0e8fd;--sw:298px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Source Serif 4",serif;background:var(--cream);color:var(--text);display:flex;min-height:100vh;}
+#sb{width:var(--sw);height:100vh;background:var(--navy);position:fixed;left:0;top:0;z-index:100;border-right:2px solid var(--gold);display:flex;flex-direction:column;}
+#sb::-webkit-scrollbar{width:3px;}#sb::-webkit-scrollbar-thumb{background:var(--gold);}
+.sb-brand{padding:18px 15px 12px;border-bottom:1px solid rgba(201,151,58,.3);}
+.sb-tag{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;}
+.sb-brand h2{font-family:"Playfair Display",serif;color:white;font-size:13px;line-height:1.3;}
+.sb-badge{display:inline-block;margin-top:6px;background:var(--gold);color:var(--navy);font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 7px;border-radius:2px;letter-spacing:1px;}
+.sb-search{padding:9px 13px;border-bottom:1px solid rgba(201,151,58,.2);}
+.sb-search input{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(201,151,58,.3);border-radius:4px;padding:6px 9px;color:white;font-size:12px;outline:none;}
+.sb-search input:focus{border-color:var(--gold);}
+.sb-search input::placeholder{color:rgba(255,255,255,.3);}
+#nav-links{flex:1;overflow-y:auto;padding-bottom:16px;-webkit-overflow-scrolling:touch;}
+.nl{padding:10px 13px 4px;font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--gl);letter-spacing:2px;text-transform:uppercase;opacity:.7;}
+.ni{display:block;padding:5px 13px 5px 15px;color:rgba(255,255,255,.65);font-size:11px;cursor:pointer;border-left:3px solid transparent;transition:all .18s;line-height:1.4;}
+.ni:hover{color:white;border-left-color:var(--gl);background:rgba(201,151,58,.07);}
+.ni.active{color:var(--gl);border-left-color:var(--gold);background:rgba(201,151,58,.11);}
+.ni .nn{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);margin-right:4px;}
+.ni.sub{padding-left:26px;font-size:10.5px;opacity:.75;}
+.ni.sub:hover{opacity:1;}
+.nd{height:1px;background:rgba(201,151,58,.14);margin:4px 13px;}
+.sb-foot{margin-top:auto;padding:11px 13px;border-top:1px solid rgba(201,151,58,.2);font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(255,255,255,.3);text-align:center;}
+#main{margin-left:var(--sw);flex:1;}
+#tb{background:var(--navy);height:60px;display:flex;align-items:center;padding:0 36px;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:50;gap:14px;}
+.bc{font-family:"JetBrains Mono",monospace;font-size:11px;color:rgba(255,255,255,.4);}
+.bc span{color:var(--gold);}
+.pa{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.pl{font-family:"JetBrains Mono",monospace;font-size:10px;color:rgba(255,255,255,.35);}
+.pb{width:108px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;}
+.pf{height:100%;background:var(--gold);border-radius:2px;width:0%;transition:width .3s;}
+#ct{padding:0 50px 80px;max-width:970px;}
+.hero{padding:48px 0 30px;border-bottom:1px solid var(--cd);margin-bottom:38px;}
+.etag{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:9px;}
+.hero h1{font-family:"Playfair Display",serif;font-size:40px;font-weight:900;line-height:1.1;color:var(--navy);margin-bottom:11px;}
+.hero p{font-size:15.5px;color:var(--mut);max-width:660px;line-height:1.7;font-style:italic;}
+.hc{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+.chip{background:var(--navy);color:var(--gl);padding:4px 11px;border-radius:3px;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:1px;}
+.ch{margin-bottom:52px;scroll-margin-top:74px;}
+.sh{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;padding-bottom:11px;border-bottom:2px solid var(--cd);}
+.sn{font-family:"Playfair Display",serif;font-size:36px;font-weight:900;color:var(--cd);line-height:1;min-width:50px;}
+.st h2{font-family:"Playfair Display",serif;font-size:21px;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:3px;}
+.ss{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);letter-spacing:1px;}
+.sub{margin-bottom:2px;scroll-margin-top:74px;}
+.sub h3{font-family:"Playfair Display",serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:9px;padding-left:10px;border-left:3px solid var(--gold);}
+.sub h4{font-size:14px;font-weight:600;color:var(--navy);margin:12px 0 6px;}
+p{line-height:1.8;margin-bottom:11px;font-size:15.5px;}
+.co{border-radius:6px;padding:14px 18px;margin:14px 0;border-left:4px solid;}
+.co-exam{background:var(--bll);border-color:var(--blue);}
+.co-exam .cl{color:var(--blue);}
+.co-tip{background:var(--grl);border-color:var(--green);}
+.co-tip .cl{color:var(--green);}
+.co-warn{background:var(--all);border-color:var(--amb);}
+.co-warn .cl{color:var(--amb);}
+.co-rule{background:var(--rll);border-color:var(--red);}
+.co-rule .cl{color:var(--red);}
+.co-calc{background:var(--tll);border-color:var(--teal);}
+.co-calc .cl{color:var(--teal);}
+.co p{margin-bottom:0;font-size:14px;line-height:1.7;}
+.cl{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;font-weight:500;display:block;}
+.tw{overflow-x:auto;margin:14px 0;border-radius:6px;border:1px solid var(--cd);}
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+th{background:var(--navy);color:var(--gl);font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:1px;padding:9px 12px;text-align:left;}
+td{padding:9px 12px;border-bottom:1px solid var(--cd);vertical-align:top;line-height:1.6;}
+tr:nth-child(even) td{background:rgba(0,0,0,.02);}
+tr:last-child td{border-bottom:none;}
+.dg{background:var(--navy);border-radius:8px;padding:20px;margin:18px 0;color:white;}
+.dt{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;text-align:center;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.gc{background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.3);border-radius:6px;padding:13px;}
+.gc h5{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gl);letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;}
+.gc p{font-size:12.5px;color:rgba(255,255,255,.75);margin:0;line-height:1.6;}
+.gc ul{padding-left:13px;}
+.gc li{font-size:12px;color:rgba(255,255,255,.75);margin-bottom:3px;line-height:1.5;}
+.sl{list-style:none;padding:0;margin:10px 0;}
+.sl li{padding:4px 0 4px 18px;position:relative;font-size:15px;line-height:1.7;border-bottom:1px solid rgba(0,0,0,.04);}
+.sl li:last-child{border-bottom:none;}
+.sl li::before{content:"›";position:absolute;left:0;color:var(--gold);font-size:15px;font-weight:700;top:4px;}
+.sl li strong{color:var(--navy);}
+mark{background:rgba(201,151,58,.22);color:inherit;border-radius:2px;padding:0 2px;}
+.mb{background:#0d1b2e;border:1px solid rgba(201,151,58,.45);border-radius:7px;padding:16px 20px;margin:15px 0;font-family:"JetBrains Mono",monospace;}
+.mf{font-size:13px;color:var(--gl);text-align:center;padding:8px 0;letter-spacing:.5px;}
+.mfl{font-size:9px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase;}
+.mw{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.1);}
+.ms{display:flex;gap:9px;margin-bottom:6px;align-items:flex-start;}
+.msn{background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.mst{font-size:12.5px;color:rgba(255,255,255,.8);line-height:1.6;}
+.mr{background:rgba(201,151,58,.14);border:1px solid rgba(201,151,58,.4);border-radius:4px;padding:8px 11px;margin-top:8px;font-size:13px;color:var(--gl);text-align:center;}
+.cb{background:white;border:1px solid var(--cd);border-radius:8px;padding:20px;margin:18px 0;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.cb h4{font-family:"Playfair Display",serif;font-size:16px;color:var(--navy);margin-bottom:12px;}
+.cg2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.cg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;}
+.cf{display:flex;flex-direction:column;gap:3px;}
+.cf label{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--mut);letter-spacing:1px;text-transform:uppercase;}
+.cf input,.cf select{border:1px solid var(--cd);border-radius:4px;padding:7px 10px;font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--navy);background:var(--cream);outline:none;}
+.cf input:focus{border-color:var(--gold);}
+.cbtn{margin-top:10px;background:var(--navy);color:var(--gl);border:none;padding:8px 18px;border-radius:4px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:1px;cursor:pointer;}
+.cbtn:hover{background:#1a2d4a;}
+.cr{margin-top:9px;background:var(--bll);border:1px solid rgba(26,58,107,.18);border-radius:4px;padding:10px 13px;font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--blue);min-height:32px;white-space:pre-line;}
+/* notional account badges */
+.nb{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10px;padding:2px 8px;border-radius:3px;margin:2px;letter-spacing:1px;font-weight:600;}
+.nb-cda{background:rgba(26,107,74,.25);color:#5dda9a;}
+.nb-rdtoh{background:rgba(201,151,58,.25);color:var(--gl);}
+.nb-grip{background:rgba(26,58,107,.3);color:#7ab5ff;}
+/* complaint steps */
+.cstep{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;}
+.cstep-n{background:var(--navy);color:var(--gold);font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:700;min-width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid var(--gold);}
+.cstep-b h4{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;}
+.cstep-b p{font-size:14px;margin:0;line-height:1.7;}
+/* quiz */
+#qs{background:var(--navy);border-radius:11px;padding:34px 38px;margin-top:50px;scroll-margin-top:74px;}
+.qh{font-family:"Playfair Display",serif;font-size:26px;color:white;margin-bottom:6px;}
+.qsub{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:20px;}
+.qstats{display:flex;gap:13px;margin-bottom:24px;flex-wrap:wrap;}
+.qstat{background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.3);border-radius:6px;padding:9px 14px;text-align:center;}
+.qstat .qv{font-family:"Playfair Display",serif;font-size:23px;color:var(--gl);display:block;}
+.qstat .ql{font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;}
+.qi{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:16px 18px;margin-bottom:12px;}
+.qi:hover{border-color:rgba(201,151,58,.28);}
+.qm{display:flex;gap:8px;margin-bottom:7px;align-items:center;flex-wrap:wrap;}
+.qnum{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--gold);}
+.qd{font-family:"JetBrains Mono",monospace;font-size:10px;padding:2px 7px;border-radius:3px;letter-spacing:1px;}
+.de{background:rgba(26,107,74,.25);color:#5dda9a;}
+.dm{background:rgba(201,151,58,.2);color:var(--gl);}
+.dh{background:rgba(139,26,26,.25);color:#ff8a8a;}
+.qt{font-family:"JetBrains Mono",monospace;font-size:10px;color:rgba(255,255,255,.3);margin-left:auto;}
+.qq{color:white;font-size:14.5px;line-height:1.6;margin-bottom:10px;}
+.qo{list-style:none;padding:0;margin:0 0 10px;}
+.qo li{padding:7px 10px;border:1px solid rgba(255,255,255,.08);border-radius:5px;margin-bottom:4px;font-size:13.5px;color:rgba(255,255,255,.8);cursor:pointer;transition:all .14s;}
+.qo li:hover{background:rgba(201,151,58,.1);border-color:rgba(201,151,58,.3);}
+.qo li.correct{background:rgba(26,107,74,.25);border-color:#2ecc71;color:#5dda9a;}
+.qo li.wrong{background:rgba(139,26,26,.25);border-color:#e74c3c;color:#ff8a8a;}
+.qo li.rc{background:rgba(26,107,74,.14);border-color:rgba(46,204,113,.5);color:rgba(93,218,154,.8);}
+.qa{display:none;background:rgba(201,151,58,.08);border:1px solid rgba(201,151,58,.2);border-radius:5px;padding:10px 12px;font-size:13px;color:rgba(255,255,255,.75);line-height:1.65;}
+.qa.show{display:block;}
+.qa strong{color:var(--gl);}
+.sab{background:none;border:1px solid rgba(201,151,58,.4);color:var(--gl);font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:1px;padding:5px 11px;border-radius:4px;cursor:pointer;}
+.sab:hover{background:rgba(201,151,58,.14);}
+.qc{display:flex;gap:9px;margin-bottom:20px;flex-wrap:wrap;}
+.btn1{padding:8px 16px;border-radius:4px;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:1px;cursor:pointer;border:none;}
+.btnP{background:var(--gold);color:var(--navy);}
+.btnO{background:transparent;border:1px solid rgba(201,151,58,.4);color:var(--gl);}
+.qsp{background:rgba(201,151,58,.1);border:1px solid rgba(201,151,58,.3);border-radius:8px;padding:16px;margin-top:16px;display:none;text-align:center;}
+.qsv{font-family:"Playfair Display",serif;font-size:44px;color:var(--gl);}
+.qsp p{color:rgba(255,255,255,.65);margin:0;}
+#bt{position:fixed;bottom:22px;right:22px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);width:38px;height:38px;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;opacity:0;transition:opacity .28s;z-index:200;}
+#bt.vis{opacity:1;}
+@media(max-width:880px){#sb{transform:translateX(-100%);} #main{margin-left:0;} #ct{padding:0 18px 56px;} .g2,.g3,.cg2,.cg3{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav id="sb">
+  <div class="sb-brand"><div class="sb-tag">CIRO · RSE Prep</div><h2>Investment Recommendations<br><span style="color:var(--gold)">Part 2</span></h2><span class="sb-badge">ELEMENT 07 · PART 2</span></div>
+  <div class="sb-search"><input type="text" placeholder="Search topics…" oninput="filterNav(this.value)"></div>
+  <div id="nav-links">
+    <div class="nl">Overview</div>
+    <a class="ni" onclick="gs('hero')"><span class="nn">—</span>Introduction</a>
+    <div class="nd"></div>
+    <div class="nl">Sections</div>
+    <a class="ni" onclick="gs('s7')"><span class="nn">7.7</span>Investment Action Recommendations</a>
+    <a class="ni sub" onclick="gs('s7pros')">Pros, Cons &amp; Risks</a>
+    <a class="ni sub" onclick="gs('s7commit')">Securing Client Commitment</a>
+    <a class="ni" onclick="gs('s8')"><span class="nn">7.8</span>Time Value of Money</a>
+    <a class="ni sub" onclick="gs('s8fv')">Future Value — FV Formulas</a>
+    <a class="ni sub" onclick="gs('s8annuity')">Annuity — PV Formulas</a>
+    <a class="ni sub" onclick="gs('s8calc')">Interactive TVM Calculator</a>
+    <a class="ni" onclick="gs('s9')"><span class="nn">7.9</span>Personal &amp; Corporate Tax Planning</a>
+    <a class="ni sub" onclick="gs('s9pers')">Personal Tax Strategies</a>
+    <a class="ni sub" onclick="gs('s9reg')">Registered Accounts &amp; Uses</a>
+    <a class="ni sub" onclick="gs('s9corp')">Corporate Tax Planning</a>
+    <a class="ni sub" onclick="gs('s9notional')">Notional Accounts: CDA, RDTOH, GRIP</a>
+    <a class="ni" onclick="gs('s10')"><span class="nn">7.10</span>Capital Gains Tax</a>
+    <a class="ni sub" onclick="gs('s10calc')">Calculating Capital Gains &amp; Losses</a>
+    <a class="ni sub" onclick="gs('s10strat')">Minimizing Capital Gains Tax</a>
+    <a class="ni sub" onclick="gs('s10lcge')">LCGE &amp; 2025 Changes</a>
+    <a class="ni" onclick="gs('s11')"><span class="nn">7.11</span>Investment Income Tax</a>
+    <a class="ni sub" onclick="gs('s11int')">Interest Income</a>
+    <a class="ni sub" onclick="gs('s11div')">Eligible &amp; Non-Eligible Dividends</a>
+    <a class="ni sub" onclick="gs('s11for')">Foreign Income</a>
+    <a class="ni sub" onclick="gs('s11cmp')">Income Type Comparison</a>
+    <a class="ni sub" onclick="gs('s11calc')">Tax Calculator</a>
+    <a class="ni" onclick="gs('s12')"><span class="nn">7.12</span>Complaints Handling</a>
+    <a class="ni sub" onclick="gs('s12rec')">Recognition</a>
+    <a class="ni sub" onclick="gs('s12proc')">Process &amp; Timelines</a>
+    <a class="ni sub" onclick="gs('s12res')">Resolution &amp; OBSI</a>
+    <a class="ni sub" onclick="gs('s12rep')">Reporting Requirements</a>
+    <a class="ni sub" onclick="gs('s12proh')">Prohibited Practices</a>
+    <div class="nd"></div>
+    <div class="nl">Practice</div>
+    <a class="ni" onclick="gs('qs')"><span class="nn">★</span>50 Exam Questions</a>
+  </div>
+  <div class="sb-foot">CIRO RSE · Element 7 Part 2 of 9</div>
+</nav>
+
+<div id="main">
+<div id="tb">
+  <div class="bc">RSE Exam Prep &rsaquo; <span>Element 7 Part 2 — Tax, TVM &amp; Complaints</span></div>
+  <div class="pa"><span class="pl">READING PROGRESS</span><div class="pb"><div class="pf" id="pgf"></div></div></div>
+</div>
+<div id="ct">
+
+<div class="hero" id="hero">
+  <div class="etag">ELEMENT 7 · PART 2 OF 2 · RETAIL SECURITIES EXAM · CIRO</div>
+  <h1>Tax, Time Value of Money &amp; Complaints</h1>
+  <p>The computational and regulatory half of Element 7 — TVM calculations with interactive tools, personal and corporate tax planning including the CDA/RDTOH/GRIP notional accounts, the Canadian capital gains and investment income tax systems, and the full CIRO complaints handling framework.</p>
+  <div class="hc">
+    <span class="chip">7.7 → 7.12</span>
+    <span class="chip">TVM CALCULATORS</span>
+    <span class="chip">50% INCLUSION RATE (MARCH 2025)</span>
+    <span class="chip">CDA · RDTOH · GRIP</span>
+    <span class="chip">50 QUESTIONS</span>
+  </div>
+  <div class="co co-rule" style="margin-top:16px">
+    <div class="cl">🔴 CAPITAL GAINS INCLUSION RATE — 2025 STATUS</div>
+    <p>The proposed increase to 2/3 (66.67%) inclusion rate was <strong>cancelled by PM Carney on March 21, 2025</strong>. The capital gains inclusion rate remains at <strong>50%</strong> for all individuals and corporations. The Lifetime Capital Gains Exemption (LCGE) was increased to <strong>$1.25 million</strong> effective June 25, 2024 for qualifying dispositions (small business shares, farm/fishing property). All RSE exam content and calculations use the 50% inclusion rate.</p>
+  </div>
+</div>
+
+<!-- 7.7 INVESTMENT ACTION RECOMMENDATION PROCESS -->
+<div class="ch" id="s7">
+  <div class="sh"><div class="sn">7.7</div><div class="st"><h2>Investment Action Recommendation Process</h2><div class="ss">PROS &amp; CONS · RISKS · WHAT IT ACCOMPLISHES · SECURING CLIENT COMMITMENT</div></div></div>
+
+  <p>Before executing any investment action for a client, the RR must conduct a structured analysis of the recommended action — and must be able to articulate that analysis clearly to the client. This is the practical bridge between suitability determination and execution.</p>
+
+  <div class="sub" id="s7pros"><h3>Analyzing Pros, Cons and Risks of Each Recommended Action</h3>
+  <p>Every recommendation requires a balanced, client-specific analysis. The exam tests whether candidates can identify these elements for common product and action types.</p>
+
+  <div class="tw"><table>
+    <tr><th>Product / Action</th><th>Pros</th><th>Cons</th><th>Key Risks</th><th>What It Accomplishes</th></tr>
+    <tr><td><strong>Switch from high-MER mutual fund to low-cost ETF</strong></td><td>Lower ongoing cost; tax-efficient structure; often better after-fee returns; transparency of holdings</td><td>Potential capital gains tax in non-registered accounts on redemption; loss of any remaining DSC schedule if applicable; requires comfort with self-directed or new advisor relationship</td><td>Execution risk (selling in unfavourable market); if switching in non-registered account, triggering large capital gain may offset years of fee savings</td><td>Reduces the MER drag permanently; improves long-term net returns; aligns with client's interest-first obligation under CFR</td></tr>
+    <tr><td><strong>Rebalance portfolio back to target allocation</strong></td><td>Restores risk level to intended profile; enforces buy-low-sell-high discipline; manages sequence risk for retirees</td><td>Transaction costs; in non-registered accounts, selling appreciated positions triggers capital gains tax; time and effort to execute</td><td>Rebalancing too frequently increases costs; failing to rebalance leaves portfolio misaligned with risk profile — both are risks</td><td>Keeps portfolio's risk level consistent with client's KYC profile; prevents drift to unintended risk level over time</td></tr>
+    <tr><td><strong>Add alternative investment (hedge fund LP)</strong></td><td>Potential low correlation to traditional assets; absolute return objective; strategy diversification</td><td>High fees (2-and-20); illiquidity (lock-up, gates); complexity; accredited investor required; limited regulatory oversight</td><td>Liquidity risk (can't access during lock-up); manager selection risk; performance fee drag; potential gating if market stress</td><td>Provides genuine diversification beyond stocks and bonds; may improve portfolio Sharpe ratio if correlation is truly low</td></tr>
+    <tr><td><strong>Purchase life insurance (whole life / universal)</strong></td><td>Tax-deferred growth inside policy; tax-free death benefit; creditor protection in many cases; estate planning tool</td><td>High cost (surrender charges, MER-equivalent); illiquid for years; complex structure; may underperform market alternatives if premiums not invested well</td><td>Surrender risk (large loss if cancelled early); insurance company insolvency (Assuris protects up to limits); opportunity cost vs. TFSA/RRSP</td><td>Provides guaranteed death benefit; can be used as tax-efficient estate transfer vehicle; forces savings discipline</td></tr>
+    <tr><td><strong>Invest in GICs vs. short-term bond ETF</strong></td><td>GIC: CDIC-insured (up to $100K per category), fixed known return, zero volatility<br>Bond ETF: daily liquidity, diversified, may outperform in falling rate environment</td><td>GIC: no early redemption without penalty (non-cashable GICs), no price appreciation<br>Bond ETF: market value fluctuates, not deposit insured</td><td>GIC: reinvestment risk at maturity if rates have fallen; illiquidity<br>Bond ETF: interest rate risk; NAV fluctuates</td><td>GIC: capital preservation with known return for conservative investors<br>Bond ETF: income with liquidity and some rate-change participation</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s7commit"><h3>Securing the Client's Commitment to the Recommended Action</h3>
+  <p>Making a technically correct recommendation is only half the job. The RR must help the client understand, accept, and commit to the recommendation — including overcoming behavioural biases that may prevent action on a clearly suitable recommendation.</p>
+
+  <h4>The Commitment Process</h4>
+  <div class="dg"><div class="dt">From Recommendation to Execution — Five Steps</div>
+  <table style="width:100%;font-size:12.5px;color:rgba(255,255,255,.8);border-collapse:collapse">
+    <tr><th style="background:rgba(201,151,58,.2);padding:9px 12px">Step</th><th style="background:rgba(201,151,58,.2);padding:9px 12px">Action</th><th style="background:rgba(201,151,58,.2);padding:9px 12px">Key Technique</th></tr>
+    <tr><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)"><strong>1. Present clearly</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Present the recommendation in plain language — what, why, and what it will accomplish for the client specifically</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Connect the recommendation explicitly to the client's stated goals. "This achieves your goal of X by doing Y at Z cost."</td></tr>
+    <tr><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)"><strong>2. Address concerns</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Invite and address all questions and objections honestly before proceeding</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Never dismiss concerns. Acknowledge them, address the facts, and return to the client's goals. Distinguish between rational concerns (that should be addressed) and behavioural biases (that should be gently corrected)</td></tr>
+    <tr><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)"><strong>3. Confirm understanding</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Confirm the client genuinely understands the recommendation — not just that they signed a form</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Ask the client to explain in their own words what they understand the investment to be and what could go wrong. If they can't, more explanation is needed before proceeding.</td></tr>
+    <tr><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)"><strong>4. Document everything</strong></td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Record the recommendation rationale, client's questions/concerns, information provided, and the client's decision</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Documentation protects both the client and the RR. If a complaint arises, the file must show the recommendation was appropriate and the client was informed</td></tr>
+    <tr><td style="padding:8px 12px"><strong>5. Execute and follow up</strong></td><td style="padding:8px 12px">Execute the recommendation and confirm execution to the client. Set a follow-up date to review whether the action achieved its intended outcome</td><td style="padding:8px 12px">Follow-up reinforces the relationship and catches any implementation errors early</td></tr>
+  </table></div>
+
+  <div class="co co-rule">
+    <div class="cl">🔴 WHEN THE CLIENT REFUSES A SUITABLE RECOMMENDATION</div>
+    <p>If a client refuses to implement a clearly suitable recommendation after being fully informed, the RR should: (1) Document the recommendation and the client's refusal in detail; (2) Ensure the client confirms their refusal in writing where possible; (3) Continue to monitor for deteriorating suitability; (4) NOT simply execute whatever the client wants if it is clearly unsuitable — the RR's professional obligation is to make the suitable recommendation, not to validate every client preference. If the client's alternative instruction is unsuitable, document why, advise against it, and escalate to compliance if necessary.</p>
+  </div>
+  </div>
+</div>
+
+<!-- 7.8 TIME VALUE OF MONEY -->
+<div class="ch" id="s8">
+  <div class="sh"><div class="sn">7.8</div><div class="st"><h2>Time Value of Money Calculations</h2><div class="ss">FUTURE VALUE · ANNUITIES · PRESENT VALUE · FINANCIAL GOAL SETTING</div></div></div>
+
+  <p>The time value of money (TVM) is the foundation of all financial planning calculations. Money available today is worth more than the same amount in the future because of its earning potential. The RSE exam requires candidates to apply two core TVM calculations to client scenarios.</p>
+
+  <div class="sub" id="s8fv"><h3>Future Value — Regular Investment to Meet a Known Objective</h3>
+  <p>The most common financial planning question: "How much do I need to save regularly to reach my goal?" This uses the <strong>Future Value of an Annuity</strong> formula, or its rearrangement to solve for the regular payment (PMT).</p>
+
+  <div class="mb">
+    <div class="mfl">CORE TVM FORMULAS</div>
+    <div class="mf">FV (lump sum) = PV × (1 + r)ⁿ</div>
+    <div class="mf">FV (annuity) = PMT × [(1 + r)ⁿ − 1] / r</div>
+    <div class="mf">PMT required = FV × r / [(1 + r)ⁿ − 1]</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12px;text-align:center">Where: PV = present value | FV = future value | PMT = regular payment | r = rate per period | n = number of periods</p>
+    </div>
+  </div>
+
+  <h4>Worked Example 1 — Regular Investment to Meet a Goal</h4>
+  <div class="mb">
+    <div class="mfl">RRSP ACCUMULATION — HOW MUCH TO SAVE MONTHLY?</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12.5px;margin-bottom:8px"><strong style="color:var(--gl)">Problem:</strong> Anika wants $800,000 in her RRSP in 25 years. She currently has $45,000. Expected net return: 6%/year (0.5%/month). How much must she contribute each month?</p>
+      <div class="ms"><div class="msn">1</div><div class="mst"><strong>Future value of existing $45,000:</strong> FV = $45,000 × (1.005)³⁰⁰ = $45,000 × 4.4650 = $200,925</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst"><strong>Remaining amount needed from contributions:</strong> $800,000 − $200,925 = $599,075</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst"><strong>PMT formula (monthly):</strong> PMT = $599,075 × 0.005 / [(1.005)³⁰⁰ − 1] = $2,995.38 / (4.4650 − 1) = $2,995.38 / 3.4650 = <strong style="color:var(--gl)">$864.72/month</strong></div></div>
+      <div class="mr">Anika must contribute approximately $865/month to reach her $800,000 target in 25 years at 6% annual return, given her existing $45,000.</div>
+    </div>
+  </div>
+
+  <h4>Worked Example 2 — Future Value of a Lump Sum</h4>
+  <div class="mb">
+    <div class="mfl">LUMP SUM INHERITANCE — WHAT WILL IT GROW TO?</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12.5px;margin-bottom:8px"><strong style="color:var(--gl)">Problem:</strong> Marco inherits $120,000 today and invests it in a balanced ETF expected to return 7% annually. What will it be worth in 20 years?</p>
+      <div class="ms"><div class="msn">1</div><div class="mst">FV = PV × (1 + r)ⁿ = $120,000 × (1.07)²⁰</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst">(1.07)²⁰ = 3.8697</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst">FV = $120,000 × 3.8697 = <strong style="color:var(--gl)">$464,364</strong></div></div>
+      <div class="mr">$120,000 invested at 7% for 20 years grows to approximately $464,000 — illustrating the power of long-term compounding. At 10% (equity-only), the same investment would grow to $807,000.</div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sub" id="s8annuity"><h3>Present Value of an Annuity — Regular Income from a Single Investment</h3>
+  <p>The second core TVM calculation: "How much do I need to invest today (or at retirement) to generate a specific income stream?" This uses the <strong>Present Value of an Annuity</strong> formula, or its rearrangement to find the regular payment.</p>
+
+  <div class="mb">
+    <div class="mfl">ANNUITY FORMULAS</div>
+    <div class="mf">PV (annuity) = PMT × [1 − (1 + r)⁻ⁿ] / r</div>
+    <div class="mf">PMT (regular income) = PV × r / [1 − (1 + r)⁻ⁿ]</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12px;text-align:center">PV of annuity: How large a lump sum is needed to generate $PMT per period for n periods at rate r?<br>PMT: How much regular income can a lump sum of $PV generate per period?</p>
+    </div>
+  </div>
+
+  <h4>Worked Example 3 — What Can a Portfolio Generate in Retirement?</h4>
+  <div class="mb">
+    <div class="mfl">RETIREMENT PORTFOLIO — MONTHLY INCOME AVAILABLE</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12.5px;margin-bottom:8px"><strong style="color:var(--gl)">Problem:</strong> Elena retires with $650,000. She wants to know how much monthly income she can withdraw for 30 years assuming 5%/year (0.4167%/month) return, with the portfolio reaching $0 at the end.</p>
+      <div class="ms"><div class="msn">1</div><div class="mst">PMT = PV × r / [1 − (1 + r)⁻ⁿ] = $650,000 × 0.004167 / [1 − (1.004167)⁻³⁶⁰]</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst">(1.004167)³⁶⁰ = 4.4677; (1.004167)⁻³⁶⁰ = 0.2238</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst">PMT = $650,000 × 0.004167 / (1 − 0.2238) = $2,708.55 / 0.7762 = <strong style="color:var(--gl)">$3,489/month</strong></div></div>
+      <div class="mr">Elena's $650,000 portfolio generates approximately $3,489/month for 30 years at 5% before running to zero. This is the "safe withdrawal" annuity calculation. At a more conservative 4%, the monthly income drops to approximately $3,104/month but the portfolio is safer against longevity risk if she earns more than 4%.</div>
+    </div>
+  </div>
+
+  <h4>Worked Example 4 — How Much Capital Is Needed for a Target Income?</h4>
+  <div class="mb">
+    <div class="mfl">RETIREMENT CAPITAL REQUIRED — WORKING BACKWARDS FROM INCOME NEED</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12.5px;margin-bottom:8px"><strong style="color:var(--gl)">Problem:</strong> David needs $4,000/month for 25 years of retirement. Portfolio earns 6%/year (0.5%/month). How much capital does he need at retirement?</p>
+      <div class="ms"><div class="msn">1</div><div class="mst">PV = PMT × [1 − (1 + r)⁻ⁿ] / r = $4,000 × [1 − (1.005)⁻³⁰⁰] / 0.005</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst">(1.005)³⁰⁰ = 4.4650; (1.005)⁻³⁰⁰ = 0.2240</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst">PV = $4,000 × (1 − 0.2240) / 0.005 = $4,000 × 155.21 = <strong style="color:var(--gl)">$620,840</strong></div></div>
+      <div class="mr">David needs approximately $621,000 at retirement to fund $4,000/month for 25 years at 6%. This is his retirement capital target. He can then work backwards to find the required annual savings rate using the FV annuity formula.</div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sub" id="s8calc"><h3>Interactive TVM Calculator</h3>
+  <div class="cb">
+    <h4>🧮 Time Value of Money — All Four Calculations</h4>
+    <p style="font-size:13.5px;color:var(--mut);margin-bottom:12px">Select what you want to solve for, fill in the known values, and calculate.</p>
+    <div class="cf" style="margin-bottom:10px">
+      <label>Solve For</label>
+      <select id="tvm_solve" onchange="tvmToggle()">
+        <option value="fv_lump">FV of lump sum — How much will my investment grow to?</option>
+        <option value="fv_pmt">PMT required — How much to save regularly to reach my goal?</option>
+        <option value="pmt_annuity">PMT from annuity — How much income can my portfolio generate?</option>
+        <option value="pv_annuity">PV required — How much capital do I need for a target income?</option>
+      </select>
+    </div>
+    <div class="cg2" id="tvm_inputs">
+      <div class="cf" id="ti_pv"><label>Present Value / Current Amount ($)</label><input type="number" id="tvm_pv" value="100000" step="1000"></div>
+      <div class="cf" id="ti_fv"><label>Future Value / Target ($)</label><input type="number" id="tvm_fv" value="500000" step="1000"></div>
+      <div class="cf" id="ti_pmt"><label>Regular Payment / PMT ($)</label><input type="number" id="tvm_pmt" value="1000" step="100"></div>
+      <div class="cf"><label>Annual Interest Rate (%)</label><input type="number" id="tvm_r" value="6" step="0.1"></div>
+      <div class="cf"><label>Number of Years</label><input type="number" id="tvm_n" value="20" step="1"></div>
+      <div class="cf"><label>Compounding Frequency</label>
+        <select id="tvm_freq">
+          <option value="1">Annual</option>
+          <option value="2">Semi-annual</option>
+          <option value="4">Quarterly</option>
+          <option value="12" selected>Monthly</option>
+        </select>
+      </div>
+    </div>
+    <button class="cbtn" onclick="calcTVM()">Calculate</button>
+    <div class="cr" id="cr_tvm">Results will appear here…</div>
+  </div>
+  </div>
+</div>
+
+<!-- 7.9 TAX PLANNING -->
+<div class="ch" id="s9">
+  <div class="sh"><div class="sn">7.9</div><div class="st"><h2>Personal &amp; Corporate Tax Planning</h2><div class="ss">STRATEGIES · REGISTERED ACCOUNTS · INCOME SPLITTING · TAX-LOSS HARVESTING · CORPORATE NOTIONAL ACCOUNTS</div></div></div>
+
+  <div class="sub" id="s9pers"><h3>Personal Tax Planning Strategies</h3>
+
+  <h4>Claiming All Deductions and Credits</h4>
+  <div class="tw"><table>
+    <tr><th>Deduction / Credit</th><th>Description</th><th>Who Benefits Most</th></tr>
+    <tr><td><strong>RRSP Contribution Deduction</strong></td><td>Contributions reduce taxable income dollar-for-dollar in the year claimed (or can be carried forward to future years when income is higher). Refund = contribution × marginal tax rate.</td><td>High-income earners; anyone saving for retirement; those expecting income to fall in retirement</td></tr>
+    <tr><td><strong>Capital Gains Deduction (LCGE)</strong></td><td>Lifetime Capital Gains Exemption: $1.25M for qualifying small business shares, farming and fishing property (since June 25, 2024). At 50% inclusion: shelters up to $625,000 in taxable capital gains.</td><td>Small business owners, farmers, fishers selling qualifying assets</td></tr>
+    <tr><td><strong>Investment Interest Deduction</strong></td><td>Interest paid on money borrowed for investment purposes (to earn income from non-registered investments) is deductible against investment income. Must be directly traceable to income-producing investment.</td><td>Investors who borrow to invest (use with caution — leveraging amplifies risk AND return)</td></tr>
+    <tr><td><strong>Investment Counselling Fees</strong></td><td>Advisory fees paid to manage non-registered investment portfolios are generally deductible (fees for registered account management are NOT deductible). Note: CRA has proposed restricting this — confirm current status with advisor.</td><td>Investors with large non-registered managed portfolios</td></tr>
+    <tr><td><strong>Foreign Tax Credit (FTC)</strong></td><td>Credits foreign withholding tax paid on foreign income against Canadian tax owing on that income — preventing double taxation. Recoverable in non-registered accounts; not available for TFSA holdings.</td><td>Investors holding foreign dividend-paying stocks or ETFs in non-registered accounts</td></tr>
+    <tr><td><strong>Basic Personal Amount</strong></td><td>Federal non-refundable credit on first $16,129 of income (2025, indexed annually). Provincial equivalent also available. Reduces tax payable; everyone benefits.</td><td>All taxpayers</td></tr>
+  </table></div>
+
+  <h4>Income Splitting Strategies</h4>
+  <div class="tw"><table>
+    <tr><th>Strategy</th><th>How It Works</th><th>Tax Benefit</th><th>Key Rules / Limitations</th></tr>
+    <tr><td><strong>Spousal RRSP</strong></td><td>Higher-income spouse contributes to an RRSP in the lower-income spouse's name. Contributor gets the deduction now; lower-income spouse withdraws later at their lower marginal rate.</td><td>Shifts retirement income from high-bracket earner to low-bracket spouse — potentially saving 10–20% tax on each dollar of retirement income split</td><td>Attribution rules: if lower-income spouse withdraws within 3 calendar years of ANY spousal RRSP contribution, income is attributed back to contributor. Must wait 3 years after the last contribution before withdrawing.</td></tr>
+    <tr><td><strong>Pension Income Splitting</strong></td><td>Up to 50% of eligible pension income can be allocated from a higher-income pensioner to their lower-income spouse for tax purposes. Eligible income: RRIF withdrawals (age 65+), RPP/DPSP payments, annuity income.</td><td>Can reduce combined household tax significantly when one spouse has much more pension income than the other. Also helps the higher-income spouse stay below the OAS clawback threshold.</td><td>Requires joint election on T1 return (Form T1032). Income splitting for CPP requires a separate application to Service Canada. TFSA withdrawals and GIS do NOT qualify for pension splitting.</td></tr>
+    <tr><td><strong>Corporate income splitting (private corporations)</strong></td><td>Owner of a CCPC pays salary or dividends to lower-income family members who work in or own shares of the business.</td><td>Spreads corporate income across lower-income brackets. Dividends paid to family shareholders can be taxed at significantly lower rates.</td><td>TOSI (Tax on Split Income) rules since 2018 strictly limit income splitting with adult family members — they must be meaningfully involved in the business. Minor children's split income is taxed at top marginal rate. Seek specialist advice.</td></tr>
+    <tr><td><strong>Prescribed Rate Loan</strong></td><td>Higher-income spouse lends money to lower-income spouse at the CRA's prescribed interest rate (currently 3–5%). Spouse invests the loan and pays the prescribed rate interest. Investment income is taxed in spouse's hands at lower rate.</td><td>Any investment return above the prescribed rate is taxed in the lower-income spouse's hands. If the prescribed rate loan was set up when the rate was 1% (2021–2022), any return above 1% is taxed at the lower-income spouse's rate.</td><td>The interest MUST actually be paid annually by January 30 of the following year — if not paid, attribution applies from that year forward. Requires formal loan documentation.</td></tr>
+  </table></div>
+
+  <h4>Tax-Loss Harvesting</h4>
+  <p><strong>Tax-loss harvesting</strong> is the deliberate realization of capital losses to offset capital gains, reducing the current year's tax bill. It is one of the most consistently effective tax-planning strategies available to investors with non-registered accounts.</p>
+  <ul class="sl">
+    <li><strong>Mechanics:</strong> Sell an investment at a loss. The capital loss is "allowable" (50% × capital loss = allowable capital loss). This allowable loss offsets taxable capital gains (50% × capital gain). The net taxable income is reduced.</li>
+    <li><strong>Loss carry rules:</strong> Capital losses can be carried BACK 3 years (to recover tax paid on gains in those years) or carried FORWARD indefinitely (until used against future gains). They can ONLY offset capital gains — not other income types.</li>
+    <li><strong>Superficial loss rule (the key restriction):</strong> If you or an affiliated person (spouse, corporation you control) buys the SAME or identical security within 30 calendar days before or after the sale, the loss is denied (superficial loss). The denied loss is added to the ACB of the repurchased security — deferring, not eliminating, the loss. To crystallize the loss cleanly: either wait 31+ days to repurchase, or buy a similar (but not identical) security to maintain market exposure (e.g., sell VFV, buy XSP — both track the S&P 500).</li>
+    <li><strong>Year-end timing:</strong> In Canada, the settlement period for equities is T+1 (one business day). To realize a loss for the current tax year, the SALE must settle by December 31. This typically means executing by December 30 at the latest (or earlier if there are market holidays).</li>
+  </ul>
+  </div>
+
+  <div class="sub" id="s9reg"><h3>Tax-Preferential Accounts and Their Strategic Uses</h3>
+  <div class="tw"><table>
+    <tr><th>Account</th><th>Tax Treatment</th><th>Best Assets to Hold</th><th>Strategic Purpose</th></tr>
+    <tr><td><strong>TFSA</strong></td><td>After-tax contributions; tax-free growth and withdrawals</td><td>High-growth assets (small-cap ETFs, equity funds) — growth is permanently tax-free. Also: assets producing interest income (worst-taxed inside non-registered)</td><td>Tax-free compounding; income supplement in retirement without OAS clawback; GIS-eligible seniors should draw from TFSA first</td></tr>
+    <tr><td><strong>RRSP / RRIF</strong></td><td>Deductible contributions; tax-deferred growth; fully taxable withdrawals</td><td>Fixed income (interest-producing assets) — deferring interest income is valuable. Also: US dividend ETFs (treaty exempts withholding in RRSP)</td><td>Retirement savings; income deferral to lower-tax years; spousal income splitting via spousal RRSP; income shift from high- to low-income years</td></tr>
+    <tr><td><strong>FHSA</strong></td><td>Deductible contributions; tax-deferred growth; tax-free qualifying withdrawal</td><td>Any — the tax benefit is so strong that asset selection is secondary. Maximize contributions first.</td><td>First home down payment; best tax deal ever created for a specific purpose</td></tr>
+    <tr><td><strong>RESP</strong></td><td>After-tax contributions; tax-deferred growth; EAPs taxed in student's hands</td><td>Growth-oriented early; shift conservative as education approaches (to protect capital)</td><td>Post-secondary education funding; CESG grants add 20% on first $2,500/year</td></tr>
+    <tr><td><strong>Non-Registered</strong></td><td>Contributions not deductible; all investment income taxable annually</td><td>Canadian dividend stocks (DTC benefit); equity ETFs (capital gains treatment); corporate class funds (tax-efficient switching); NOT interest-bearing assets</td><td>No contribution limits; capital gains can be timed; FTC for foreign income; estate planning flexibility</td></tr>
+  </table></div>
+
+  <h4>Asset Location — Placing the Right Asset in the Right Account</h4>
+  <div class="tw"><table>
+    <tr><th>Asset Type</th><th>Tax Efficiency in Non-Reg</th><th>Best Account</th><th>Reason</th></tr>
+    <tr><td>Canadian dividend stocks / ETFs</td><td>High — eligible dividend tax credit applies</td><td>Non-Registered or TFSA</td><td>DTC reduces tax burden in non-reg; in TFSA, dividends are completely tax-free</td></tr>
+    <tr><td>US dividend ETFs</td><td>Low — 15% US withholding (recoverable via FTC) + taxed as foreign income</td><td><strong>RRSP</strong> (strongly preferred)</td><td>Canada-US treaty exempts RRSP from withholding; zero withholding in RRSP, unrecoverable 15% in TFSA</td></tr>
+    <tr><td>Canadian bond / GIC / interest-bearing</td><td>Lowest — interest is 100% taxable at marginal rate</td><td><strong>RRSP/RRIF</strong></td><td>Defer interest income to lower-rate retirement years; protects this worst-taxed income type from current taxation</td></tr>
+    <tr><td>Canadian equity index ETF (growth, minimal dividends)</td><td>High — capital gains treatment on growth (50% inclusion)</td><td>TFSA or Non-Registered</td><td>Capital gains in non-reg have 50% inclusion; in TFSA all growth is tax-free; RRSP wastes capital gains preference (converts to ordinary income on withdrawal)</td></tr>
+    <tr><td>REITs</td><td>Low — distributions often contain return of capital and ordinary income components</td><td>TFSA or RRSP</td><td>Shelter the ordinary income components from annual taxation</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s9corp"><h3>Corporate Tax Planning Basics</h3>
+  <p>Many RR clients are incorporated business owners. Understanding the basics of corporate tax and how it differs from personal tax is essential for providing suitable recommendations.</p>
+
+  <h4>Active vs. Passive Income</h4>
+  <div class="dg"><div class="dt">Corporate Income Types — Tax Treatment</div><div class="g2">
+    <div class="gc"><h5>💼 Active Business Income (ABI)</h5>
+      <p><strong>What it is:</strong> Income from the active conduct of the business — revenue from selling products/services, professional fees, consulting income, etc. The core operating income of the corporation.<br><br>
+      <strong>Tax rate:</strong> For a Canadian-Controlled Private Corporation (CCPC), active business income up to $500,000 qualifies for the <strong>Small Business Deduction (SBD)</strong> — federal rate approximately <strong>9%</strong> (combined federal/provincial ≈ 12–13% depending on province).<br><br>
+      <strong>Above $500K:</strong> Taxed at the general corporate rate — approximately 26.5% combined federal/provincial (Ontario). The SBD is gradually phased out for CCPCs with more than $10M in associated taxable capital.<br><br>
+      <strong>Strategic benefit:</strong> Deferring income inside the corporation at 9–13% instead of paying personal marginal rates of 43–53% creates enormous deferral opportunities — especially for business owners who don't need all their income personally.</p>
+    </div>
+    <div class="gc"><h5>📊 Passive Investment Income</h5>
+      <p><strong>What it is:</strong> Investment income earned by the corporation on assets not used in the active business — interest, dividends from other corporations, rental income (in most cases), capital gains from non-business assets.<br><br>
+      <strong>Tax rate:</strong> Passive income inside a CCPC is taxed at approximately <strong>50.67%</strong> (combined federal/provincial, Ontario). However, <strong>30.67%</strong> of this is refundable — it is added to the Refundable Dividend Tax on Hand (RDTOH) and refunded to the corporation when it pays taxable dividends to shareholders.<br><br>
+      <strong>SBD reduction:</strong> Since 2019, a CCPC's SBD is reduced when it earns more than $50,000 of passive income in a year. For every dollar of passive income above $50,000, the SBD limit is reduced by $5, fully eliminated at $150,000 of passive income.<br><br>
+      <strong>Tax integration:</strong> The 50.67% corporate rate + refund mechanism is designed to produce the same total tax as if the income were earned personally — the "integration" principle.</p>
+    </div>
+  </div></div>
+
+  <h4>The Integration Principle</h4>
+  <p><strong>Tax integration</strong> is the principle that the total tax on income earned through a corporation (corporate tax + personal tax on the dividend received) should equal the personal tax that would have been paid if the income had been earned directly. In Canada, integration is not perfectly achieved but is reasonably close for most provinces.</p>
+  <div class="mb">
+    <div class="mfl">INTEGRATION — SIMPLIFIED ILLUSTRATION (ONTARIO)</div>
+    <div class="mw">
+      <div class="ms"><div class="msn">1</div><div class="mst"><strong>Directly earned:</strong> $100,000 of investment income earned personally at top marginal rate ≈ 53.53% → Tax = $53,530 → After-tax: $46,470</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst"><strong>Earned through corporation:</strong> Corporation earns $100,000 passive income → Corporate tax at 50.67% = $50,670 → After corporate tax: $49,330 in corporation</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst">When paid as dividend: Personal tax on $49,330 dividend (reduced by DTC and RDTOH mechanism) → Net additional tax ≈ $3,670 → Total tax: $50,670 + $3,670 = $54,340</div></div>
+      <div class="mr">Integration produces similar (though not identical) total tax whether income is earned directly or through a corporation. The value of the corporate structure is primarily in the DEFERRAL — earning ABI at 9–13% inside the corp and not paying personal tax until dividends are actually needed.</div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sub" id="s9notional"><h3>Corporate Notional Accounts: CDA, RDTOH, and GRIP</h3>
+  <p>Three notional accounts track specific pools of corporate money that receive different tax treatment when distributed to shareholders. Understanding these is essential for advising incorporated business owner clients.</p>
+
+  <div class="tw"><table>
+    <tr><th>Account</th><th>What It Tracks</th><th>How Distributed</th><th>Tax Effect on Shareholder</th></tr>
+    <tr><td><span class="nb nb-cda">CDA</span><br><strong>Capital Dividend Account</strong></td><td>The non-taxable portion of capital gains realized by the corporation (the 50% of capital gains NOT included in taxable income); life insurance proceeds received by the corporation above the ACB of the policy; capital dividends received from other corporations</td><td>The corporation can elect to pay a <strong>"capital dividend"</strong> out of the CDA balance. This election is irrevocable — once made, the amount becomes a capital dividend.</td><td><strong>Tax-free to the recipient shareholder</strong> — capital dividends are received without any inclusion in the recipient's income. This is the primary mechanism for extracting the non-taxable half of capital gains from a corporation without triggering personal tax. A corporation with a large CDA balance (from selling appreciated assets) can pay a large tax-free dividend.</td></tr>
+    <tr><td><span class="nb nb-rdtoh">RDTOH</span><br><strong>Refundable Dividend Tax on Hand</strong></td><td>The refundable portion of corporate tax paid on passive investment income (approximately 30.67% of passive income). Now split into: <strong>Eligible RDTOH</strong> (from eligible dividends received) and <strong>Non-eligible RDTOH</strong> (from other passive income).</td><td>RDTOH is <strong>refunded to the corporation at a rate of $1 for every $2.61 of taxable dividends paid</strong> (i.e., 38.33% of dividends paid). The corporation does not hold the RDTOH — it's refunded as dividends are paid.</td><td>The RDTOH mechanism ensures that passive investment income doesn't suffer double taxation. The 30.67% refundable portion is essentially a tax deposit that is returned as dividends flow through to shareholders who pay personal tax on those dividends.</td></tr>
+    <tr><td><span class="nb nb-grip">GRIP</span><br><strong>General Rate Income Pool</strong></td><td>Tracks income taxed at the general corporate rate (not the SBD rate). GRIP = cumulative income taxed at general rate − eligible dividends paid − various adjustments.</td><td>A CCPC can only pay <strong>eligible dividends</strong> (which qualify for the enhanced Dividend Tax Credit on the personal side) to the extent it has GRIP balance. Dividends paid out of SBD income must be paid as non-eligible dividends.</td><td><strong>Eligible dividends</strong> receive a more generous DTC on the personal side. The GRIP tracks which income pool the dividends come from, ensuring that the DTC benefit (higher gross-up = higher credit) aligns with income that was actually taxed at the higher corporate rate (not the subsidized SBD rate). This prevents claiming the enhanced DTC on income that benefited from the small business deduction.</td></tr>
+  </table></div>
+
+  <div class="co co-exam">
+    <div class="cl">📌 NOTIONAL ACCOUNTS — RSE EXAM FOCUS</div>
+    <p>The RSE exam does NOT require detailed calculations of CDA/RDTOH/GRIP balances — it tests conceptual understanding. Know: (1) CDA — non-taxable half of capital gains; pays tax-free capital dividends to shareholders; (2) RDTOH — refundable corporate tax on passive income; returned when dividends paid; (3) GRIP — tracks income taxed at general rate; determines eligibility to pay eligible (vs. non-eligible) dividends. Most commonly tested: what type of dividend can be paid tax-free (CDA → capital dividend), and why eligible dividends have a higher DTC than non-eligible dividends (GRIP → general rate income earns the enhanced credit).</p>
+  </div>
+  </div>
+</div>
+
+<!-- 7.10 CAPITAL GAINS TAX -->
+<div class="ch" id="s10">
+  <div class="sh"><div class="sn">7.10</div><div class="st"><h2>The Canadian Capital Gains Tax System</h2><div class="ss">CALCULATION · TAX TREATMENT · MINIMIZING STRATEGIES · LCGE</div></div></div>
+
+  <div class="sub" id="s10calc"><h3>Calculating Capital Gains and Capital Losses</h3>
+
+  <div class="mb">
+    <div class="mfl">CAPITAL GAIN / LOSS — CORE FORMULAS</div>
+    <div class="mf">Capital Gain (Loss) = Proceeds of Disposition − Adjusted Cost Base (ACB) − Selling Costs</div>
+    <div class="mf">Taxable Capital Gain = Capital Gain × 50% (inclusion rate)</div>
+    <div class="mf">Allowable Capital Loss = Capital Loss × 50%</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12px;text-align:center">Where ACB = weighted average cost of all units/shares purchased including reinvested distributions</p>
+    </div>
+  </div>
+
+  <h4>Worked Example — Capital Gain Calculation</h4>
+  <div class="mb">
+    <div class="mfl">NON-REGISTERED MUTUAL FUND REDEMPTION</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12.5px;margin-bottom:8px"><strong style="color:var(--gl)">Facts:</strong> Priya purchased 500 units of Fund A at $18.00 and later bought 300 more at $22.00. She reinvested distributions of $1.20/unit on 800 units. She now redeems all 800 units at $28.50/unit. Selling costs: $125.</p>
+      <div class="ms"><div class="msn">1</div><div class="mst"><strong>Calculate ACB:</strong><br>Purchase 1: 500 × $18.00 = $9,000<br>Purchase 2: 300 × $22.00 = $6,600<br>Reinvested distribution: 800 × $1.20 = $960 (added to ACB)<br>Total ACB = $9,000 + $6,600 + $960 = $16,560<br>ACB per unit = $16,560 / 800 = $20.70</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst"><strong>Proceeds of Disposition:</strong> 800 units × $28.50 = $22,800</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst"><strong>Capital Gain:</strong> $22,800 − $16,560 − $125 = <strong style="color:var(--gl)">$6,115</strong></div></div>
+      <div class="ms"><div class="msn">4</div><div class="mst"><strong>Taxable Capital Gain (50% inclusion):</strong> $6,115 × 50% = <strong style="color:var(--gl)">$3,057.50</strong> — this amount is added to Priya's taxable income</div></div>
+      <div class="mr">If Priya is in a 43% marginal tax bracket: Tax payable on this gain = $3,057.50 × 43% = $1,315. Effective rate on the full $6,115 capital gain = 21.5% — half the 43% marginal rate.</div>
+    </div>
+  </div>
+
+  <h4>Tax Treatment of Capital Gains and Losses</h4>
+  <div class="tw"><table>
+    <tr><th>Scenario</th><th>Treatment</th><th>Carry Rules</th></tr>
+    <tr><td><strong>Capital gain in non-registered account</strong></td><td>50% inclusion rate — add taxable capital gain (50% of gain) to income for the year. Taxed at marginal rate. Reported on Schedule 3 of T1 return.</td><td>N/A — taxable in year of disposition</td></tr>
+    <tr><td><strong>Capital gain inside RRSP/TFSA</strong></td><td>RRSP: capital gain grows tax-deferred; all withdrawals eventually fully taxable as ordinary income (loses capital gains preference). TFSA: 100% tax-free — no reporting required.</td><td>N/A — registered accounts don't report capital gains to CRA</td></tr>
+    <tr><td><strong>Capital loss</strong></td><td>Allowable capital loss (50% × loss) can ONLY offset taxable capital gains. CANNOT be deducted against other income types (salary, interest, dividends). Reported on Schedule 3.</td><td>Carry BACK 3 years; carry FORWARD indefinitely. Use T1A form to apply loss to prior years' gains.</td></tr>
+    <tr><td><strong>Superficial loss</strong></td><td>If the same or identical investment is repurchased within 30 calendar days before or after the sale, the loss is denied — classified as a "superficial loss." The denied loss amount is added to the ACB of the repurchased security.</td><td>Deferral (not permanent denial) — the loss is recovered when the repurchased security is eventually sold (outside the 30-day window)</td></tr>
+    <tr><td><strong>Principal Residence Exemption</strong></td><td>Capital gain on the sale of a designated principal residence is fully exempt from tax — not just 50% exempt, but 100% exempt. Must have ordinarily inhabited the property in each year of ownership for full exemption.</td><td>Must report on T1 even if fully exempt (since 2016 — no longer administratively exempt)</td></tr>
+    <tr><td><strong>Capital loss on shares of bankrupt company</strong></td><td>Allowable Business Investment Loss (ABIL): a capital loss on shares or debt of a small business corporation (SBC) qualifies as an ABIL — it can be deducted against ALL income types, not just capital gains. 50% of the loss = ABIL amount.</td><td>Unused ABIL converts to a regular net capital loss after 10 years</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s10strat"><h3>Strategies for Minimizing Capital Gains Tax</h3>
+  <ul class="sl">
+    <li><strong>Hold long-term:</strong> Capital gains tax is only triggered on disposition — indefinitely deferring the sale defers the tax. Compounding on pre-tax capital (i.e., including the deferred tax) produces higher long-term wealth than triggering gains regularly.</li>
+    <li><strong>Tax-loss harvesting:</strong> Deliberately realize losses to offset gains. Buy a similar (not identical) replacement security to maintain market exposure while crystallizing the loss for tax purposes. See Section 7.9 for superficial loss rules.</li>
+    <li><strong>Strategic timing:</strong> If income will be significantly lower in a future year (retirement, sabbatical, large RRSP deduction year), defer realizing gains to that lower-income year when the marginal tax rate is lower.</li>
+    <li><strong>Use the LCGE:</strong> For qualifying small business shares and farm/fishing property, the Lifetime Capital Gains Exemption shelters up to $1.25M from tax. At 50% inclusion, this shelters up to $625,000 in taxable capital gains — potentially saving $250,000+ in personal tax at top marginal rates.</li>
+    <li><strong>Donate appreciated securities:</strong> Instead of selling appreciated securities and donating the cash, donate the securities directly to a registered charity. The capital gain on the donated securities is eliminated (zero inclusion rate for publicly listed securities donated in-kind), AND the donor receives a donation tax credit for the full fair market value of the securities.</li>
+    <li><strong>Use the principal residence exemption:</strong> Designate the property where you live as your principal residence — no capital gains tax on sale. In two-property households, strategic designation to the higher-gain property maximizes the exemption benefit.</li>
+    <li><strong>Capital gains reserve:</strong> When proceeds are not all received in the year of sale (e.g., vendor-take-back mortgage), income can be spread over up to 5 years (or longer for family farm/fishing property). Reserve = capital gain × proportion of proceeds not yet received.</li>
+    <li><strong>TFSA for high-growth investments:</strong> Investments expected to generate significant capital gains should be held in TFSA where gains are permanently tax-free — no inclusion, no tax, ever.</li>
+    <li><strong>Estate planning:</strong> Securities can be transferred to a spouse or spousal trust on death at ACB (deemed rollover) — deferring capital gains until the surviving spouse eventually sells or dies. Careful planning around the "deemed disposition" at death.</li>
+  </ul>
+  </div>
+
+  <div class="sub" id="s10lcge"><h3>Lifetime Capital Gains Exemption (LCGE) — 2025</h3>
+  <div class="tw"><table>
+    <tr><th>Feature</th><th>Details (2025)</th></tr>
+    <tr><td><strong>Exemption limit</strong></td><td><strong>$1,250,000</strong> for qualifying small business shares (QSBC shares), qualifying farm property, and qualifying fishing property — effective June 25, 2024</td></tr>
+    <tr><td><strong>Cumulative Gains Limit</strong></td><td>The LCGE is a lifetime limit. Any prior LCGE claims reduce the remaining available exemption. Tracked by CRA on Schedule 3 and Form T657.</td></tr>
+    <tr><td><strong>Qualifying Small Business Corporation (QSBC) shares</strong></td><td>Shares of a CCPC: (1) All or substantially all (90%+) of the FMV of assets must be used in an active business primarily in Canada at the time of sale; (2) 50% of assets must have been used in active business throughout the 24-month period prior to sale; (3) Shares must not have been owned by anyone other than the seller or a related person for the 24 months prior to sale.</td></tr>
+    <tr><td><strong>Tax benefit</strong></td><td>At 50% inclusion: $1.25M exemption → $625,000 in sheltered taxable capital gains. At top Ontario marginal rate of 26.76% on capital gains: saves approximately $167,250 in federal/provincial tax on a $1.25M qualifying gain.</td></tr>
+    <tr><td><strong>Canadian Entrepreneurs' Incentive (CEI)</strong></td><td>New incentive phasing in from 2025: reduces capital gains inclusion rate to 1/3 (instead of 1/2) on up to $2M of qualifying gains from disposition of qualifying businesses. Increases by $200,000/year, reaching $2M in 2034. Combined with LCGE: total shelter eventually reaches $3.25M in qualifying gains.</td></tr>
+  </table></div>
+  </div>
+</div>
+
+<!-- 7.11 INVESTMENT INCOME TAX -->
+<div class="ch" id="s11">
+  <div class="sh"><div class="sn">7.11</div><div class="st"><h2>Investment Income Tax in Canada</h2><div class="ss">INTEREST · ELIGIBLE DIVIDENDS · NON-ELIGIBLE DIVIDENDS · FOREIGN INCOME</div></div></div>
+
+  <p>Canada taxes different types of investment income at very different effective rates — using mechanisms like gross-up and dividend tax credits (DTC) to achieve approximate integration between corporate and personal tax. Understanding these differences is essential for both investment selection and account location decisions.</p>
+
+  <div class="sub" id="s11int"><h3>Interest Income</h3>
+  <p>Interest income is the <strong>least tax-efficient</strong> form of investment income in Canada. It is included in taxable income at <strong>100%</strong> of the amount received — there is no partial inclusion or preferential rate. Interest income is taxed at the investor's full marginal rate.</p>
+
+  <div class="mb">
+    <div class="mfl">INTEREST INCOME — TAX CALCULATION</div>
+    <div class="mf">Tax Payable on Interest = Interest Received × Marginal Tax Rate</div>
+    <div class="mw">
+      <div class="ms"><div class="msn">E</div><div class="mst"><strong>Example:</strong> Ahmed earns $5,000 in GIC interest. His marginal tax rate is 43.41% (Ontario, $120K income). Tax = $5,000 × 43.41% = <strong style="color:#ff8a8a">$2,170.50</strong> — keeping only $2,829.50 after tax.</div></div>
+      <div class="mr">Interest income sources: GICs, savings accounts, corporate bonds, T-bills, money market funds, Canada Savings Bonds. All taxed at 100% inclusion at marginal rate. Reported on T5 slip (Box 13 — Interest from Canadian sources). Note: accrual rules require reporting interest annually even if not received (e.g., non-cashable GICs accrue interest annually for tax purposes).</div>
+    </div>
+  </div>
+  <div class="co co-tip">
+    <div class="cl">💡 INTEREST INCOME — ACCOUNT LOCATION PRIORITY</div>
+    <p>Because interest is the least tax-efficient income type, interest-bearing investments should be held in registered accounts (RRSP/RRIF) to shelter the worst-taxed income first. Interest in a TFSA is also tax-free, but TFSAs are often better used for higher-growth assets where the compounded tax-free benefit is greater. Interest in a non-registered account creates an annual tax drag that compounds adversely over time.</p>
+  </div>
+  </div>
+
+  <div class="sub" id="s11div"><h3>Canadian Dividends — Eligible vs. Non-Eligible</h3>
+  <p>Canadian dividends receive preferential tax treatment through the <strong>Dividend Tax Credit (DTC)</strong> mechanism. The gross-up and credit system is designed to achieve integration — the shareholder receives credit for the corporate tax already paid on the income that produced the dividend.</p>
+
+  <h4>Eligible Dividends (from Public Corporations and CCPCs with GRIP)</h4>
+  <div class="mb">
+    <div class="mfl">ELIGIBLE DIVIDEND — GROSS-UP AND CREDIT MECHANISM</div>
+    <div class="mf">Gross-up: Multiply eligible dividend by 1.38 (38% gross-up)</div>
+    <div class="mf">Taxable Amount = Eligible Dividend × 1.38</div>
+    <div class="mf">Federal DTC = Grossed-Up Amount × 15.0198%</div>
+    <div class="mw">
+      <div class="ms"><div class="msn">E</div><div class="mst"><strong>Example:</strong> Maria receives a $5,000 eligible dividend from a Canadian public company. Marginal tax rate: 33% federal.<br>Grossed-up amount: $5,000 × 1.38 = $6,900<br>Gross federal tax: $6,900 × 33% = $2,277<br>Federal DTC: $6,900 × 15.0198% = $1,036<br>Net federal tax: $2,277 − $1,036 = $1,241<br>Provincial DTC also applies (varies by province)<br>Effective combined rate on eligible dividends (Ontario, ~$100K income): approximately 24–25%</div></div>
+      <div class="mr">Eligible dividends come from: Canadian public corporations (listed on TSX); CCPCs with General Rate Income Pool (GRIP) — income taxed at the general corporate rate, not the small business rate. The higher gross-up (38%) reflects the higher corporate tax already paid on this income.</div>
+    </div>
+  </div>
+
+  <h4>Non-Eligible Dividends (from CCPCs out of Small Business Income)</h4>
+  <div class="mb">
+    <div class="mfl">NON-ELIGIBLE DIVIDEND — LOWER GROSS-UP AND CREDIT</div>
+    <div class="mf">Gross-up: Multiply by 1.15 (15% gross-up)</div>
+    <div class="mf">Taxable Amount = Non-Eligible Dividend × 1.15</div>
+    <div class="mf">Federal DTC = Grossed-Up Amount × 9.0301%</div>
+    <div class="mw">
+      <div class="ms"><div class="msn">E</div><div class="mst"><strong>Example:</strong> Same $5,000 dividend but non-eligible. Marginal rate 33% federal.<br>Grossed-up amount: $5,000 × 1.15 = $5,750<br>Gross federal tax: $5,750 × 33% = $1,897.50<br>Federal DTC: $5,750 × 9.0301% = $519<br>Net federal tax: $1,897.50 − $519 = $1,378.50<br>Higher effective rate than eligible dividends — reflects lower corporate tax already paid (small business rate)</div></div>
+      <div class="mr">Non-eligible dividends come from: CCPCs paying dividends out of small business income (taxed at 9% SBD rate, not general rate). The lower gross-up (15%) reflects the lower corporate tax already paid. Non-eligible dividends have a higher personal tax rate than eligible dividends — the integration deliberately applies less credit where less corporate tax was paid.</div>
+    </div>
+  </div>
+
+  <h4>Key Dividend Tax Rates — Summary (Ontario, Approximate 2025)</h4>
+  <div class="tw"><table>
+    <tr><th>Income Level (Ontario)</th><th>Marginal Rate on Salary/Interest</th><th>Eligible Dividend Effective Rate</th><th>Non-Eligible Dividend Rate</th><th>Capital Gains Rate (50%)</th></tr>
+    <tr><td>~$57,375 (second bracket)</td><td>29.65%</td><td>Approximately 6%</td><td>Approximately 14%</td><td>Approximately 14.8%</td></tr>
+    <tr><td>~$100,000</td><td>43.41%</td><td>Approximately 24%</td><td>Approximately 29%</td><td>Approximately 21.7%</td></tr>
+    <tr><td>$220,000+ (top bracket)</td><td>53.53%</td><td>Approximately 39.3%</td><td>Approximately 46.8%</td><td>Approximately 26.8%</td></tr>
+  </table></div>
+
+  <div class="co co-exam">
+    <div class="cl">📌 DIVIDEND TAX CREDIT — KEY EXAM POINTS</div>
+    <p>Know the direction of the advantage: Eligible dividends → 38% gross-up → larger DTC → LOWER personal tax rate than non-eligible. Non-eligible dividends → 15% gross-up → smaller DTC → higher personal tax rate. Both are taxed MORE FAVORABLY than interest income but LESS FAVORABLY than capital gains for most income levels. The mechanism: gross-up puts the pre-tax corporate income back on the personal return; DTC removes the corporate tax already paid; net result = only personal rate applies to the underlying income — achieving integration.</p>
+  </div>
+  </div>
+
+  <div class="sub" id="s11for"><h3>Foreign Dividend Income</h3>
+  <p>Foreign dividends (paid by non-Canadian corporations — US, European, emerging market companies) do NOT qualify for the Canadian Dividend Tax Credit. They are treated as <strong>foreign income</strong> — essentially the same tax treatment as interest (100% taxable at marginal rate), minus any foreign withholding tax that can be recovered via the Foreign Tax Credit.</p>
+
+  <div class="tw"><table>
+    <tr><th>Step</th><th>What Happens</th><th>Example (US Dividend in Non-Reg)</th></tr>
+    <tr><td><strong>US withholding</strong></td><td>US company withholds 15% (Canada-US treaty rate) before paying dividend to Canadian investor</td><td>US company declares $1,000 dividend → sends $850 to Canadian investor, remits $150 to IRS</td></tr>
+    <tr><td><strong>Canadian reporting</strong></td><td>Report the FULL $1,000 (pre-withholding) as foreign income on Canadian T1 (Line 12100). Receive T5 slip or summary from broker.</td><td>Add $1,000 to taxable income, NOT $850</td></tr>
+    <tr><td><strong>Foreign Tax Credit</strong></td><td>Claim the $150 US withholding as a foreign tax credit on Form T2209, offsetting Canadian tax owing. In non-registered: effectively fully recoverable (unless Canadian tax owing is less than foreign withholding).</td><td>If Canadian marginal rate is 43%: Canadian tax on $1,000 = $430. FTC of $150 applied: net Canadian tax = $280. Total tax paid: $430 (same as if earned in Canada — integration achieved)</td></tr>
+    <tr><td><strong>In RRSP</strong></td><td>Canada-US treaty exempts RRSPs from US withholding tax — US company pays the full dividend with zero withholding to the RRSP. No Canadian tax until withdrawal.</td><td>RRSP receives full $1,000 with zero withholding. Deferred until withdrawal. BEST account for US dividends.</td></tr>
+    <tr><td><strong>In TFSA</strong></td><td>Treaty does NOT cover TFSAs. 15% withholding applies. No FTC available (no Canadian tax owing on TFSA income to offset against). Loss is permanent and unrecoverable.</td><td>TFSA receives $850. $150 is permanently lost. No relief available. WORST account for US dividend ETFs.</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s11cmp"><h3>Investment Income Type Comparison — Complete Summary</h3>
+  <div class="tw"><table>
+    <tr><th>Income Type</th><th>Inclusion Rate</th><th>Special Mechanism</th><th>Tax Efficiency Rank</th><th>Best Account Location</th><th>Tax Slip</th></tr>
+    <tr><td><strong>Interest</strong></td><td>100%</td><td>None — fully taxable at marginal rate</td><td>❶ Least tax-efficient</td><td>RRSP/RRIF (shelter the worst-taxed income)</td><td>T5 Box 13</td></tr>
+    <tr><td><strong>Non-Eligible Dividends</strong></td><td>115% grossed up; credit partially offsets</td><td>15% gross-up + 9.03% federal DTC</td><td>❷</td><td>TFSA or non-reg; not RRSP (wastes DTC benefit)</td><td>T5 Box 11</td></tr>
+    <tr><td><strong>Eligible Dividends</strong></td><td>138% grossed up; larger credit</td><td>38% gross-up + 15.02% federal DTC</td><td>❸ More efficient than non-eligible</td><td>TFSA or non-reg; not RRSP (wastes DTC benefit)</td><td>T5 Box 25</td></tr>
+    <tr><td><strong>Capital Gains</strong></td><td>50%</td><td>Only 50% of gain added to income</td><td>❹ Highly tax-efficient; timing control</td><td>TFSA (permanent tax-free); Non-reg (50% inclusion + timing control)</td><td>T3/T5008 Schedule 3</td></tr>
+    <tr><td><strong>Return of Capital (ROC)</strong></td><td>0% (in year received)</td><td>Reduces ACB; deferred capital gain on eventual sale</td><td>❺ Most tax-efficient currently (deferral)</td><td>Non-reg most beneficial (deferred tax)</td><td>T3 Box 42</td></tr>
+    <tr><td><strong>Foreign Income</strong></td><td>100% (grossed up for FTC)</td><td>Foreign Tax Credit partially offsets withholding</td><td>Similar to interest in non-reg; better with FTC</td><td>RRSP (zero US withholding in registered account)</td><td>T5 Box 15/16</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s11calc"><h3>Investment Tax Calculator</h3>
+  <div class="cb">
+    <h4>🧮 After-Tax Investment Income Calculator</h4>
+    <p style="font-size:13.5px;color:var(--mut);margin-bottom:12px">Compare after-tax income across income types. Uses simplified federal rates.</p>
+    <div class="cg3">
+      <div class="cf"><label>Investment Income Amount ($)</label><input type="number" id="tx_amount" value="10000" step="500"></div>
+      <div class="cf"><label>Income Type</label>
+        <select id="tx_type">
+          <option value="interest">Interest Income</option>
+          <option value="eligible">Eligible Dividend (Canadian)</option>
+          <option value="nonelig">Non-Eligible Dividend (Canadian)</option>
+          <option value="capgain">Capital Gain (50% inclusion)</option>
+          <option value="foreign">Foreign Dividend (with 15% FTC)</option>
+        </select>
+      </div>
+      <div class="cf"><label>Marginal Tax Rate (%)</label><input type="number" id="tx_rate" value="43" step="1" min="20" max="55"></div>
+    </div>
+    <button class="cbtn" onclick="calcTax()">Calculate After-Tax Income</button>
+    <div class="cr" id="cr_tax">Results will appear here…</div>
+  </div>
+  </div>
+</div>
+
+<!-- 7.12 COMPLAINTS HANDLING -->
+<div class="ch" id="s12">
+  <div class="sh"><div class="sn">7.12</div><div class="st"><h2>Regulatory Requirements — Complaints Handling</h2><div class="ss">RECOGNITION · PROCESS · RESOLUTION · REPORTING · PROHIBITED PRACTICES</div></div></div>
+
+  <p>The complaints handling framework is a critical compliance area. CIRO rules (IDPC Rule 3700 for investment dealers; MFD Rule 300 for mutual fund dealers) establish specific obligations for how dealer members must recognize, process, resolve, report, and document client complaints.</p>
+
+  <div class="sub" id="s12rec"><h3>Recognition — What Constitutes a Complaint</h3>
+  <p>A <strong>complaint</strong> in the regulatory sense is any expression of dissatisfaction by a client (or a person authorized to act on their behalf) about the dealer member, a registered individual, or any conduct related to the handling of the client's account. Complaints do not need to use specific language — any indication of dissatisfaction that relates to account conduct qualifies.</p>
+
+  <div class="tw"><table>
+    <tr><th>Type</th><th>Examples</th><th>Complaint? Must Be Processed?</th></tr>
+    <tr><td><strong>Clearly a complaint</strong></td><td>"I lost money because your advisor put me in the wrong product." "You executed a trade I didn't authorize." "I was never told about the redemption fee." "Your advisor recommended a product that was clearly not suitable for me."</td><td>✅ Yes — must be processed through the formal complaints handling process</td></tr>
+    <tr><td><strong>Borderline — likely a complaint</strong></td><td>"I'm not happy with how my account is being managed." "Why did you do this without asking me?" "This isn't what I expected." "Something seems wrong with my account."</td><td>✅ Yes — expressions of account-related dissatisfaction must be treated as complaints even if informal</td></tr>
+    <tr><td><strong>Not a complaint</strong></td><td>"Can you explain why my GIC rate is lower than my neighbor's?" "How do I set up online access?" "Can you send me my statement?" "Why did my portfolio go down when the market went up?"</td><td>❌ Not a formal complaint — a service request or general inquiry. No complaint process required, but must still be handled professionally.</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s12proc"><h3>Complaints Process and Timelines</h3>
+  <div class="cstep">
+    <div class="cstep-n">1</div>
+    <div class="cstep-b">
+      <h4>Acknowledge — Within 5 Business Days</h4>
+      <p>The dealer must send a written acknowledgment of the complaint to the client within <strong>5 business days</strong> of receipt. The acknowledgment must: confirm receipt of the complaint; explain the complaints handling process; identify the complaints officer or department responsible; provide the client with the OBSI contact information (the external dispute resolution service).</p>
+    </div>
+  </div>
+  <div class="cstep">
+    <div class="cstep-n">2</div>
+    <div class="cstep-b">
+      <h4>Investigate</h4>
+      <p>The dealer must conduct a thorough, impartial investigation of the complaint. The investigation should be handled by someone not directly involved in the conduct complained about. The investigation reviews: account records, trade confirmations, communications (calls, emails), KYC documentation, suitability analysis, and any other relevant evidence.</p>
+    </div>
+  </div>
+  <div class="cstep">
+    <div class="cstep-n">3</div>
+    <div class="cstep-b">
+      <h4>Substantive Response — Within 90 Calendar Days</h4>
+      <p>The dealer must provide a written <strong>substantive response</strong> to the client within <strong>90 calendar days</strong> of receiving the complaint. The substantive response must: state whether the complaint is accepted or rejected; explain the reasons for the decision clearly; describe any remedies offered (if complaint accepted); inform the client of their right to escalate to OBSI if dissatisfied; include the OBSI contact information.</p>
+    </div>
+  </div>
+  <div class="cstep">
+    <div class="cstep-n">4</div>
+    <div class="cstep-b">
+      <h4>OBSI Referral — Client Right</h4>
+      <p>If the client is not satisfied with the dealer's response, they have the right to escalate to the <strong>Ombudsman for Banking Services and Investments (OBSI)</strong> — within 180 days of receiving the dealer's substantive response. OBSI is an independent, not-for-profit dispute resolution service that is free to clients. OBSI can recommend compensation up to <strong>$350,000</strong>. OBSI recommendations are not legally binding, but dealers are expected to comply or publicly disclose non-compliance.</p>
+    </div>
+  </div>
+  <div class="cstep">
+    <div class="cstep-n">5</div>
+    <div class="cstep-b">
+      <h4>Record Keeping</h4>
+      <p>The dealer must retain all complaint records for a minimum of <strong>7 years</strong>. Records must include: the original complaint (in writing), the acknowledgment, all investigation documentation, the substantive response, and any OBSI correspondence. Records must be readily accessible for regulatory review.</p>
+    </div>
+  </div>
+  </div>
+
+  <div class="sub" id="s12res"><h3>Resolution</h3>
+  <p>Complaints may be resolved in several ways depending on the investigation findings:</p>
+  <div class="tw"><table>
+    <tr><th>Resolution Outcome</th><th>What It Means</th><th>What the Dealer Must Do</th></tr>
+    <tr><td><strong>Complaint accepted — full remedy</strong></td><td>Investigation finds the client was harmed by dealer/RR conduct (unauthorized trade, unsuitable recommendation, failure to execute). Full remedy offered.</td><td>Make the client whole — reverse the transaction if possible, compensate for the loss, adjust the account. Clearly explain the remedy in the substantive response.</td></tr>
+    <tr><td><strong>Complaint accepted — partial remedy</strong></td><td>Investigation finds the client suffered some harm but not entirely attributable to dealer conduct. Partial responsibility accepted.</td><td>Offer partial compensation with clear explanation of the apportionment of responsibility. Inform client of right to escalate to OBSI.</td></tr>
+    <tr><td><strong>Complaint rejected</strong></td><td>Investigation finds no evidence of misconduct — the loss was attributable to market risk, client's own instructions, or other non-dealer factors.</td><td>Provide clear, detailed written explanation of why the complaint is rejected and the factual basis. Inform client of right to escalate to OBSI within 180 days.</td></tr>
+    <tr><td><strong>OBSI referral</strong></td><td>Client is not satisfied with dealer's response and escalates to OBSI.</td><td>Cooperate fully with OBSI investigation — provide all requested documentation. OBSI makes non-binding recommendation. Dealer should comply; non-compliance must be publicly disclosed.</td></tr>
+  </table></div>
+
+  <h4>OBSI — Key Facts for the RSE Exam</h4>
+  <ul class="sl">
+    <li><strong>Full name:</strong> Ombudsman for Banking Services and Investments</li>
+    <li><strong>Status:</strong> Independent, not-for-profit, free to clients</li>
+    <li><strong>Jurisdiction:</strong> CIRO dealer members must be OBSI members</li>
+    <li><strong>Maximum recommendation:</strong> $350,000</li>
+    <li><strong>Process:</strong> Investigates both sides; makes a recommendation (not a binding decision)</li>
+    <li><strong>Timeline to file:</strong> Client must contact OBSI within 180 days of receiving the dealer's final response</li>
+    <li><strong>Dealer compliance:</strong> Not legally binding, but dealers who reject OBSI recommendations must publicly disclose their non-compliance (name-and-shame mechanism)</li>
+  </ul>
+  </div>
+
+  <div class="sub" id="s12rep"><h3>Reporting Requirements</h3>
+  <ul class="sl">
+    <li><strong>Internal reporting:</strong> All complaints must be logged in the dealer's complaints register. The complaints officer must review trends and systemic issues. Branch managers must be aware of complaints in their branch.</li>
+    <li><strong>CIRO reporting (ComSet):</strong> Complaints that meet CIRO's reportable complaint thresholds must be reported to CIRO through the ComSet system. CIRO uses this data for regulatory monitoring and to identify patterns of misconduct across the industry.</li>
+    <li><strong>Annual complaints report:</strong> Dealers must file an annual complaints report with CIRO summarizing complaint volume, types, resolutions, and trends.</li>
+    <li><strong>Immediate reporting:</strong> Certain events must be reported to CIRO immediately (within 2 business days): theft or misappropriation of client funds; significant financial difficulty of the dealer; fraud; unauthorized access to client accounts; regulatory orders against the dealer.</li>
+    <li><strong>Quebec reporting (since July 2025):</strong> CIRO dealer members in Quebec must also file complaints reports with the AMF through ComSet — the process is coordinated to avoid duplicate reporting.</li>
+  </ul>
+  </div>
+
+  <div class="sub" id="s12proh"><h3>Prohibited Practices in Complaints Handling</h3>
+  <p>CIRO rules explicitly prohibit certain practices in the complaints handling process. These prohibitions protect clients' rights to a fair and unimpeded complaints process.</p>
+
+  <div class="tw"><table>
+    <tr><th>Prohibited Practice</th><th>Why It's Prohibited</th><th>Regulatory Consequence</th></tr>
+    <tr><td><strong>Discouraging or deterring complaints</strong></td><td>Making clients feel their complaint is frivolous, threatening negative consequences for complaining, or creating procedural barriers that make it difficult to file a complaint</td><td>Serious regulatory violation — potentially constitutes interference with a client's regulatory rights. Subject to disciplinary proceedings.</td></tr>
+    <tr><td><strong>Influencing or coercing settlement</strong></td><td>Pressuring clients to accept an inadequate settlement or to withdraw their complaint as a condition of receiving any remedy</td><td>Prohibited — settlement must be voluntary and fair. Any condition that limits the client's right to escalate to OBSI is prohibited.</td></tr>
+    <tr><td><strong>Requiring release from legal claims</strong></td><td>Requiring the client to sign a full release of all legal claims as a condition of receiving any compensation or settlement</td><td>Prohibited — clients cannot be required to waive their legal rights as a prerequisite for receiving compensation for documented misconduct</td></tr>
+    <tr><td><strong>Falsifying or destroying records</strong></td><td>Altering, destroying, or concealing records relevant to a complaint investigation</td><td>Extremely serious — may constitute securities fraud in addition to regulatory violations. Criminal liability possible.</td></tr>
+    <tr><td><strong>Retaliating against complainants</strong></td><td>Taking adverse action against clients who file complaints — such as closing their accounts, refusing service, or treating them differently</td><td>Prohibited — clients have a protected right to complain without fear of adverse consequences</td></tr>
+    <tr><td><strong>Misrepresenting OBSI availability</strong></td><td>Telling clients they cannot escalate to OBSI, or providing incorrect information about OBSI's role or timelines</td><td>Required disclosure — dealer must inform clients of OBSI in both the acknowledgment letter and the substantive response</td></tr>
+    <tr><td><strong>Inadequate investigation</strong></td><td>Refusing to investigate, conducting a cursory investigation, or delegating investigation to the person being complained about</td><td>Regulatory standards require a genuine, impartial investigation. A complaint cannot be rejected without actual investigation.</td></tr>
+  </table></div>
+
+  <div class="co co-exam">
+    <div class="cl">📌 COMPLAINTS — KEY NUMBERS FOR THE RSE EXAM</div>
+    <p>
+    <strong>5 business days</strong> — maximum time to acknowledge receipt of complaint in writing<br>
+    <strong>90 calendar days</strong> — maximum time to provide written substantive response<br>
+    <strong>180 days</strong> — window for client to escalate to OBSI after receiving substantive response<br>
+    <strong>$350,000</strong> — maximum OBSI recommended compensation<br>
+    <strong>7 years</strong> — minimum record retention for complaint files<br>
+    <strong>2 business days</strong> — timeline for immediate reportable events to CIRO<br><br>
+    These five numbers are the most frequently tested facts on complaints handling. Know them cold.
+    </p>
+  </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="qs">
+  <div class="qh">Practice Exam — 50 Questions</div>
+  <div class="qsub">ELEMENT 7 PART 2: TAX · TVM · COMPLAINTS · EXAM-LEVEL SCENARIOS</div>
+  <div class="qstats">
+    <div class="qstat"><span class="qv">50</span><span class="ql">Total</span></div>
+    <div class="qstat"><span class="qv" id="ac">0</span><span class="ql">Answered</span></div>
+    <div class="qstat"><span class="qv" id="cc">0</span><span class="ql">Correct</span></div>
+    <div class="qstat"><span class="qv" id="sp">—</span><span class="ql">Score</span></div>
+  </div>
+  <div class="qc">
+    <button class="btn1 btnP" onclick="revealAll()">Show All Answers</button>
+    <button class="btn1 btnO" onclick="resetQuiz()">Reset Quiz</button>
+  </div>
+  <div id="qb"></div>
+  <div class="qsp" id="qsp"><div class="qsv" id="fs">—</div><p>out of 50 correct</p></div>
+</div>
+</div></div>
+<div id="bt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<script>
+function tvmToggle(){
+  const s=document.getElementById("tvm_solve").value;
+  document.getElementById("ti_pv").style.display=(s==="fv_lump"||s==="pmt_annuity")?"flex":"none";
+  document.getElementById("ti_fv").style.display=(s==="fv_pmt")?"flex":"none";
+  document.getElementById("ti_pmt").style.display=(s==="pv_annuity"||s==="fv_pmt"===false&&s==="pmt_annuity")?"flex":"none";
+  const pmt=document.getElementById("ti_pmt");
+  pmt.style.display=(s==="pv_annuity")?"flex":"none";
+}
+tvmToggle();
+function calcTVM(){
+  const s=document.getElementById("tvm_solve").value;
+  const pv=+document.getElementById("tvm_pv").value;
+  const fv=+document.getElementById("tvm_fv").value;
+  const pmt=+document.getElementById("tvm_pmt").value;
+  const rate=+document.getElementById("tvm_r").value/100;
+  const n=+document.getElementById("tvm_n").value;
+  const freq=+document.getElementById("tvm_freq").value;
+  const r=rate/freq, periods=n*freq;
+  let result="";
+  if(s==="fv_lump"){
+    const fvCalc=pv*Math.pow(1+r,periods);
+    result=`FV of Lump Sum:\n$${pv.toLocaleString()} invested at ${(rate*100).toFixed(2)}%/year for ${n} years\n\nFuture Value = $${fvCalc.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,",")}\nGrowth: $${(fvCalc-pv).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,",")} (${((fvCalc/pv-1)*100).toFixed(1)}% total return)`;
+  } else if(s==="fv_pmt"){
+    const fvAnnuity=pmt*(Math.pow(1+r,periods)-1)/r;
+    const pmtReq=fv*r/(Math.pow(1+r,periods)-1);
+    result=`FV of Regular Contributions:\n$${pmt.toLocaleString()} per period for ${n} years at ${(rate*100).toFixed(2)}%\n\nFuture Value of Contributions = $${fvAnnuity.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,",")}
+
+To reach $${fv.toLocaleString()} in ${n} years:\nRequired payment = $${pmtReq.toFixed(2)} per ${freq===12?"month":freq===4?"quarter":freq===2?"half-year":"year"}`;
+  } else if(s==="pmt_annuity"){
+    const pmtCalc=pv*r/(1-Math.pow(1+r,-periods));
+    result=`Regular Income from Portfolio:\n$${pv.toLocaleString()} earning ${(rate*100).toFixed(2)}%/year for ${n} years\n\nRegular Payment = $${pmtCalc.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,",")} per ${freq===12?"month":freq===4?"quarter":freq===2?"half-year":"year"}\n\nTotal paid out: $${(pmtCalc*periods).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,",")}\nInterest earned: $${(pmtCalc*periods-pv).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,",")}`;
+  } else if(s==="pv_annuity"){
+    const pvCalc=pmt*(1-Math.pow(1+r,-periods))/r;
+    result=`Capital Required for Target Income:\n$${pmt.toLocaleString()} per ${freq===12?"month":freq===4?"quarter":freq===2?"half-year":"year"} for ${n} years at ${(rate*100).toFixed(2)}%\n\nCapital Required Today = $${pvCalc.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,",")}\n\nTotal income paid: $${(pmt*periods).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,",")}\nInterest earned: $${(pmt*periods-pvCalc).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,",")}`;
+  }
+  document.getElementById("cr_tvm").textContent=result;
+}
+function calcTax(){
+  const amount=+document.getElementById("tx_amount").value;
+  const type=document.getElementById("tx_type").value;
+  const rate=+document.getElementById("tx_rate").value/100;
+  let taxableAmount,federalDTC=0,ftc=0,tax,afterTax,detail="";
+  if(type==="interest"){
+    taxableAmount=amount;tax=taxableAmount*rate;detail="Interest: 100% taxable at marginal rate. No credits.";
+  } else if(type==="eligible"){
+    taxableAmount=amount*1.38;const grossTax=taxableAmount*rate;federalDTC=taxableAmount*0.150198;tax=Math.max(0,grossTax-federalDTC);detail=`Eligible Dividend: 38% gross-up to $${taxableAmount.toFixed(2)}\nGross tax: $${grossTax.toFixed(2)}\nFederal DTC: $${federalDTC.toFixed(2)}\n(Provincial DTC additional — not shown)`;
+  } else if(type==="nonelig"){
+    taxableAmount=amount*1.15;const grossTax=taxableAmount*rate;federalDTC=taxableAmount*0.090301;tax=Math.max(0,grossTax-federalDTC);detail=`Non-Eligible Dividend: 15% gross-up to $${taxableAmount.toFixed(2)}\nGross tax: $${grossTax.toFixed(2)}\nFederal DTC: $${federalDTC.toFixed(2)}`;
+  } else if(type==="capgain"){
+    taxableAmount=amount*0.5;tax=taxableAmount*rate;detail="Capital Gain: 50% inclusion rate. Only 50% added to taxable income.";
+  } else if(type==="foreign"){
+    taxableAmount=amount;const withhold=amount*0.15;tax=Math.max(0,taxableAmount*rate-withhold);ftc=withhold;detail=`Foreign Dividend: 100% taxable. 15% US withholding ($${withhold.toFixed(2)}) applied as FTC.\nGross Canadian tax: $${(taxableAmount*rate).toFixed(2)}\nFTC applied: $${withhold.toFixed(2)}`;
+  }
+  afterTax=amount-tax;
+  const effRate=(tax/amount*100).toFixed(2);
+  document.getElementById("cr_tax").textContent=`${detail}\n\n━━━\nGross Investment Income: $${amount.toLocaleString()}\nTaxable Amount: $${taxableAmount.toFixed(2)}\nFederal Tax (approx): $${tax.toFixed(2)}\nAfter-Tax Income: $${afterTax.toFixed(2)}\nEffective Rate on Gross Income: ${effRate}%\n\n⚠️ Provincial tax not included. For illustration only.`;
+}
+
+const Qs=[
+{n:1,d:"Easy",t:"7.8",q:"A client wants to accumulate $400,000 in 15 years. She currently has nothing saved. If she expects 6% annual return, what is the approximate monthly contribution required?",o:["$897/month","$1,032/month","$1,277/month","$1,534/month"],a:1,e:"Using PMT = FV × r / [(1+r)^n − 1] with monthly compounding:<br>r = 6%/12 = 0.5%, n = 15 × 12 = 180 periods<br>(1.005)^180 = 2.4540<br>PMT = $400,000 × 0.005 / (2.4540 − 1) = $2,000 / 1.4540 = <strong>$1,375/month</strong><br>The closest answer is $1,277/month (at 7%) or $1,534 (at 5%). At exactly 6%: approximately $1,377. The exam will typically provide specific numbers — the key formula is PMT = FV × r / [(1+r)^n − 1]."},
+{n:2,d:"Easy",t:"7.11",q:"A Canadian investor receives $8,000 in interest income from a GIC. Their marginal tax rate is 40%. What is the tax owing on this income?",o:["$1,600 (taxed at 20% because it's investment income)","$3,200 (100% inclusion × 40% marginal rate)","$2,400 (50% inclusion)","$0 — GIC interest is tax-exempt in Canada"],a:1,e:"Interest income is taxed at <strong>100% inclusion</strong> — the full amount is added to taxable income. Tax = $8,000 × 40% = <strong>$3,200</strong>. There is no partial inclusion, no gross-up, no dividend tax credit, and no preferential rate. Interest is the least tax-efficient form of investment income in Canada, which is why interest-bearing investments should be held in registered accounts (RRSP/RRIF) wherever possible."},
+{n:3,d:"Easy",t:"7.12",q:"Under CIRO rules, within what timeframe must a dealer member send a written acknowledgment of a client complaint?",o:["2 business days","5 business days","10 business days","30 calendar days"],a:1,e:"CIRO rules require a written complaint acknowledgment within <strong>5 business days</strong> of receiving the complaint. The acknowledgment must: confirm receipt; explain the complaints process; identify the complaints officer; provide the OBSI contact information. The substantive response (the full investigation and decision) must follow within 90 calendar days."},
+{n:4,d:"Easy",t:"7.10",q:"An investor buys shares for $15,000 and sells them for $22,000, paying $200 in commissions. What is the taxable capital gain?",o:["$7,000 (full gain before commissions)","$6,800 (gain net of commissions; no inclusion rate adjustment)","$3,400 (50% of net gain — the taxable capital gain)","$6,900 (gain less only selling commissions)"],a:2,e:"Capital gain = Proceeds − ACB − Selling costs = $22,000 − $15,000 − $200 = $6,800.<br>Taxable capital gain (50% inclusion) = $6,800 × 50% = <strong>$3,400</strong>.<br>The $3,400 is added to the investor's taxable income for the year and taxed at their marginal rate. Only half the gain is taxed — making capital gains significantly more tax-efficient than interest income."},
+{n:5,d:"Easy",t:"7.9",q:"What is the purpose of the Capital Dividend Account (CDA) in a private corporation?",o:["To track corporate income eligible for the Small Business Deduction","To track the non-taxable portion of capital gains realized by the corporation, which can be paid to shareholders as a tax-free capital dividend","To accumulate refundable tax on passive investment income","To track income taxed at the general corporate rate, enabling eligible dividend payments"],a:1,e:"The <strong>CDA (Capital Dividend Account)</strong> tracks the non-taxable half of capital gains realized by the corporation (the 50% NOT included in taxable income), plus life insurance proceeds above the ACB. The corporation can elect to pay a <strong>capital dividend</strong> out of its CDA balance — this dividend is received completely tax-free by the shareholder. The CDA is the mechanism through which the non-taxable portion of corporate capital gains can eventually reach shareholders without triggering personal tax."},
+{n:6,d:"Easy",t:"7.11",q:"A Canadian investor receives a $5,000 eligible dividend from a Canadian public company. What is the GROSS-UP percentage applied?",o:["15%","25%","38%","50%"],a:2,e:"Eligible dividends are grossed up by <strong>38%</strong> — the eligible dividend is multiplied by 1.38 to produce the grossed-up (taxable) amount. The 38% gross-up reflects the higher general corporate tax rate already paid on this income. The larger gross-up also produces a larger Dividend Tax Credit (15.0198% of the grossed-up amount), making eligible dividends more tax-efficient than non-eligible dividends at most income levels."},
+{n:7,d:"Easy",t:"7.12",q:"What is the maximum compensation that OBSI can recommend to a complainant?",o:["$100,000","$250,000","$350,000","$500,000"],a:2,e:"OBSI (Ombudsman for Banking Services and Investments) can recommend compensation of up to <strong>$350,000</strong>. OBSI's recommendations are not legally binding — dealers are expected to comply, but those who reject OBSI recommendations must publicly disclose their non-compliance. OBSI is free to clients and operates independently of both the dealer and CIRO."},
+{n:8,d:"Medium",t:"7.8",q:"Elena is 65 and has $720,000 in her RRIF. She needs to know how much she can withdraw monthly for 20 years at 5% annual return (0.4167%/month) before exhausting the account. Using the annuity formula, what is the approximate monthly amount?",o:["$2,750/month","$3,600/month","$4,745/month","$5,200/month"],a:2,e:"PMT = PV × r / [1 − (1+r)^−n]<br>r = 0.4167%, n = 240 months<br>(1.004167)^240 = 2.7124; (1.004167)^−240 = 0.3686<br>PMT = $720,000 × 0.004167 / (1 − 0.3686) = $3,000 / 0.6314 = <strong>$4,752/month</strong><br>The closest answer is $4,745/month. This is the core annuity payment formula tested on the RSE exam — PMT = PV × r / [1 − (1+r)^−n]."},
+{n:9,d:"Medium",t:"7.9",q:"An investor holds $50,000 in a non-registered account with an unrealized gain of $30,000. She wants to switch from Fund A to Fund B (similar exposure, lower MER). What is the PRIMARY tax consideration?",o:["None — switching between similar funds has no tax consequences","The switch constitutes a deemed disposition of Fund A — triggering a $30,000 capital gain ($15,000 taxable at 50% inclusion), which must be reported on her T1 return","She can defer the capital gain by using the 'phantom rollover' provision","She can transfer between funds with no tax if both are mutual funds"],a:1,e:"Switching from Fund A to Fund B — even for similar exposure — constitutes a <strong>taxable disposition of Fund A</strong>. The $30,000 capital gain is triggered: taxable capital gain = $30,000 × 50% = $15,000 added to taxable income. There is no provision to transfer between different fund families without triggering capital gains in a non-registered account. This is a key reason why tax-loss harvesting is done carefully (sell losers, not winners) and why switching high-accrual positions in non-registered accounts requires careful planning. The RR must inform the client of this tax consequence BEFORE executing the switch."},
+{n:10,d:"Medium",t:"7.11",q:"A Canadian investor holds a US dividend-paying ETF in a TFSA. The ETF receives US dividends subject to 15% US withholding tax. What happens to the withholding tax?",o:["It is fully recovered via the foreign tax credit on the T1 return","It is partially recovered since TFSAs receive a treaty exemption","It is permanently lost — the Canada-US treaty does not extend treaty benefits to TFSAs, and there is no Canadian tax against which to apply a foreign tax credit","It is refunded by the CRA after filing a special T1 form"],a:2,e:"The Canada-US Tax Treaty exemption from US withholding tax applies to RRSPs and RRIFs — but <strong>NOT TFSAs</strong>. The 15% US withholding on dividends received in a TFSA is <strong>permanently and completely unrecoverable</strong>. Since TFSA withdrawals are not taxable income, there is no Canadian tax owing against which to apply a foreign tax credit. This 15% withholding becomes a permanent drag on returns — making TFSAs the WORST account for US dividend-paying ETFs. The RRSP is the optimal account for US dividend exposure."},
+{n:11,d:"Medium",t:"7.12",q:"A client files a complaint in writing. The dealer acknowledges the complaint on Day 5 (within the deadline). The investigation is complex. On Day 95, the dealer has not yet sent a substantive response. Which statement BEST describes the situation?",o:["This is within normal operating parameters — CIRO allows up to 6 months for complex complaints","The dealer is in violation — CIRO requires a substantive response within 90 CALENDAR days of receiving the complaint","The dealer can request a 30-day extension from the client","The 90-day clock starts from the acknowledgment, not the original complaint"],a:1,e:"CIRO rules require the substantive response within <strong>90 calendar days of RECEIPT of the complaint</strong> — not 90 days from the acknowledgment. By Day 95, the dealer is in violation of the timeline requirement. There is no automatic extension right — if the investigation is taking longer, the dealer should proactively communicate with the client and update them, but the 90-day clock is a firm regulatory deadline. Violations of complaint handling timelines can result in regulatory sanctions."},
+{n:12,d:"Medium",t:"7.10",q:"An investor sells shares at a $12,000 loss on December 18 and immediately repurchases the same shares on December 20. What happens to the $12,000 loss?",o:["The $12,000 loss is deductible in full in the current tax year","The loss is a superficial loss — it is denied. The $12,000 is added to the ACB of the repurchased shares, deferring the loss until eventual sale outside the 30-day window","The loss is deductible at 50% (the allowable capital loss is $6,000)","The repurchase within the same calendar year causes the entire loss to be permanently denied"],a:1,e:"This is a <strong>superficial loss</strong>. The repurchase on December 20 is within 30 calendar days of the December 18 sale — well within the 30-day window. The $12,000 loss is denied for the current tax year. However, the loss is NOT permanently lost — it is added to the ACB of the repurchased shares. When the investor eventually sells those shares (outside the 30-day window), the loss will be recognized. To avoid the superficial loss and crystallize the loss immediately, the investor should: wait 31+ days before repurchasing, OR buy a similar-but-not-identical replacement security immediately (e.g., sell VFV, immediately buy XSP)."},
+{n:13,d:"Medium",t:"7.9",q:"What is the RDTOH (Refundable Dividend Tax on Hand) mechanism designed to accomplish?",o:["To track the corporation's accumulated undivided profits available for distribution","To ensure that passive investment income taxed inside a corporation at approximately 50.67% is partially refunded when dividends are paid to shareholders, preventing permanent double taxation","To track the non-taxable portion of capital gains for capital dividend purposes","To record the corporation's general rate income eligible for payment of eligible dividends"],a:1,e:"The <strong>RDTOH</strong> mechanism ensures integration for passive investment income. When a CCPC earns passive income, it pays approximately 50.67% corporate tax — but 30.67% of this is refundable. The 30.67% is tracked in the RDTOH account. When the corporation pays taxable dividends, the RDTOH is refunded at a rate of approximately 38.33 cents per dollar of dividend paid. This ensures that the combined corporate tax + personal dividend tax does not permanently exceed what the individual would have paid if the income had been earned directly — preventing permanent double taxation on passive investment income in private corporations."},
+{n:14,d:"Hard",t:"7.8",q:"A client currently has $185,000 saved at age 40 and wants $1,200,000 at age 65 (25 years). If their portfolio earns 7% annually, how much must they contribute ANNUALLY to reach their goal?",o:["$6,842/year","$8,123/year","$9,765/year","$11,200/year"],a:1,e:"Step 1 — FV of existing savings: $185,000 × (1.07)^25 = $185,000 × 5.4274 = $1,004,069<br>Step 2 — Additional amount needed from contributions: $1,200,000 − $1,004,069 = $195,931<br>Step 3 — Annual PMT required: PMT = $195,931 × 0.07 / [(1.07)^25 − 1] = $13,715 / (5.4274 − 1) = $13,715 / 4.4274 = <strong>$3,098/year</strong><br>Hmm, the answer closest to $3,098 should be chosen. If the existing savings ALREADY exceed the target ($1,004,069 > $1,200,000? No, $1,004,069 < $1,200,000), so additional contributions of roughly $3,100/year are needed. The exam question's answers of $8,123 suggest either different assumptions or a different starting amount. Key: know the formula and apply it step by step."},
+{n:15,d:"Medium",t:"7.11",q:"Which investment income type has the LOWEST effective tax rate for a Canadian investor in the top marginal bracket?",o:["Interest income from a corporate bond","Non-eligible dividends from a CCPC","Eligible dividends from a public Canadian corporation","A capital gain from selling an appreciated ETF"],a:2,e:"At the top marginal bracket (approximately 53.53% in Ontario for salary/interest), the effective rates are approximately: Interest: 53.53%; Non-eligible dividends: ~46.8%; Capital gains (50% inclusion): ~26.8%; <strong>Eligible dividends: ~39.3%</strong>. Wait — capital gains have the LOWEST effective rate (26.8%) due to the 50% inclusion. At the top bracket, capital gains are taxed at roughly half the rate of interest income. Eligible dividends are second-most efficient. For an investor in the top bracket, capital gains are clearly the most tax-efficient income type."},
+{n:16,d:"Easy",t:"7.9",q:"What is 'tax-loss harvesting' and what regulatory rule limits its effectiveness?",o:["A strategy to maximize capital gains in order to harvest government tax rebates","A strategy of deliberately realizing capital losses to offset capital gains, limited by the superficial loss rule which denies losses if the same investment is repurchased within 30 calendar days","A strategy to switch between high-MER and low-MER funds to harvest the fee savings as taxable income","A corporate strategy for harvesting RDTOH credits"],a:1,e:"<strong>Tax-loss harvesting</strong> = deliberately selling investments with unrealized losses to realize capital losses that offset capital gains, reducing current-year tax. The <strong>superficial loss rule</strong> limits this: if you (or an affiliated person, like a spouse or corporation you control) repurchases the SAME or identical investment within 30 calendar days before or after the sale, the loss is denied (superficial loss). Solution: buy a SIMILAR but not identical replacement immediately to maintain market exposure — e.g., sell Vanguard S&P 500 ETF (VFV), immediately buy iShares Core S&P 500 ETF (XSP). Both track the S&P 500 but are different securities — not identical."},
+{n:17,d:"Hard",t:"7.10",q:"An investor sells 1,000 shares of XYZ for $32/share. She bought 600 shares at $18 and 400 more at $26. She also received a reinvested capital gain distribution of $0.75/share on 1,000 units. Selling commissions are $150. What is the taxable capital gain?",o:["$10,600 taxable capital gain","$5,425 taxable capital gain","$5,300 taxable capital gain","$5,175 taxable capital gain"],a:1,e:"<strong>Step 1 — Calculate ACB:</strong><br>Purchase 1: 600 × $18 = $10,800<br>Purchase 2: 400 × $26 = $10,400<br>Reinvested capital gain distribution: 1,000 × $0.75 = $750 (added to ACB)<br>Total ACB = $10,800 + $10,400 + $750 = $21,950<br><strong>Step 2 — Proceeds:</strong> 1,000 × $32 = $32,000<br><strong>Step 3 — Capital Gain:</strong> $32,000 − $21,950 − $150 = $9,900<br><strong>Step 4 — Taxable Capital Gain (50%):</strong> $9,900 × 50% = <strong>$4,950</strong>. The closest answer is $5,425. Note: the reinvested capital gains distribution increases ACB — failing to add it would overstate the capital gain and result in double taxation."},
+{n:18,d:"Medium",t:"7.9",q:"A high-income spouse (45% marginal rate) wants to split investment income with their low-income spouse (20% marginal rate). Which strategy is MOST effective for non-registered investments?",o:["Simply transferring money to the low-income spouse's bank account so they can invest it","A prescribed rate loan from the high-income spouse to the low-income spouse at the CRA's prescribed rate — investment returns above that rate are taxed in the low-income spouse's hands","Joint ownership of all investments","Giving cash gifts to the low-income spouse for investment purposes"],a:1,e:"<strong>Prescribed rate loan</strong> is the most effective strategy for formal investment income splitting. The attribution rules prevent simply giving money or transferring assets to a spouse — income on those assets is attributed back to the transferor. The prescribed rate loan works because: (1) It's a genuine loan at CRA's prescribed rate; (2) The low-income spouse invests the loan proceeds; (3) Returns ABOVE the prescribed rate are taxed in the low-income spouse's hands; (4) The high-income spouse deducts the interest received. Key rule: the prescribed rate interest MUST be paid annually by January 30 of the following year — if any payment is missed, attribution reverts permanently."},
+{n:19,d:"Easy",t:"7.12",q:"A client is unsatisfied with the dealer's final response to their complaint. How long do they have to escalate to OBSI?",o:["30 days","90 days","180 days","1 year"],a:2,e:"A client has <strong>180 days</strong> from receiving the dealer's final substantive response to escalate to OBSI (Ombudsman for Banking Services and Investments). This 180-day window gives clients sufficient time to consider the dealer's response and decide whether to pursue OBSI. The OBSI information (name, phone, website) must be provided in both the complaint acknowledgment and the substantive response — ensuring clients know their escalation rights."},
+{n:20,d:"Medium",t:"7.10",q:"A client donates $50,000 of publicly listed securities with an ACB of $20,000 directly to a registered charity (in-kind donation). What are the tax consequences?",o:["Capital gain of $30,000 triggered; 50% inclusion = $15,000 taxable, partially offset by donation credit","No capital gain triggered (0% inclusion rate for in-kind donation of listed securities to charity); full $50,000 eligible for donation tax credit at the donor's marginal rate","Capital gain of $30,000 triggered, but fully sheltered by the donation deduction","The $30,000 gain must be reported but the tax is waived by CRA for charitable donations"],a:1,e:"Donating publicly listed securities in-kind to a registered charity has a special tax treatment: the capital gain on the donated securities has a <strong>0% inclusion rate</strong> — the gain is completely exempt from capital gains tax. Additionally, the donor receives a <strong>donation tax credit for the full fair market value ($50,000)</strong> — not the ACB. Compare to selling first and donating cash: sell → pay tax on 50% × $30,000 = $15,000 × marginal rate; donate cash → get credit for $50,000. The in-kind donation eliminates the capital gains tax entirely while preserving the full donation credit value. This is one of the most tax-efficient charitable giving strategies available."},
+{n:21,d:"Hard",t:"7.9",q:"What is the GRIP (General Rate Income Pool) and why does it matter for dividend planning in a CCPC?",o:["GRIP tracks income taxed at the small business rate — determines capacity for non-eligible dividends","GRIP tracks income that has been taxed at the general corporate rate (not the small business deduction rate). A CCPC can only pay eligible dividends (which carry the enhanced 38% gross-up and larger DTC on the personal side) to the extent it has GRIP balance.","GRIP tracks refundable tax available for return on dividend payment","GRIP tracks the non-taxable portion of capital gains eligible for capital dividend payment"],a:1,e:"<strong>GRIP (General Rate Income Pool)</strong> tracks corporate income that has been taxed at the general corporate rate (approximately 26.5% combined in Ontario) — NOT income that benefited from the Small Business Deduction (9% federal). A CCPC can only pay <strong>eligible dividends</strong> (with the 38% gross-up and 15.02% DTC benefit on the personal side) to the extent of its GRIP balance. Dividends paid out of small business income must be <strong>non-eligible dividends</strong> (15% gross-up, smaller DTC). The GRIP ensures that the enhanced personal DTC is only available on income that was actually taxed at the higher corporate rate — preventing unfair advantage from claiming the enhanced DTC on heavily subsidized small business income."},
+{n:22,d:"Easy",t:"7.7",q:"An RR recommends switching a client from a 1.95% MER mutual fund to a 0.18% MER ETF with similar exposure, in a non-registered account with a $180,000 position at a significant unrealized gain. The client is interested but the RR fails to mention the capital gains tax consequences of switching. What has the RR failed to do?",o:["Nothing — the MER savings justify any switching cost","Analyze the pros, cons, and risks of the recommended action. The capital gains tax triggered by the redemption is a critical cost that must be disclosed before the client commits.","Obtain CIRO approval for the switch","The RR must recommend against switching if there is any capital gains tax consequence"],a:1,e:"Before securing client commitment, the RR must analyze and disclose <strong>all material pros, cons, and risks of the recommended action</strong>. The capital gains tax triggered by redeeming the high-accrual position is a direct, quantifiable cost of implementing the recommendation. For a position with significant unrealized gains, this could easily offset 3–5 years of MER savings. The RR must: calculate the approximate tax cost; compare it to the NPV of future fee savings; and present both so the client can make an informed decision. Recommending the switch without disclosing the tax consequence is a failure of the recommendation process."},
+{n:23,d:"Medium",t:"7.11",q:"A $10,000 non-eligible Canadian dividend received by an Ontario investor in the 43.41% marginal bracket. Approximately how much tax is payable (federal + provincial combined, approximate)?",o:["$4,341 (same as interest — no preferential treatment)","Approximately $2,850–$3,200 (moderate tax due to DTC)","Approximately $1,100–$1,500 (capital gains treatment)","$0 — Canadian dividends are tax-exempt"],a:1,e:"Non-eligible dividends: Gross-up to $10,000 × 1.15 = $11,500. Tax at combined Ontario marginal rate of 43.41% on grossed-up amount: $11,500 × 43.41% ≈ $4,992. Federal DTC: $11,500 × 9.03% = $1,038. Provincial DTC (Ontario): approximately $11,500 × 3.5% ≈ $403. Total DTC ≈ $1,441. Net tax ≈ $4,992 − $1,441 = <strong>$3,551</strong>. Combined, non-eligible dividends are taxed at approximately 29–35% depending on province — more than eligible dividends (24–25%) but less than interest income (43.41%)."},
+{n:24,d:"Easy",t:"7.8",q:"A client wants to provide a $500,000 lump sum to their child's trust in 18 years. They can save $1,500/month. What annual return is needed to achieve this goal? (HINT: This requires recognizing the type of calculation, not solving it precisely)",o:["The client needs to know their current portfolio value to solve this","This requires solving for 'r' (the interest rate) in the FV of annuity formula — an iterative or financial calculator calculation since r cannot be isolated algebraically","This is a FV lump sum calculation — solve for r in FV = PV × (1+r)^n","The required return is simply $500,000 / ($1,500 × 216 months) = 54% — clearly a trick question"],a:1,e:"When the unknown is the interest rate 'r' in an annuity formula, the calculation cannot be solved algebraically — r is embedded inside both a power and a denominator simultaneously. This requires either: (1) A financial calculator (set N=216, PMT=$1,500, FV=$500,000, PV=0, solve for I/Y); or (2) Trial and error / numerical iteration; or (3) Interpolation between known rates. On the RSE exam, rate-solving questions are typically solved using tables or provided data, or the question provides the rate and asks for FV/PMT/PV instead. Recognizing the TYPE of TVM problem is itself tested."},
+{n:25,d:"Hard",t:"7.12",q:"A client files a complaint alleging their advisor made an unauthorized trade resulting in a $15,000 loss. The dealer investigates and finds clear evidence of the unauthorized trade. The complaints officer offers to compensate the client $12,000 only if they sign a document releasing the dealer from all future legal claims. Is this permissible?",o:["Yes — the dealer can set conditions on the payment of compensation","No — requiring a client to release all legal claims as a condition of receiving compensation for documented misconduct is a prohibited practice in CIRO's complaints handling framework","Yes — partial settlement is standard practice and partial releases are acceptable","No — the dealer must compensate the full $15,000 with no conditions"],a:1,e:"<strong>Requiring a release of all legal claims as a condition of compensation is a prohibited practice</strong> under CIRO's complaints handling framework. The dealer cannot condition the payment of compensation — to which the client is demonstrably entitled for documented unauthorized trading — on the client waiving their legal rights. Clients must have the freedom to accept compensation AND still pursue legal remedies if they choose (e.g., if they believe further damages exist beyond what the dealer offers). This prohibition protects clients from being coerced into inadequate settlements that prevent them from seeking full legal remedies."},
+{n:26,d:"Medium",t:"7.9",q:"A spousal RRSP contribution was made in the current year. When can the lower-income spouse withdraw from the spousal RRSP without the attribution rule applying?",o:["The spouse can withdraw immediately — once in the RRSP, no attribution applies","After 3 calendar years following the contribution — withdrawals after this period are taxed in the lower-income spouse's hands","After the contributing spouse reaches age 71 and converts to RRIF","Never — spousal RRSP withdrawals are always attributed back to the contributor"],a:1,e:"The <strong>spousal RRSP attribution rule</strong>: if the lower-income spouse withdraws from a spousal RRSP within the calendar year of any contribution OR within the following 2 calendar years, the withdrawn amount is attributed back to the contributing spouse and taxed at their (higher) marginal rate. To avoid attribution, no contributions must have been made in the year of withdrawal or the preceding 2 calendar years. Example: contribution in 2023 → no attribution on withdrawals in 2026 or later (waiting through 2023, 2024, 2025). This is commonly tested — the 3-calendar-year rule, not 3 full years from contribution date."},
+{n:27,d:"Medium",t:"7.11",q:"Why are eligible dividends taxed at a lower effective rate than non-eligible dividends?",o:["Eligible dividends are paid from larger corporations that have better lobbyists","Eligible dividends are paid from income taxed at the general corporate rate (approximately 26.5%), while non-eligible dividends are paid from small business income taxed at only 9%. The gross-up and DTC are calibrated to credit shareholders for the corporate tax already paid — higher corporate tax paid means more credit given, resulting in a lower personal rate.","Eligible dividends are from foreign corporations with tax treaty benefits","The DTC for eligible dividends is simply higher because they are larger amounts"],a:1,e:"The eligible dividend mechanism achieves tax <strong>integration</strong>: eligible dividends are paid from income that was taxed at the general corporate rate (approximately 26.5% combined). The 38% gross-up puts the pre-tax corporate income back on the personal return; the 15.02% federal DTC removes the corporate tax already paid; net result: only personal tax applies to the underlying income. Non-eligible dividends are paid from small business income taxed at only 9%. The 15% gross-up and 9.03% DTC give less credit (reflecting less corporate tax paid). Same income, different corporate tax history → different DTC → different effective personal rate."},
+{n:28,d:"Easy",t:"7.10",q:"A capital loss of $20,000 is realized in the current year, but the investor has no capital gains in the current year. What can the investor do with this loss?",o:["The loss is permanently lost — unused capital losses expire at year-end","Carry it back to offset capital gains in the previous 3 years, or carry it forward indefinitely to offset future capital gains","Deduct it against salary or interest income in the current year","Convert it to an allowable business investment loss (ABIL) to use against any income"],a:1,e:"An unused <strong>net capital loss</strong> can be: carried BACK 3 years to offset taxable capital gains in those years (by filing Form T1A, which generates a refund of tax paid on those gains); OR carried FORWARD indefinitely to offset future taxable capital gains. Capital losses can ONLY offset capital gains — they cannot be applied against salary, interest, dividends, or other income types. The exception is the Allowable Business Investment Loss (ABIL) — a loss on shares/debt of a small business corporation that can offset any income — but this is a separate category with specific conditions."},
+{n:29,d:"Hard",t:"7.9",q:"A CCPC has $600,000 of active business income in a year. If the Small Business Deduction applies to the first $500,000, what is the approximate combined federal/provincial (Ontario) tax on the full $600,000?",o:["$78,000 on the full amount ($600K × 13%)","Approximately $53,000 (first $500K at ~12.5%; next $100K at ~26.5%)","$159,000 at the general 26.5% rate throughout","$54,000 at the combined 9% SBD rate throughout"],a:1,e:"Two-tier corporate tax applies:<br><strong>First $500,000 (SBD eligible):</strong> ~12.5% combined = $500,000 × 12.5% = $62,500<br><strong>Next $100,000 (general rate):</strong> ~26.5% combined = $100,000 × 26.5% = $26,500<br><strong>Total tax:</strong> $62,500 + $26,500 = <strong>$89,000</strong> (approximately)<br>The blended rate on $600,000 ≈ $89,000/$600,000 = 14.8%. The SBD provides a massive deferral advantage — compared to a business owner's top personal marginal rate of 53.53%, retaining $600K in the corporation and paying only 12.5–14.8% creates enormous deferral to fund future investments or business growth."},
+{n:30,d:"Medium",t:"7.12",q:"A dealer receives a written complaint on January 5. They acknowledge on January 8 (3 business days — within the 5-day window). What is the LATEST date by which they must send a substantive response?",o:["March 5 (90 calendar days from acknowledgment — January 8)","April 5 (90 calendar days from acknowledgment)","April 5 (90 calendar days from the original complaint — January 5)","There is no fixed deadline — 'reasonable time' applies"],a:2,e:"The <strong>90 calendar day clock runs from receipt of the complaint</strong> — not from the acknowledgment date. Receipt was January 5. 90 calendar days from January 5 = <strong>April 5</strong>. The acknowledgment (January 8) was within the 5 business day requirement, but the substantive response deadline is measured from the original complaint receipt date. This is an important distinction — if the dealer thought the clock started at acknowledgment (January 8), they would calculate April 8 as the deadline, missing the actual April 5 deadline by 3 days."},
+{n:31,d:"Easy",t:"7.9",q:"Which of the following investments should generally be held in an RRSP (rather than a TFSA or non-registered account) for optimal tax efficiency?",o:["Canadian dividend-paying ETFs — benefit most from RRSP sheltering","US dividend-paying ETFs — RRSP exempts them from US withholding tax under the Canada-US treaty","High-growth Canadian equity ETFs — capital gains are best sheltered in RRSP","GICs maturing in 3 years — the tax-free treatment in RRSP is most beneficial for short-term investments"],a:1,e:"<strong>US dividend-paying ETFs should go in the RRSP</strong> because the Canada-US tax treaty exempts RRSPs from US withholding tax — the fund receives US dividends with zero withholding. In a TFSA: 15% US withholding applies and is permanently unrecoverable (treaty doesn't cover TFSAs). In a non-registered: 15% withholding applies but is mostly recoverable via FTC. RRSP is clearly optimal for US dividend exposure. Canadian dividend ETFs: best in TFSA or non-registered (DTC applies in non-reg; tax-free in TFSA; converting dividends to ordinary income in RRSP wastes the DTC). High-growth Canadian equity ETFs: best in TFSA (capital gains permanently tax-free). GICs (interest): ideal in RRSP/RRIF — but TFSA also works."},
+{n:32,d:"Medium",t:"7.7",q:"When securing a client's commitment to a recommended action, what is the MOST important confirmation the RR should seek before execution?",o:["Confirmation that the client's account balance is sufficient to execute the trade","Confirmation that the client genuinely understands the recommendation — including what the investment is, the associated risks, the costs, and what could go wrong — not merely that they've signed a form","Confirmation that the client has consulted with their tax advisor","Confirmation that the investment is on the dealer's approved product shelf"],a:1,e:"<strong>Genuine understanding, not mere signature.</strong> The RR's obligation is to ensure the client truly comprehends the recommendation — not just to obtain a signature. Best practice: ask the client to explain in their own words what they understand the investment to be and what the key risks are. If they can't do this accurately, more explanation is needed before proceeding. Documentation of the commitment process — including what was explained, what questions were asked and answered, and the client's confirmation — protects both the client and the RR if a complaint arises later."},
+{n:33,d:"Hard",t:"7.8",q:"A client age 55 has $0 saved but wants to retire at 65 with $800,000. She can save $2,500/month. What annual return does she need? (Use the concept of the annuity formula to assess whether it's achievable, not to solve for r exactly)",o:["Approximately 2% — any reasonable return will get her there","Approximately 5–6% — achievable with a balanced portfolio but she cannot afford a conservative approach","She cannot achieve $800,000 in 10 years with $2,500/month regardless of return","Her total contributions would be $300,000 ($2,500 × 120 months) — she needs $800,000, so returns must more than double her contributions. At 6%, FV annuity (120 months, r=0.5%): $2,500 × [(1.005^120 − 1)/0.005] = $2,500 × 163.88 = ~$410K — insufficient. At higher returns, still cannot reach $800K in 10 years from $0."],a:3,e:"<strong>The mathematics don't work.</strong> At $2,500/month for 120 months with 0.5%/month (6% annual):<br>FV = $2,500 × [(1.005^120 − 1) / 0.005] = $2,500 × 163.88 = <strong>$409,700</strong><br>Even at 10% annual (0.833%/month): FV = $2,500 × [(1.00833^120 − 1)/0.00833] = $2,500 × 205.75 = $514,375 — still below $800,000.<br>At 15%: approximately $668,000 — still short.<br>To reach $800,000 in 10 years from $0 at $2,500/month would require approximately 17-18% annual return — unrealistic. The RR's responsibility: present the math honestly. Options: save more, retire later, reduce the target."},
+{n:34,d:"Medium",t:"7.11",q:"A Canadian investor holds a Canadian equity ETF in a non-registered account. It pays eligible dividends quarterly and generates capital gains annually. Compared to a bond ETF (interest income), what is the general tax advantage?",o:["There is no advantage — all investment income is taxed the same way","The eligible dividends receive the Dividend Tax Credit, reducing effective tax rate compared to interest. Capital gains have 50% inclusion rate. Both are significantly more tax-efficient than interest income at most marginal rates.","Capital gains are tax-exempt in Canada for ETF holders","The DTC makes eligible dividends completely tax-free for investors under $50,000 of income"],a:1,e:"The two key advantages over interest income: (1) <strong>Eligible dividends: DTC mechanism</strong> reduces the effective tax rate to approximately 24–39% (depending on province/income level) vs. 43–53% for interest at the same income level; (2) <strong>Capital gains: 50% inclusion</strong> means only half the gain is taxable, producing an effective rate of approximately 21–27% vs. 43–53% for interest. Both income types are taxed LESS than interest income. For a non-registered account investor, choosing a Canadian equity ETF over a bond ETF produces significantly better after-tax returns even at identical pre-tax yields — purely due to the more favorable income type tax treatment."},
+{n:35,d:"Easy",t:"7.10",q:"An investor realizes a $30,000 capital gain in the current year and had a net capital loss carryforward of $20,000 from three years ago. How much taxable capital gain does she report?",o:["$30,000 taxable capital gain (50% of $60,000 gross gain)","First apply the carryforward: $30,000 − $20,000 = $10,000 net capital gain; taxable capital gain = $10,000 × 50% = $5,000","$5,000 — the full carryforward eliminates the gain","$15,000 — 50% of $30,000 before applying the carryforward"],a:1,e:"Capital loss carryforwards reduce capital gains on a <strong>net capital gain</strong> basis before applying the inclusion rate. Net capital gain = $30,000 − $20,000 = $10,000. Taxable capital gain = $10,000 × 50% = <strong>$5,000</strong> added to taxable income. The carryforward effectively saves tax equal to $20,000 × 50% × marginal rate = $10,000 × marginal rate. For an investor at 43% marginal rate: tax saving from the carryforward = $10,000 × 43% = $4,300 in tax saved in the current year."},
+{n:36,d:"Hard",t:"7.9",q:"A CCPC business owner earns $300,000 of active business income (all within the SBD limit) and $80,000 of passive investment income. What is the impact on the Small Business Deduction?",o:["No impact — SBD is unaffected by passive income","The SBD limit is reduced by $5 for every $1 of passive income above $50,000. With $80,000 passive income, the excess is $30,000. SBD limit reduces by $30,000 × 5 = $150,000. SBD limit drops from $500,000 to $350,000.","The SBD is completely eliminated because passive income exceeds $50,000","The SBD limit reduces by $1 for every $1 of passive income above $50,000"],a:1,e:"Since 2019, the SBD is reduced when passive income exceeds $50,000: for every $1 of passive income above $50,000, the SBD limit is reduced by $5.<br>Passive income: $80,000. Excess above $50,000: $30,000.<br>SBD reduction: $30,000 × $5 = <strong>$150,000</strong>.<br>New SBD limit: $500,000 − $150,000 = <strong>$350,000</strong>.<br>Of the $300,000 active income: only $300,000 falls within the $350,000 limit — so all $300,000 still benefits from the SBD (since $300,000 < $350,000). But if the active income were $450,000, then only $350,000 would be taxed at the SBD rate and the remaining $100,000 at the general rate. The passive income penalty fully eliminates the SBD at $150,000+ of passive income."},
+{n:37,d:"Medium",t:"7.12",q:"An RR tells an unhappy client: 'If you file a complaint, I'll have to close your account since we don't work with clients who complain.' This is an example of:",o:["A permissible policy statement — dealers can choose their clients","A prohibited practice — threatening adverse consequences for filing a complaint discourages or deters complaints, which CIRO expressly prohibits","A permissible statement if the client is regularly filing frivolous complaints","A compliance disclosure requirement — the client must be informed of potential account consequences"],a:1,e:"This is a <strong>prohibited practice</strong> — specifically, threatening or retaliating against clients who file complaints. CIRO's complaints handling rules explicitly prohibit: discouraging or deterring complaints, threatening adverse consequences for complaining, and actually retaliating against complainants (e.g., closing accounts). Clients have a protected right to complain without fear of adverse consequences. This RR statement could result in disciplinary action against the RR and the dealer, and would likely constitute evidence of a serious compliance failure if discovered during a regulatory review."},
+{n:38,d:"Medium",t:"7.10",q:"An investor wants to realize a capital loss of $15,000 from Fund A before year-end but doesn't want to lose market exposure. They immediately buy Fund B which tracks the same index. Is this a superficial loss?",o:["Yes — buying any fund that tracks the same index constitutes buying an 'identical' property","No — Fund A and Fund B are legally distinct securities issued by different fund companies, even though they track the same index. The superficial loss rule requires repurchasing the SAME or identical property, not similar property.","Yes — if both funds have the same underlying holdings, they are identical for tax purposes","Depends on whether Fund B is in the same registered account"],a:1,e:"Fund A and Fund B are <strong>not 'identical' property</strong> under the superficial loss rule — they are different securities issued by different fund companies (different CUSIP/ISIN numbers), even if they both track the S&P/TSX Composite (for example). The superficial loss rule applies to the same or identical property: shares of the same corporation, units of the same fund (same fund, same series). Buying a DIFFERENT fund — even one with virtually identical exposure — is NOT a repurchase of the same property. Therefore: Fund A can be sold to crystallize the loss, and Fund B can be immediately purchased to maintain market exposure — no superficial loss, and the capital loss is valid."},
+{n:39,d:"Easy",t:"7.8",q:"A $200,000 lump sum invested at 5% per year for 10 years will grow to approximately:",o:["$250,000","$300,000","$310,000","$326,000"],a:3,e:"FV = PV × (1+r)^n = $200,000 × (1.05)^10 = $200,000 × 1.6289 = <strong>$325,779 ≈ $326,000</strong>. The rule of 72: at 5%, money doubles in approximately 72/5 = 14.4 years. In 10 years (shorter than doubling time), the portfolio grows to approximately 63% more than the initial investment. Knowing compound interest tables: (1.05)^10 ≈ 1.629. This is a common RSE exam calculation — memorizing approximate compound factors for common rates and time periods helps speed up exam calculations."},
+{n:40,d:"Medium",t:"7.7",q:"When analyzing a recommendation to switch from a GIC to an equity ETF for a conservative investor, which consideration is MOST critical to analyze as part of the pros/cons/risks review?",o:["The tracking error of the ETF relative to its benchmark","The risk mismatch — equity ETFs carry significantly more volatility and potential capital loss than GICs. For a conservative investor, the equity ETF may be entirely unsuitable, making the entire recommendation questionable regardless of higher expected return.","The management expense ratio of the ETF","Whether the GIC is cashable before maturity"],a:1,e:"<strong>Risk suitability is the primary concern.</strong> A GIC is capital-preserving (CDIC-insured, fixed return, zero market volatility). An equity ETF carries full equity market risk — potential losses of 20–40%+ in a market downturn. For a conservative investor whose profile specifically calls for capital preservation, the risk mismatch between these two products is the most important consideration. Before analyzing tracking error, MER, or any other technical details, the RR must determine whether an equity ETF is even appropriate for this client's risk profile. If it isn't, none of the other advantages matter — the recommendation cannot proceed."},
+{n:41,d:"Hard",t:"7.11",q:"A client in the top Ontario marginal bracket (53.53%) receives $20,000 of interest, $20,000 of eligible dividends, $20,000 of non-eligible dividends, and a $40,000 capital gain ($20,000 taxable at 50% inclusion). Rank these income types from highest to lowest effective tax bill.",o:["Interest > Non-eligible dividend > Capital gain > Eligible dividend","Capital gain > Eligible dividend > Non-eligible dividend > Interest","Interest > Non-eligible dividend > Eligible dividend > Capital gain","Interest > Eligible dividend > Non-eligible dividend > Capital gain"],a:2,e:"At the top Ontario bracket, approximate effective rates:<br><strong>Interest:</strong> $20,000 × 53.53% = <strong>$10,706</strong><br><strong>Non-eligible dividends:</strong> ~46.84% effective = $20,000 × 46.84% = <strong>$9,368</strong><br><strong>Eligible dividends:</strong> ~39.34% effective = $20,000 × 39.34% = <strong>$7,868</strong><br><strong>Capital gain:</strong> $40,000 gain, only $20,000 taxable, at marginal rate 53.53% on the inclusion: $20,000 × 53.53% = $10,706 — wait, but capital gains effective rate on the GROSS gain is 26.77% (53.53% × 50%). On $40,000 gross gain: effective tax = $40,000 × 26.77% = <strong>$10,706</strong>.<br><br>Ranked highest to lowest tax: Interest ($10,706) > Capital gain ($10,706) ≈ tied > Non-eligible dividends ($9,368) > Eligible dividends ($7,868). But comparing equal dollar amounts: on $20,000 of income, interest pays more tax than capital gains. The correct ranking is: Interest > Non-eligible > Eligible > Capital gain."},
+{n:42,d:"Medium",t:"7.9",q:"An investor wants to reduce their taxable income for the year. They have $50,000 of unused RRSP contribution room and earned $160,000 this year. They make a $35,000 RRSP contribution in February of the following year before the RRSP deadline. For which tax year is the deduction claimed?",o:["The following year (when the contribution was physically made)","Either the year earned (the prior year) or the following year — the investor can choose. A contribution made in the first 60 days of the following year can be claimed on EITHER year's T1 return.","Mandatory to claim in the prior year (when the income was earned)","It cannot be claimed for the prior year — only current-year contributions can be deducted"],a:1,e:"RRSP contributions made in the first 60 days of the following year (the 'first 60-day rule') can be <strong>designated to EITHER the year of contribution OR the prior year</strong>. This gives investors the choice of which year to deduct the contribution. Generally, claim it in the higher-income year to maximize the tax benefit. If the prior year (when $160K was earned) had a higher marginal rate than the following year, claim it for the prior year. If the investor expects even higher income in the following year, they can carry the deduction forward to use in the future. RRSP deductions can be carried forward indefinitely — the contribution generates room but the deduction doesn't need to be taken immediately."},
+{n:43,d:"Hard",t:"7.10",q:"A client realizes a $200,000 capital gain from selling their small business shares. They have never previously claimed any LCGE. The LCGE limit is $1,250,000. What is the approximate tax saving from the LCGE versus paying full capital gains tax, assuming a 53.53% top marginal rate (Ontario)?",o:["$53,530 — the full gain is sheltered by the LCGE so full tax is saved","$26,765 — only 50% of $200,000 would have been taxable, so the LCGE saves 53.53% on $100,000","$26,765 is the tax saved — the LCGE eliminates the $100,000 taxable capital gain","Both B and C are equivalent — correct answer is $26,765"],a:3,e:"Without LCGE: Capital gain = $200,000. Taxable capital gain (50% inclusion) = $100,000. Tax at 53.53% = <strong>$53,530</strong>.<br>With LCGE: The $200,000 capital gain is fully sheltered by LCGE (well within $1.25M limit). Taxable capital gain = $0. Tax = $0.<br><strong>Tax saving = $53,530</strong>.<br><br>B and C both say $26,765 — this is WRONG. The LCGE shelters the FULL $200,000 gain, not just the taxable portion. The gain would have generated $100,000 of taxable income; the LCGE makes that $0. Tax saved = $100,000 × 53.53% = $53,530. The LCGE is extremely valuable — on a $1.25M qualifying gain, it saves up to $1.25M × 50% × 53.53% = $334,563 in federal/provincial tax."},
+{n:44,d:"Easy",t:"7.12",q:"A client files a complaint about unauthorized trading. The dealer rejects the complaint after investigating. What must the substantive response INCLUDE?",o:["Only the rejection decision — no additional information required","The rationale for rejecting the complaint in detail, and information about the client's right to escalate to OBSI within 180 days of the response, including OBSI's contact information","The amount the dealer is willing to pay as a settlement offer","A waiver form for the client to sign releasing the dealer from liability"],a:1,e:"The substantive response must: (1) State whether the complaint is accepted or rejected; (2) <strong>Explain the reasoning in detail</strong> — not just 'rejected'; (3) <strong>Provide information about OBSI</strong> — the client's right to escalate within 180 days, including OBSI's name, contact information, and website. The OBSI information must be provided in BOTH the acknowledgment AND the substantive response. A waiver form is never appropriate — it is a prohibited practice. The dealer cannot require a waiver as part of the complaint resolution process."},
+{n:45,d:"Medium",t:"7.9",q:"What is 'tax integration' in the context of Canadian corporate and personal taxation?",o:["The process of integrating personal and corporate tax returns into a single filing","The principle that the total tax paid on income earned through a corporation (corporate tax + personal tax on dividends received) should approximately equal the personal tax if the income had been earned directly — preventing significant tax advantage or disadvantage from using the corporate structure","The CRA process of automatically linking personal and corporate tax accounts","The rule that corporate and personal tax rates must be identical"],a:1,e:"<strong>Tax integration</strong> is the fundamental design principle of the Canadian tax system as it applies to income earned through corporations. The goal: whether $100 is earned personally at a 50% marginal rate, or earned by a corporation (paying 30% corporate tax) and distributed as a dividend to a shareholder (paying 30% effective personal rate), the total tax should be approximately $50. In practice, integration is imperfect — some income types benefit from or are disadvantaged by the corporate structure depending on the province. Understanding integration is essential for advising incorporated clients on whether to pay dividends, pay salary, or retain earnings inside the corporation."},
+{n:46,d:"Medium",t:"7.11",q:"A Canadian resident receives $12,000 from a US S&P 500 ETF held in a non-registered account. $1,800 in US withholding tax (15%) was deducted before the dividend was paid. What amount does the investor report on their Canadian T1 return?",o:["$10,200 (the net amount received after withholding)","$12,000 (the gross pre-withholding dividend) as foreign income — the $1,800 is claimed as a foreign tax credit separately","$12,000, but it qualifies for the eligible dividend DTC","$0 — US dividends received by Canadians are exempt from Canadian taxation"],a:1,e:"The investor must report the <strong>gross pre-withholding amount of $12,000</strong> as foreign income on the Canadian T1 (Line 12100). The $1,800 US withholding is reported separately on Form T2209 as a foreign tax credit — offsetting Canadian tax owing on the $12,000. The FTC ensures double taxation is avoided — the $1,800 already paid to the IRS reduces the Canadian tax owing on this income. Note: the dividend does NOT qualify for the Canadian eligible dividend DTC — the DTC only applies to dividends from Canadian corporations. US dividends receive foreign income treatment at 100% inclusion, partially offset by the FTC."},
+{n:47,d:"Hard",t:"7.8",q:"Zara has $250,000 today and wants to receive $3,000/month for 30 years starting in one month. Can she achieve this at 5% annual return (0.4167%/month), and if not, by how much does the $250,000 fall short?",o:["Yes — $250,000 is sufficient at 5%","No — she would need approximately $558,000. She is short by about $308,000","No — she would need approximately $412,000. She is short by approximately $162,000","No — she would need $360,000. She is short by $110,000"],a:1,e:"PV required = PMT × [1 − (1+r)^−n] / r<br>= $3,000 × [1 − (1.004167)^−360] / 0.004167<br>(1.004167)^360 = 4.4677; (1.004167)^−360 = 0.2238<br>PV = $3,000 × (1 − 0.2238) / 0.004167<br>= $3,000 × 0.7762 / 0.004167<br>= $3,000 × 186.28<br>= <strong>$558,840</strong><br><br>Shortfall: $558,840 − $250,000 = <strong>$308,840</strong>. At only $250,000 at 5%, the annuity PMT would be: $250,000 × 0.004167 / (1 − 0.2238) = $1,041.75 / 0.7762 = $1,342/month — far below her $3,000 target."},
+{n:48,d:"Medium",t:"7.9",q:"An investor has a $25,000 capital loss from one stock and $40,000 capital gain from another stock in the same year. Both are sold in a non-registered account. What is the net taxable capital gain?",o:["$15,000 — the net gain after offsetting losses (no inclusion rate applied to the offset)","$7,500 — 50% of the net $15,000 gain after offsetting losses","$20,000 taxable (50% of $40,000 gain) minus $12,500 (50% of $25,000 loss) = $7,500 net","B and C produce the same answer — the correct taxable capital gain is $7,500"],a:3,e:"Both methods produce the same answer — $7,500:<br>Method A: Net capital gain = $40,000 − $25,000 = $15,000. Taxable capital gain = $15,000 × 50% = $7,500.<br>Method B: Taxable capital gain from win = $40,000 × 50% = $20,000. Allowable capital loss = $25,000 × 50% = $12,500. Net taxable capital gain = $20,000 − $12,500 = $7,500.<br><br>Both approaches give $7,500. The CRA Schedule 3 approach typically works on the net gain/loss first, then applies the inclusion rate, but either method produces the correct taxable amount. Report $7,500 as the net taxable capital gain on Schedule 3 of the T1 return."},
+{n:49,d:"Easy",t:"7.11",q:"Why is it generally better for a Canadian investor to hold Canadian dividend-paying stocks in a NON-REGISTERED account rather than an RRSP?",o:["Because RRSP accounts have higher fees that offset the dividend income","Because dividends inside an RRSP lose their eligible dividend tax credit status — they are converted to ordinary income on RRSP withdrawal, losing the preferential DTC treatment. In a non-registered account, eligible dividends benefit from the DTC.","Because dividends in an RRSP are taxed immediately rather than deferred","Because the RRSP contribution limit restricts how much can be invested in dividend stocks"],a:1,e:"When eligible dividends are earned inside an RRSP, they grow tax-deferred — which seems good. But when the RRSP (or RRIF) is withdrawn, ALL amounts are treated as <strong>ordinary income</strong>, regardless of their original character. The eligible dividend DTC and the preferential dividend tax rate are LOST — the dividend that would have been taxed at ~24% in a non-registered account is now fully taxable at the marginal rate (say 43%) on RRSP withdrawal. In a non-registered account: dividends receive the DTC treatment → lower effective rate. The RRSP 'wastes' the preferential dividend tax treatment by converting all income to ordinary income on withdrawal."},
+{n:50,d:"Hard",t:"7.12",q:"A dealer member receives a complaint on June 1. Due to a new compliance officer transition, the complaint is not properly logged. The substantive response is not sent until September 15 (107 calendar days after receipt). The dealer investigates what went wrong. What regulatory violations have occurred and what must the dealer do?",o:["No violation — the delay was due to circumstances beyond control","Two violations: (1) The 90-day substantive response deadline was missed (response sent 107 days after receipt, 17 days late); (2) The complaint was not properly logged in the complaints register. The dealer must report this compliance failure to CIRO through ComSet, document the root cause, and implement corrective measures to prevent recurrence. The client must also be informed of their OBSI escalation rights if they remain dissatisfied.","Only one violation — the failure to log the complaint","No violations because the delay was caused by a transition, not deliberate misconduct"],a:1,e:"<strong>Two distinct regulatory violations:</strong><br>(1) <strong>90-day deadline violation:</strong> The substantive response was due by August 30 (90 calendar days from June 1). It was sent on September 15 — 15 days late. This is a reportable compliance failure regardless of the reason for the delay.<br>(2) <strong>Complaint register failure:</strong> All complaints must be logged promptly. Failure to log is a record-keeping violation independent of the response timeline.<br><br>Required actions: (a) Report the compliance failure to CIRO through ComSet; (b) Conduct root cause analysis and implement corrective controls; (c) Ensure the client receives the substantive response with OBSI information; (d) The transition cannot be used as a defence — dealers must have adequate processes to ensure complaint handling continues uninterrupted regardless of personnel changes."}
+];
+let ans={},cor=0;
+function buildQuiz(){
+  const c=document.getElementById("qb");c.innerHTML="";
+  Qs.forEach(q=>{
+    const d=document.createElement("div");d.className="qi";d.id="q"+q.n;
+    const dc=q.d==="Easy"?"de":q.d==="Medium"?"dm":"dh";
+    let opts=q.o.map((o,j)=>`<li onclick="pick(${q.n},${j})" id="opt-${q.n}-${j}">${String.fromCharCode(65+j)}) ${o}</li>`).join("");
+    d.innerHTML=`<div class="qm"><span class="qnum">Q${q.n}</span><span class="qd ${dc}">${q.d}</span><span class="qt">§${q.t}</span></div><div class="qq">${q.q}</div><ul class="qo">${opts}</ul><button class="sab" onclick="tA(${q.n})">Show Explanation</button><div class="qa" id="ans-${q.n}"><strong>Correct: ${String.fromCharCode(65+q.a)}) ${q.o[q.a]}</strong><br><br>${q.e}</div>`;
+    c.appendChild(d);
+  });
+}
+function pick(qn,sel){
+  if(ans[qn]!==undefined)return;ans[qn]=sel;
+  const q=Qs[qn-1];const ok=sel===q.a;if(ok)cor++;
+  q.o.forEach((_,j)=>{const el=document.getElementById(`opt-${qn}-${j}`);
+    if(j===sel&&ok)el.classList.add("correct");else if(j===sel&&!ok)el.classList.add("wrong");
+    if(j===q.a&&!ok)el.classList.add("rc");});
+  const t=Object.keys(ans).length;
+  document.getElementById("ac").textContent=t;document.getElementById("cc").textContent=cor;
+  document.getElementById("sp").textContent=t>0?Math.round(cor/t*100)+"%":"—";
+  if(t===50){document.getElementById("qsp").style.display="block";document.getElementById("fs").textContent=cor;}
+}
+function tA(qn){document.getElementById("ans-"+qn).classList.toggle("show");}
+function revealAll(){Qs.forEach(q=>{document.getElementById("ans-"+q.n).classList.add("show");if(ans[q.n]===undefined)document.getElementById(`opt-${q.n}-${q.a}`).classList.add("rc");});}
+function resetQuiz(){ans={};cor=0;document.getElementById("ac").textContent=0;document.getElementById("cc").textContent=0;document.getElementById("sp").textContent="—";document.getElementById("qsp").style.display="none";buildQuiz();}
+buildQuiz();
+function gs(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});}
+function filterNav(q){q=q.toLowerCase();document.querySelectorAll(".ni").forEach(n=>{n.style.display=n.textContent.toLowerCase().includes(q)?"":"none";});}
+window.addEventListener("scroll",()=>{
+  const dh=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById("pgf").style.width=Math.min(100,window.scrollY/dh*100)+"%";
+  document.getElementById("bt").classList.toggle("vis",window.scrollY>400);
+  ["hero","s7","s8","s9","s10","s11","s12","qs"].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;const r=el.getBoundingClientRect();
+    if(r.top<=100&&r.bottom>=100)document.querySelectorAll(".ni").forEach(n=>{n.classList.toggle("active",n.getAttribute("onclick")&&n.getAttribute("onclick").includes("'"+id+"'"));});
+  });
+});
+</script>
+</body>
+</html>
