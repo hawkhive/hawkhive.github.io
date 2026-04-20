@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSE Element 5 Part 1 — Managed Products</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1b2e;--gold:#c9973a;--gold-light:#e8b96a;--cream:#f8f4ed;--cream-dark:#ede8df;--text:#1a1a2e;--muted:#5a5a6e;--green:#1a6b4a;--gl:#e8f5ef;--red:#8b1a1a;--rl:#fdf0f0;--blue:#1a3a6b;--bl:#e8f0fd;--amber:#7a4f1a;--al:#fef6e8;--teal:#0d5e5e;--tl:#e0f5f5;--purple:#4a1a6b;--pl:#f0e8fd;--sw:300px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Source Serif 4",serif;background:var(--cream);color:var(--text);display:flex;min-height:100vh;}
+#sb{width:var(--sw);min-height:100vh;background:var(--navy);position:fixed;left:0;top:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold);display:flex;flex-direction:column;}
+#sb::-webkit-scrollbar{width:3px;}#sb::-webkit-scrollbar-thumb{background:var(--gold);}
+.sb-brand{padding:20px 16px 14px;border-bottom:1px solid rgba(201,151,58,.3);}
+.sb-tag{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:5px;}
+.sb-brand h2{font-family:"Playfair Display",serif;color:white;font-size:13px;line-height:1.3;}
+.sb-badge{display:inline-block;margin-top:6px;background:var(--gold);color:var(--navy);font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 7px;border-radius:2px;letter-spacing:1px;}
+.sb-search{padding:10px 14px;border-bottom:1px solid rgba(201,151,58,.2);}
+.sb-search input{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(201,151,58,.3);border-radius:4px;padding:6px 9px;color:white;font-size:12px;outline:none;}
+.sb-search input:focus{border-color:var(--gold);}
+.sb-search input::placeholder{color:rgba(255,255,255,.3);}
+.nl{padding:11px 14px 4px;font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--gold-light);letter-spacing:2px;text-transform:uppercase;opacity:.7;}
+.ni{display:block;padding:6px 14px 6px 17px;color:rgba(255,255,255,.65);font-size:11.5px;cursor:pointer;border-left:3px solid transparent;transition:all .18s;line-height:1.4;}
+.ni:hover{color:white;border-left-color:var(--gold-light);background:rgba(201,151,58,.07);}
+.ni.active{color:var(--gold-light);border-left-color:var(--gold);background:rgba(201,151,58,.11);}
+.ni .nn{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);margin-right:5px;}
+.ni.sub{padding-left:30px;font-size:11px;opacity:.75;}
+.ni.sub:hover{opacity:1;}
+.nd{height:1px;background:rgba(201,151,58,.14);margin:5px 14px;}
+.sb-foot{margin-top:auto;padding:13px 14px;border-top:1px solid rgba(201,151,58,.2);font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(255,255,255,.3);text-align:center;}
+#main{margin-left:var(--sw);flex:1;}
+#topbar{background:var(--navy);height:62px;display:flex;align-items:center;padding:0 40px;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:50;gap:14px;}
+.bc{font-family:"JetBrains Mono",monospace;font-size:11px;color:rgba(255,255,255,.4);}
+.bc span{color:var(--gold);}
+.pg-area{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.pg-lbl{font-family:"JetBrains Mono",monospace;font-size:10px;color:rgba(255,255,255,.35);}
+.pg-bar{width:110px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;}
+.pg-fill{height:100%;background:var(--gold);border-radius:2px;width:0%;transition:width .35s;}
+#content{padding:0 54px 80px;max-width:970px;}
+.hero{padding:52px 0 34px;border-bottom:1px solid var(--cream-dark);margin-bottom:42px;}
+.etag{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:11px;}
+.hero h1{font-family:"Playfair Display",serif;font-size:42px;font-weight:900;line-height:1.1;color:var(--navy);margin-bottom:13px;}
+.hero p{font-size:16px;color:var(--muted);max-width:660px;line-height:1.7;font-style:italic;}
+.hero-chips{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;}
+.chip{background:var(--navy);color:var(--gold-light);padding:5px 12px;border-radius:3px;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:1px;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px;}
+.stat{background:var(--navy);border-radius:6px;padding:13px;text-align:center;}
+.sv{font-family:"Playfair Display",serif;font-size:24px;color:var(--gold-light);font-weight:700;}
+.sl{font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(255,255,255,.4);margin-top:3px;letter-spacing:1px;}
+.chapter{margin-bottom:58px;scroll-margin-top:78px;}
+.sh{display:flex;align-items:flex-start;gap:16px;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--cream-dark);}
+.sn{font-family:"Playfair Display",serif;font-size:38px;font-weight:900;color:var(--cream-dark);line-height:1;min-width:52px;}
+.st h2{font-family:"Playfair Display",serif;font-size:23px;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:3px;}
+.ss{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);letter-spacing:1px;}
+.sub{margin-bottom:5px;scroll-margin-top:78px;}
+.sub h3{font-family:"Playfair Display",serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:10px;padding-left:11px;border-left:3px solid var(--gold);}
+.sub h4{font-size:14.5px;font-weight:600;color:var(--navy);margin:13px 0 7px;}
+p{line-height:1.8;margin-bottom:12px;font-size:15.5px;}
+.h3x{font-family:"Playfair Display",serif;font-size:18px;font-weight:700;color:var(--navy);margin:18px 0 10px;padding-left:11px;border-left:3px solid var(--gold);}
+.co{border-radius:6px;padding:15px 19px;margin:16px 0;border-left:4px solid;}
+.co-exam{background:var(--bl);border-color:var(--blue);}
+.co-exam .cl{color:var(--blue);}
+.co-tip{background:var(--gl);border-color:var(--green);}
+.co-tip .cl{color:var(--green);}
+.co-warn{background:var(--al);border-color:var(--amber);}
+.co-warn .cl{color:var(--amber);}
+.co-rule{background:var(--rl);border-color:var(--red);}
+.co-rule .cl{color:var(--red);}
+.co-calc{background:var(--tl);border-color:var(--teal);}
+.co-calc .cl{color:var(--teal);}
+.co-pur{background:var(--pl);border-color:var(--purple);}
+.co-pur .cl{color:var(--purple);}
+.co p{margin-bottom:0;font-size:14.5px;line-height:1.7;}
+.cl{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;font-weight:500;display:block;}
+.tw{overflow-x:auto;margin:16px 0;border-radius:6px;border:1px solid var(--cream-dark);}
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+th{background:var(--navy);color:var(--gold-light);font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:1px;padding:10px 13px;text-align:left;}
+td{padding:10px 13px;border-bottom:1px solid var(--cream-dark);vertical-align:top;line-height:1.6;}
+tr:nth-child(even) td{background:rgba(0,0,0,.02);}
+tr:last-child td{border-bottom:none;}
+.dg{background:var(--navy);border-radius:8px;padding:22px;margin:20px 0;color:white;}
+.dt{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;text-align:center;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;}
+.gc{background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.3);border-radius:6px;padding:14px;}
+.gc h5{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold-light);letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;}
+.gc p{font-size:12.5px;color:rgba(255,255,255,.75);margin:0;line-height:1.6;}
+.gc ul{padding-left:14px;}
+.gc li{font-size:12px;color:rgba(255,255,255,.75);margin-bottom:3px;line-height:1.5;}
+.sl2{list-style:none;padding:0;margin:11px 0;}
+.sl2 li{padding:5px 0 5px 19px;position:relative;font-size:15px;line-height:1.7;border-bottom:1px solid rgba(0,0,0,.04);}
+.sl2 li:last-child{border-bottom:none;}
+.sl2 li::before{content:"›";position:absolute;left:0;color:var(--gold);font-size:16px;font-weight:700;top:4px;}
+.sl2 li strong{color:var(--navy);}
+mark{background:rgba(201,151,58,.22);color:inherit;border-radius:2px;padding:0 2px;}
+.mb{background:#0d1b2e;border:1px solid rgba(201,151,58,.45);border-radius:7px;padding:17px 21px;margin:16px 0;font-family:"JetBrains Mono",monospace;}
+.mf{font-size:13.5px;color:var(--gold-light);text-align:center;padding:8px 0;letter-spacing:.5px;}
+.mfl{font-size:9px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:7px;letter-spacing:2px;text-transform:uppercase;}
+.mw{margin-top:11px;padding-top:11px;border-top:1px solid rgba(255,255,255,.1);}
+.ms{display:flex;gap:9px;margin-bottom:6px;align-items:flex-start;}
+.msn{background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;min-width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.mst{font-size:12.5px;color:rgba(255,255,255,.8);line-height:1.6;}
+.mr{background:rgba(201,151,58,.14);border:1px solid rgba(201,151,58,.4);border-radius:4px;padding:8px 12px;margin-top:9px;font-size:13px;color:var(--gold-light);text-align:center;}
+.cb{background:white;border:1px solid var(--cream-dark);border-radius:8px;padding:21px;margin:20px 0;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+.cb h4{font-family:"Playfair Display",serif;font-size:16px;color:var(--navy);margin-bottom:13px;}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.cf{display:flex;flex-direction:column;gap:3px;}
+.cf label{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.cf input{border:1px solid var(--cream-dark);border-radius:4px;padding:7px 10px;font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--navy);background:var(--cream);outline:none;}
+.cf input:focus{border-color:var(--gold);}
+.cbtn{margin-top:11px;background:var(--navy);color:var(--gold-light);border:none;padding:8px 20px;border-radius:4px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:1px;cursor:pointer;}
+.cbtn:hover{background:#1a2d4a;}
+.cr{margin-top:9px;background:var(--bl);border:1px solid rgba(26,58,107,.18);border-radius:4px;padding:10px 13px;font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--blue);min-height:34px;white-space:pre-line;}
+.fc{border:1px solid var(--cream-dark);border-radius:8px;overflow:hidden;margin-bottom:16px;}
+.fch{background:var(--navy);padding:11px 15px;display:flex;align-items:center;gap:9px;}
+.fcn{font-family:"Playfair Display",serif;font-size:15.5px;color:white;font-weight:700;}
+.ft{font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 6px;border-radius:3px;letter-spacing:1px;text-transform:uppercase;}
+.to{background:rgba(26,107,74,.4);color:#5dda9a;}
+.tc{background:rgba(139,26,26,.3);color:#ff8a8a;}
+.te{background:rgba(74,26,107,.3);color:#c67ae0;}
+.th{background:rgba(201,151,58,.3);color:var(--gold-light);}
+.fcb{padding:15px;}
+.fd{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:center;margin:16px 0;}
+.fn{background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.4);border-radius:7px;padding:10px 11px;text-align:center;font-size:11.5px;color:rgba(255,255,255,.85);min-width:95px;}
+.fn.gld{background:rgba(201,151,58,.2);border-color:var(--gold);}
+.fn.grn{background:rgba(26,107,74,.25);border-color:#2ecc71;}
+.fa{color:var(--gold);font-size:17px;font-weight:700;}
+#qs{background:var(--navy);border-radius:11px;padding:36px 40px;margin-top:52px;scroll-margin-top:78px;}
+.qh{font-family:"Playfair Display",serif;font-size:27px;color:white;margin-bottom:6px;}
+.qsub{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:22px;}
+.qstats{display:flex;gap:14px;margin-bottom:26px;flex-wrap:wrap;}
+.qstat{background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.3);border-radius:6px;padding:10px 15px;text-align:center;}
+.qstat .qv{font-family:"Playfair Display",serif;font-size:25px;color:var(--gold-light);display:block;}
+.qstat .ql{font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;}
+.qi{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:17px 19px;margin-bottom:13px;}
+.qi:hover{border-color:rgba(201,151,58,.28);}
+.qm{display:flex;gap:8px;margin-bottom:8px;align-items:center;flex-wrap:wrap;}
+.qnum{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--gold);}
+.qd{font-family:"JetBrains Mono",monospace;font-size:10px;padding:2px 7px;border-radius:3px;letter-spacing:1px;}
+.de{background:rgba(26,107,74,.25);color:#5dda9a;}
+.dm{background:rgba(201,151,58,.2);color:var(--gold-light);}
+.dh{background:rgba(139,26,26,.25);color:#ff8a8a;}
+.qt{font-family:"JetBrains Mono",monospace;font-size:10px;color:rgba(255,255,255,.3);margin-left:auto;}
+.qq{color:white;font-size:14.5px;line-height:1.6;margin-bottom:11px;}
+.qo{list-style:none;padding:0;margin:0 0 11px;}
+.qo li{padding:7px 11px;border:1px solid rgba(255,255,255,.08);border-radius:5px;margin-bottom:5px;font-size:13.5px;color:rgba(255,255,255,.8);cursor:pointer;transition:all .14s;}
+.qo li:hover{background:rgba(201,151,58,.1);border-color:rgba(201,151,58,.3);}
+.qo li.correct{background:rgba(26,107,74,.25);border-color:#2ecc71;color:#5dda9a;}
+.qo li.wrong{background:rgba(139,26,26,.25);border-color:#e74c3c;color:#ff8a8a;}
+.qo li.rc{background:rgba(26,107,74,.14);border-color:rgba(46,204,113,.5);color:rgba(93,218,154,.8);}
+.qa{display:none;background:rgba(201,151,58,.08);border:1px solid rgba(201,151,58,.2);border-radius:5px;padding:10px 13px;font-size:13px;color:rgba(255,255,255,.75);line-height:1.65;}
+.qa.show{display:block;}
+.qa strong{color:var(--gold-light);}
+.sab{background:none;border:1px solid rgba(201,151,58,.4);color:var(--gold-light);font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:1px;padding:5px 11px;border-radius:4px;cursor:pointer;}
+.sab:hover{background:rgba(201,151,58,.14);}
+.qc{display:flex;gap:9px;margin-bottom:22px;flex-wrap:wrap;}
+.btn1{padding:8px 17px;border-radius:4px;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:1px;cursor:pointer;border:none;}
+.btnP{background:var(--gold);color:var(--navy);}
+.btnO{background:transparent;border:1px solid rgba(201,151,58,.4);color:var(--gold-light);}
+.qsp{background:rgba(201,151,58,.1);border:1px solid rgba(201,151,58,.3);border-radius:8px;padding:17px;margin-top:18px;display:none;text-align:center;}
+.qsv{font-family:"Playfair Display",serif;font-size:46px;color:var(--gold-light);}
+.qsp p{color:rgba(255,255,255,.65);margin:0;}
+#bt{position:fixed;bottom:24px;right:24px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);width:39px;height:39px;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;opacity:0;transition:opacity .28s;z-index:200;}
+#bt.vis{opacity:1;}
+@media(max-width:880px){#sb{transform:translateX(-100%);} #main{margin-left:0;} #content{padding:0 20px 56px;} .g2,.g3,.g4,.cg{grid-template-columns:1fr;} .stats{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<nav id="sb">
+  <div class="sb-brand"><div class="sb-tag">CIRO · RSE Prep</div><h2>Managed Products<br>&amp; Other Investments</h2><span class="sb-badge">ELEMENT 05 · PART 1</span></div>
+  <div class="sb-search"><input type="text" placeholder="Search topics…" oninput="filterNav(this.value)"></div>
+  <div id="nav-links">
+    <div class="nl">Overview</div>
+    <a class="ni" onclick="gs('hero')"><span class="nn">—</span>Intro &amp; Industry Stats 2024</a>
+    <div class="nd"></div>
+    <div class="nl">Sections</div>
+    <a class="ni" onclick="gs('s1')"><span class="nn">5.1</span>Types of Managed Products</a>
+    <a class="ni sub" onclick="gs('s1mft')">Mutual Fund Trusts</a>
+    <a class="ni sub" onclick="gs('s1mfc')">Mutual Fund Corporations</a>
+    <a class="ni sub" onclick="gs('s1it')">Income Trusts &amp; 2006 Tax Change</a>
+    <a class="ni sub" onclick="gs('s1cef')">Closed-End Funds</a>
+    <a class="ni sub" onclick="gs('s1reit')">REITs — Full Analysis</a>
+    <a class="ni sub" onclick="gs('s1etf')">ETFs — Overview</a>
+    <a class="ni sub" onclick="gs('s1wrap')">Wrap / Fund of Funds / ETF Wrap</a>
+    <a class="ni sub" onclick="gs('s1pool')">Pooled Funds</a>
+    <a class="ni" onclick="gs('s2')"><span class="nn">5.2</span>Investor Considerations</a>
+    <a class="ni sub" onclick="gs('s2range')">Range of Exposures</a>
+    <a class="ni sub" onclick="gs('s2adv')">Advantages &amp; Disadvantages</a>
+    <a class="ni" onclick="gs('s3')"><span class="nn">5.3</span>Mutual Fund Features</a>
+    <a class="ni sub" onclick="gs('s3access')">Access Channels &amp; NI 81-102</a>
+    <a class="ni sub" onclick="gs('s3struct')">Trust vs. Corporate Structure</a>
+    <a class="ni sub" onclick="gs('s3part')">Six Key Participants</a>
+    <a class="ni sub" onclick="gs('s3fees')">Fee Structures — MER/TER/Loads</a>
+    <a class="ni sub" onclick="gs('s3price')">Daily Pricing &amp; NAVPS</a>
+    <a class="ni" onclick="gs('s4')"><span class="nn">5.4</span>Mutual Fund Considerations</a>
+    <a class="ni sub" onclick="gs('s4adv')">Investor &amp; Provider Perspectives</a>
+    <a class="ni sub" onclick="gs('s4risk')">Risk-Ranking Methodology</a>
+    <a class="ni" onclick="gs('s5')"><span class="nn">5.5</span>ETFs — Complete Deep Dive</a>
+    <a class="ni sub" onclick="gs('s5cr')">Creation/Redemption Mechanism</a>
+    <a class="ni sub" onclick="gs('s5price')">Market Price vs. NAV</a>
+    <a class="ni sub" onclick="gs('s5mgmt')">ETF Management Styles (2025)</a>
+    <a class="ni sub" onclick="gs('s5lev')">Leveraged ETFs &amp; Volatility Decay</a>
+    <a class="ni sub" onclick="gs('s5vs')">ETF vs. Mutual Fund — Full Compare</a>
+    <a class="ni" onclick="gs('s6')"><span class="nn">5.6</span>Fund Management Styles</a>
+    <a class="ni sub" onclick="gs('s6ap')">Active vs. Passive</a>
+    <a class="ni sub" onclick="gs('s6smart')">Smart Beta / Factor Investing</a>
+    <a class="ni sub" onclick="gs('s6li')">Leveraged &amp; Inverse Funds</a>
+    <a class="ni" onclick="gs('s7')"><span class="nn">5.7</span>Information Sources</a>
+    <a class="ni sub" onclick="gs('s7ff')">Fund Facts — Complete Breakdown</a>
+    <a class="ni sub" onclick="gs('s7etff')">ETF Facts Sheet</a>
+    <a class="ni sub" onclick="gs('s7other')">Other Sources (SEDAR+, MRFP)</a>
+    <a class="ni" onclick="gs('s8')"><span class="nn">5.8</span>Performance Evaluation</a>
+    <a class="ni sub" onclick="gs('s8hpr')">Holding Period Return</a>
+    <a class="ni sub" onclick="gs('s8mwr')">Money-Weighted Return (CRM)</a>
+    <a class="ni sub" onclick="gs('s8twr')">Time-Weighted Return</a>
+    <a class="ni sub" onclick="gs('s8bench')">Benchmarks — 7 Criteria</a>
+    <a class="ni" onclick="gs('s9')"><span class="nn">5.9</span>Valuation &amp; Calculations</a>
+    <a class="ni sub" onclick="gs('s9navps')">NAVPS Multi-Step Examples</a>
+    <a class="ni sub" onclick="gs('s9calc')">Interactive Calculators</a>
+    <div class="nd"></div>
+    <div class="nl">Practice</div>
+    <a class="ni" onclick="gs('qs')"><span class="nn">★</span>50 Exam Questions</a>
+  </div>
+  <div class="sb-foot">CIRO RSE · Element 5 Part 1 of 9</div>
+</nav>
+
+<div id="main">
+<div id="topbar">
+  <div class="bc">RSE Exam Prep &rsaquo; <span>Element 5 — Managed Products (Part 1)</span></div>
+  <div class="pg-area"><span class="pg-lbl">READING PROGRESS</span><div class="pg-bar"><div class="pg-fill" id="pgf"></div></div></div>
+</div>
+<div id="content">
+
+<div class="hero" id="hero">
+  <div class="etag">ELEMENT 5 PART 1 OF 9 · RETAIL SECURITIES EXAM · CIRO</div>
+  <h1>Managed Products<br>&amp; Other Investments</h1>
+  <p>All 8 fund types, the complete ETF creation/redemption mechanism, three return calculation methods, the full Fund Facts regulatory framework, CSA risk-ranking methodology, and every NAVPS calculation — in the most detailed study book yet.</p>
+  <div class="hero-chips">
+    <span class="chip">9 LEARNING OUTCOMES</span>
+    <span class="chip">DSC BANNED JUNE 2022</span>
+    <span class="chip">$518B ETF AUM (2024)</span>
+    <span class="chip">50 PRACTICE QUESTIONS</span>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="sv">$518B</div><div class="sl">Canadian ETF AUM<br>Year-End 2024</div></div>
+    <div class="stat"><div class="sv">$75B</div><div class="sl">ETF Net Sales<br>Record 2024</div></div>
+    <div class="stat"><div class="sv">1,200+</div><div class="sl">ETFs Listed<br>in Canada</div></div>
+    <div class="stat"><div class="sv">30%</div><div class="sl">ETF Share of<br>All Investment Funds</div></div>
+  </div>
+  <div class="co co-rule" style="margin-top:16px">
+    <div class="cl">🔴 2022 REGULATORY MILESTONE — MANDATORY KNOWLEDGE</div>
+    <p>The CSA and CIRO banned <strong>Deferred Sales Charges (DSC)</strong> and low-load DSC for ALL new mutual fund purchases effective <strong>June 1, 2022</strong>. This is the most significant retail mutual fund regulation change in years and is frequently tested on the RSE exam. Existing DSC schedules on legacy holdings continue until they expire — but no new DSC purchases are permitted.</p>
+  </div>
+</div>
+
+<!-- 5.1 TYPES OF MANAGED PRODUCTS -->
+<div class="chapter" id="s1">
+  <div class="sh"><div class="sn">5.1</div><div class="st"><h2>Types of Managed Products</h2><div class="ss">TRUSTS · CORPORATIONS · INCOME TRUSTS · CEFs · REITs · ETFs · WRAP · POOLED</div></div></div>
+  <p>A <strong>managed product</strong> pools capital from many investors into a single professionally managed portfolio. Investors buy units or shares of the fund, gaining diversified exposure managed by investment professionals. The structural differences between types — especially the open-ended vs. closed-ended distinction — are foundational to this entire element.</p>
+  <div class="co co-exam">
+    <div class="cl">📌 THE FOUNDATIONAL DISTINCTION — TESTED ON EVERY EXAM</div>
+    <p><strong>Open-ended fund:</strong> Creates new units when investors buy; cancels units when investors sell. Supply adjusts to demand. Always prices at NAV. Examples: mutual fund trusts, ETFs.<br><br>
+    <strong>Closed-ended fund:</strong> Fixed number of units issued at IPO. After IPO, investors trade existing units on an exchange — the fund does NOT create or redeem. No arbitrage mechanism → prices can deviate significantly from NAV (persistent premiums or discounts). Example: closed-end funds (CEFs).</p>
+  </div>
+
+  <div class="sub" id="s1mft"><h3>1. Mutual Fund Trusts (MFTs)</h3>
+  <div class="fc"><div class="fch"><div class="fcn">Mutual Fund Trust</div><span class="ft to">OPEN-ENDED · DAILY REDEMPTION AT NAV</span></div>
+  <div class="fcb">
+    <p>A <strong>mutual fund trust</strong> is the dominant legal vehicle for Canadian retail mutual funds, established under a <strong>Declaration of Trust</strong>. It issues <em>units</em> (not shares) redeemable daily at NAVPS. The trust structure enables critical tax flow-through benefits.</p>
+    <h4>Legal and Tax Structure</h4>
+    <ul class="sl2">
+      <li><strong>Declaration of Trust:</strong> The founding legal document defining investor rights, investment objectives, and trustee obligations. The trustee holds legal title to all assets on behalf of unitholders.</li>
+      <li><strong>Flow-through taxation:</strong> Income earned inside the fund flows to unitholders in its original form — a Canadian eligible dividend retains its dividend character (preserving the dividend tax credit); interest remains interest; capital gains remain capital gains at the 50% inclusion rate. This is why the trust structure dominates.</li>
+      <li><strong>Annual distributions required:</strong> Trusts must distribute all taxable income at year-end to avoid corporate-level taxation. Unitholders receive T3 slips showing allocated income even if they chose automatic reinvestment ("phantom distributions" — taxable without cash received).</li>
+      <li><strong>Registered account eligible:</strong> MFT units are qualified investments for all registered accounts — RRSP, TFSA, RRIF, RESP, FHSA.</li>
+    </ul>
+    <h4>Series Structure — Same Portfolio, Different Fee Layers</h4>
+    <div class="tw"><table>
+      <tr><th>Series</th><th>Who Buys</th><th>Typical MER</th><th>Embedded Trailer</th><th>Key Point</th></tr>
+      <tr><td><strong>Series A</strong></td><td>Retail investors via advisors</td><td>2.0–2.5%</td><td>~1.0% equity</td><td>Most common retail series. Trailer pays advisor ongoing service compensation.</td></tr>
+      <tr><td><strong>Series D</strong></td><td>Discount brokerage (self-directed)</td><td>1.0–1.8%</td><td>~0.25%</td><td>Reduced trailer for self-directed investors.</td></tr>
+      <tr><td><strong>Series F</strong></td><td>Fee-based advisory accounts</td><td>0.8–1.3%</td><td>None (zero)</td><td>No trailer — advisor charges client separately. Avoids double-paying for advice.</td></tr>
+      <tr><td><strong>Series I / O</strong></td><td>Institutional / large managed accounts</td><td>Negotiated / 0.1–0.5%</td><td>None</td><td>Lowest cost; customized fee arrangement for large mandates.</td></tr>
+      <tr><td><strong>ETF Series</strong></td><td>Exchange-traded investors</td><td>Close to Series F</td><td>None</td><td>Same underlying portfolio as MFT but trades on exchange intraday — the convergence of ETF and mutual fund structures.</td></tr>
+    </table></div>
+    <div class="co co-exam">
+      <div class="cl">📌 TRAILER COMMISSION — HOW ADVISORS ARE PAID (INVISIBLE TO MANY CLIENTS)</div>
+      <p>The <strong>trailing commission</strong> is paid annually from the fund's management fee to the dealer/advisor. It is embedded in the MER — clients never write a separate cheque. For a Series A equity fund: approximately 1% per year for ongoing advice flows invisibly through the MER. Many clients don't know they're paying for advice through the fund fee — a key reason regulators have pushed for more transparency and the shift to fee-based (Series F) accounts.</p>
+    </div>
+  </div></div></div>
+
+  <div class="sub" id="s1mfc"><h3>2. Mutual Fund Corporations (MFCs)</h3>
+  <div class="fc"><div class="fch"><div class="fcn">Mutual Fund Corporation</div><span class="ft to">OPEN-ENDED · ISSUES SHARES</span></div>
+  <div class="fcb">
+    <p>A <strong>mutual fund corporation</strong> is incorporated under corporate law and issues <em>shares</em> (not units). Less common than trusts, but offers a powerful tax planning advantage through its multi-class share structure.</p>
+    <div class="tw"><table>
+      <tr><th>Feature</th><th>Mutual Fund Trust</th><th>Mutual Fund Corporation</th></tr>
+      <tr><td>Security issued</td><td>Units</td><td>Shares (typically non-voting)</td></tr>
+      <tr><td>Tax character</td><td>Income flows through in original form (dividends stay as dividends; capital gains stay as capital gains)</td><td>Only dividends and capital gains dividends can be paid out; interest income taxed at corporate level first</td></tr>
+      <tr><td>Multi-class structure</td><td>Multiple series of the same fund</td><td>Multiple share classes — each a different fund strategy within one legal corporation</td></tr>
+      <tr><td><strong>🔑 Key Tax Advantage</strong></td><td>Switching between separate MFTs = capital gain event (deemed disposition)</td><td>Switching between classes within the SAME corporation = NOT a capital gain. ACB carries forward — tax deferral.</td></tr>
+    </table></div>
+    <div class="co co-exam">
+      <div class="cl">📌 CORPORATE CLASS — THE EXAM'S FAVOURITE TAX QUESTION</div>
+      <p><strong>Example:</strong> An investor holds $200,000 in the Canadian Equity class of a corporate class fund with $60,000 in unrealized gains. They want to switch to the US Equity class. In a corporate class fund, the switch does NOT trigger a capital gain — the ACB carries forward. If those were separate mutual fund trusts, switching would be a deemed disposition — the investor owes tax on $60,000 that year. This tax-deferral advantage is extremely valuable for non-registered accounts where active asset allocation is needed.</p>
+    </div>
+  </div></div></div>
+
+  <div class="sub" id="s1it"><h3>3. Income Trusts &amp; The 2006 Tax Change</h3>
+  <div class="fc"><div class="fch"><div class="fcn">Income Trust</div><span class="ft te">EXCHANGE-LISTED TRUST</span></div>
+  <div class="fcb">
+    <p>An <strong>income trust</strong> holds income-generating assets (real estate, oil royalties, utilities, pipelines) and distributes cash to unitholders largely without corporate-level tax. They dominated the TSX from 2001–2007 before a dramatic regulatory event.</p>
+    <h4>The 2006 "Halloween Massacre"</h4>
+    <p>On October 31, 2006, Finance Minister Flaherty announced that <mark>income trusts would be taxed as corporations starting 2011</mark>. The TSX dropped approximately $25 billion in trust market value in a single day. Most income trusts converted to corporations by 2011. The critical exception: <strong>Real Estate Investment Trusts (REITs) were specifically exempted</strong> — they remain the dominant surviving income trust format and are tested heavily on the RSE exam.</p>
+  </div></div></div>
+
+  <div class="sub" id="s1cef"><h3>4. Closed-End Funds (CEFs)</h3>
+  <div class="fc"><div class="fch"><div class="fcn">Closed-End Fund (CEF)</div><span class="ft tc">FIXED CAPITAL · EXCHANGE-LISTED</span></div>
+  <div class="fcb">
+    <p>A <strong>CEF</strong> raises a fixed amount of capital through an IPO and then lists on an exchange. After the IPO, <strong>the fund does NOT issue new shares or redeem existing ones</strong>. Investors trade among themselves on the exchange — the fund is not involved in secondary transactions.</p>
+    <div class="tw"><table>
+      <tr><th>Feature</th><th>Closed-End Fund (CEF)</th><th>Open-End Mutual Fund</th></tr>
+      <tr><td>Capital structure</td><td>Fixed shares after IPO</td><td>Unlimited — creates/redeems continuously</td></tr>
+      <tr><td>Trading venue</td><td>Stock exchange — intraday</td><td>Directly with the fund at end-of-day NAV</td></tr>
+      <tr><td>Price</td><td>Supply and demand on exchange</td><td>Always exactly at NAVPS</td></tr>
+      <tr><td>Premium/Discount to NAV</td><td><strong>YES</strong> — can be significant (5–20%)</td><td><strong>NO</strong> — always at NAV</td></tr>
+      <tr><td>Manager benefit</td><td>Fixed capital = no redemption pressure; can invest in illiquid long-term assets</td><td>Redemption pressure may force selling in downturns</td></tr>
+      <tr><td>Leverage</td><td>Can employ structural leverage more freely</td><td>Limited under NI 81-102</td></tr>
+    </table></div>
+    <div class="co co-warn">
+      <div class="cl">⚠️ PREMIUM/DISCOUNT RISK — CRITICAL CLIENT COMMUNICATION</div>
+      <p>When recommending a CEF, the RR MUST explain: "You are buying at today's market price, which may be above or below the value of the underlying portfolio. If the premium/discount changes, your return is affected independently of how the portfolio performs." An investor buying at a 5% premium who sells when the fund has moved to a 10% discount loses 15 percentage points from premium/discount movement alone — even if the underlying investments were flat.</p>
+    </div>
+  </div></div></div>
+
+  <div class="sub" id="s1reit"><h3>5. Real Estate Investment Trusts (REITs)</h3>
+  <div class="fc"><div class="fch"><div class="fcn">Real Estate Investment Trust (REIT)</div><span class="ft te">EXCHANGE-LISTED · TAX-ADVANTAGED TRUST</span></div>
+  <div class="fcb">
+    <p>A <strong>REIT</strong> holds income-producing real estate and was specifically exempted from the 2006–2011 income trust tax changes — making it the dominant surviving income trust format in Canada.</p>
+    <h4>Canadian REIT Qualification Requirements (Income Tax Act)</h4>
+    <ul class="sl2">
+      <li><strong>Revenue test:</strong> ≥75% of gross revenues from "qualified REIT properties" — rents, mortgage interest on real property, or gains from real property sales</li>
+      <li><strong>Asset test:</strong> ≥75% of assets must be qualified REIT properties (real property or interests, mortgages secured by real property)</li>
+      <li><strong>Distribution requirement:</strong> Must distribute substantially all taxable income to unitholders annually — typically monthly cash distributions</li>
+    </ul>
+    <h4>Types of Canadian REITs</h4>
+    <div class="tw"><table>
+      <tr><th>REIT Type</th><th>Property Types</th><th>Key Canadian Examples</th></tr>
+      <tr><td><strong>Retail REIT</strong></td><td>Shopping malls, strip plazas, power centres</td><td>RioCan, Choice Properties, CT REIT</td></tr>
+      <tr><td><strong>Residential REIT</strong></td><td>Apartment buildings, multi-family residential</td><td>CAPREIT, Killam Apartment REIT</td></tr>
+      <tr><td><strong>Industrial REIT</strong></td><td>Warehouses, logistics, distribution centres</td><td>Granite REIT, Dream Industrial REIT</td></tr>
+      <tr><td><strong>Office REIT</strong></td><td>Office towers, suburban offices</td><td>Allied Properties REIT, Dream Office REIT</td></tr>
+      <tr><td><strong>Healthcare REIT</strong></td><td>Seniors housing, long-term care, medical offices</td><td>Chartwell Retirement Residences</td></tr>
+    </table></div>
+    <h4>REIT Key Metric — Funds From Operations (FFO)</h4>
+    <p>Traditional EPS understates REIT cash generation because accounting depreciation on real property reduces net income — even as properties appreciate in value. FFO corrects this:</p>
+    <div style="background:var(--navy);border-radius:5px;padding:10px 17px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gold-light);text-align:center;margin:10px 0">
+      FFO = Net Income + Depreciation/Amortization − Gains on Property Sales
+    </div>
+    <h4>REIT Distribution Tax Treatment — Three Components</h4>
+    <ul class="sl2">
+      <li><strong>Return of Capital (ROC) — largest portion:</strong> NOT taxed when received. Instead, reduces the investor's Adjusted Cost Base (ACB). When units are eventually sold, the lower ACB produces a larger capital gain — tax is deferred. If ROC distributions reduce ACB to zero, all further distributions become capital gains immediately.</li>
+      <li><strong>Capital gains portion:</strong> Taxed at 50% inclusion rate (potentially higher on gains above $250K per 2024 Budget proposals — check current rules)</li>
+      <li><strong>Other income (interest):</strong> Fully taxable at the investor's marginal rate</li>
+    </ul>
+    <div class="co co-exam">
+      <div class="cl">📌 REIT INTEREST RATE SENSITIVITY — TWO SIMULTANEOUS CHANNELS</div>
+      <p>REITs are among the most rate-sensitive equity securities, hit through two channels at once:<br>
+      <strong>Channel 1 — Valuation:</strong> Higher discount rate → lower PV of future rental income → REIT unit price falls<br>
+      <strong>Channel 2 — Financing cost:</strong> REITs are typically highly leveraged. Rising borrowing costs → less cash available for distribution → lower income for unitholders<br><br>
+      Result: REITs behave like long-duration bonds when rates rise — they can fall sharply. Not appropriate for clients seeking stable income who face imminent interest rate increases.</p>
+    </div>
+  </div></div></div>
+
+  <div class="sub" id="s1etf"><h3>6. Exchange-Traded Funds (ETFs)</h3>
+  <div class="fc"><div class="fch"><div class="fcn">Exchange-Traded Fund (ETF)</div><span class="ft to">OPEN-ENDED · EXCHANGE-LISTED · INTRADAY</span></div>
+  <div class="fcb">
+    <p>An <strong>ETF</strong> is technically open-ended (continuous creation/redemption through Authorized Participants) but trades like shares on a stock exchange throughout the day. Canada's ETF market reached <strong>$518 billion AUM by year-end 2024</strong>, with record <strong>$75 billion net sales in 2024</strong> — growing to represent 30% of all public investment funds. Over 1,200 ETFs are now listed in Canada. Full ETF analysis follows in Section 5.5.</p>
+  </div></div></div>
+
+  <div class="sub" id="s1wrap"><h3>7. Wrap Funds / Fund of Funds / ETF Wrap</h3>
+  <div class="fc"><div class="fch"><div class="fcn">Wrap / Fund of Funds / ETF Wrap</div><span class="ft th">MULTI-LAYER MANAGED PRODUCTS</span></div>
+  <div class="fcb">
+    <div class="tw"><table>
+      <tr><th>Type</th><th>What It Holds</th><th>Fee Structure</th><th>Key Issue</th></tr>
+      <tr><td><strong>Wrap Program (SMA)</strong></td><td>Individual securities — not a fund. Separately Managed Account (SMA) managed to a custom mandate.</td><td>Single all-inclusive "wrap fee" (1–2.5% p.a.): PM + trading + custody + reporting</td><td>Minimum $100K–$250K+ excludes most retail investors</td></tr>
+      <tr><td><strong>Fund of Funds (FoF)</strong></td><td>Portfolio of other mutual funds. FoF manager selects and rebalances underlying funds.</td><td><strong>Double layer:</strong> FoF MER (0.3–0.6%) + underlying fund MERs (~1.7–2.0%). Total effective cost: 2.0–2.6%+</td><td><strong>Fee layering</strong> — must be disclosed in Fund Facts; significantly erodes long-term returns</td></tr>
+      <tr><td><strong>ETF Wrap / All-in-One ETF</strong></td><td>Portfolio of underlying ETFs at target allocations (e.g., VGRO: 80% equity + 20% bonds)</td><td>Zero additional management fee. Only the underlying ETF fees apply (~0.15–0.25% combined). NO fee layering.</td><td>Less customization than building your own ETF portfolio</td></tr>
+    </table></div>
+    <div class="co co-rule">
+      <div class="cl">🔴 FEE LAYERING — MUST DISCLOSE · EXAM TOPIC</div>
+      <p>If a Fund of Funds charges its own MER of 0.5% and its underlying funds average 1.8% MER, the <strong>total effective cost is approximately 2.3%</strong>. This double-layer MER must be disclosed. ETF wraps eliminate layering entirely — the wrapper ETF charges 0% management fee and investors only pay the underlying ETF costs once.</p>
+    </div>
+  </div></div></div>
+
+  <div class="sub" id="s1pool"><h3>8. Pooled Funds</h3>
+  <div class="fc"><div class="fch"><div class="fcn">Pooled Fund (Institutional / Exempt Market)</div><span class="ft tc">PROSPECTUS EXEMPT · INSTITUTIONAL</span></div>
+  <div class="fcb">
+    <p>A <strong>pooled fund</strong> is offered under a prospectus exemption (NI 45-106) — not publicly distributed. They are the foundation of institutional asset management in Canada, used by pension funds, endowments, foundations, and accredited high-net-worth investors.</p>
+    <div class="tw"><table>
+      <tr><th>Feature</th><th>Public Mutual Fund</th><th>Pooled Fund</th></tr>
+      <tr><td>Distribution</td><td>Anyone — retail</td><td>Accredited investors / institutional ($150K+ typically)</td></tr>
+      <tr><td>Prospectus</td><td>Required — simplified prospectus + Fund Facts</td><td>Exempt — no prospectus required</td></tr>
+      <tr><td>MER</td><td>1.5–2.5% retail</td><td>0.05–0.5% — far lower; no distribution/compliance overhead</td></tr>
+      <tr><td>Pricing</td><td>Daily</td><td>Monthly or quarterly</td></tr>
+      <tr><td>Permitted strategies</td><td>Limited by NI 81-102</td><td>Wide latitude — short selling, leverage, private credit, illiquid assets, alternatives</td></tr>
+      <tr><td>Minimum investment</td><td>$25–$2,500</td><td>$100,000–$1,000,000+</td></tr>
+    </table></div>
+  </div></div></div>
+</div>
+
+<!-- 5.2 INVESTOR CONSIDERATIONS -->
+<div class="chapter" id="s2">
+  <div class="sh"><div class="sn">5.2</div><div class="st"><h2>Main Investor Considerations</h2><div class="ss">RANGE OF EXPOSURES · INCOME/GROWTH · ASSET CLASSES · ESG · ADVANTAGES/DISADVANTAGES</div></div></div>
+
+  <div class="sub" id="s2range"><h3>Range of Exposures Available</h3>
+  <div class="dg"><div class="dt">Full Spectrum of Exposures Through Managed Products</div>
+  <div class="g3">
+    <div class="gc"><h5>💰 By Investment Objective</h5><ul>
+      <li><strong>Capital Preservation:</strong> Money market funds, HISA ETFs (e.g., CASH.TO, CSAV), short-term GoC bond funds</li>
+      <li><strong>Income:</strong> Corporate bond funds, dividend equity, REIT funds, covered call ETFs</li>
+      <li><strong>Balanced Growth:</strong> Balanced funds, target-date, all-in-one ETFs (VBAL 60/40, XGRO 80/20)</li>
+      <li><strong>Capital Growth:</strong> Equity growth funds, sector ETFs, small-cap funds, global equity</li>
+      <li><strong>Aggressive:</strong> Leveraged ETFs, emerging market, cryptocurrency ETFs, sector-concentrated</li>
+    </ul></div>
+    <div class="gc"><h5>🌍 By Asset Class &amp; Geography</h5><ul>
+      <li><strong>Canadian equity:</strong> S&P/TSX index, dividend, financials, energy</li>
+      <li><strong>US equity:</strong> S&P 500, Nasdaq 100, US dividend growth</li>
+      <li><strong>International:</strong> EAFE (Europe, Australia, Far East), EM India/China/broad</li>
+      <li><strong>Fixed income:</strong> GoC bonds, corporates, high-yield, Real Return Bonds</li>
+      <li><strong>Real assets:</strong> REIT ETFs, gold bullion (GLDX, MNT), infrastructure</li>
+      <li><strong>Alternatives:</strong> Liquid alternatives (long/short equity), private credit BDCs</li>
+    </ul></div>
+    <div class="gc"><h5>🌱 ESG &amp; Ethical Considerations</h5><ul>
+      <li><strong>ESG Integration:</strong> Considers E, S, G factors alongside financial analysis — not exclusion but weighting</li>
+      <li><strong>Negative screening:</strong> Excludes tobacco, weapons, fossil fuels, gambling, adult content (e.g., iShares XESG)</li>
+      <li><strong>Positive screening:</strong> Overweights high ESG ratings, renewables, diversity leaders</li>
+      <li><strong>Impact investing:</strong> Targets specific social/environmental outcomes — niche in Canada</li>
+      <li><strong>Shariah-compliant:</strong> No interest-bearing securities, no prohibited industries (alcohol, pork, weapons)</li>
+    </ul></div>
+  </div></div>
+  <div class="tw"><table>
+    <tr><th>Product Type</th><th>Holdings / Diversification</th><th>Remaining Risk</th><th>Core or Satellite?</th></tr>
+    <tr><td>Global all-in-one ETF (e.g., VEQT)</td><td>12,000+ global stocks + bonds</td><td>Systematic global market risk only</td><td>Can be entire portfolio</td></tr>
+    <tr><td>S&P/TSX Composite index fund</td><td>~250 Canadian stocks</td><td>Canada concentration; Financials/Energy heavy (~51%)</td><td>Canadian equity core</td></tr>
+    <tr><td>Balanced fund (60/40)</td><td>Mixed stocks and bonds, 100–200 holdings</td><td>Reduced by bond allocation</td><td>Core for moderate investors</td></tr>
+    <tr><td>Sector ETF (e.g., Canadian Energy)</td><td>One sector, 15–40 stocks</td><td>High sector concentration; oil price risk</td><td>Small tactical satellite (max 5–10%)</td></tr>
+    <tr><td>Concentrated active fund (20 stocks)</td><td>15–25 stocks globally</td><td>High single-stock and manager risk</td><td>Satellite for experienced investors only</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s2adv"><h3>Advantages and Disadvantages vs. Direct Investing</h3>
+  <div class="dg"><div class="dt">Managed Products — Complete Matrix</div><div class="g2">
+    <div class="gc"><h5>✅ Advantages to the Investor</h5><ul>
+      <li><strong>Instant diversification:</strong> $100 investment gains exposure to thousands of stocks — impossible directly</li>
+      <li><strong>Professional management:</strong> Bloomberg terminals, research teams, institutional pricing unavailable to individuals</li>
+      <li><strong>Very low minimums:</strong> Mutual funds from $25 via PAIP; ETFs from one share (fractional at many brokers)</li>
+      <li><strong>Liquidity:</strong> Open-ended funds redeemable daily; ETFs trade intraday</li>
+      <li><strong>Economies of scale:</strong> Transaction, custody, operation costs spread across thousands of investors</li>
+      <li><strong>Access to exclusive markets:</strong> EM bonds, private credit, infrastructure — impractical for retail directly</li>
+      <li><strong>Registered account eligible:</strong> All qualified funds usable in RRSP, TFSA, RRIF, RESP, FHSA</li>
+      <li><strong>Convenience:</strong> Auto reinvestment; PAIP monthly contributions; automatic rebalancing</li>
+    </ul></div>
+    <div class="gc"><h5>❌ Disadvantages to the Investor</h5><ul>
+      <li><strong>Fees erode compounded returns:</strong> Canada's 2.0–2.5% MERs are among the world's highest. A 2.1% annual fee difference costs ~$248,000 over 25 years on a $100K initial investment at 8% gross.</li>
+      <li><strong>Loss of control:</strong> No say in security selection — cannot exclude a specific company (e.g., client's employer)</li>
+      <li><strong>Manager underperformance risk:</strong> 80–90% of active managers fail to beat their benchmark after fees over 10 years</li>
+      <li><strong>Tax inefficiency in non-registered:</strong> Year-end capital gains distributions trigger taxes even without selling — especially in actively managed funds</li>
+      <li><strong>Hidden costs:</strong> TER, FoF fee layering, short-term trading penalties — beyond the MER</li>
+      <li><strong>Redemption restrictions:</strong> Alternative funds, CEFs, pooled funds — limited liquidity or lock-up periods</li>
+    </ul></div>
+  </div></div>
+  </div>
+</div>
+
+<!-- 5.3 MUTUAL FUND FEATURES -->
+<div class="chapter" id="s3">
+  <div class="sh"><div class="sn">5.3</div><div class="st"><h2>Features of Mutual Funds in Canada</h2><div class="ss">ACCESS · NI 81-102 · TRUST vs. CORPORATE · PARTICIPANTS · FEE STRUCTURES · DAILY PRICING</div></div></div>
+
+  <div class="sub" id="s3access"><h3>Access to Mutual Funds &amp; NI 81-102</h3>
+  <p>Mutual funds are distributed through multiple channels. The regulatory framework governing all retail public mutual funds is <strong>National Instrument 81-102 Investment Funds</strong> — the primary CSA rule covering investment restrictions, pricing, redemptions, custodial requirements, and fund governance.</p>
+  <div class="tw"><table>
+    <tr><th>Distribution Channel</th><th>Typical Series</th><th>Client Profile</th></tr>
+    <tr><td>Full-service investment dealers (CIRO member)</td><td>Series A (commission), Series F (fee-based)</td><td>Advisor-led; comprehensive financial planning</td></tr>
+    <tr><td>Mutual fund dealers (CIRO member, bank branches)</td><td>Series A — most common at bank branches</td><td>Mass retail; typically bank-proprietary funds</td></tr>
+    <tr><td>Discount/online brokers (self-directed)</td><td>Series D (reduced trailer), some Series F</td><td>DIY investors managing their own portfolios</td></tr>
+    <tr><td>Directly from fund company</td><td>Series D, F, or no-load variants</td><td>Cost-conscious investors; boutique fund families</td></tr>
+    <tr><td>Group retirement plans (employer)</td><td>Institutional series, Series O, Series I</td><td>Employees via DC pensions or group RRSPs</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s3struct"><h3>Trust vs. Corporate Structure — Key Exam Points</h3>
+  <ul class="sl2">
+    <li><strong>Trusts issue units; corporations issue shares</strong> — both open-ended but legally distinct vehicles</li>
+    <li><strong>Trust tax flow-through preserves income character</strong> — critical for dividend tax credit in non-registered accounts</li>
+    <li><strong>Corporate class switch advantage:</strong> Moving between classes within the same corporation = NOT a taxable disposition. ACB carries forward. This is the defining corporate structure advantage for active asset allocation in non-registered accounts.</li>
+    <li><strong>Annual trust distributions required:</strong> Trusts must distribute all taxable income — creating "phantom distributions" where unitholders receive T3 slips for taxable income they may never have received as cash.</li>
+  </ul>
+  </div>
+
+  <div class="sub" id="s3part"><h3>Six Key Participants in the Mutual Fund Structure</h3>
+  <div class="dg"><div class="dt">Six Participants — Roles, Responsibilities &amp; Independence Requirements</div><div class="g3">
+    <div class="gc"><h5>🏛️ 1. Trustee</h5><p>Holds legal title to ALL fund assets on behalf of unitholders. Ensures the trust is administered per the Declaration of Trust and securities law. Must be a regulated trust company (e.g., RBC Investor Services Trust, CIBC Mellon Trust) — completely independent from the manager. Owes fiduciary duty to unitholders above all others.</p></div>
+    <div class="gc"><h5>🎯 2. Manager (IFM)</h5><p>The "CEO" of the fund. Oversees or makes all investment decisions, handles administration, calculates and publishes NAV daily, files regulatory documents, manages the fund business. Must be registered as Investment Fund Manager (IFM) under NI 31-103. Examples: Fidelity Canada, RBC GAM, CI Financial, Mackenzie, BMO AM, Vanguard Canada, iShares Canada.</p></div>
+    <div class="gc"><h5>📦 3. Custodian</h5><p>Physically holds and safeguards all fund securities and cash in a segregated custodial account — separate from the manager's own assets. Must be independent from the manager (prevents misappropriation). The manager can instruct trades but cannot physically remove assets from custodial safekeeping. Examples: State Street, RBC Investor Services, CIBC Mellon.</p></div>
+    <div class="gc"><h5>🤝 4. Distributor</h5><p>The channel through which investors access fund units. Investment dealers, mutual fund dealers, banks, online brokers — sometimes the manager itself. Compensation via trailing commissions embedded in MER (Series A) or directly from client's account as a fee (Series F fee-based model).</p></div>
+    <div class="gc"><h5>📊 5. Portfolio Manager (PM/Sub-Advisor)</h5><p>Makes actual day-to-day investment decisions — buying and selling specific securities within the fund's mandate. Registered PM under NI 31-103. The fund manager may hire an external sub-advisor for specialized expertise (e.g., a Canadian fund family hires a US firm to manage their global equity fund).</p></div>
+    <div class="gc"><h5>⚖️ 6. Independent Review Committee (IRC)</h5><p>Required by NI 81-107. Reviews and provides input on conflict-of-interest matters. Minimum 3 members, ALL independent of the manager. Reviews: trading with affiliated entities, fund switching for fees, related-party transactions, excessive fees that benefit the manager over investors.</p></div>
+  </div></div>
+  </div>
+
+  <div class="sub" id="s3fees"><h3>Mutual Fund Fee Structures — Complete Breakdown</h3>
+
+  <div class="co co-calc">
+    <div class="cl">🔑 MER = MANAGEMENT FEE + TRAILING COMMISSION + OPERATING EXPENSES + TAXES</div>
+    <p><strong>Management Fee:</strong> Paid to manager for portfolio management and administration. Typically 1.0–1.75% equity, 0.5–1.0% bond.<br>
+    <strong>Trailing Commission (Trailer):</strong> Paid from management fee to distributor/advisor annually. Typically ~1.0% for equity Series A, 0.5% for bond Series A. Invisible to most clients — embedded in MER.<br>
+    <strong>Operating Expenses:</strong> Audit, legal, filing, custody, fund accounting fees. Typically 0.10–0.30%.<br>
+    <strong>Applicable Taxes (HST/GST):</strong> Applied to management services. Adds ~0.15–0.20%.<br>
+    <strong>Total typical retail equity Series A MER: 2.0–2.5%.</strong> Canada's MERs are among the world's highest. US average ~0.50%, UK average ~0.75%.</p>
+  </div>
+
+  <div class="tw"><table>
+    <tr><th>Cost Component</th><th>In MER?</th><th>Typical Amount</th><th>Where Disclosed</th></tr>
+    <tr><td>Management fee</td><td>Yes</td><td>0.5–1.75%</td><td>Fund Facts, prospectus</td></tr>
+    <tr><td>Trailing commission</td><td>Yes (embedded)</td><td>0–1.0%</td><td>Fund Facts (required separate breakout)</td></tr>
+    <tr><td>Operating expenses</td><td>Yes</td><td>0.10–0.30%</td><td>Annual financial statements</td></tr>
+    <tr><td>HST on management services</td><td>Yes</td><td>~0.15–0.20%</td><td>Included in MER</td></tr>
+    <tr><td>Portfolio trading costs (TER)</td><td><strong>NO</strong></td><td>0.01–0.20%</td><td>Separate TER in financial statements</td></tr>
+  </table></div>
+
+  <h4>Load Structures — Front-End, DSC (Banned 2022), and No-Load</h4>
+  <div class="tw"><table>
+    <tr><th>Load Type</th><th>When Charged</th><th>Mechanics</th><th>Current Status (2025)</th></tr>
+    <tr><td><strong>Front-End Load (FEL)</strong></td><td>At purchase</td><td>Negotiable 0–5% deducted before units purchased. $10,000 with 2% FEL → $200 to advisor, $9,800 invested → fewer units received.</td><td>✅ Still permitted. Declining as fee-based accounts grow.</td></tr>
+    <tr><td><strong>DSC (Deferred Sales Charge)</strong></td><td>At redemption (if early)</td><td>Full amount invested at purchase. Declining redemption fee schedule (typically 5–7% year 1 → 0% by year 6–7) applies if sold early. Advisor received upfront commission financed by management fee over time.</td><td style="color:var(--red)">❌ <strong>BANNED for new purchases — June 1, 2022</strong>. Legacy holdings continue to schedule expiry only.</td></tr>
+    <tr><td><strong>Low-Load DSC</strong></td><td>At redemption (shorter 2–3 yr schedule)</td><td>Shorter schedule, lower initial fees</td><td style="color:var(--red)">❌ <strong>Also banned June 1, 2022</strong></td></tr>
+    <tr><td><strong>No-Load</strong></td><td>Never</td><td>Full investment goes to work immediately. No redemption fees. Industry standard going forward.</td><td>✅ Dominant structure after DSC ban.</td></tr>
+  </table></div>
+
+  <h4>Compound Cost of Fees — The Most Important Number in Managed Products</h4>
+  <div class="mb">
+    <div class="mfl">$100,000 Invested for 25 Years at 8% Gross Annual Return</div>
+    <div class="mw">
+      <div class="ms"><div class="msn">1</div><div class="mst"><strong style="color:var(--gold-light)">ETF (0.2% MER):</strong> Net return = 7.8%. Value = $100,000 × (1.078)²⁵ = <strong style="color:#5dda9a">$643,856</strong></div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst"><strong style="color:var(--gold-light)">Active Mutual Fund Series A (2.3% MER):</strong> Net return = 5.7%. Value = $100,000 × (1.057)²⁵ = <strong style="color:#ff8a8a">$395,508</strong></div></div>
+      <div class="mr">Fee difference impact: $643,856 − $395,508 = $248,348. The 2.1% annual fee cost nearly $250,000 over 25 years — more than double the original investment amount paid out in fees. This is why low-cost index investing is so compelling for long-term investors.</div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sub" id="s3price"><h3>Daily Pricing — NAVPS Mechanics</h3>
+  <p>Mutual funds price <strong>once per business day</strong> after market close (typically 4:00 PM ET). All orders received before the cutoff receive that day's NAVPS ("forward pricing rule"). Investors never know the exact price when placing an order — preventing market timing abuse.</p>
+  <h4>What Changes NAVPS Each Day?</h4>
+  <ul class="sl2">
+    <li><strong>Portfolio price changes:</strong> If securities inside the fund rise/fall in value, NAV rises/falls proportionally</li>
+    <li><strong>Income accrual:</strong> Dividends and interest earned but not yet distributed increase NAV until paid out</li>
+    <li><strong>Fee accrual:</strong> Management fees reduce NAV slightly each day as they accrue</li>
+    <li><strong>New purchases:</strong> Cash in + new units created proportionally → NAVPS UNCHANGED (assets and units increase equally)</li>
+    <li><strong>Redemptions:</strong> Assets paid out + units cancelled proportionally → NAVPS UNCHANGED (assets and units decrease equally)</li>
+  </ul>
+  <p>Critical insight: <strong>Purchases and redemptions do NOT change NAVPS</strong> — only portfolio value changes do.</p>
+  </div>
+</div>
+
+<!-- 5.4 MUTUAL FUND INVESTOR CONSIDERATIONS -->
+<div class="chapter" id="s4">
+  <div class="sh"><div class="sn">5.4</div><div class="st"><h2>Investor Considerations — Mutual Funds</h2><div class="ss">INVESTOR &amp; PROVIDER PERSPECTIVES · SOURCES OF RISK · RISK-RANKING METHODOLOGY</div></div></div>
+
+  <div class="sub" id="s4adv"><h3>Advantages and Disadvantages — Investor and Provider</h3>
+  <div class="tw"><table>
+    <tr><th>Perspective</th><th>Advantages</th><th>Disadvantages</th></tr>
+    <tr><td><strong>To the Investor</strong></td><td>Diversification with small capital; professional management; daily liquidity; registered account eligible; automatic reinvestment; access to multiple markets; regulatory protection; PAIP for systematic saving</td><td>High MER erodes long-term returns; loss of security selection control; tax inefficiency from annual distributions in non-registered accounts; manager underperformance risk; limited customization</td></tr>
+    <tr><td><strong>To the Provider (Manager)</strong></td><td>Recurring fee income on growing AUM; economies of scale as assets grow; diversified product shelf attracts broad client base; regulatory compliance infrastructure amortizes across many funds</td><td>Heavy regulatory compliance costs (NI 81-102, SEDAR+, IRC, Fund Facts, MRFP); reputational risk from underperformance; distribution costs; growing pressure to reduce MERs from low-cost ETF competition</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s4risk"><h3>Risk-Ranking Methodology — CSA Standardized System</h3>
+  <p>All Canadian retail mutual funds and ETFs must disclose a <strong>standardized risk rating</strong> on their Fund Facts/ETF Facts, based on the CSA's prescribed methodology. This system enables direct risk comparison across all Canadian funds.</p>
+  <h4>Calculation: 10-Year Historical Annualized Standard Deviation</h4>
+  <p>The CSA methodology uses the <strong>10-year historical annualized standard deviation of returns</strong> to classify the fund into one of five categories. If the fund has fewer than 10 years of history, a reference index is used for the missing period.</p>
+  <div class="tw"><table>
+    <tr><th>Risk Rating</th><th>10-Year Std Dev</th><th>Typical Fund Types</th><th>Investor Profile</th></tr>
+    <tr><td style="background:rgba(26,107,74,.08)"><strong>Low</strong></td><td>&lt; 6%</td><td>Money market funds, HISA ETFs, T-bill funds, short-term GoC bond funds</td><td>Capital preservation; cannot accept any meaningful loss; horizon under 1–2 years</td></tr>
+    <tr><td style="background:rgba(26,107,74,.05)"><strong>Low to Medium</strong></td><td>≥6% to &lt;11%</td><td>Short/medium bond funds, conservative balanced, dividend income, REIT funds (moderate)</td><td>Conservative; primarily income; 2–5 year horizon</td></tr>
+    <tr><td style="background:rgba(201,151,58,.06)"><strong>Medium</strong></td><td>≥11% to &lt;16%</td><td>Canadian equity, global equity, balanced growth, most broad index ETFs</td><td>Balanced growth and income; 5–7 year horizon; can tolerate 20–30% short-term loss</td></tr>
+    <tr><td style="background:rgba(139,26,26,.06)"><strong>Medium to High</strong></td><td>≥16% to &lt;20%</td><td>Small-cap, sector ETFs, some EM funds, high-yield bond funds</td><td>Growth-oriented; 7–10 year horizon; tolerates significant drawdowns</td></tr>
+    <tr><td style="background:rgba(139,26,26,.12)"><strong>High</strong></td><td>≥20%</td><td>Leveraged ETFs, inverse funds, single-country EM, concentrated sector, commodities</td><td>Aggressive; 10+ year horizon; tolerates 50%+ drawdowns without panic</td></tr>
+  </table></div>
+  <div class="co co-exam">
+    <div class="cl">📌 RISK RATING — THREE CRITICAL LIMITATIONS</div>
+    <p><strong>1. Backward-looking:</strong> Based on past 10-year standard deviation. A fund with historically low volatility could be positioned for much higher future risk.<br>
+    <strong>2. Treats upside and downside equally:</strong> Standard deviation doesn't distinguish between gains and losses. Most investors only fear downside volatility — downside deviation or VaR might be more investor-relevant.<br>
+    <strong>3. Doesn't capture all risks:</strong> Liquidity risk, credit risk, currency risk, and concentration risk may not be reflected in historical standard deviation. A fund holding illiquid private debt may show low historical volatility (assets rarely reprice) but carry significant actual risk.</p>
+  </div>
+  <h4>Sources of Risk in Mutual Fund Investing</h4>
+  <div class="tw"><table>
+    <tr><th>Risk Type</th><th>Description</th><th>Most Affected Funds</th></tr>
+    <tr><td><strong>Market Risk</strong></td><td>Broad market declines drag down the fund regardless of individual security quality</td><td>All equity funds; amplified in concentrated/sector funds</td></tr>
+    <tr><td><strong>Credit Risk</strong></td><td>Bond issuers default or are downgraded, reducing portfolio bond prices</td><td>Corporate bond funds, high-yield, money market funds</td></tr>
+    <tr><td><strong>Interest Rate Risk</strong></td><td>Rising rates reduce the value of bonds held in the fund</td><td>Long-duration bond funds most affected; balanced funds</td></tr>
+    <tr><td><strong>Currency Risk</strong></td><td>CAD appreciation reduces CAD value of foreign holdings</td><td>International equity, emerging market funds (hedged funds partially mitigate)</td></tr>
+    <tr><td><strong>Manager Risk</strong></td><td>Active manager makes poor decisions; key manager departs; style drift</td><td>All actively managed funds</td></tr>
+    <tr><td><strong>Liquidity Risk</strong></td><td>Fund holds securities that can't be sold quickly in stress without large price concessions</td><td>Small-cap, EM debt, alternatives, private credit</td></tr>
+    <tr><td><strong>Concentration Risk</strong></td><td>High exposure to single stock, sector, or country amplifies specific negative events</td><td>Sector ETFs, single-country funds, concentrated active funds</td></tr>
+    <tr><td><strong>Inflation Risk</strong></td><td>Nominal returns fail to outpace inflation; real purchasing power erodes</td><td>Money market, short-term bond funds in high-inflation environments</td></tr>
+  </table></div>
+  </div>
+</div>
+
+<!-- 5.5 ETFs — DEEP DIVE -->
+<div class="chapter" id="s5">
+  <div class="sh"><div class="sn">5.5</div><div class="st"><h2>ETFs — Complete Deep Dive</h2><div class="ss">CREATION/REDEMPTION · MARKET PRICE vs. NAV · MANAGEMENT STYLES · LEVERAGE · ETF vs. MUTUAL FUND</div></div></div>
+
+  <div class="sub" id="s5cr"><h3>The ETF Creation &amp; Redemption Mechanism — The "Secret Sauce"</h3>
+  <p>The creation and redemption mechanism is the defining structural feature that makes ETFs different from both mutual funds and closed-end funds. It is the source of most ETF advantages: price efficiency, lower cost, and tax efficiency. <strong>This is among the most-tested ETF topics on the RSE exam.</strong></p>
+
+  <h4>Two Simultaneous Markets</h4>
+  <ul class="sl2">
+    <li><strong>Secondary Market (Exchange):</strong> Where retail investors buy and sell ETF units throughout the day like shares. Price determined by supply and demand between buyers and sellers. This is what investors see and use.</li>
+    <li><strong>Primary Market:</strong> Where Authorized Participants (APs) interact directly with the ETF issuer to create or redeem large blocks (creation units, typically 25,000–100,000 units). Invisible to retail investors but continuously enforces price efficiency through arbitrage.</li>
+  </ul>
+  <h4>Who Are Authorized Participants?</h4>
+  <p>APs are <strong>large institutional investors and market makers</strong> — in Canada, typically the Big Six banks and specialized trading firms — with contractual agreements to create/redeem ETF units. Only APs can access the primary market. Their profit motive drives the entire arbitrage system.</p>
+
+  <div class="dg"><div class="dt">ETF CREATION — When Market Price Trades at PREMIUM to NAV</div>
+  <div class="fd">
+    <div class="fn" style="font-size:11px">ETF premium exists<br>Market price &gt; NAV</div><div class="fa">→</div>
+    <div class="fn" style="font-size:11px">AP spots arbitrage<br>opportunity</div><div class="fa">→</div>
+    <div class="fn" style="font-size:11px">AP buys underlying<br>securities basket<br>at ~NAV cost</div><div class="fa">→</div>
+    <div class="fn" style="font-size:11px">AP delivers basket<br>to ETF issuer<br>(in-kind)</div><div class="fa">→</div>
+    <div class="fn gld" style="font-size:11px">Issuer creates NEW<br>ETF units<br>(creation unit)</div><div class="fa">→</div>
+    <div class="fn" style="font-size:11px">AP sells units<br>at premium<br>on exchange</div><div class="fa">→</div>
+    <div class="fn grn" style="font-size:11px">More ETF supply<br>→ price falls<br>back to NAV ✓</div>
+  </div>
+  <p style="text-align:center;font-size:11.5px;color:rgba(255,255,255,.4);margin-top:8px">AP profit = ETF sale price − basket cost. This profit motive closes the premium automatically.</p>
+  </div>
+
+  <div class="dg" style="margin-top:10px"><div class="dt">ETF REDEMPTION — When Market Price Trades at DISCOUNT to NAV</div>
+  <div class="fd">
+    <div class="fn" style="font-size:11px">ETF discount exists<br>Market price &lt; NAV</div><div class="fa">→</div>
+    <div class="fn" style="font-size:11px">AP spots arbitrage<br>opportunity</div><div class="fa">→</div>
+    <div class="fn" style="font-size:11px">AP buys cheap ETF<br>units on exchange</div><div class="fa">→</div>
+    <div class="fn" style="font-size:11px">AP assembles full<br>redemption unit<br>(25K–100K units)</div><div class="fa">→</div>
+    <div class="fn gld" style="font-size:11px">AP delivers units<br>to issuer →<br>units CANCELLED</div><div class="fa">→</div>
+    <div class="fn" style="font-size:11px">Issuer gives AP<br>underlying securities<br>basket (in-kind)</div><div class="fa">→</div>
+    <div class="fn grn" style="font-size:11px">Less ETF supply<br>→ price rises<br>back to NAV ✓</div>
+  </div></div>
+
+  <h4>Why In-Kind Transactions Create Tax Efficiency</h4>
+  <ul class="sl2">
+    <li><strong>ETF:</strong> AP redemption receives securities basket — not cash. ETF does NOT sell securities → no capital gain realized at fund level → no capital gains distributed to ongoing investors. ETF "cleanses" portfolio of low-cost-basis securities through in-kind transfers without triggering gains.</li>
+    <li><strong>Mutual fund:</strong> Investor redemptions require cash → fund sells securities → capital gains are realized → distributed to ALL remaining investors via T3 at year-end, even those who never redeemed ("phantom capital gains" problem).</li>
+    <li><strong>Result:</strong> Passive ETFs rarely generate capital gains distributions. Active mutual funds with high turnover can distribute significant taxable gains annually — even in flat market years.</li>
+  </ul>
+  <div class="co co-exam">
+    <div class="cl">📌 ARBITRAGE THRESHOLD — THE 0.5% RULE</div>
+    <p>Arbitrage is typically triggered when the ETF market price deviates more than approximately <strong>0.5% from its NAV</strong>. Below this threshold, the transaction costs of arbitrage (bid-ask spreads on underlying securities, settlement costs) outweigh the profit. This explains why ETFs trade in a small premium/discount band — not at exactly NAV. In March 2020's extreme market stress, bond ETF premiums/discounts widened to 1–3%+ as the underlying bond market became temporarily illiquid, temporarily impairing the arbitrage mechanism.</p>
+  </div>
+  </div>
+
+  <div class="sub" id="s5price"><h3>ETF Pricing — Market Price vs. NAV vs. iNAV</h3>
+  <div class="tw"><table>
+    <tr><th>Pricing Concept</th><th>Definition</th><th>Frequency</th><th>Primary Users</th></tr>
+    <tr><td><strong>NAV</strong></td><td>True per-unit value: (Total Assets − Liabilities) ÷ Units Outstanding. The "fair value" of portfolio contents.</td><td>Once daily at market close</td><td>Primary market (APs); regulatory reporting</td></tr>
+    <tr><td><strong>Market Price</strong></td><td>The price ETF units actually trade on the exchange — determined by real-time supply and demand</td><td>Continuously during trading hours</td><td>All investors buying/selling on exchange</td></tr>
+    <tr><td><strong>iNAV (Indicative NAV)</strong></td><td>Real-time NAV estimate updated approximately every 15 seconds using current prices of underlying holdings. Published by designated iNAV providers.</td><td>Every 15 seconds during market hours</td><td>APs, market makers, sophisticated traders monitoring premium/discount</td></tr>
+    <tr><td><strong>Premium</strong></td><td>Market price &gt; NAV. Triggers AP creation (adds supply, pushes price toward NAV).</td><td>Common in trending, high-demand markets</td><td>Signal to APs to create new units</td></tr>
+    <tr><td><strong>Discount</strong></td><td>Market price &lt; NAV. Triggers AP redemption (removes supply, pushes price up toward NAV).</td><td>Common in market stress, thin markets</td><td>Signal to APs to redeem units</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s5mgmt"><h3>ETF Management Styles — The 2025 Reality</h3>
+  <p>The assumption that "ETFs = passive, mutual funds = active" is <strong>completely outdated as of 2025</strong>. Canada's ETF market offers every management style:</p>
+  <div class="tw"><table>
+    <tr><th>ETF Style</th><th>Objective</th><th>Typical MER</th><th>Canadian Examples</th></tr>
+    <tr><td><strong>Passive Index</strong></td><td>Track a market index as closely as possible; minimize tracking error</td><td>0.05–0.25%</td><td>iShares XIU (S&P/TSX 60), Vanguard VFV (S&P 500), BMO ZCN (TSX Composite)</td></tr>
+    <tr><td><strong>Actively Managed</strong></td><td>Outperform a benchmark through manager security selection</td><td>0.50–1.50%</td><td>Fidelity Active Canadian Equity ETF, Dynamic Active ETFs</td></tr>
+    <tr><td><strong>Smart Beta / Factor</strong></td><td>Rules-based selection on factors: value, quality, low volatility, momentum, dividend yield</td><td>0.25–0.65%</td><td>iShares XDIV (Dividend), BMO ZLB (Low Volatility), CI QCAD (Quality)</td></tr>
+    <tr><td><strong>Covered Call / Options Income</strong></td><td>Holds equities and sells call options for enhanced income yield; sacrifices upside potential</td><td>0.60–0.90%</td><td>Global X QYLD (Nasdaq Covered Call), Hamilton Financials Income ETF (HFIN)</td></tr>
+    <tr><td><strong>Leveraged</strong></td><td>Amplify daily returns 2× or 3×. Short-term tactical only.</td><td>0.90–1.50%</td><td>Horizons HQU (2× US Tech), BetaPro 2× Bull S&P 500</td></tr>
+    <tr><td><strong>Inverse</strong></td><td>Return opposite of daily benchmark. Hedging or bearish tactical positions.</td><td>1.00–1.50%</td><td>Horizons HXD (2× Inverse TSX), BetaPro Inverse ETFs</td></tr>
+    <tr><td><strong>Cryptocurrency ETFs</strong></td><td>Exposure to Bitcoin/Ethereum within a regulated ETF structure. Canada launched the world's first Bitcoin ETF in February 2021.</td><td>0.65–1.25%</td><td>Purpose Bitcoin ETF (BTCC), CI Galaxy Bitcoin ETF (BTCX), Fidelity Advantage Bitcoin ETF (FBTC)</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s5lev"><h3>Leveraged ETFs — Volatility Decay (Beta Decay)</h3>
+  <p>Leveraged ETFs target <strong>a multiple of the DAILY return</strong> of a benchmark — NOT the long-term compounded return. This daily resetting creates volatility decay (also called beta decay or the compounding drag of leverage).</p>
+  <div class="mb">
+    <div class="mfl">Volatility Decay — Why 2× ETFs Don't Deliver 2× Long-Term Returns</div>
+    <div class="mw">
+      <div class="ms"><div class="msn">1</div><div class="mst">Start: Index = $100, 2× ETF = $100</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst"><strong>Day 1: Index falls 10%</strong> → Index: $90.00. 2× ETF falls 20% → <strong style="color:#ff8a8a">$80.00</strong></div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst"><strong>Day 2: Index rises 11.11%</strong> (recovering to $100) → Index: $100.00. 2× ETF rises 22.22% → $80 × 1.2222 = <strong style="color:#ff8a8a">$97.78</strong></div></div>
+      <div class="mr">Index: 0% return over 2 days. 2× Leveraged ETF: −2.22%. Despite using leverage, the ETF LOST money while the index broke even. The more volatile the period, the worse the decay. This is why leveraged ETFs are designed for SHORT-TERM (days) tactical trades only — never buy-and-hold investments.</div>
+    </div>
+  </div>
+  <div class="co co-rule">
+    <div class="cl">🔴 LEVERAGED/INVERSE ETFs — SUITABILITY REQUIREMENTS</div>
+    <p>CIRO and CSA require that leveraged and inverse ETFs be appropriate only for: (1) Sophisticated investors with thorough understanding of daily resetting and volatility decay; (2) Short-term tactical positions — not core long-term holdings; (3) Clients who understand the risk of rapid, potentially total loss of capital. Recommending a leveraged ETF as a "core retirement holding" to a conservative investor is a serious suitability violation.</p>
+  </div>
+  </div>
+
+  <div class="sub" id="s5vs"><h3>ETF vs. Mutual Fund — Complete Comparison</h3>
+  <div class="tw"><table>
+    <tr><th>Feature</th><th>ETF</th><th>Open-End Mutual Fund</th></tr>
+    <tr><td><strong>Trading</strong></td><td>Intraday on exchange — prices fluctuate second-by-second during market hours; limit orders, stop-loss orders available</td><td>Once daily at end-of-day NAVPS — all orders at the same unknown-in-advance price</td></tr>
+    <tr><td><strong>Price vs. NAV</strong></td><td>Market price (typically small premium/discount to NAV)</td><td>Always exactly at NAVPS — no premium or discount possible</td></tr>
+    <tr><td><strong>Minimum investment</strong></td><td>One share or less (fractional shares at many brokers). No dollar minimum.</td><td>Typically $500–$2,500 initial; some allow $25 via PAIP</td></tr>
+    <tr><td><strong>Ongoing costs (MER)</strong></td><td>Passive: 0.05–0.25%. Active: 0.5–1.5%. Generally far lower than mutual funds.</td><td>Retail Series A: 2.0–2.5%. Series F: 0.8–1.3%.</td></tr>
+    <tr><td><strong>Transaction costs</strong></td><td>Trading commission per trade (often $0 at discount brokers now); bid-ask spread</td><td>No commission for no-load; DSC banned for new purchases June 2022</td></tr>
+    <tr><td><strong>Tax efficiency</strong></td><td>High — in-kind creation/redemption rarely triggers capital gains at fund level; passive ETFs especially efficient</td><td>Lower — redemptions may force security sales, distributing capital gains to all remaining holders</td></tr>
+    <tr><td><strong>Transparency</strong></td><td>Most ETFs disclose full holdings daily; iNAV every 15 seconds</td><td>Holdings disclosed quarterly or semi-annually with a lag</td></tr>
+    <tr><td><strong>Automatic investing</strong></td><td>Manual order placement each time (some platforms offer auto ETF purchases)</td><td>Pre-Authorized Investment Plans (PAIP) — seamless automatic monthly contributions; major practical advantage for regular savers and dollar-cost averaging</td></tr>
+    <tr><td><strong>Short selling &amp; options</strong></td><td>Can be short sold; options available on major ETFs — enables hedging strategies</td><td>Cannot be short sold; no options market</td></tr>
+    <tr><td><strong>Best suited for</strong></td><td>Cost-focused investors; tax-sensitive non-registered accounts; investors needing intraday liquidity; lump-sum investors</td><td>Regular monthly savers via PAIP; full-service advisory clients; group retirement plans; clients without brokerage accounts</td></tr>
+  </table></div>
+  </div>
+</div>
+
+<!-- 5.6 FUND MANAGEMENT STYLES -->
+<div class="chapter" id="s6">
+  <div class="sh"><div class="sn">5.6</div><div class="st"><h2>Fund Management Styles</h2><div class="ss">ACTIVE vs. PASSIVE · SMART BETA / FACTOR · LEVERAGED · INVERSE</div></div></div>
+
+  <div class="sub" id="s6ap"><h3>Active vs. Passive Management — The Fundamental Debate</h3>
+  <div class="dg"><div class="dt">Active vs. Passive — Complete Framework</div><div class="g2">
+    <div class="gc"><h5>🎯 Active Management</h5><p>
+      <strong>Goal:</strong> Outperform a benchmark index (generate positive alpha) after all fees.<br><br>
+      <strong>Process:</strong> Portfolio manager conducts fundamental research, meets company management, analyzes financial statements, assesses macro conditions, makes individual security and timing decisions.<br><br>
+      <strong>Core assumption:</strong> Markets are not fully efficient; skilled managers can identify mispriced securities; cost of research is worth potential alpha.<br><br>
+      <strong>Cost:</strong> Higher MER (1.0–2.5%) for research team, analysts, higher turnover trading costs.<br><br>
+      <strong>Tax:</strong> Higher portfolio turnover → more capital gains realizations → more T3 distributions → less tax-efficient in non-registered accounts.<br><br>
+      <strong>Evidence:</strong> SPIVA reports consistently show 80–90% of active equity managers underperform their benchmark after fees over 10 years. Sustained outperformance is rare and difficult to predict in advance.
+    </p></div>
+    <div class="gc"><h5>📊 Passive Management (Index Investing)</h5><p>
+      <strong>Goal:</strong> Match a benchmark index as closely as possible. Minimize tracking error — NOT maximize return.<br><br>
+      <strong>Process:</strong> Buy and hold all (or representative sample) of the index constituents in the same weights. Trade only when the index changes composition or cash flows require rebalancing.<br><br>
+      <strong>Core assumption:</strong> Markets are largely efficient; most active management fails after fees; structural cost advantage of passive investing compounds over time.<br><br>
+      <strong>Cost:</strong> Very low MER (0.05–0.25%). Minimal trading. Minimal research costs.<br><br>
+      <strong>Tax:</strong> Minimal turnover → rare capital gains distributions → highly tax-efficient.<br><br>
+      <strong>Tracking Error:</strong> The standard deviation of (fund return − benchmark return). Lower = better replication. Main causes: MER drag (biggest), cash drag, rebalancing costs, dividend timing.
+    </p></div>
+  </div></div>
+  </div>
+
+  <div class="sub" id="s6smart"><h3>Smart Beta and Factor Investing</h3>
+  <p><strong>Smart Beta</strong> (rules-based or factor investing) sits between passive and active. It uses pre-defined, systematic, quantitative criteria to select and weight securities — delivering factor exposure at lower cost than discretionary active management.</p>
+  <div class="tw"><table>
+    <tr><th>Factor</th><th>Definition</th><th>Academic Origin</th><th>Explanation</th><th>Canadian ETF Example</th></tr>
+    <tr><td><strong>Value</strong></td><td>Low P/B, P/E, P/CF stocks outperform growth stocks over the long run</td><td>Fama-French 1992</td><td>Value companies carry distress risk — premium compensates</td><td>iShares MSCI Canada Value Factor</td></tr>
+    <tr><td><strong>Size (Small-Cap)</strong></td><td>Small-cap stocks outperform large-caps over long periods despite higher volatility</td><td>Fama-French 1992</td><td>Less analyst coverage, higher risk, less liquidity → higher expected return</td><td>iShares XCS (S&P/TSX SmallCap)</td></tr>
+    <tr><td><strong>Momentum</strong></td><td>Recent price winners continue outperforming (and losers underperforming) for 3–12 months</td><td>Jegadeesh &amp; Titman 1993</td><td>Behavioural: investors underreact to new information; herding behaviour creates trends</td><td>iShares MTUM (US Momentum)</td></tr>
+    <tr><td><strong>Low Volatility</strong></td><td>Stocks with lower historical volatility deliver better risk-adjusted returns — contradicts pure CAPM</td><td>Black 1972; Blitz &amp; Vliet 2007</td><td>Institutional constraints force benchmark-hugging; "boring" low-vol stocks are systematically underowned</td><td>BMO ZLB (Low Volatility Canadian)</td></tr>
+    <tr><td><strong>Quality</strong></td><td>High-ROE, low-debt, stable-earnings, strong-FCF companies outperform over time</td><td>Novy-Marx 2013</td><td>Investors undervalue earnings quality and financial stability; quality is systematically underpriced</td><td>CI QCAD (Quality Canadian)</td></tr>
+    <tr><td><strong>Dividend Yield</strong></td><td>High-yield stocks provide excess total returns, especially after DTC in Canada</td><td>Multiple studies</td><td>Dividend discipline enforces financial discipline; income investors systematically underpay for income</td><td>iShares XDIV (Canadian Dividend)</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s6li"><h3>Leveraged and Inverse Funds</h3>
+  <div class="tw"><table>
+    <tr><th>Style</th><th>Daily Target</th><th>Primary Use</th><th>Holding Period</th><th>Who Should Use</th></tr>
+    <tr><td><strong>2× Leveraged</strong></td><td>+2× daily benchmark return</td><td>Amplify short-term bullish conviction</td><td>Days to 1–2 weeks maximum</td><td>Sophisticated traders; never as core holding</td></tr>
+    <tr><td><strong>3× Leveraged</strong></td><td>+3× daily benchmark return</td><td>Maximum amplification of directional bet</td><td>Days only</td><td>Professional traders; extreme risk of rapid loss</td></tr>
+    <tr><td><strong>Inverse (−1×)</strong></td><td>−1× daily benchmark (profits when market falls)</td><td>Hedging existing long portfolio; bearish tactical bet</td><td>Days to a few weeks</td><td>Investors with long exposure seeking short-term protection</td></tr>
+    <tr><td><strong>−2× Inverse</strong></td><td>−2× daily benchmark</td><td>Double hedge or aggressive bearish position</td><td>Days only</td><td>Professional traders and institutional hedgers only</td></tr>
+  </table></div>
+  </div>
+</div>
+
+<!-- 5.7 INFORMATION SOURCES -->
+<div class="chapter" id="s7">
+  <div class="sh"><div class="sn">5.7</div><div class="st"><h2>Information Sources</h2><div class="ss">FUND FACTS · ETF FACTS · RIGHT OF WITHDRAWAL · SEDAR+ · MRFP</div></div></div>
+
+  <div class="sub" id="s7ff"><h3>The Fund Facts Document — Complete Content Breakdown</h3>
+  <p>The <strong>Fund Facts</strong> is the primary pre-sale disclosure document for Canadian retail mutual funds, mandated under National Instrument 81-101. It must be <mark>provided before or at the time of purchase</mark>.</p>
+  <div class="tw"><table>
+    <tr><th>Section</th><th>Content</th><th>Investment Significance</th></tr>
+    <tr><td><strong>Quick Facts Box</strong></td><td>Fund name and code, manager, inception date, total net assets, currency, distributions, minimum investment, Portfolio Turnover Rate (PTR)</td><td>PTR shows trading activity. High PTR = high TER (trading costs) + frequent capital gains distributions — tax-inefficient in non-registered accounts.</td></tr>
+    <tr><td><strong>What Does the Fund Invest In?</strong></td><td>Investment objectives in plain language; top 10 holdings with % weights; portfolio breakdown by asset class, geography, sector; investment strategies</td><td>Verify fund holds what it says. Check concentration in top holdings. Compare stated objective to actual portfolio composition.</td></tr>
+    <tr><td><strong>Risk Level</strong></td><td>Mandatory 5-category risk scale (Low/Low-to-Medium/Medium/Medium-to-High/High) displayed graphically. Calculated from 10-year standard deviation methodology.</td><td>Regulatory standardized comparison across ALL Canadian funds. RR must match risk level to client's KYC risk profile.</td></tr>
+    <tr><td><strong>How Has the Fund Performed?</strong></td><td>Year-by-year returns for past 10 calendar years (bar chart); best and worst 3-month, 6-month, 1-year, 3-year, 10-year returns; average return since inception</td><td>Historical context. Mandatory disclaimer: "Past performance may not be repeated." Look for consistency across cycles — not just recent peak performance.</td></tr>
+    <tr><td><strong>Are There Any Guarantees?</strong></td><td>Explicit statement: the fund is NOT guaranteed by CDIC, any government insurer, or the manager. "Unlike bank accounts or GICs, mutual funds are not covered by the Canada Deposit Insurance Corporation or any other government deposit insurer."</td><td>Critical investor protection disclosure. RR must ensure client understands there is NO capital guarantee.</td></tr>
+    <tr><td><strong>How Much Does It Cost?</strong></td><td>All sales charges (FEL, DSC if applicable to legacy); ongoing fund expenses (MER as %); dollar cost example on $1,000 over 1/3/5/10 years; trailing commission rate disclosed</td><td>Full cost in one place. The dollar cost table converts abstract percentages to concrete amounts clients can understand.</td></tr>
+    <tr><td><strong>What If I Change My Mind?</strong></td><td>Right of withdrawal (2 business days after receiving Fund Facts); right to rescind if Fund Facts wasn't delivered before purchase</td><td>Investor protection right. RR must document Fund Facts delivery. Client confirmation of receipt should be obtained.</td></tr>
+    <tr><td><strong>For More Information</strong></td><td>Simplified prospectus availability; financial statements access; fund manager contact information</td><td>Directs investors to deeper information. Fund Facts is the summary — full prospectus contains complete details.</td></tr>
+  </table></div>
+
+  <h4>Right of Withdrawal — Critical Investor Protection</h4>
+  <ul class="sl2">
+    <li><strong>2 business day right:</strong> Investors can rescind a purchase within 2 business days of receiving the Fund Facts — no penalty. This gives clients time to review disclosure and reconsider.</li>
+    <li><strong>Right of rescission:</strong> If Fund Facts was NOT provided before purchase (regulatory violation), investor may have a longer rescission right.</li>
+    <li><strong>RR obligation:</strong> Deliver Fund Facts to every investor before or at time of purchase. Electronic delivery permitted with client consent. Document delivery date and method.</li>
+  </ul>
+  </div>
+
+  <div class="sub" id="s7etff"><h3>ETF Facts Sheet</h3>
+  <div class="tw"><table>
+    <tr><th>Feature</th><th>Fund Facts (Mutual Funds)</th><th>ETF Facts (ETFs)</th></tr>
+    <tr><td>Delivery requirement</td><td>Before or at time of purchase</td><td>Within 2 business days of purchase; investor can request before. Electronic delivery permitted.</td></tr>
+    <tr><td>Trading section</td><td>Not applicable</td><td>Dedicated section: intraday trading, market price vs. NAV, bid-ask spread, how to place orders on exchange</td></tr>
+    <tr><td>Pricing information</td><td>Shows daily NAVPS</td><td>Shows both market price AND NAV; explains premium/discount and arbitrage concept</td></tr>
+    <tr><td>Cost disclosure</td><td>MER, sales charges, trailing commission</td><td>MER, trading commissions, bid-ask spread — all three cost components explained</td></tr>
+    <tr><td>Risk rating</td><td>Same 5-category standardized scale</td><td>Same 5-category standardized scale using identical 10-year standard deviation methodology</td></tr>
+    <tr><td>Withdrawal right</td><td>2 business days after receiving Fund Facts</td><td>2 business days after receiving ETF Facts</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s7other"><h3>Other Key Information Sources</h3>
+  <div class="tw"><table>
+    <tr><th>Source</th><th>Content</th><th>Access</th></tr>
+    <tr><td><strong>Simplified Prospectus</strong></td><td>Full legal disclosure for mutual funds — all series, investment objectives, risks, fees, tax treatment, all fund participants, legal structure details. More comprehensive than Fund Facts.</td><td>SEDAR+ (sedarplus.ca); fund company website; free on request from dealer</td></tr>
+    <tr><td><strong>MRFP (Management Report of Fund Performance)</strong></td><td>Annual and semi-annual management commentary — performance review, market conditions, portfolio changes, related party transactions. Required under NI 81-106.</td><td>SEDAR+; mailed to unitholders who request paper; fund company website</td></tr>
+    <tr><td><strong>Annual Financial Statements</strong></td><td>Audited annual statements — complete portfolio holdings at year-end, NAV reconciliation, distributions paid, management fees charged, TER</td><td>SEDAR+</td></tr>
+    <tr><td><strong>SEDAR+ (sedarplus.ca)</strong></td><td>All regulatory filings: prospectuses, Fund Facts, ETF Facts, financial statements, MRFPs, material change reports. Central Canadian securities filing system.</td><td>Free public access at sedarplus.ca</td></tr>
+    <tr><td><strong>Morningstar Canada</strong></td><td>Third-party fund analysis, 1–5 star ratings (risk-adjusted returns), category rankings, manager information, fee comparisons, fund screener tools</td><td>morningstar.ca (partial free; subscription for full analytics)</td></tr>
+    <tr><td><strong>IFIC (Investment Funds Institute of Canada)</strong></td><td>Industry association — aggregate fund flow data, industry statistics, regulatory submissions, market research</td><td>ific.ca</td></tr>
+  </table></div>
+  </div>
+</div>
+
+<!-- 5.8 PERFORMANCE EVALUATION -->
+<div class="chapter" id="s8">
+  <div class="sh"><div class="sn">5.8</div><div class="st"><h2>Measuring and Evaluating Fund Performance</h2><div class="ss">HPR · MONEY-WEIGHTED RETURN (CRM) · TIME-WEIGHTED RETURN · BENCHMARKS · PEER GROUPS</div></div></div>
+
+  <p>The RSE exam tests three distinct return calculation methods. <strong>Master when to use each and how they differ</strong> — particularly the MWRR (client's actual experience, CRM-mandated for reporting) vs. TWRR (manager's investment performance, used for fund comparison).</p>
+
+  <div class="sub" id="s8hpr"><h3>1. Holding Period Return (HPR)</h3>
+  <p>The simplest return measure — total return from an investment for a specific period including both price change and any income received.</p>
+  <div class="mb">
+    <div class="mfl">HPR Formula and Worked Example</div>
+    <div class="mf">HPR = (Ending Value − Beginning Value + Income Received) ÷ Beginning Value × 100</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12.5px;margin-bottom:9px"><strong style="color:var(--gold-light)">Example:</strong> Investor buys 1,000 units at $20.00. Receives $0.50/unit distribution. Year-end NAVPS = $22.50.</p>
+      <div class="ms"><div class="msn">1</div><div class="mst">Beginning value = 1,000 × $20.00 = $20,000</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst">Ending value = 1,000 × $22.50 = $22,500</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst">Income received = 1,000 × $0.50 = $500</div></div>
+      <div class="ms"><div class="msn">4</div><div class="mst">HPR = ($22,500 − $20,000 + $500) ÷ $20,000 × 100 = $3,000 ÷ $20,000 = <strong style="color:var(--gold-light)">15.0%</strong></div></div>
+      <div class="mr">15.0% total return: Price return = 12.5% ($22.50/$20.00 − 1) + Income return = 2.5% ($500/$20,000) = 15.0%</div>
+    </div>
+  </div>
+  <p>HPR can be annualized: <strong>Annualized HPR = (1 + HPR)^(1/years) − 1</strong>. A 15% HPR over 6 months → annualized = (1.15)² − 1 = 32.25%.</p>
+  </div>
+
+  <div class="sub" id="s8mwr"><h3>2. Money-Weighted Rate of Return (MWRR / IRR)</h3>
+  <p>The <strong>MWRR</strong> — identical to the Internal Rate of Return (IRR) — is the single discount rate that equates the present value of all cash outflows (investments) with all cash inflows (withdrawals + ending value). It explicitly accounts for the <mark>timing and amount of every cash flow</mark>.</p>
+  <h4>Why MWRR Reflects the INVESTOR's Actual Experience</h4>
+  <p>MWRR is heavily influenced by WHEN the investor moves money in and out. Large contributions before a market decline drag MWRR down; large contributions before a rally boost it. This makes MWRR perfect for measuring the actual return experienced by a specific investor — but useless for comparing managers across different investors with different cash flow timing.</p>
+  <div class="mb">
+    <div class="mfl">Money-Weighted Return — Worked Example</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12.5px;margin-bottom:9px"><strong style="color:var(--gold-light)">Scenario:</strong> Three cash flows over one year:</p>
+      <div class="ms"><div class="msn">1</div><div class="mst"><strong>Jan 1:</strong> Invest $10,000 (cash outflow: −$10,000)</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst"><strong>Jul 1 (6 months in):</strong> Add $5,000 more (cash outflow: −$5,000)</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst"><strong>Dec 31:</strong> Portfolio worth $18,000 (cash inflow: +$18,000 at liquidation)</div></div>
+      <div class="ms"><div class="msn">4</div><div class="mst">MWRR solves for r in: −$10,000 − $5,000/(1+r)^0.5 + $18,000/(1+r)^1 = 0<br>Iteratively solving: r ≈ <strong style="color:var(--gold-light)">14.5% annualized</strong><br><em>(In practice: use financial calculator or Excel IRR function)</em></div></div>
+      <div class="mr">MWRR ≈ 14.5% — the actual dollar-weighted return for THIS investor with THESE specific cash flow timings. Another investor who invested $15,000 all on Jan 1 would have a different MWRR from the same fund.</div>
+    </div>
+  </div>
+  <div class="co co-rule">
+    <div class="cl">🔴 CRM MANDATE — MWRR IS REQUIRED FOR CLIENT REPORTING</div>
+    <p>Under <strong>Canada's Client Relationship Model (CRM)</strong> administered by CIRO, all investment dealers MUST report annual performance to retail clients using the <strong>Money-Weighted Rate of Return (MWRR)</strong>. This ensures clients see their actual wealth accumulation experience — accounting for when they added and withdrew money. This must appear in the annual performance report sent to clients each year.</p>
+  </div>
+  </div>
+
+  <div class="sub" id="s8twr"><h3>3. Time-Weighted Rate of Return (TWRR)</h3>
+  <p>The <strong>TWRR</strong> eliminates the distorting effect of cash flow timing by calculating the return for each sub-period between cash flows and geometrically linking the sub-period returns. It isolates the portfolio manager's investment decisions from the investor's deposit/withdrawal timing.</p>
+  <div class="mb">
+    <div class="mfl">Time-Weighted Return — Formula and Worked Example</div>
+    <div class="mf">TWRR = [(1+r₁) × (1+r₂) × ... × (1+rₙ)]^(1/total years) − 1</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12.5px;margin-bottom:9px"><strong style="color:var(--gold-light)">Scenario:</strong> Fund over 3 sub-periods with cash flows between them.</p>
+      <div class="ms"><div class="msn">1</div><div class="mst"><strong>Sub-period 1 (Q1):</strong> Fund $10,000 → $11,000. Sub-period return = +10.0%</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst"><strong>Cash flow:</strong> Investor adds $5,000. Fund now $16,000.</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst"><strong>Sub-period 2 (Q2):</strong> Fund $16,000 → $14,400. Sub-period return = −10.0%</div></div>
+      <div class="ms"><div class="msn">4</div><div class="mst"><strong>Sub-period 3 (H2):</strong> Fund $14,400 → $17,280. Return = +20.0%</div></div>
+      <div class="ms"><div class="msn">5</div><div class="mst">TWRR = [(1.10) × (0.90) × (1.20)]^(1/1yr) − 1 = [1.188]¹ − 1 = <strong style="color:var(--gold-light)">+18.8%</strong></div></div>
+      <div class="ms"><div class="msn">6</div><div class="mst">Investor's MWRR would be much lower — they added $5,000 just before the 10% Q2 decline, hurting dollar-weighted return. TWRR (18.8%) shows what the manager earned on each dollar regardless of timing.</div></div>
+      <div class="mr">TWRR = 18.8% measures pure manager performance. MWRR &lt; TWRR here because large cash inflow occurred before a loss period.</div>
+    </div>
+  </div>
+  <h4>MWRR vs. TWRR — Master Decision Table</h4>
+  <div class="tw"><table>
+    <tr><th>Question Being Answered</th><th>Use</th><th>Why</th></tr>
+    <tr><td>"How much did MY money actually grow?" / "What return did this client's account achieve?"</td><td><strong>MWRR</strong></td><td>Accounts for actual deposits and withdrawals. Mandatory for CRM annual performance reporting to investors.</td></tr>
+    <tr><td>"How skilled is the portfolio manager?" / "How does this fund compare to others?"</td><td><strong>TWRR</strong></td><td>Eliminates cash flow timing distortion. Used for all fund performance reporting, GIPS compliance, Morningstar ratings, institutional benchmarking.</td></tr>
+    <tr><td>"What was total return for a period with no cash flows?"</td><td><strong>HPR</strong></td><td>Simplest calculation. Works perfectly for single-period, no-cash-flow scenarios.</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s8bench"><h3>Comparing Return — Benchmarks and Peer Groups</h3>
+  <h4>Seven Benchmark Criteria (The RSE Syllabus List)</h4>
+  <div class="tw"><table>
+    <tr><th>Criterion</th><th>What It Requires</th><th>Example of Failure</th></tr>
+    <tr><td><strong>1. Specified in Advance</strong></td><td>Benchmark established BEFORE the measurement period begins — not selected after the fact</td><td>Manager picks a benchmark post-period that happened to underperform their fund</td></tr>
+    <tr><td><strong>2. Appropriate</strong></td><td>Must match the fund's actual investment universe, style, and risk profile</td><td>Benchmarking a Canadian small-cap fund against the S&P/TSX 60 (large caps)</td></tr>
+    <tr><td><strong>3. Measurable</strong></td><td>Return calculable from publicly available data — anyone can verify it independently</td><td>Private, proprietary index with no public data or independent calculation</td></tr>
+    <tr><td><strong>4. Unambiguous</strong></td><td>Composition, weighting methodology, and calculation methodology clearly defined</td><td>"Best-performing assets in our category" — completely undefined and manipulable</td></tr>
+    <tr><td><strong>5. Reflective (Representative)</strong></td><td>Accurately represents the investment universe and opportunity set available to the manager</td><td>Index that includes securities the fund's mandate prohibits buying</td></tr>
+    <tr><td><strong>6. Accountable</strong></td><td>Manager accepts the benchmark as a fair representation of their performance opportunity</td><td>Manager accepts benchmark when outperforming, disputes it when underperforming</td></tr>
+    <tr><td><strong>7. Investable</strong></td><td>Investors should be able to replicate or at least invest in an ETF/index fund tracking it</td><td>Custom benchmark with no replicable equivalent available to investors</td></tr>
+  </table></div>
+  <h4>Peer Group Comparison — Key Limitations</h4>
+  <ul class="sl2">
+    <li><strong>Survivorship bias:</strong> Poorly performing funds are closed or merged — disappearing from the database. Historical category averages look better than reality because worst performers are excluded. A fund that underperformed may have been merged away, inflating the category average used for comparison.</li>
+    <li><strong>Style drift:</strong> Funds may change investment approach over time, making category comparisons imprecise and less meaningful.</li>
+    <li><strong>Single-year rankings are highly noisy:</strong> Being top-quartile for one year has minimal predictive value for future performance. Consistency over multiple market cycles matters far more than short-term rankings.</li>
+    <li><strong>Category definitions vary by provider:</strong> Morningstar, IFIC, and others may categorize the same fund differently, producing different peer group results.</li>
+  </ul>
+  </div>
+</div>
+
+<!-- 5.9 VALUATION -->
+<div class="chapter" id="s9">
+  <div class="sh"><div class="sn">5.9</div><div class="st"><h2>Valuation Methods &amp; Performance Measurement</h2><div class="ss">NAVPS CALCULATIONS · UNITS ISSUED · STANDARD PERFORMANCE DATA · CALCULATORS</div></div></div>
+
+  <div class="sub" id="s9navps"><h3>NAVPS — Complete Multi-Step Calculation Examples</h3>
+  <div class="mb">
+    <div class="mfl">Full NAVPS Calculation — All Asset and Liability Components</div>
+    <div class="mf">NAVPS = (Total Assets − Total Liabilities) ÷ Units Outstanding</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12.5px;margin-bottom:9px"><strong style="color:var(--gold-light)">Portfolio at Market Close:</strong></p>
+      <div class="ms"><div class="msn">1</div><div class="mst"><strong>Assets:</strong> 4,000 shares Royal Bank @ $142.50 = $570,000; Bond ETF 10,000 units @ $22.10 = $221,000; US cash $25,000 × 1.38 CAD/USD = $34,500; Accrued dividends = $8,400; Securities sold pending settlement = $42,000. <strong>Total Assets = $875,900</strong></div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst"><strong>Liabilities:</strong> Securities purchased pending settlement = $31,500; Mgmt fee accrual = $2,100; Operating expenses accrual = $650; HST payable = $320. <strong>Total Liabilities = $34,570</strong></div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst">Net Assets = $875,900 − $34,570 = <strong style="color:var(--gold-light)">$841,330</strong></div></div>
+      <div class="ms"><div class="msn">4</div><div class="mst">Units Outstanding = 50,000 units</div></div>
+      <div class="ms"><div class="msn">5</div><div class="mst">NAVPS = $841,330 ÷ 50,000 = <strong style="color:var(--gold-light)">$16.8266 per unit</strong></div></div>
+      <div class="mr">All buy/sell orders received before 4:00 PM ET on this business day are processed at NAVPS = $16.8266</div>
+    </div>
+  </div>
+
+  <h4>Units Issued on Purchase — Three Scenarios</h4>
+  <div class="mb">
+    <div class="mfl">Units Issued = Investment Amount ÷ NAVPS</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12.5px;margin-bottom:8px"><strong style="color:var(--gold-light)">Scenario A — No Load:</strong> $20,000 investment, NAVPS = $16.8266</p>
+      <div class="ms"><div class="msn">1</div><div class="mst">Units = $20,000 ÷ $16.8266 = <strong style="color:var(--gold-light)">1,188.62 units</strong></div></div>
+      <p style="color:rgba(255,255,255,.7);font-size:12.5px;margin:10px 0 8px"><strong style="color:var(--gold-light)">Scenario B — 2% Front-End Load:</strong> Same investment, 2% FEL</p>
+      <div class="ms"><div class="msn">1</div><div class="mst">Net amount = $20,000 × (1 − 0.02) = $19,600</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst">Units = $19,600 ÷ $16.8266 = <strong style="color:var(--gold-light)">1,164.77 units</strong></div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst">Front-end load cost = 1,188.62 − 1,164.77 = 23.85 fewer units = <strong style="color:#ff8a8a">$401.33 in investment foregone</strong></div></div>
+      <p style="color:rgba(255,255,255,.7);font-size:12.5px;margin:10px 0 8px"><strong style="color:var(--gold-light)">Redemption Proceeds:</strong> 800 units at NAVPS = $24.35 (no-load)</p>
+      <div class="ms"><div class="msn">1</div><div class="mst">Proceeds = 800 × $24.35 = <strong style="color:var(--gold-light)">$19,480</strong></div></div>
+      <div class="mr">Note: FEL reduces units issued at purchase. Redemption proceeds = units × current NAVPS (no further deduction for no-load funds).</div>
+    </div>
+  </div>
+
+  <h4>Standard Performance Data Requirements</h4>
+  <p>Under NI 81-102 and NI 81-101, funds must disclose standardized performance data enabling apples-to-apples comparison:</p>
+  <ul class="sl2">
+    <li><strong>Year-by-year calendar returns:</strong> Previous 10 years (or since inception if less) shown as bar chart in Fund Facts</li>
+    <li><strong>Best and worst returns:</strong> Best/worst 3-month, 6-month, 1-year, 3-year, 10-year historical returns over the fund's entire life</li>
+    <li><strong>Compound annual returns:</strong> 1-year, 3-year, 5-year, 10-year, and since-inception annualized returns</li>
+    <li><strong>Total return definition:</strong> Price appreciation + all income distributions received, assuming distributions were REINVESTED at the distribution date price. Calculated before taxes.</li>
+  </ul>
+  <div class="co co-rule">
+    <div class="cl">🔴 MANDATORY DISCLAIMER — REQUIRED ON ALL PERFORMANCE DISCLOSURE</div>
+    <p>ALL fund performance disclosure in Canada must be accompanied by: <strong>"Past performance may not be repeated."</strong> This is a regulatory requirement under NI 81-102 and NI 81-101 — not optional. It applies to Fund Facts, advertisements, marketing materials, account statements, and any investor communication showing historical fund performance.</p>
+  </div>
+  </div>
+
+  <div class="sub" id="s9calc"><h3>Interactive Calculators</h3>
+  <div class="cb"><h4>🧮 NAVPS Calculator</h4>
+  <div class="cg">
+    <div class="cf"><label>Portfolio Market Value ($)</label><input type="number" id="n1" value="875900" step="1000"></div>
+    <div class="cf"><label>Accrued Income &amp; Other Assets ($)</label><input type="number" id="n2" value="0" step="100"></div>
+    <div class="cf"><label>Total Liabilities ($)</label><input type="number" id="n3" value="34570" step="100"></div>
+    <div class="cf"><label>Units Outstanding</label><input type="number" id="n4" value="50000" step="100"></div>
+    <div class="cf"><label>Investment Amount to Invest ($)</label><input type="number" id="n5" value="20000" step="100"></div>
+    <div class="cf"><label>Front-End Load (%, 0 if none)</label><input type="number" id="n6" value="0" step="0.5"></div>
+  </div>
+  <button class="cbtn" onclick="calcN()">Calculate NAVPS &amp; Units Issued</button>
+  <div class="cr" id="cr_n">Results will appear here…</div></div>
+
+  <div class="cb"><h4>🧮 Holding Period Return (HPR) Calculator</h4>
+  <div class="cg">
+    <div class="cf"><label>Beginning Value ($)</label><input type="number" id="h1" value="20000" step="100"></div>
+    <div class="cf"><label>Ending Value ($)</label><input type="number" id="h2" value="22500" step="100"></div>
+    <div class="cf"><label>Income / Distributions Received ($)</label><input type="number" id="h3" value="500" step="50"></div>
+    <div class="cf"><label>Holding Period (years, e.g. 0.5 = 6 months)</label><input type="number" id="h4" value="1" step="0.25"></div>
+  </div>
+  <button class="cbtn" onclick="calcH()">Calculate HPR &amp; Annualized</button>
+  <div class="cr" id="cr_h">Results will appear here…</div></div>
+
+  <div class="cb"><h4>🧮 Time-Weighted Return (TWRR) Calculator — Up to 4 Sub-periods</h4>
+  <p style="font-size:13.5px;color:var(--muted);margin-bottom:11px">Enter each sub-period return. TWRR geometrically links them, eliminating cash flow timing distortion to measure manager performance.</p>
+  <div class="cg">
+    <div class="cf"><label>Sub-period 1 Return (%)</label><input type="number" id="t1" value="10" step="0.1"></div>
+    <div class="cf"><label>Sub-period 2 Return (%)</label><input type="number" id="t2" value="-10" step="0.1"></div>
+    <div class="cf"><label>Sub-period 3 Return (%)</label><input type="number" id="t3" value="20" step="0.1"></div>
+    <div class="cf"><label>Sub-period 4 Return (% — enter 0 if unused)</label><input type="number" id="t4" value="0" step="0.1"></div>
+    <div class="cf"><label>Total Period (years)</label><input type="number" id="t5" value="1" step="0.25"></div>
+  </div>
+  <button class="cbtn" onclick="calcT()">Calculate TWRR</button>
+  <div class="cr" id="cr_t">Results will appear here…</div></div>
+
+  <div class="cb"><h4>🧮 Long-Term Fee Impact Calculator</h4>
+  <div class="cg">
+    <div class="cf"><label>Initial Investment ($)</label><input type="number" id="f1" value="100000" step="1000"></div>
+    <div class="cf"><label>Gross Annual Return (%)</label><input type="number" id="f2" value="8" step="0.1"></div>
+    <div class="cf"><label>Fund A MER (%, e.g. 0.2 for ETF)</label><input type="number" id="f3" value="0.2" step="0.1"></div>
+    <div class="cf"><label>Fund B MER (%, e.g. 2.3 for mutual fund)</label><input type="number" id="f4" value="2.3" step="0.1"></div>
+    <div class="cf"><label>Investment Period (years)</label><input type="number" id="f5" value="25" step="1"></div>
+  </div>
+  <button class="cbtn" onclick="calcF()">Calculate Fee Impact</button>
+  <div class="cr" id="cr_f">Results will appear here…</div></div>
+  </div>
+</div>
+
+<!-- QUIZ SECTION -->
+<div id="qs">
+  <div class="qh">Practice Exam — 50 Questions</div>
+  <div class="qsub">ELEMENT 5 PART 1: MANAGED PRODUCTS · COMPLETE SYLLABUS COVERAGE · EXAM-LEVEL</div>
+  <div class="qstats">
+    <div class="qstat"><span class="qv">50</span><span class="ql">Total</span></div>
+    <div class="qstat"><span class="qv" id="ac">0</span><span class="ql">Answered</span></div>
+    <div class="qstat"><span class="qv" id="cc">0</span><span class="ql">Correct</span></div>
+    <div class="qstat"><span class="qv" id="sp">—</span><span class="ql">Score</span></div>
+  </div>
+  <div class="qc">
+    <button class="btn1 btnP" onclick="revealAll()">Show All Answers</button>
+    <button class="btn1 btnO" onclick="resetQuiz()">Reset Quiz</button>
+  </div>
+  <div id="qb"></div>
+  <div class="qsp" id="qsp"><div class="qsv" id="fs">—</div><p>out of 50 correct</p></div>
+</div>
+
+</div></div>
+<div id="bt" onclick="window.scrollTo({top:0,behavior:'smooth'})" >↑</div>
+
+<script>
+function calcN(){
+  const p=+document.getElementById('n1').value,oa=+document.getElementById('n2').value,
+    l=+document.getElementById('n3').value,u=+document.getElementById('n4').value,
+    inv=+document.getElementById('n5').value,fel=+document.getElementById('n6').value/100;
+  const ta=p+oa,na=ta-l,navps=na/u,ni=inv*(1-fel)/navps,lc=inv*fel;
+  document.getElementById('cr_n').textContent=`Total Assets: ${(ta).toLocaleString()}\nTotal Liabilities: ${l.toLocaleString()}\nNet Assets: ${na.toLocaleString()}\nNAVPS = ${navps.toFixed(4)} per unit\n━━━\nFor ${inv.toLocaleString()} investment ({(fel*100).toFixed(1)}% FEL):\nNet invested = ${(inv*(1-fel)).toFixed(2)}\nUnits issued = ${ni.toFixed(4)}${fel>0?' | Load cost = $'+lc.toFixed(2):''}`;
+}
+function calcH(){
+  const b=+document.getElementById('h1').value,e=+document.getElementById('h2').value,
+    i=+document.getElementById('h3').value,y=+document.getElementById('h4').value;
+  const hpr=(e-b+i)/b*100,ann=(Math.pow(1+hpr/100,1/y)-1)*100;
+  document.getElementById('cr_h').textContent=`HPR = (${e} − ${b} + ${i}) ÷ ${b} = ${hpr.toFixed(2)}%\nPrice return: ${((e-b)/b*100).toFixed(2)}% | Income return: ${(i/b*100).toFixed(2)}%\nAnnualized over ${y} year(s): ${ann.toFixed(2)}%`;
+}
+function calcT(){
+  const r1=+document.getElementById('t1').value/100,r2=+document.getElementById('t2').value/100,
+    r3=+document.getElementById('t3').value/100,r4=+document.getElementById('t4').value/100,
+    y=+document.getElementById('t5').value;
+  const lk=(1+r1)*(1+r2)*(1+r3)*(r4!==0?(1+r4):1);
+  const twrr=(Math.pow(lk,1/y)-1)*100;
+  document.getElementById('cr_t').textContent=`Sub-period returns: ${(r1*100).toFixed(2)}%, ${(r2*100).toFixed(2)}%, ${(r3*100).toFixed(2)}%${r4!==0?', '+(r4*100).toFixed(2)+'%':''}\nLinked factor = ${lk.toFixed(6)}\nAnnualized TWRR = ${twrr.toFixed(2)}%\n→ Cash flow timing eliminated — measures pure manager performance.`;
+}
+function calcF(){
+  const inv=+document.getElementById('f1').value,g=+document.getElementById('f2').value/100,
+    m1=+document.getElementById('f3').value/100,m2=+document.getElementById('f4').value/100,
+    y=+document.getElementById('f5').value;
+  const va=inv*Math.pow(1+g-m1,y),vb=inv*Math.pow(1+g-m2,y);
+  document.getElementById('cr_f').textContent=`Fund A (${(m1*100).toFixed(2)}% MER, net ${((g-m1)*100).toFixed(2)}%/yr): ${va.toFixed(0)}\nFund B (${(m2*100).toFixed(2)}% MER, net ${((g-m2)*100).toFixed(2)}%/yr): ${vb.toFixed(0)}\nFee difference over ${y} years: ${(va-vb).toFixed(0)}\n(${((va-vb)/inv*100).toFixed(0)}% of initial investment lost to higher MER)`;
+}
+
+const Qs=[{n:1,d:"Easy",t:"5.1",q:`Which managed product type issues units and allows investors to redeem directly with the fund at NAVPS on any business day?`,o:['Closed-end fund (CEF)', 'Mutual fund trust', 'Mutual fund corporation', 'Pooled fund'],a:1,e:`A <strong>mutual fund trust</strong> issues units and allows daily purchase/redemption directly with the fund at NAVPS. Closed-end funds trade on an exchange at market prices; mutual fund corporations issue shares; pooled funds are not publicly available to retail investors.`},
+{n:2,d:"Easy",t:"5.9",q:`A mutual fund has total assets of $90M, total liabilities of $4M, and 8,000,000 units outstanding. What is the NAVPS?`,o:['$11.25', '$10.75', '$11.50', '$10.50'],a:1,e:`NAVPS = (Total Assets − Liabilities) ÷ Units = ($90M − $4M) ÷ 8,000,000 = $86M ÷ 8,000,000 = <strong>$10.75</strong>.`},
+{n:3,d:"Easy",t:"5.3",q:`The Management Expense Ratio (MER) of a mutual fund includes:`,o:["Only the portfolio manager's salary", 'Management fee + trailing commission + operating expenses + applicable taxes (HST)', 'Only the sales charge paid at purchase', "The fund's internal trading commissions for buying and selling securities"],a:1,e:`The <strong>MER</strong> includes: management fee + trailing commission + operating expenses + applicable taxes (HST). Portfolio trading commissions (TER) are NOT in the MER — they are separately disclosed.`},
+{n:4,d:"Easy",t:"5.3",q:`The DSC (Deferred Sales Charge) load structure for new Canadian mutual fund purchases was banned effective:`,o:['January 1, 2020', 'June 1, 2022', 'DSC has never been permitted in Canada', 'December 31, 2023'],a:1,e:`The CSA and CIRO banned DSC and low-load DSC for new mutual fund purchases effective <strong>June 1, 2022</strong>. This major investor protection reform eliminated commission structures creating conflicts of interest. Existing DSC schedules on legacy holdings continue until schedule expiry.`},
+{n:5,d:"Easy",t:"5.5",q:`In the ETF creation/redemption mechanism, "Authorized Participants" (APs) are:`,o:['Small retail investors who purchase large ETF amounts', 'Large institutional investors and market makers with agreements to create/redeem ETF units directly with the ETF issuer in primary market transactions', 'ETF portfolio managers who select underlying securities', 'Individual financial advisors who sell ETFs to clients'],a:1,e:`<strong>Authorized Participants</strong> are large institutional players — typically major banks and specialized trading firms — with contractual agreements to create/redeem large blocks of ETF units (creation units, typically 25,000–100,000 units at a time) in exchange for baskets of underlying securities. Only APs access the primary ETF market.`},
+{n:6,d:"Easy",t:"5.8",q:`Which performance measurement method is MANDATED by CRM for annual investor performance reporting in Canada?`,o:['Time-Weighted Rate of Return (TWRR)', 'Holding Period Return (HPR)', 'Money-Weighted Rate of Return (MWRR)', 'Geometric Mean Return'],a:2,e:`CRM requires annual performance reports to retail investors use the <strong>Money-Weighted Rate of Return (MWRR)</strong>. MWRR accounts for the actual timing and amount of each investor's cash flows — deposits and withdrawals — reflecting their real wealth accumulation experience. TWRR is used for comparing managers but not for individual client reporting.`},
+{n:7,d:"Easy",t:"5.1",q:`What was the PRIMARY reason most income trusts converted to corporations after 2006?`,o:['The stock exchange required corporations for listing', 'The federal government announced income trusts would be taxed as corporations starting 2011, eliminating their tax advantage. REITs were specifically exempted.', 'Canadian securities regulations required conversion', 'Income trusts became too expensive to administer'],a:1,e:`Finance Minister Flaherty's October 2006 announcement (the "Halloween Massacre") that income trusts would be taxed like corporations starting 2011 eliminated the primary tax advantage. Most converted to corporations. <strong>REITs were specifically exempted</strong> — they remain the dominant surviving income trust format.`},
+{n:8,d:"Easy",t:"5.7",q:`Under the Fund Facts framework, investors have the right to withdraw from a mutual fund purchase within:`,o:['24 hours of placing the order', '2 business days of receiving the Fund Facts document', '5 business days for any reason', '30 days for any registered account purchase'],a:1,e:`Investors have a statutory <strong>right to withdraw within 2 business days</strong> after receiving the Fund Facts document, without penalty. This gives clients time to review disclosure and reconsider. The RR must ensure Fund Facts delivery and document the date of delivery.`},
+{n:9,d:"Medium",t:"5.1",q:`What is the key tax advantage of a Mutual Fund Corporation (corporate class fund) over switching between separate Mutual Fund Trusts?`,o:['Corporate class funds have lower MERs because they pay less tax', 'Switching between classes within the same corporation does NOT trigger a capital gain — the ACB carries forward. Switching between separate MFTs IS a deemed disposition triggering capital gains.', 'Mutual fund corporations can invest in prohibited securities', 'Corporate class funds are exempt from all capital gains distributions'],a:1,e:`The defining corporate class advantage: <strong>switching between fund classes within the same mutual fund corporation is not a taxable disposition</strong>. ACB carries forward to the new class, deferring any capital gain. Moving from one mutual fund trust to a different trust is a deemed disposition — triggering an immediate capital gain in that tax year.`},
+{n:10,d:"Medium",t:"5.5",q:`An ETF trades at $52.00 while its NAV is $50.00 (4% premium). What action would an AP MOST LIKELY take?`,o:['Buy and hold for the long term', 'Create new ETF units: buy underlying securities basket at ~$50, deliver to ETF issuer, receive new units, sell at $52 — pocketing ~$2 profit per unit and pushing market price back toward $50', 'Redeem existing units and short-sell underlying securities', 'Hold off — 4% premium is within normal range'],a:1,e:`When ETF trades at a premium, the AP <strong>creates new units</strong>: buys the underlying securities basket at ~NAV cost, delivers to the ETF issuer, receives newly created units, and sells at the premium price. This: (1) earns the AP a profit; (2) increases ETF supply; (3) pushes price back toward NAV. This is the arbitrage mechanism that keeps ETF prices close to NAV.`},
+{n:11,d:"Medium",t:"5.9",q:`An investor purchases $15,000 in a mutual fund with NAVPS = $18.75 and a 2% front-end load. How many units do they receive?`,o:['800.00 units', '784.00 units', '816.00 units', '750.00 units'],a:1,e:`Net amount after 2% FEL = $15,000 × 0.98 = $14,700. Units = $14,700 ÷ $18.75 = <strong>784.00 units</strong>. Without the load: $15,000 ÷ $18.75 = 800 units. The FEL cost 16 units = $300 in foregone investment.`},
+{n:12,d:"Medium",t:"5.8",q:`A fund has quarterly returns: Q1 = +8%, Q2 = −5%, Q3 = +10%, Q4 = −2%. What is the annual TWRR?`,o:['11% (sum of positives)', '10.6% approximately', '3% (net of positives minus negatives)', '10.32% approximately'],a:1,e:`TWRR = [(1.08)(0.95)(1.10)(0.98)]¹ − 1. Calculate: 1.08 × 0.95 = 1.026; × 1.10 = 1.1286; × 0.98 = 1.10603. TWRR = <strong>10.6%</strong>. The geometric compounding correctly captures the sequence-of-returns effect.`},
+{n:13,d:"Medium",t:"5.4",q:`A Canadian equity mutual fund has a 10-year annualized standard deviation of 14.2%. What is its CSA risk classification?`,o:['Low', 'Low to Medium', 'Medium', 'Medium to High'],a:2,e:`CSA risk classification: Low (&lt;6%), Low-to-Medium (6–&lt;11%), <strong>Medium (11–&lt;16%)</strong>, Medium-to-High (16–&lt;20%), High (≥20%). A standard deviation of 14.2% falls in the Medium category.`},
+{n:14,d:"Medium",t:"5.1",q:`What is the key risk of owning a closed-end fund (CEF) that does NOT exist with open-ended mutual funds?`,o:['Higher management fees from fixed capital structure', 'The CEF can trade at a persistent discount or premium to NAV — buying at a premium or selling at a discount creates return losses separate from the underlying portfolio performance', 'CEFs must distribute all income annually', 'CEFs cannot be held in registered accounts'],a:1,e:`The defining CEF risk: <strong>premium/discount to NAV</strong>. Because there is no creation/redemption mechanism (no AP arbitrage), supply and demand can push CEF prices significantly above or below underlying portfolio value. A buyer at 10% premium who sells at 15% discount loses 25 percentage points purely from premium/discount movement — independent of portfolio performance.`},
+{n:15,d:"Medium",t:"5.5",q:`How does in-kind ETF creation/redemption improve ETF tax efficiency vs. mutual funds?`,o:['ETFs have a special CRA exemption', 'In-kind transfers mean the ETF never sells securities for cash — no capital gains triggered at fund level when APs redeem. Mutual funds must sell securities to pay cash redemptions → capital gains distributed to ALL remaining holders.', 'Only passive ETFs benefit; active ETFs have the same tax efficiency', 'The mechanism has no impact on tax'],a:1,e:`<strong>In-kind redemptions</strong>: ETF transfers securities to APs without selling → no capital gain realized at fund level → no capital gains distributed to ongoing investors. Mutual fund redemptions require cash → fund sells securities → capital gains distributed to ALL remaining unitholders via T3 at year-end, even those who never redeemed.`},
+{n:16,d:"Medium",t:"5.6",q:`What is "tracking error" in the context of a passive index fund?`,o:['Errors made by the portfolio manager in market timing', "The standard deviation of the difference between the index fund's returns and its benchmark index returns. Main causes: MER drag, cash drag, rebalancing costs, dividend timing.", 'The difference between fund geographic allocation and stated mandate', 'The performance gap between Series A and Series F'],a:1,e:`<strong>Tracking error</strong> = the standard deviation of (fund return − benchmark return) over time. Lower = better replication. Main causes: (1) MER drag — biggest factor; (2) cash drag from holding cash for redemptions; (3) index reconstitution costs; (4) dividend timing differences.`},
+{n:17,d:"Medium",t:"5.9",q:`An investor buys 500 units at NAVPS $20.00. One year later NAVPS = $22.00 and the fund distributed $0.40/unit during the year. What is the HPR?`,o:['10.0%', '12.0%', '11.0%', '12.5%'],a:1,e:`HPR = (Ending Value − Beginning Value + Income) ÷ Beginning Value. = ($11,000 − $10,000 + $200) ÷ $10,000 = $1,200 ÷ $10,000 = <strong>12.0%</strong>. Decomposition: Price return = 10.0%; Income return = 2.0% ($0.40/$20.00); Total = 12.0%.`},
+{n:18,d:"Medium",t:"5.3",q:`Which statement correctly describes Series F mutual fund units?`,o:['Highest MER because they include premium advisor services', 'Designed for fee-based accounts — no trailing commission embedded in MER. Advisor charges the client separately as a fee. MER typically 0.8–1.3% vs. 2.0–2.5% for Series A.', 'Only available to institutional investors with over $1M in assets', 'Higher sales charge than Series A at purchase'],a:1,e:`<strong>Series F</strong> = zero trailing commission in MER. Suitable for fee-based advisory accounts where the advisor charges the client directly (typically 1–1.5% of assets). The Series F MER (0.8–1.3%) + advisory fee creates full cost transparency. Using Series A (with ~1% trailer) on top of a fee-based charge means paying for advice twice.`},
+{n:19,d:"Hard",t:"5.5",q:`A leveraged 2× ETF starts at $100. Day 1: index +5% → ETF +10%; Day 2: index −4% → ETF −8%; Day 3: index +3% → ETF +6%. What are the respective 3-day returns?`,o:['Index +4.0%, ETF +8.0% (leverage works perfectly)', 'Index +3.86%, ETF +7.26% (leverage decay reduces ETF return below 2× index)', 'Index +4.0%, ETF +6.8%', 'Same return — leverage only affects long periods'],a:1,e:`Index: (1.05)(0.96)(1.03) = 1.03874 → +3.87%. 2× ETF: (1.10)(0.92)(1.06) = 1.07259 → +7.26%. 2× of index = 2 × 3.87% = 7.74%. But ETF returned only 7.26% — <strong>0.48% less due to volatility decay</strong>. Even over 3 days, the compounding of daily resetting creates a drag. Over weeks or months of volatile markets, this drag compounds dramatically.`},
+{n:20,d:"Hard",t:"5.1",q:`A REIT unitholder receives a $1.50/unit annual distribution. $1.00 is Return of Capital, $0.30 is capital gains, $0.20 is interest income. The investor bought at $18.00/unit (ACB = $18.00). What is the new ACB per unit?`,o:['$18.00 — ACB unaffected by distributions', '$17.00 — ACB reduced by the $1.00 ROC component only', '$16.50 — ACB reduced by all non-capital-gains components', '$18.00 reduced by the full $1.50 distribution'],a:1,e:`<strong>Only Return of Capital (ROC) reduces the ACB.</strong> New ACB = $18.00 − $1.00 ROC = <strong>$17.00</strong>. Capital gains ($0.30) and interest ($0.20) are taxable in the year received but do NOT reduce ACB — they are income items already recognized. Only ROC (not taxed currently) reduces ACB, deferring the tax impact to eventual sale.`},
+{n:21,d:"Easy",t:"5.3",q:`Who holds legal title to ALL assets of a mutual fund trust on behalf of unitholders?`,o:['The fund manager', 'The custodian', 'The trustee', 'The distributor'],a:2,e:`The <strong>Trustee</strong> holds legal title to all assets of the mutual fund trust on behalf of unitholders. The <strong>Custodian</strong> physically safeguards the securities. Both must be independent from the fund manager. The combination of trustee oversight and custodial safeguarding protects investors from asset misappropriation.`},
+{n:22,d:"Medium",t:"5.1",q:`A Fund of Funds has its own MER of 0.6% and invests in underlying funds averaging 1.7% MER. What is the approximate total effective cost to the investor?`,o:['1.7% — only underlying fund MERs apply', '0.6% — only the FoF management fee', '2.3% — both MER layers stack. The investor pays the FoF fee AND the underlying fund fees.', '1.15% — the average of both MERs'],a:2,e:`<strong>Fee layering</strong> means total cost = FoF MER + underlying fund MERs = 0.6% + 1.7% = <strong>approximately 2.3%</strong>. Both layers are charged to the investor and must be disclosed in the Fund Facts. This is the key criticism of the FoF approach. ETF wraps eliminate layering — the wrapper charges 0%; only underlying ETF fees apply once.`},
+{n:23,d:"Medium",t:"5.7",q:`What is the key difference between fund performance disclosure using TWRR vs. MWRR?`,o:['TWRR is always higher than MWRR for successful funds', "TWRR eliminates the distorting effect of investor cash flow timing — it measures manager skill. MWRR reflects the investor's actual experience including timing of their deposits and withdrawals — required for CRM reporting.", 'MWRR only used for bond funds; TWRR only for equity funds', 'They always produce identical results for the same fund'],a:1,e:`<strong>TWRR</strong> = manager performance — geometrically links sub-period returns to eliminate cash flow timing distortion; used for fund comparisons. <strong>MWRR</strong> = investor experience — the rate at which the investor's actual dollars grew, accounting for when they added or removed money; mandated for CRM client reporting.`},
+{n:24,d:"Hard",t:"5.8",q:`The benchmark for a fund must be "Specified in Advance." Why is this requirement critical?`,o:['It enables the fund to guarantee outperformance by choosing easy benchmarks', 'It prevents benchmark shopping — choosing a benchmark after the measurement period ends that happened to underperform the fund. Specifying before the period ensures genuine, unbiased evaluation.', 'It ensures the benchmark matches geographic focus exactly', 'Benchmarks can be changed at any time — this criterion is not critical'],a:1,e:`The "Specified in Advance" requirement prevents <strong>benchmark gaming</strong>. Without this rule, a manager could wait until year-end and select whichever benchmark happened to underperform their fund — creating artificial outperformance. Pre-specifying before the period holds managers accountable for genuine performance vs. a pre-agreed standard.`},
+{n:25,d:"Hard",t:"5.5",q:`During March 2020 extreme market stress, many Canadian bond ETFs briefly traded at significant discounts to NAV (2–5%). Why did the arbitrage mechanism temporarily fail?`,o:['The TSX was closed for trading during COVID-19', 'The underlying bond market became temporarily illiquid — APs could not efficiently buy bonds at reliable prices to execute redemption baskets. Without functioning arbitrage, ETF prices reflected where actual buyers and sellers could transact, below the stale bond NAV prices.', 'Canadian regulators suspended the creation/redemption mechanism', 'Bond ETFs are closed-ended and have no arbitrage mechanism'],a:1,e:`The arbitrage mechanism requires APs to buy/sell underlying securities efficiently. During March 2020's extreme volatility, the underlying bond market became temporarily illiquid — bid-ask spreads widened dramatically and bonds couldn't be transacted at reliable prices. APs couldn't assemble redemption baskets → ETF prices reflected actual transaction prices (lower than stale bond NAV). The ETFs were actually providing real-time price discovery — showing where buyers and sellers could actually transact.`},
+{n:26,d:"Easy",t:"5.5",q:`How frequently can investors buy or sell ETF units on the exchange?`,o:['Once per week at end-of-week NAV', 'Once per day at end-of-day NAVPS like mutual funds', 'Continuously throughout market trading hours at market-determined prices', 'Only on the first and last business day of each month'],a:2,e:`ETFs trade <strong>continuously throughout the trading day on the exchange</strong>, just like individual stocks. Investors can place buy or sell orders any time the exchange is open — prices fluctuate second-by-second based on supply and demand. This intraday liquidity is one of the defining advantages of ETFs over mutual funds.`},
+{n:27,d:"Medium",t:"5.3",q:`An investor in a fee-based account wants to invest in a mutual fund. Which series avoids double-paying for advice?`,o:['Series A — highest MER and best service', "Series F — no embedded trailing commission. Investor pays advisor separately as a fee-based charge. Adding Series A's 1% embedded trailer on top of a fee-based advisory fee means paying for advice twice.", 'Series D — designed for discount brokerage clients', 'Series I — all institutional series are fee-based'],a:1,e:`In a fee-based account (client pays advisor directly as % of assets), <strong>Series F</strong> is appropriate — zero embedded trailing commission. Using Series A (with ~1% embedded trailer) on top of a fee-based charge means the client pays approximately 1% twice for the same service — a clear conflict of interest.`},
+{n:28,d:"Medium",t:"5.6",q:`Smart beta / factor investing occupies the space between active and passive management. Why?`,o:['Smart beta ETFs are more expensive than active mutual funds', 'Smart beta uses pre-defined, systematic, rules-based criteria for security selection and weighting — not discretionary manager judgment (unlike active) and not pure market-cap weighting (unlike passive). Lower cost than active, more targeted than passive.', 'Smart beta is simply active management with a lower fee label', 'Smart beta can only be implemented in ETF structures'],a:1,e:`<strong>Smart beta</strong> is rules-based (systematic) like passive investing — no discretionary manager judgment. But unlike pure passive (replicating market-cap weights), smart beta deliberately tilts toward specific factors (value, quality, momentum, low-volatility) that academic evidence suggests provide long-run return premiums. The result: more targeted exposure than passive at lower cost than active management.`},
+{n:29,d:"Hard",t:"5.3",q:`A fund currently has 2,000,000 units outstanding with NAVPS = $15.00. During the day: (1) New investor purchases $450,000; (2) Existing investor redeems 20,000 units; (3) Portfolio value increases 1%. What is the ending NAVPS?`,o:['$15.00', '$15.15', '$15.45', '$15.30'],a:1,e:`Purchases and redemptions do NOT change NAVPS — only portfolio value changes do. Starting NAVPS = $15.00. Portfolio increases 1% → ending NAVPS = $15.00 × 1.01 = <strong>$15.15</strong>. The $450,000 purchase creates new units at $15.00; the redemption removes units at $15.00 — both are proportional changes that leave NAVPS unchanged.`},
+{n:30,d:"Medium",t:"5.4",q:`Why is survivorship bias a significant limitation of peer group performance comparisons?`,o:['Surviving funds always outperform non-surviving funds', 'Poorly performing funds are closed or merged, leaving only better-performing funds in the database. Historical peer group averages look better than reality because worst performers are excluded.', 'All performance databases are free of survivorship bias by regulation', 'Survivorship bias inflates risk ratings by including failed funds'],a:1,e:`<strong>Survivorship bias</strong> distorts peer group comparisons because funds that performed poorly are often merged or discontinued — they disappear from the database. The peer group history shows only survivors (typically better performers), making the category average look better than it truly was for investors who held the full range of funds including those that failed.`},
+{n:31,d:"Easy",t:"5.1",q:`Which statement BEST describes a pooled fund?`,o:['A fund available to all retail investors through bank branches', 'A professionally managed fund offered through a prospectus exemption — typically to institutional investors and accredited investors. Not publicly distributed. Lower cost but higher minimums and limited liquidity.', 'A fund that holds other funds (fund of funds)', 'A closed-end fund listed on the TSX'],a:1,e:`A <strong>pooled fund</strong> is a managed investment vehicle offered under a prospectus exemption — not publicly distributed. Typical investors: pension funds, endowments, foundations, high-net-worth individuals ($100K–$1M+ minimum). Benefits: much lower MER (0.05–0.5%), more flexible strategies. Drawbacks: limited liquidity, higher minimum investment, less regulatory disclosure.`},
+{n:32,d:"Medium",t:"5.7",q:`Which of the following does the Fund Facts document NOT contain?`,o:["The fund's standardized risk rating on a 5-category scale", 'Year-by-year returns for past 10 calendar years', "The fund manager's personal financial history and compensation details", 'Dollar cost examples showing fee impact on $1,000 over 1/3/5/10 years'],a:2,e:`Fund Facts contains: risk level, performance history, costs, top holdings, and right of withdrawal. It does NOT contain detailed personal financial information about individual fund managers. Manager compensation is disclosed in corporate governance documents — not in the mutual fund's Fund Facts.`},
+{n:33,d:"Medium",t:"5.9",q:`NAVPS = $20.59 given: equities $5,000,000, bonds $3,000,000, cash $200,000, accrued dividends $50,000, management fees payable $15,000, and 400,000 units outstanding.`,o:['$20.59', '$20.65', '$20.55', '$20.49'],a:0,e:`Total Assets = $5,000,000 + $3,000,000 + $200,000 + $50,000 = $8,250,000. Total Liabilities = $15,000. Net Assets = $8,250,000 − $15,000 = $8,235,000. NAVPS = $8,235,000 ÷ 400,000 = <strong>$20.5875 ≈ $20.59</strong>.`},
+{n:34,d:"Hard",t:"5.8",q:`A portfolio manager earns TWRR of 12% while the benchmark returns 14%. However, the portfolio's Sharpe ratio is 1.2 vs. the benchmark's 0.8 (risk-free rate = 4%). What is the correct assessment?`,o:['Underperformed — 12% < 14%, manager failed', 'Outperformed on a risk-adjusted basis. Sharpe 1.2 vs. benchmark 0.8 — the portfolio earned significantly more return per unit of risk, even though absolute return was lower.', 'Performed equally — Sharpe differences are not meaningful', 'Cannot assess without knowing portfolio standard deviation'],a:1,e:`<strong>Risk-adjusted performance</strong> is more meaningful than absolute return alone. Portfolio Sharpe = (12−4)/8 = 1.0 (using 8% std dev implied). Benchmark Sharpe = (14−4)/12.5 = 0.80. The portfolio delivered more return per unit of risk — genuinely superior risk-adjusted performance despite lower absolute return. In portfolio management, generating returns with lower risk is valuable.`},
+{n:35,d:"Easy",t:"5.5",q:`What is the PRIMARY reason ETFs are generally more tax-efficient than actively managed mutual funds in non-registered accounts?`,o:['ETFs receive special CRA tax exemptions', 'In-kind creation/redemption prevents the ETF from selling securities for cash — no capital gains triggered at fund level. Mutual fund redemptions require cash sales → capital gains distributed to all remaining unitholders.', 'ETFs never realize capital gains because they hold to maturity', 'ETFs are held in registered accounts more frequently'],a:1,e:`The <strong>in-kind creation/redemption mechanism</strong> is the source of ETF tax efficiency. APs receive the underlying securities basket — not cash — upon redemption. ETF never sells securities → no capital gain realized → no capital gains distributed to investors. Mutual fund redemptions require cash → securities sold → capital gains distributed to ALL remaining investors.`},
+{n:36,d:"Medium",t:"5.3",q:`An investor in a fee-based account wants to invest in a mutual fund. Which series is MOST appropriate?`,o:['Series A — because it has the highest MER and best service', "Series F — no embedded trailing commission. Investor pays advisor separately. Adding Series A's 1% embedded trailer on top of a fee-based advisory fee means paying for advice twice.", 'Series D — designed for discount brokerage clients', 'Series I — all institutional series are fee-based'],a:1,e:`In a fee-based account, <strong>Series F</strong> is appropriate — no embedded trailing commission (MER ~0.8–1.3%). Using Series A (with ~1% embedded trailer) on top of a fee-based charge means the client pays ~1% twice for the same advice service — a conflict of interest the RR must avoid.`},
+{n:37,d:"Hard",t:"5.9",q:`Investor makes: $20,000 Jan 1; fund worth $22,000 Jul 1; adds $8,000 Jul 1; year-end value = $34,500. Approximate MWRR?`,o:['20.5%', '14.8% approximately', '18.2%', '16.5%'],a:1,e:`MWRR solves for r: −$20,000 − $8,000/(1+r)^0.5 + $34,500/(1+r)^1 = 0. The iterative solution yields approximately <strong>14.8%</strong>. This reflects the actual dollar-weighted return for this investor with these specific cash flow timings. Use financial calculator or Excel IRR in practice. Different cash flow timing with the same fund would produce a different MWRR.`},
+{n:38,d:"Medium",t:"5.6",q:`Which smart beta ETF would a conservative income-focused investor in a non-registered account MOST likely benefit from?`,o:['3× leveraged Nasdaq ETF', 'High dividend yield ETF — tax-efficient eligible dividends with DTC, relatively stable income, moderate volatility', 'Momentum ETF — recent winners suggest continuation', 'Equal-weight small-cap ETF'],a:1,e:`For a conservative income-focused investor in a non-registered account, a <strong>high dividend yield ETF</strong> is appropriate: (1) regular income; (2) Canadian eligible dividends benefit from dividend tax credit — more tax-efficient than interest; (3) dividend-paying stocks tend to be lower volatility; (4) manageable risk level. Leveraged ETFs are completely inappropriate for conservative profiles.`},
+{n:39,d:"Easy",t:"5.5",q:`What is the PRIMARY advantage of ETFs over mutual funds for investors using discount brokerages who want to react to market events in real time?`,o:['ETFs guarantee higher returns', 'ETFs trade intraday at market prices — investors can buy on dips, set limit orders, get exact execution prices, and react immediately to breaking news without waiting for end-of-day NAVPS', 'ETFs always have lower returns due to bid-ask spreads', 'ETFs cannot be held in registered accounts'],a:1,e:`ETF <strong>intraday trading</strong>: buy/sell any time markets are open at the current market price; set limit orders to buy at specific prices; use stop-loss orders; react immediately to breaking news. Mutual fund investors must accept whatever NAVPS is calculated at 4:00 PM — they cannot time intraday entries or exits.`},
+{n:40,d:"Hard",t:"5.1",q:`A REIT distributes $2.00/unit annually, $1.40 being Return of Capital. If investor holds 1,000 units with ACB = $18.50/unit, what is the ACB per unit after TWO years of distributions at this rate?`,o:['$18.50 — ACB unchanged; distributions do not affect ACB', '$15.70/unit after two years ($18.50 − $1.40 − $1.40), increasing future capital gains on eventual sale', 'ACB increases because distributions add to cost basis', 'ACB reduces by the full $2.00 distribution per year'],a:1,e:`<strong>Return of Capital (ROC) reduces the investor's ACB.</strong> Year 1: $18.50 − $1.40 = $17.10. Year 2: $17.10 − $1.40 = <strong>$15.70/unit</strong>. The $2.80 total ROC over two years is not taxed when received — but it reduces ACB, meaning a larger capital gain will be realized when units are eventually sold. The other income components ($0.60/unit/yr) are taxed when received and do not affect ACB.`},
+{n:41,d:"Medium",t:"5.5",q:`The iNAV of an ETF is published approximately every 15 seconds. Its PRIMARY purpose is:`,o:['To set the official purchase and redemption price for all investors', 'To provide a real-time estimate of ETF fair value, enabling APs and market makers to monitor premium/discount and trigger arbitrage if deviation exceeds ~0.5%', 'To calculate the annual MER', "To determine the ETF's index weight in the S&P/TSX Composite"],a:1,e:`<strong>iNAV</strong> gives APs and market makers continuous real-time fair value estimates. When market price deviates from iNAV by more than ~0.5%, it signals an arbitrage opportunity that APs will exploit through creation or redemption, bringing prices back in line.`},
+{n:42,d:"Medium",t:"5.8",q:`An investor's MWRR is 6% while the fund's TWRR is 14% for the same period. Most likely explanation?`,o:['The investor made a calculation error', "The investor added significant capital just before a major market decline — the large cash inflow before the drop severely reduced the dollar-weighted return, even though the manager's per-dollar performance was excellent at 14%", 'The fund changed its investment mandate mid-year', 'MWRR and TWRR should always be equal without distributions'],a:1,e:`The large gap reflects an investor who likely <strong>added large capital just before a market downturn</strong>. MWRR weights returns by dollars invested at each time — large new investment before losses dramatically pulls down the dollar-weighted return. TWRR shows the manager's per-dollar performance of 14%. This is why TWRR evaluates managers (cash flow timing is the investor's responsibility) while MWRR measures the investor's actual wealth change.`},
+{n:43,d:"Easy",t:"5.2",q:`Which managed product structure eliminates fee layering?`,o:['A Fund of Funds investing in actively managed mutual funds', 'An all-in-one ETF wrap investing in underlying ETFs — the wrapper ETF charges 0% management fee; only the underlying ETF fees apply once. NO fee layering.', 'A balanced mutual fund with a single MER', 'A pooled fund of funds for institutional investors'],a:1,e:`An <strong>all-in-one ETF wrap eliminates fee layering</strong>: the wrapper ETF (e.g., VGRO, VEQT, XBAL) charges 0% management fee — it simply passes through costs of its underlying ETFs. Investors pay only the underlying ETF MERs (blended ~0.15–0.25%). By contrast, a Fund of Funds with 0.5% MER plus 1.7% underlying fund MERs creates genuine double-layer costs.`},
+{n:44,d:"Hard",t:"5.5",q:`Why are leveraged ETFs NOT suitable as long-term buy-and-hold investments even in a steadily rising market?`,o:['They have higher MERs than regular ETFs', "Due to volatility decay (beta decay): the daily resetting of leverage means the compounding of sequential daily returns produces progressively less than the targeted multiple of the benchmark's cumulative return over time. In volatile markets, the decay is severe.", 'They only work in falling markets', 'Leveraged ETFs are prohibited for individual investors'],a:1,e:`<strong>Volatility decay</strong> is the fundamental issue. Even in a rising market with daily fluctuations, the compounding of daily returns creates drag. Example: index up 10% then down 5% then up 6% = cumulative 10.57%. A 2× ETF: up 20%, down 10%, up 12% = 1.20 × 0.90 × 1.12 = 1.2096 = 20.96% — NOT 2× the 10.57% index gain (which would be 21.14%). Small discrepancy over 3 days becomes severe over months of volatility.`},
+{n:45,d:"Medium",t:"5.7",q:`What is the Portfolio Turnover Rate (PTR) in the Quick Facts section of Fund Facts, and why does high PTR matter in non-registered accounts?`,o:["PTR measures the fund's geographic diversification", 'PTR measures how much of the portfolio was traded during the year. High PTR = higher TER (trading costs) + more frequent capital gains realizations → more taxable distributions for non-registered account holders.', 'PTR is simply the number of securities the fund holds', "PTR measures the fund manager's experience"],a:1,e:`<strong>Portfolio Turnover Rate</strong>: PTR = value of securities traded ÷ average net assets. PTR = 1.0 means entire portfolio effectively replaced once. High PTR matters because: (1) higher trading costs (TER) reduce returns; (2) frequent selling → capital gains realizations → T3 distributions for non-registered accounts → taxes owed even by buy-and-hold investors. Low-PTR passive ETFs are most tax-efficient in taxable accounts.`},
+{n:46,d:"Medium",t:"5.8",q:`The benchmark for a Canadian small-cap equity fund should be:`,o:['S&P/TSX 60 (60 largest Canadian stocks)', 'S&P/TSX SmallCap Index — it represents the actual investment universe and opportunity set available to the small-cap manager. Using large-cap benchmark would be unfair and misleading.', 'FTSE Canada Universe Bond Index', 'MSCI World Index (global developed markets)'],a:1,e:`The <strong>S&P/TSX SmallCap Index</strong> satisfies all seven benchmark criteria: (1) it is the actual investment universe (small-cap Canadian stocks); (2) appropriate for the mandate; (3) investable via ETFs; (4) publicly measurable; (5) specified in advance; (6) the manager can accept it as fair; (7) clearly defined composition. The S&P/TSX 60 (large caps) would be completely inappropriate for a small-cap mandate.`},
+{n:47,d:"Hard",t:"5.3",q:`An investor switches between classes within a corporate class fund, then later switches to a completely different mutual fund trust. Describe the tax implications of each switch.`,o:['Both switches are non-taxable — all fund switches are tax-exempt', 'Switch 1 (within same corporation) = NOT taxable; ACB carries forward. Switch 2 (to a different trust) = IS a deemed disposition — capital gain or loss realized at fair market value at time of switch.', 'Both switches trigger immediate capital gains', 'Switch 1 triggers capital gains; Switch 2 is non-taxable'],a:1,e:`<strong>Switch 1 within same corporation:</strong> Not a taxable event. The Income Tax Act treats switches between classes of the same mutual fund corporation as NOT a disposition — ACB carries forward. <strong>Switch 2 to a different trust:</strong> IS a deemed disposition. Moving from a corporate class to a separate mutual fund trust = change in legal ownership. The unrealized gain on the corporate class position is realized and must be reported in that tax year.`},
+{n:48,d:"Easy",t:"5.6",q:`The primary purpose of an INVERSE ETF (−1× daily) is:`,o:['To amplify positive market returns by 2×', 'To profit when the underlying index FALLS, or to hedge an existing long portfolio position against market decline', 'To maintain stable NAV regardless of market conditions', 'To invest exclusively in foreign currency hedged securities'],a:1,e:`An <strong>inverse ETF</strong> delivers approximately the opposite of the benchmark's daily return. Primary uses: (1) <strong>Hedging</strong> — a portfolio manager holding Canadian equities buys inverse TSX ETF to offset potential losses during uncertainty; (2) <strong>Tactical bearish bet</strong> — sophisticated investor expecting market decline uses inverse ETF to profit. Like leveraged ETFs: designed for short-term use only due to daily resetting.`},
+{n:49,d:"Medium",t:"5.3",q:`Under NI 81-102 forward pricing rule, an investor placing a buy order at 3:00 PM ET will receive:`,o:["That morning's opening NAVPS", "That day's end-of-day NAVPS (calculated at market close ~4:00 PM ET)", "The next business day's opening price", 'The average NAVPS of the past 5 trading days'],a:1,e:`Under the <strong>forward pricing rule</strong> (NI 81-102), all mutual fund orders execute at the NEXT NAVPS calculated after the order is received. A 3:00 PM order received before the 4:00 PM pricing cutoff → investor receives <strong>that day's end-of-day NAVPS</strong>. A 4:01 PM order (after cutoff) receives the next business day's NAVPS. This rule means investors never know the exact price when placing an order — preventing market timing abuse.`},
+{n:50,d:"Hard",t:"5.9",q:`A fund's SWP (Systematic Withdrawal Plan) pays $200/month. At NAVPS = $24.50: (a) units redeemed in month 1? At NAVPS = $21.00 (month 3): (b) units redeemed in month 3?`,o:['Month 1: 8.16 units. Month 3: 9.52 units.', 'Month 1: 10 units. Month 3: 10 units.', 'Month 1: 8.16 units. Month 3: 8.16 units.', 'Month 1: 9.52 units. Month 3: 8.16 units.'],a:0,e:`<strong>SWP redemptions:</strong> Units redeemed = SWP amount ÷ current NAVPS. Month 1: $200 ÷ $24.50 = <strong>8.163 units</strong>. Month 3 (NAVPS = $21.00): $200 ÷ $21.00 = <strong>9.524 units</strong>. When NAVPS falls, the same dollar withdrawal requires more units — depleting the portfolio faster. This is the key risk of SWPs in declining markets: the same $200 each month redeems increasingly more units as NAV falls, potentially exhausting the portfolio sooner than projected.`}];
+let ans={},cor=0;
+function buildQuiz(){
+  const c=document.getElementById('qb');c.innerHTML='';
+  Qs.forEach(q=>{
+    const d=document.createElement('div');d.className='qi';d.id='q'+q.n;
+    const dc=q.d==='Easy'?'de':q.d==='Medium'?'dm':'dh';
+    let opts=q.o.map((o,j)=>`<li onclick="pick(${q.n},${j})" id="opt-${q.n}-${j}">${String.fromCharCode(65+j)}) ${o}</li>`).join('');
+    d.innerHTML=`<div class="qm"><span class="qnum">Q${q.n}</span><span class="qd ${dc}">${q.d}</span><span class="qt">§${q.t}</span></div><div class="qq">${q.q}</div><ul class="qo">${opts}</ul><button class="sab" onclick="tA(${q.n})">Show Explanation</button><div class="qa" id="ans-${q.n}"><strong>Correct: ${String.fromCharCode(65+q.a)}) ${q.o[q.a]}</strong><br><br>${q.e}</div>`;
+    c.appendChild(d);
+  });
+}
+function pick(qn,sel){
+  if(ans[qn]!==undefined)return;ans[qn]=sel;
+  const q=Qs[qn-1];const ok=sel===q.a;if(ok)cor++;
+  q.o.forEach((_,j)=>{const el=document.getElementById(`opt-${qn}-${j}`);
+    if(j===sel&&ok)el.classList.add('correct');else if(j===sel&&!ok)el.classList.add('wrong');
+    if(j===q.a&&!ok)el.classList.add('rc');});
+  const t=Object.keys(ans).length;
+  document.getElementById('ac').textContent=t;
+  document.getElementById('cc').textContent=cor;
+  document.getElementById('sp').textContent=t>0?Math.round(cor/t*100)+'%':'—';
+  if(t===50){document.getElementById('qsp').style.display='block';document.getElementById('fs').textContent=cor;}
+}
+function tA(qn){document.getElementById('ans-'+qn).classList.toggle('show');}
+function revealAll(){Qs.forEach(q=>{document.getElementById('ans-'+q.n).classList.add('show');if(ans[q.n]===undefined)document.getElementById(`opt-${q.n}-${q.a}`).classList.add('rc');});}
+function resetQuiz(){ans={};cor=0;document.getElementById('ac').textContent=0;document.getElementById('cc').textContent=0;document.getElementById('sp').textContent='—';document.getElementById('qsp').style.display='none';buildQuiz();}
+buildQuiz();
+function gs(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function filterNav(q){q=q.toLowerCase();document.querySelectorAll('.ni').forEach(n=>{n.style.display=n.textContent.toLowerCase().includes(q)?'':'none';});}
+window.addEventListener('scroll',()=>{
+  const dh=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('pgf').style.width=Math.min(100,window.scrollY/dh*100)+'%';
+  document.getElementById('bt').classList.toggle('vis',window.scrollY>400);
+  ['hero','s1','s2','s3','s4','s5','s6','s7','s8','s9','qs'].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;const r=el.getBoundingClientRect();
+    if(r.top<=100&&r.bottom>=100)document.querySelectorAll('.ni').forEach(n=>{n.classList.toggle('active',n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+id+"'"));});
+  });
+});
+</script>
+</body>
+</html>

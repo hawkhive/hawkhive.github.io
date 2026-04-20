@@ -16,7 +16,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Source Serif 4',serif;background:var(--cream);color:var(--text);display:flex;min-height:100vh;overflow-x:hidden;}
-#sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--navy);position:fixed;left:0;top:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold) var(--navy-mid);}
+#sidebar{width:var(--sidebar-w);height:100vh;background:var(--navy);position:fixed;left:0;top:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold) var(--navy-mid);}
 #sidebar::-webkit-scrollbar{width:4px;}#sidebar::-webkit-scrollbar-thumb{background:var(--gold);}
 .sidebar-brand{padding:24px 20px 16px;border-bottom:1px solid rgba(201,151,58,.3);}
 .brand-tag{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;}
@@ -44,7 +44,7 @@ body{font-family:'Source Serif 4',serif;background:var(--cream);color:var(--text
 .prog-bar{width:120px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;}
 .prog-fill{height:100%;background:var(--gold);border-radius:2px;width:0%;transition:width .4s;}
 #content{padding:0 60px 80px;max-width:980px;}
-.hero{padding:60px 0 40px;border-bottom:1px solid var(--cream-dark);margin-bottom:48px;}
+.hero{padding:60px 0 40px;border-bottom:1px solid var(--cream-dark);margin-bottom:48px;scroll-margin-top:80px;}
 .hero .element-tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
 .hero h1{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;line-height:1.1;color:var(--navy);margin-bottom:16px;}
 .hero p{font-size:16px;color:var(--text-muted);max-width:700px;line-height:1.7;font-style:italic;}
@@ -570,7 +570,7 @@ mark{background:rgba(201,151,58,.25);color:inherit;border-radius:2px;padding:0 2
         <tr><td class="label">SG&amp;A Expenses</td><td>Selling, General &amp; Administrative costs — sales staff, marketing, executive salaries, rent, IT, administration</td><td>$5,200K</td><td>Fixed costs that must be covered regardless of revenue level. Scale is key.</td></tr>
         <tr><td class="label">Depreciation &amp; Amortization (D&amp;A)</td><td>Non-cash allocation of the cost of long-lived assets (PP&amp;E and intangibles) over their useful lives</td><td>$2,100K</td><td>Non-cash expense — D&amp;A is added BACK in the cash flow statement. Important for EBITDA calculation.</td></tr>
         <tr><td class="label" style="color:var(--green)">EBIT (Operating Income)</td><td>Earnings Before Interest and Tax. Gross Profit − SG&amp;A − D&amp;A. Also called operating profit.</td><td>$6,200K</td><td>EBIT margin = 14.8%. Measures operating efficiency regardless of capital structure (no interest)</td></tr>
-        <tr><td class="label">Interest Expense</td><td>Cost of debt financing — interest paid on bonds, loans, lines of credit</td><td>$960K</td><td>A fixed obligation. If EBIT < interest expense → the company cannot cover its debt costs. This is financial distress.</td></tr>
+        <tr><td class="label">Interest Expense</td><td>Cost of debt financing — interest paid on bonds, loans, lines of credit</td><td>$960K</td><td>A fixed obligation. If EBIT &lt; interest expense → the company cannot cover its debt costs. This is financial distress.</td></tr>
         <tr><td class="label" style="color:var(--green)">EBT (Pre-tax Income)</td><td>EBIT − Interest Expense + Other Income. Profit before income taxes.</td><td>$5,320K</td><td>Pre-tax margin = 12.7%</td></tr>
         <tr><td class="label">Income Tax Expense</td><td>Tax on corporate earnings. Effective tax rate = Tax / EBT</td><td>$1,383K (26%)</td><td>Effective tax rate may differ from statutory rate due to tax credits, deferred taxes</td></tr>
         <tr><td class="label" style="color:var(--green)">Net Income</td><td>The "bottom line." EBT − Taxes. What belongs to equity shareholders after all obligations.</td><td>$3,937K</td><td>Net margin = 9.4%. Basis for EPS, dividend payout, and most equity ratios</td></tr>
@@ -976,9 +976,9 @@ mark{background:rgba(201,151,58,.25);color:inherit;border-radius:2px;padding:0 2
         <div class="ratio-result">MIC ROIC = 14.8%</div>
         <div class="ratio-interp">
           <strong>Interpretation:</strong> ROIC measures the return generated on ALL capital invested in the business — both equity and debt capital. It excludes non-interest-bearing liabilities (like accounts payable). MIC's 14.8% ROIC means it earns an after-tax return of 14.8% on the capital its investors and creditors have provided.<br><br>
-          <strong>The ROIC vs. WACC framework:</strong> If ROIC > Weighted Average Cost of Capital (WACC), the company is creating value. If ROIC < WACC, the company is destroying value even if it is nominally profitable. This is the most important profitability concept for investment analysis.
+          <strong>The ROIC vs. WACC framework:</strong> If ROIC &gt; Weighted Average Cost of Capital (WACC), the company is creating value. If ROIC &lt; WACC, the company is destroying value even if it is nominally profitable. This is the most important profitability concept for investment analysis.
         </div>
-        <span class="ratio-benchmark">ROIC > WACC (typically 8–12%) = value creation. Best companies achieve sustained ROIC > 15%.</span>
+        <span class="ratio-benchmark">ROIC &gt; WACC (typically 8–12%) = value creation. Best companies achieve sustained ROIC &gt; 15%.</span>
       </div>
     </div>
   </div>
@@ -1183,7 +1183,7 @@ mark{background:rgba(201,151,58,.25);color:inherit;border-radius:2px;padding:0 2
         </div>
         <div class="ratio-result">MIC FCFE = $1,900K ($0.190 per share)</div>
         <div class="ratio-interp">
-          <strong>Interpretation:</strong> FCFE is the cash available to <em>equity holders</em> after the company has met all obligations (operating costs, interest, taxes, CapEx, and debt repayments). It is the cleanest measure of what equity shareholders are truly entitled to. FCFE is compared to dividends paid ($1,600K / $0.160/share) — MIC's FCFE of $1,900K comfortably covers its dividends of $1,600K, indicating dividends are sustainable. If FCFE < Dividends, the company is paying dividends it cannot sustain from its own cash generation.<br><br>
+          <strong>Interpretation:</strong> FCFE is the cash available to <em>equity holders</em> after the company has met all obligations (operating costs, interest, taxes, CapEx, and debt repayments). It is the cleanest measure of what equity shareholders are truly entitled to. FCFE is compared to dividends paid ($1,600K / $0.160/share) — MIC's FCFE of $1,900K comfortably covers its dividends of $1,600K, indicating dividends are sustainable. If FCFE &lt; Dividends, the company is paying dividends it cannot sustain from its own cash generation.<br><br>
           <strong>Note:</strong> FCFE differs from Free Cash Flow (FCF = CFO − CapEx = $2,800K) in that FCFE also accounts for the net impact of debt repayments and new borrowings.
         </div>
         <span class="ratio-benchmark">FCFE per share vs. DPS: If FCFE &gt; Dividends → dividend is sustainable. If FCFE &lt; Dividends → dividend may be cut.</span>

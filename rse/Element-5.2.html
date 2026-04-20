@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSE Study Book — Element 5 Part 2: Costs, Redemptions & Alternatives</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1b2e;--gold:#c9973a;--gold-light:#e8b96a;--cream:#f8f4ed;--cream-dark:#ede8df;--text:#1a1a2e;--muted:#5a5a6e;--green:#1a6b4a;--gl:#e8f5ef;--red:#8b1a1a;--rl:#fdf0f0;--blue:#1a3a6b;--bl:#e8f0fd;--amber:#7a4f1a;--al:#fef6e8;--teal:#0d5e5e;--tl:#e0f5f5;--purple:#4a1a6b;--pl:#f0e8fd;--sw:300px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Source Serif 4",serif;background:var(--cream);color:var(--text);display:flex;min-height:100vh;}
+#sb{width:var(--sw);min-height:100vh;background:var(--navy);position:fixed;left:0;top:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold);display:flex;flex-direction:column;}
+#sb::-webkit-scrollbar{width:3px;}#sb::-webkit-scrollbar-thumb{background:var(--gold);}
+.sb-brand{padding:20px 16px 13px;border-bottom:1px solid rgba(201,151,58,.3);}
+.sb-tag{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;}
+.sb-brand h2{font-family:"Playfair Display",serif;color:white;font-size:13px;line-height:1.3;}
+.sb-badge{display:inline-block;margin-top:6px;background:var(--gold);color:var(--navy);font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 7px;border-radius:2px;letter-spacing:1px;}
+.sb-search{padding:10px 13px;border-bottom:1px solid rgba(201,151,58,.2);}
+.sb-search input{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(201,151,58,.3);border-radius:4px;padding:6px 9px;color:white;font-size:12px;outline:none;}
+.sb-search input:focus{border-color:var(--gold);}
+.sb-search input::placeholder{color:rgba(255,255,255,.3);}
+.nl{padding:11px 13px 4px;font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--gold-light);letter-spacing:2px;text-transform:uppercase;opacity:.7;}
+.ni{display:block;padding:6px 13px 6px 16px;color:rgba(255,255,255,.65);font-size:11.5px;cursor:pointer;border-left:3px solid transparent;transition:all .18s;line-height:1.4;}
+.ni:hover{color:white;border-left-color:var(--gold-light);background:rgba(201,151,58,.07);}
+.ni.active{color:var(--gold-light);border-left-color:var(--gold);background:rgba(201,151,58,.11);}
+.ni .nn{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);margin-right:5px;}
+.ni.sub{padding-left:28px;font-size:11px;opacity:.75;}
+.ni.sub:hover{opacity:1;}
+.nd{height:1px;background:rgba(201,151,58,.14);margin:5px 13px;}
+.sb-foot{margin-top:auto;padding:12px 13px;border-top:1px solid rgba(201,151,58,.2);font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(255,255,255,.3);text-align:center;}
+#main{margin-left:var(--sw);flex:1;}
+#topbar{background:var(--navy);height:60px;display:flex;align-items:center;padding:0 38px;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:50;gap:14px;}
+.bc{font-family:"JetBrains Mono",monospace;font-size:11px;color:rgba(255,255,255,.4);}
+.bc span{color:var(--gold);}
+.pg-area{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.pg-lbl{font-family:"JetBrains Mono",monospace;font-size:10px;color:rgba(255,255,255,.35);}
+.pg-bar{width:108px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;}
+.pg-fill{height:100%;background:var(--gold);border-radius:2px;width:0%;transition:width .35s;}
+#content{padding:0 52px 80px;max-width:970px;}
+.hero{padding:50px 0 32px;border-bottom:1px solid var(--cream-dark);margin-bottom:40px;}
+.etag{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
+.hero h1{font-family:"Playfair Display",serif;font-size:41px;font-weight:900;line-height:1.1;color:var(--navy);margin-bottom:12px;}
+.hero p{font-size:16px;color:var(--muted);max-width:660px;line-height:1.7;font-style:italic;}
+.hero-chips{display:flex;gap:11px;margin-top:17px;flex-wrap:wrap;}
+.chip{background:var(--navy);color:var(--gold-light);padding:5px 11px;border-radius:3px;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:1px;}
+.chapter{margin-bottom:56px;scroll-margin-top:76px;}
+.sh{display:flex;align-items:flex-start;gap:15px;margin-bottom:19px;padding-bottom:12px;border-bottom:2px solid var(--cream-dark);}
+.sn{font-family:"Playfair Display",serif;font-size:37px;font-weight:900;color:var(--cream-dark);line-height:1;min-width:50px;}
+.st h2{font-family:"Playfair Display",serif;font-size:22px;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:3px;}
+.ss{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);letter-spacing:1px;}
+.sub{margin-bottom:5px;scroll-margin-top:76px;}
+.sub h3{font-family:"Playfair Display",serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:10px;padding-left:11px;border-left:3px solid var(--gold);}
+.sub h4{font-size:14.5px;font-weight:600;color:var(--navy);margin:13px 0 7px;}
+p{line-height:1.8;margin-bottom:12px;font-size:15.5px;}
+.h3x{font-family:"Playfair Display",serif;font-size:18px;font-weight:700;color:var(--navy);margin:17px 0 10px;padding-left:11px;border-left:3px solid var(--gold);}
+.co{border-radius:6px;padding:15px 18px;margin:15px 0;border-left:4px solid;}
+.co-exam{background:var(--bl);border-color:var(--blue);}
+.co-exam .cl{color:var(--blue);}
+.co-tip{background:var(--gl);border-color:var(--green);}
+.co-tip .cl{color:var(--green);}
+.co-warn{background:var(--al);border-color:var(--amber);}
+.co-warn .cl{color:var(--amber);}
+.co-rule{background:var(--rl);border-color:var(--red);}
+.co-rule .cl{color:var(--red);}
+.co-calc{background:var(--tl);border-color:var(--teal);}
+.co-calc .cl{color:var(--teal);}
+.co-pur{background:var(--pl);border-color:var(--purple);}
+.co-pur .cl{color:var(--purple);}
+.co p{margin-bottom:0;font-size:14.5px;line-height:1.7;}
+.cl{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;font-weight:500;display:block;}
+.tw{overflow-x:auto;margin:15px 0;border-radius:6px;border:1px solid var(--cream-dark);}
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+th{background:var(--navy);color:var(--gold-light);font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:1px;padding:10px 13px;text-align:left;}
+td{padding:10px 13px;border-bottom:1px solid var(--cream-dark);vertical-align:top;line-height:1.6;}
+tr:nth-child(even) td{background:rgba(0,0,0,.02);}
+tr:last-child td{border-bottom:none;}
+.dg{background:var(--navy);border-radius:8px;padding:22px;margin:19px 0;color:white;}
+.dt{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:15px;text-align:center;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;}
+.gc{background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.3);border-radius:6px;padding:14px;}
+.gc h5{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold-light);letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;}
+.gc p{font-size:12.5px;color:rgba(255,255,255,.75);margin:0;line-height:1.6;}
+.gc ul{padding-left:14px;}
+.gc li{font-size:12px;color:rgba(255,255,255,.75);margin-bottom:3px;line-height:1.5;}
+.sl2{list-style:none;padding:0;margin:11px 0;}
+.sl2 li{padding:5px 0 5px 19px;position:relative;font-size:15px;line-height:1.7;border-bottom:1px solid rgba(0,0,0,.04);}
+.sl2 li:last-child{border-bottom:none;}
+.sl2 li::before{content:"›";position:absolute;left:0;color:var(--gold);font-size:16px;font-weight:700;top:4px;}
+.sl2 li strong{color:var(--navy);}
+mark{background:rgba(201,151,58,.22);color:inherit;border-radius:2px;padding:0 2px;}
+.mb{background:#0d1b2e;border:1px solid rgba(201,151,58,.45);border-radius:7px;padding:17px 21px;margin:16px 0;font-family:"JetBrains Mono",monospace;}
+.mf{font-size:13.5px;color:var(--gold-light);text-align:center;padding:8px 0;letter-spacing:.5px;}
+.mfl{font-size:9px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:7px;letter-spacing:2px;text-transform:uppercase;}
+.mw{margin-top:11px;padding-top:11px;border-top:1px solid rgba(255,255,255,.1);}
+.ms{display:flex;gap:9px;margin-bottom:6px;align-items:flex-start;}
+.msn{background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;min-width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.mst{font-size:12.5px;color:rgba(255,255,255,.8);line-height:1.6;}
+.mr{background:rgba(201,151,58,.14);border:1px solid rgba(201,151,58,.4);border-radius:4px;padding:8px 12px;margin-top:9px;font-size:13px;color:var(--gold-light);text-align:center;}
+.alt-card{border:1px solid var(--cream-dark);border-radius:8px;overflow:hidden;margin-bottom:18px;}
+.alt-h{padding:12px 16px;display:flex;align-items:center;gap:10px;}
+.alt-icon{font-size:22px;}
+.alt-name{font-family:"Playfair Display",serif;font-size:16px;color:white;font-weight:700;}
+.alt-tag{font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 7px;border-radius:3px;letter-spacing:1px;text-transform:uppercase;margin-left:auto;}
+.alt-body{padding:16px;}
+.tag-priv{background:rgba(74,26,107,.5);color:#c67ae0;}
+.tag-retail{background:rgba(26,107,74,.4);color:#5dda9a;}
+.tag-struct{background:rgba(201,151,58,.35);color:var(--gold-light);}
+.tag-crypto{background:rgba(26,58,107,.5);color:#7ab5ff;}
+.fee-bar-wrap{margin:12px 0;border-radius:6px;background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.2);padding:12px 16px;}
+.fee-row{margin-bottom:8px;}
+.fee-label{font-family:"JetBrains Mono",monospace;font-size:10px;color:rgba(255,255,255,.6);margin-bottom:3px;}
+.fee-track{height:20px;background:rgba(0,0,0,.3);border-radius:3px;overflow:hidden;}
+.fee-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:8px;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;color:var(--navy);}
+#qs{background:var(--navy);border-radius:11px;padding:36px 40px;margin-top:52px;scroll-margin-top:76px;}
+.qh{font-family:"Playfair Display",serif;font-size:27px;color:white;margin-bottom:6px;}
+.qsub{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:22px;}
+.qstats{display:flex;gap:14px;margin-bottom:26px;flex-wrap:wrap;}
+.qstat{background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.3);border-radius:6px;padding:10px 15px;text-align:center;}
+.qstat .qv{font-family:"Playfair Display",serif;font-size:24px;color:var(--gold-light);display:block;}
+.qstat .ql{font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;}
+.qi{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:17px 19px;margin-bottom:13px;}
+.qi:hover{border-color:rgba(201,151,58,.28);}
+.qm{display:flex;gap:8px;margin-bottom:8px;align-items:center;flex-wrap:wrap;}
+.qnum{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--gold);}
+.qd{font-family:"JetBrains Mono",monospace;font-size:10px;padding:2px 7px;border-radius:3px;letter-spacing:1px;}
+.de{background:rgba(26,107,74,.25);color:#5dda9a;}
+.dm{background:rgba(201,151,58,.2);color:var(--gold-light);}
+.dh{background:rgba(139,26,26,.25);color:#ff8a8a;}
+.qt{font-family:"JetBrains Mono",monospace;font-size:10px;color:rgba(255,255,255,.3);margin-left:auto;}
+.qq{color:white;font-size:14.5px;line-height:1.6;margin-bottom:11px;}
+.qo{list-style:none;padding:0;margin:0 0 11px;}
+.qo li{padding:7px 11px;border:1px solid rgba(255,255,255,.08);border-radius:5px;margin-bottom:5px;font-size:13.5px;color:rgba(255,255,255,.8);cursor:pointer;transition:all .14s;}
+.qo li:hover{background:rgba(201,151,58,.1);border-color:rgba(201,151,58,.3);}
+.qo li.correct{background:rgba(26,107,74,.25);border-color:#2ecc71;color:#5dda9a;}
+.qo li.wrong{background:rgba(139,26,26,.25);border-color:#e74c3c;color:#ff8a8a;}
+.qo li.rc{background:rgba(26,107,74,.14);border-color:rgba(46,204,113,.5);color:rgba(93,218,154,.8);}
+.qa{display:none;background:rgba(201,151,58,.08);border:1px solid rgba(201,151,58,.2);border-radius:5px;padding:10px 13px;font-size:13px;color:rgba(255,255,255,.75);line-height:1.65;}
+.qa.show{display:block;}
+.qa strong{color:var(--gold-light);}
+.sab{background:none;border:1px solid rgba(201,151,58,.4);color:var(--gold-light);font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:1px;padding:5px 11px;border-radius:4px;cursor:pointer;}
+.sab:hover{background:rgba(201,151,58,.14);}
+.qc{display:flex;gap:9px;margin-bottom:22px;flex-wrap:wrap;}
+.btn1{padding:8px 17px;border-radius:4px;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:1px;cursor:pointer;border:none;}
+.btnP{background:var(--gold);color:var(--navy);}
+.btnO{background:transparent;border:1px solid rgba(201,151,58,.4);color:var(--gold-light);}
+.qsp{background:rgba(201,151,58,.1);border:1px solid rgba(201,151,58,.3);border-radius:8px;padding:17px;margin-top:18px;display:none;text-align:center;}
+.qsv{font-family:"Playfair Display",serif;font-size:46px;color:var(--gold-light);}
+.qsp p{color:rgba(255,255,255,.65);margin:0;}
+#bt{position:fixed;bottom:24px;right:24px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);width:39px;height:39px;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;opacity:0;transition:opacity .28s;z-index:200;}
+#bt.vis{opacity:1;}
+@media(max-width:880px){#sb{transform:translateX(-100%);} #main{margin-left:0;} #content{padding:0 20px 56px;} .g2,.g3,.g4{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav id="sb">
+  <div class="sb-brand"><div class="sb-tag">CIRO · RSE Prep</div><h2>Managed Products<br>Part 2: Costs, Redemptions<br>&amp; Alternatives</h2><span class="sb-badge">ELEMENT 05 · PART 2</span></div>
+  <div class="sb-search"><input type="text" placeholder="Search topics…" oninput="filterNav(this.value)"></div>
+  <div id="nav-links">
+    <div class="nl">Overview</div>
+    <a class="ni" onclick="gs('hero')"><span class="nn">—</span>Introduction</a>
+    <div class="nd"></div>
+    <div class="nl">Sections</div>
+    <a class="ni" onclick="gs('s10')"><span class="nn">5.10</span>Impact of Costs on Performance</a>
+    <a class="ni sub" onclick="gs('s10loads')">Loads, Charges &amp; Turnover</a>
+    <a class="ni sub" onclick="gs('s10tax')">Taxes on the Fund</a>
+    <a class="ni sub" onclick="gs('s10inv')">Taxes on the Investor</a>
+    <a class="ni sub" onclick="gs('s10with')">Withholding Tax (Recoverable/Unrecoverable)</a>
+    <a class="ni sub" onclick="gs('s10mer')">Assessing MER &amp; TER</a>
+    <a class="ni" onclick="gs('s11')"><span class="nn">5.11</span>Implications of Redemptions</a>
+    <a class="ni sub" onclick="gs('s11tax')">Tax Consequences of Redemption</a>
+    <a class="ni sub" onclick="gs('s11tswp')">T-SWPs — Tax-Free Swap Redemptions</a>
+    <a class="ni sub" onclick="gs('s11wdraw')">Systematic Withdrawal Plans (SWPs)</a>
+    <a class="ni sub" onclick="gs('s11gate')">Suspension of Redemptions — Gating</a>
+    <a class="ni" onclick="gs('s12')"><span class="nn">5.12</span>Managed vs. Non-Managed Products</a>
+    <a class="ni sub" onclick="gs('s12inv')">The Investor's Decision Framework</a>
+    <a class="ni sub" onclick="gs('s12rr')">The RR's Recommendation Framework</a>
+    <a class="ni" onclick="gs('s13')"><span class="nn">5.13</span>Types of Alternative Investments</a>
+    <a class="ni sub" onclick="gs('s13hf')">Hedge Funds</a>
+    <a class="ni sub" onclick="gs('s13sp')">Structured Products</a>
+    <a class="ni sub" onclick="gs('s13aif')">Alternative Investment Funds (Liquid Alts)</a>
+    <a class="ni sub" onclick="gs('s13crypto')">Crypto-Assets</a>
+    <a class="ni sub" onclick="gs('s13pe')">Private Equity</a>
+    <a class="ni sub" onclick="gs('s13vc')">Venture Capital</a>
+    <a class="ni" onclick="gs('s14')"><span class="nn">5.14</span>Characteristics of Alternatives</a>
+    <a class="ni sub" onclick="gs('s14struct')">Structure &amp; Features</a>
+    <a class="ni sub" onclick="gs('s14fees')">Fee Structures (Mgmt / Performance / Hurdle)</a>
+    <a class="ni sub" onclick="gs('s14adv')">Advantages &amp; Disadvantages</a>
+    <a class="ni sub" onclick="gs('s14risk')">Sources of Risk &amp; Return</a>
+    <a class="ni sub" onclick="gs('s14ai')">Accredited Investor Requirement</a>
+    <div class="nd"></div>
+    <div class="nl">Practice</div>
+    <a class="ni" onclick="gs('qs')"><span class="nn">★</span>50 Exam Questions</a>
+  </div>
+  <div class="sb-foot">CIRO RSE · Element 5 Part 2 of 9</div>
+</nav>
+
+<div id="main">
+<div id="topbar">
+  <div class="bc">RSE Exam Prep &rsaquo; <span>Element 5 Part 2 — Costs, Redemptions &amp; Alternatives</span></div>
+  <div class="pg-area"><span class="pg-lbl">READING PROGRESS</span><div class="pg-bar"><div class="pg-fill" id="pgf"></div></div></div>
+</div>
+<div id="content">
+
+<div class="hero" id="hero">
+  <div class="etag">ELEMENT 5 PART 2 OF 9 · RETAIL SECURITIES EXAM · CIRO</div>
+  <h1>Costs, Redemptions<br>&amp; Alternative Investments</h1>
+  <p>From the compound drag of MERs and withholding tax layers to T-SWPs, gating, and the full landscape of alternative investments — hedge funds, structured products, liquid alts, crypto, private equity, and venture capital — with performance fees, hurdle rates, and accredited investor rules.</p>
+  <div class="hero-chips">
+    <span class="chip">5 LEARNING OUTCOMES</span>
+    <span class="chip">LIQUID ALTS: $30B+ AUM (2024)</span>
+    <span class="chip">HEDGE FUNDS · PE · VC · CRYPTO</span>
+    <span class="chip">50 PRACTICE QUESTIONS</span>
+  </div>
+</div>
+
+<!-- 5.10 IMPACT OF COSTS ON PERFORMANCE -->
+<div class="chapter" id="s10">
+  <div class="sh"><div class="sn">5.10</div><div class="st"><h2>Impact of Costs on Performance of Managed Products</h2><div class="ss">LOADS · TURNOVER · TAXES (FUND &amp; INVESTOR) · WITHHOLDING TAX · MER · TER</div></div></div>
+
+  <p>Costs are the single most controllable driver of investment outcomes. Every fee, tax, and trading cost is a guaranteed, permanent drag on returns — compounding against the investor silently over decades. Understanding the full cost structure of managed products is critical for both the RSE exam and for serving clients well.</p>
+
+  <div class="sub" id="s10loads"><h3>Loads, Charges, and Portfolio Turnover</h3>
+  <h4>Loads and Sales Charges</h4>
+  <ul class="sl2">
+    <li><strong>Front-End Load (FEL):</strong> A sales charge of 0–5% deducted from the investment amount before units are purchased. Reduces the amount actually working for the investor from day one. Example: $10,000 invested with 2% FEL → only $9,800 is invested. The $200 is immediate, permanent, and lost forever.</li>
+    <li><strong>Deferred Sales Charge (DSC) — Banned June 1, 2022 for new purchases:</strong> No charge at purchase but a declining redemption fee schedule applies if sold early. Legacy DSC schedules on existing holdings continue to expiry. At its worst, DSC created a "trap" — investors who needed liquidity during the 6-year schedule faced fees of up to 7%, discouraging redemption even when it was in their best interest.</li>
+    <li><strong>Short-term trading fees:</strong> Charged when a fund is redeemed within a short holding period (typically 30–90 days). Designed to deter market timing. Usually 1–2% of the redemption proceeds. These fees go back to the fund (not the manager), which benefits remaining long-term investors.</li>
+    <li><strong>Switch fees:</strong> Some dealers charge a fee (typically 0–2%) when a client switches between funds within the same fund family. Must be disclosed in the Fund Facts.</li>
+  </ul>
+
+  <h4>Portfolio Turnover — The Hidden Cost Driver</h4>
+  <p>Portfolio turnover measures how frequently the fund buys and sells securities within the year. A turnover rate of 100% means the entire portfolio was effectively replaced once. High turnover generates two categories of cost:</p>
+  <div class="tw"><table>
+    <tr><th>Cost Type</th><th>How It Arises</th><th>Who Bears It</th><th>Impact</th></tr>
+    <tr><td><strong>Trading Expense Ratio (TER)</strong></td><td>Brokerage commissions, bid-ask spreads paid when portfolio securities are bought and sold. Disclosed separately from MER in fund financial statements.</td><td>The fund (and indirectly, all unitholders)</td><td>Typical TER: 0.01–0.25% for bond/equity ETFs; 0.10–0.50% for active mutual funds. Adds to total cost on top of MER.</td></tr>
+    <tr><td><strong>Capital gains realizations</strong></td><td>When the fund sells securities at a profit, those realized gains are distributed to ALL unitholders (including those who haven't sold) as T3 or T5 income</td><td>Non-registered account investors</td><td>Investors owe tax on distributed gains even if they never sold a unit — the "phantom capital gain" problem. Most damaging in high-turnover active funds.</td></tr>
+  </table></div>
+  <div class="co co-exam">
+    <div class="cl">📌 PORTFOLIO TURNOVER RATE (PTR) — THE COST INDICATOR IN FUND FACTS</div>
+    <p>The PTR is disclosed in the Quick Facts box of every Fund Facts document. It tells investors how actively the portfolio is managed. Higher PTR = higher TER (trading costs) + more frequent capital gains distributions for non-registered accounts. A passive index ETF might have PTR of 5–10%; an active equity fund might have PTR of 80–150%+. For tax-conscious investors in non-registered accounts, PTR is one of the most important numbers in Fund Facts after MER.</p>
+  </div>
+  </div>
+
+  <div class="sub" id="s10tax"><h3>Taxes ON THE FUND</h3>
+  <p>Investment funds themselves are structured to minimize taxation at the fund level — this is why the trust structure dominates. Key tax concepts at the fund level:</p>
+  <ul class="sl2">
+    <li><strong>Flow-through taxation (trusts):</strong> Mutual fund trusts do NOT pay income tax if they distribute all their taxable income to unitholders each year. The income "flows through" in its original character — dividends remain dividends, interest remains interest, capital gains remain capital gains. The tax is paid by the unitholder at their individual marginal rate.</li>
+    <li><strong>Corporate class funds (corporations):</strong> The corporation pays tax only on income NOT distributed. Corporate-level income can be offset by portfolio losses across all classes within the same corporation — a tax efficiency benefit not available to trusts. However, interest income earned at the corporate level is taxed before distribution, losing the flow-through benefit for that income type.</li>
+    <li><strong>Capital gains realizations at fund level:</strong> When a fund sells securities for a profit, it realizes capital gains. These gains MUST be distributed to unitholders (to avoid double taxation). For in-kind ETF redemptions, the fund avoids triggering gains — a major ETF tax efficiency advantage.</li>
+    <li><strong>Fund-level losses:</strong> Realized capital losses within a fund can be used to offset capital gains within that same fund — reducing distributions. Carried forward indefinitely at the fund level. Cannot be passed through to individual unitholders (unlike gains).</li>
+  </ul>
+  </div>
+
+  <div class="sub" id="s10inv"><h3>Taxes ON THE INVESTOR</h3>
+  <p>Understanding how managed product income is taxed in the hands of the investor — and how the account type affects that taxation — is essential for making suitable investment recommendations.</p>
+  <div class="tw"><table>
+    <tr><th>Income Type</th><th>Tax Slip</th><th>Inclusion Rate / Treatment</th><th>Tax-Efficient Account?</th></tr>
+    <tr><td><strong>Interest income</strong></td><td>T3 (from trust) or T5 (from corp)</td><td>100% included in taxable income at full marginal rate. Least favourable tax treatment.</td><td>✅ RRSP/RRIF/TFSA — fully sheltered. Consider holding interest-bearing funds in registered accounts.</td></tr>
+    <tr><td><strong>Canadian eligible dividends</strong></td><td>T3 or T5</td><td>Grossed up 38%; dividend tax credit reduces effective rate substantially. Most tax-efficient income type for non-registered accounts.</td><td>✅ Registered OR non-registered (DTC advantage makes non-registered attractive)</td></tr>
+    <tr><td><strong>Capital gains</strong></td><td>T3 Box 21</td><td>50% inclusion rate (gains above $250K may face higher rate per 2024 Budget proposals — verify current rules). Distributed at year-end as "capital gains dividends".</td><td>✅ TFSA — fully sheltered. RRSP — sheltered but converted to fully taxable income on withdrawal.</td></tr>
+    <tr><td><strong>Return of Capital (ROC)</strong></td><td>T3 Box 42</td><td>NOT taxable when received. Reduces the investor's ACB. When units are eventually sold, lower ACB = larger capital gain. Tax is deferred, not eliminated.</td><td>Works in non-registered accounts for tax deferral. Less meaningful in registered accounts where all withdrawals are taxable.</td></tr>
+    <tr><td><strong>Foreign income</strong></td><td>T3 Box 25</td><td>100% included as other income (like interest). Also subject to foreign withholding tax — only the net (after withholding) is distributed, but investor may be able to claim a foreign tax credit.</td><td>✅ RRSP/RRIF — sheltered but US treaty benefit may be lost in TFSA (see withholding tax below)</td></tr>
+  </table></div>
+
+  <h4>The Critical Impact of Account Type on After-Tax Returns</h4>
+  <div class="dg"><div class="dt">Tax Treatment by Account Type — How Account Choice Changes After-Tax Returns</div>
+  <div class="g3">
+    <div class="gc"><h5>🔴 Non-Registered (Taxable)</h5><ul>
+      <li>All distributions taxable in year received (T3/T5 slips)</li>
+      <li>Capital gains on redemption taxable (50% inclusion)</li>
+      <li>Best suited to: eligible dividends (DTC advantage), capital gains-focused funds, ROC-paying REITs</li>
+      <li>Worst for: interest income funds, foreign income funds (no treaty protection)</li>
+      <li>Use: Tax-loss harvesting; corporate class switching advantage</li>
+    </ul></div>
+    <div class="gc"><h5>🟡 RRSP / RRIF</h5><ul>
+      <li>All income grows tax-deferred. NO annual T-slips.</li>
+      <li>Withdrawals from RRSP fully taxable at marginal rate</li>
+      <li>US dividends received tax-free (Canada-US treaty exempts registered accounts)</li>
+      <li>Best suited to: interest income, high-turnover active funds, US dividend stocks</li>
+      <li>DTC advantage is lost in RRSP (dividends converted to fully taxable on withdrawal)</li>
+    </ul></div>
+    <div class="gc"><h5>🟢 TFSA</h5><ul>
+      <li>All growth is tax-FREE — no income tax on withdrawals ever</li>
+      <li>Best for highest-growth assets (greatest tax savings)</li>
+      <li>US dividends subject to 15% withholding tax (US-Canada treaty does NOT cover TFSAs) — recoverable only by offsetting against other US income</li>
+      <li>No DTC, no capital gains preference in TFSA — everything is equal since all is tax-free</li>
+      <li>Best suited to: anything with high expected return — growth equities, small-cap, alternatives</li>
+    </ul></div>
+  </div></div>
+  </div>
+
+  <div class="sub" id="s10with"><h3>Withholding Tax — Recoverable vs. Unrecoverable</h3>
+  <p>When a Canadian fund invests in foreign securities, the foreign country typically withholds a portion of dividends and interest before paying them to the fund. This <strong>foreign withholding tax</strong> is one of the most misunderstood costs in managed products. Whether the investor can recover it depends on both the account type and the fund structure.</p>
+
+  <div class="mb">
+    <div class="mfl">Foreign Withholding Tax — US Dividends Example (Most Common Case in Canada)</div>
+    <div class="mf">US dividend: $1.00/share → 15% US withholding → $0.85 paid to fund → distributed to investor</div>
+    <div class="mw">
+      <div class="ms"><div class="msn">1</div><div class="mst"><strong>In a non-registered account:</strong> Investor receives $0.85 net distribution (reported as foreign income). They can claim a <strong>foreign tax credit</strong> of $0.15 on their Canadian tax return, offsetting the Canadian tax owing on the foreign income. The withholding tax is effectively <strong>recoverable</strong> — the investor avoids double taxation.</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst"><strong>In an RRSP or RRIF:</strong> The Canada-US Tax Treaty provides an exemption from US withholding tax for amounts in registered retirement accounts. No withholding applies at all — the full $1.00 is received. This is why US dividend funds are often best held in RRSPs.</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst"><strong>In a TFSA:</strong> The Canada-US Treaty does NOT extend to TFSAs. The 15% US withholding applies, and because there is no Canadian tax payable on TFSA income, there is NO Canadian tax against which to apply the foreign tax credit. The $0.15 is permanently lost — <strong>unrecoverable withholding tax.</strong> This is a significant hidden cost of holding US dividend-paying ETFs in a TFSA.</div></div>
+      <div class="mr">Bottom line: US dividend-paying funds are MOST efficient in RRSP (no withholding). Non-registered (withholding but recoverable). TFSA (withholding is permanent and unrecoverable).</div>
+    </div>
+  </div>
+
+  <h4>Two Layers of Withholding Tax in ETF Structures</h4>
+  <p>When a Canadian ETF holds foreign stocks, there are potentially TWO withholding tax layers that can apply, depending on the structure:</p>
+  <div class="tw"><table>
+    <tr><th>Layer</th><th>What Happens</th><th>Recoverable?</th></tr>
+    <tr><td><strong>Layer 1: Foreign country → Fund</strong></td><td>Foreign company pays dividend → foreign country withholds tax (e.g., 15% US withholding) before paying the Canadian fund</td><td>Partially recoverable: the fund can pass through the foreign tax to unitholders who can then claim the foreign tax credit (if non-registered account)</td></tr>
+    <tr><td><strong>Layer 2: Fund → Investor (when fund holds a US-listed ETF)</strong></td><td>When a Canadian ETF holds a US-listed ETF (not the direct stocks), the US-listed ETF receives dividends → withholds 15% → pays Canadian ETF → Canadian ETF pays investor. The withholding at the US-listed ETF level is NOT refundable to Canadian investors.</td><td>Generally NOT recoverable — this is the "double withholding" problem with "fund-of-ETF" structures</td></tr>
+  </table></div>
+  <div class="co co-exam">
+    <div class="cl">📌 OPTIMAL STRUCTURE FOR MINIMIZING WITHHOLDING TAX</div>
+    <p>To minimize US withholding tax, the most efficient structure for Canadian investors is:<br>
+    <strong>Best:</strong> Canadian ETF that directly holds the underlying US stocks (not through a US-listed ETF wrapper) → held in RRSP → zero withholding at both layers<br>
+    <strong>Second best:</strong> Same Canadian ETF held in non-registered account → 15% Layer 1 withholding but recoverable via foreign tax credit<br>
+    <strong>Worst:</strong> Canadian ETF that holds a US-listed ETF (double withholding) → held in TFSA (both layers unrecoverable)</p>
+  </div>
+  </div>
+
+  <div class="sub" id="s10mer"><h3>Assessing Expense Ratios — MER and TER in Full Detail</h3>
+  <p>An RR must be able to assess and explain both the Management Expense Ratio (MER) and Trading Expense Ratio (TER) as components of a fund's true total cost to the investor.</p>
+  <div class="tw"><table>
+    <tr><th>Metric</th><th>What It Includes</th><th>Calculation Method</th><th>Disclosed Where</th></tr>
+    <tr><td><strong>Management Expense Ratio (MER)</strong></td><td>Management fee + trailing commission + fund operating expenses (audit, legal, custody, filing) + applicable HST. Does NOT include trading costs.</td><td>= Total annual expenses (management fee + operating costs + taxes) ÷ Average daily net assets × 100. Expressed as annualized %.</td><td>Fund Facts (prominently), simplified prospectus, annual financial statements</td></tr>
+    <tr><td><strong>Trading Expense Ratio (TER)</strong></td><td>Brokerage commissions paid by the fund when buying and selling portfolio securities. Bid-ask spreads on securities traded. Does NOT include MER costs.</td><td>= Total trading costs paid during the period ÷ Average daily net assets × 100</td><td>Annual financial statements (NOT in Fund Facts). Less visible to retail investors.</td></tr>
+    <tr><td><strong>Total Ownership Cost (MER + TER)</strong></td><td>The truest all-in annual cost of fund ownership — combining both management expenses and trading costs</td><td>= MER + TER</td><td>Not disclosed in a single combined metric — investors must calculate manually from financial statements</td></tr>
+  </table></div>
+  <h4>Why TER Matters More Than Many Investors Realize</h4>
+  <ul class="sl2">
+    <li><strong>High-turnover active funds:</strong> A fund with 150% PTR and $1B in AUM might trade $1.5B in securities per year. Even at modest 0.05% round-trip costs, that's $750,000 in trading costs annually — adding ~0.075% TER. Over 25 years, this adds significantly to the total cost burden.</li>
+    <li><strong>Comparison trap:</strong> Two funds with identical 1.5% MERs may have very different total costs if one has 200% turnover (high TER) vs. 20% (low TER). Always check TER alongside MER for a complete picture.</li>
+    <li><strong>Bond fund TER:</strong> Bond funds can have surprisingly high TERs because bonds trade over-the-counter with wider bid-ask spreads than equities. An active bond fund that trades frequently may have TER of 0.15–0.25% despite appearing cost-efficient by MER alone.</li>
+  </ul>
+  <div class="mb">
+    <div class="mfl">Total Real Cost Example — What the Investor Actually Pays</div>
+    <div class="mw">
+      <div class="ms"><div class="msn">1</div><div class="mst"><strong style="color:var(--gold-light)">Active Canadian Equity Mutual Fund:</strong> MER = 2.20%, TER = 0.18%. Total annual cost = 2.38%. Tax inefficiency (high PTR → capital gains distributions in non-registered account) adds additional effective cost of perhaps 0.20–0.40% per year for a taxable investor. Real total drag: ~2.60–2.80% per year.</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst"><strong style="color:var(--gold-light)">Passive Canadian Equity ETF (e.g., XIU):</strong> MER = 0.18%, TER = 0.01%. Total annual cost = 0.19%. Very low PTR → minimal capital gains distributions. Real total drag: ~0.20% per year.</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst"><strong style="color:var(--gold-light)">Difference:</strong> ~2.40–2.60% per year. On $100,000 over 25 years at 8% gross, the cost difference exceeds $250,000 in final wealth. This is why understanding and disclosing total costs is a fundamental RR obligation.</div></div>
+      <div class="mr">MER + TER + Tax Drag = True Total Cost. All three must be considered for complete cost assessment.</div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- 5.11 REDEMPTION IMPLICATIONS -->
+<div class="chapter" id="s11">
+  <div class="sh"><div class="sn">5.11</div><div class="st"><h2>Implications of Redemptions</h2><div class="ss">TAX CONSEQUENCES · T-SWPs · WITHDRAWAL PLANS · SUSPENSION (GATING)</div></div></div>
+
+  <div class="sub" id="s11tax"><h3>Tax Consequences of Mutual Fund Redemption</h3>
+  <p>Every mutual fund redemption in a non-registered account is a <strong>taxable event</strong> — a deemed disposition requiring capital gain or loss calculation and reporting. This is one of the most important tax concepts in managed product investing.</p>
+  <h4>Calculating Capital Gain on Redemption</h4>
+  <div class="mb">
+    <div class="mfl">Capital Gain on Redemption — ACB Method (Required by CRA)</div>
+    <div class="mf">Capital Gain = Proceeds of Disposition − Adjusted Cost Base (ACB) − Redemption Fees</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12.5px;margin-bottom:9px"><strong style="color:var(--gold-light)">Example:</strong> Investor originally bought 500 units at average ACB of $15.20/unit. They also received reinvested distributions that added $300 to their ACB. They redeem 200 units at current NAVPS = $17.42. No redemption fee (no-load). T3 slip also shows $750 capital gains distribution received this year.</p>
+      <div class="ms"><div class="msn">1</div><div class="mst">ACB per unit = $15.20 (the average cost across all purchase and reinvestment events)</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst">ACB of redeemed units = 200 × $15.20 = $3,040</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst">Proceeds of disposition = 200 × $17.42 = $3,484</div></div>
+      <div class="ms"><div class="msn">4</div><div class="mst">Capital gain = $3,484 − $3,040 = <strong style="color:var(--gold-light)">$444</strong> (reported on Schedule 3)</div></div>
+      <div class="ms"><div class="msn">5</div><div class="mst">Plus: T3 capital gains distribution of $750 (Box 21) also reported on Schedule 3</div></div>
+      <div class="mr">Total capital gains to report this year from this fund: $444 (from redemption) + $750 (from T3 distribution) = $1,194. At 50% inclusion, $597 is added to taxable income.</div>
+    </div>
+  </div>
+
+  <h4>ACB Tracking — The Critical Record-Keeping Obligation</h4>
+  <ul class="sl2">
+    <li><strong>Weighted average cost method:</strong> Canada requires the "average cost method" for tracking ACB — every purchase (including reinvested distributions) is averaged into the overall per-unit cost. You cannot use FIFO or LIFO for mutual funds in Canada.</li>
+    <li><strong>Reinvested distributions increase ACB:</strong> When distributions are reinvested (in a DRIP or PAIP), new units are purchased. The amount reinvested is added to total ACB. If you received $750 in distributions that were reinvested at $17.00/unit, your ACB increases by $750 — preventing double taxation on that amount when you eventually redeem.</li>
+    <li><strong>Return of Capital DECREASES ACB:</strong> ROC distributions (T3 Box 42) reduce ACB. They are NOT taxed now, but they increase the eventual capital gain on redemption. If ACB falls to zero and ROC continues, subsequent ROC becomes immediately taxable capital gains.</li>
+    <li><strong>RR obligation:</strong> Advisors should remind clients to keep records of all purchases, reinvested distributions, and ROC distributions to accurately track ACB. Errors in ACB tracking lead to over- or under-reporting of capital gains — a CRA compliance issue.</li>
+  </ul>
+
+  <h4>Superficial Loss Rules</h4>
+  <p>If an investor sells mutual fund units at a loss and then repurchases the <strong>same or identical fund within 30 calendar days</strong> before or after the sale (including automatic reinvestment), the capital loss is deemed a "<strong>superficial loss</strong>" and is denied. The denied loss is added to the ACB of the repurchased units — it's not permanently lost but simply deferred. This rule prevents investors from harvesting losses while maintaining essentially the same economic exposure.</p>
+  </div>
+
+  <div class="sub" id="s11tswp"><h3>T-SWPs — Tax-Efficient Systematic Withdrawal Plans</h3>
+  <p>A <strong>T-SWP (Tax-Smart Systematic Withdrawal Plan)</strong> is a specific type of mutual fund series designed to distribute a set percentage of assets annually (typically 5%, 6%, or 8% of the initial or current NAV) almost entirely as <strong>Return of Capital (ROC)</strong> rather than as interest, dividends, or capital gains.</p>
+  <h4>How T-Series Funds Work</h4>
+  <ul class="sl2">
+    <li><strong>Monthly distribution:</strong> The fund distributes a fixed monthly amount (e.g., 6% annually = 0.5%/month). This distribution is structured as ROC to the extent possible — it does NOT trigger immediate taxable income.</li>
+    <li><strong>ACB reduction mechanism:</strong> Each ROC distribution reduces the investor's ACB. Eventually, ACB reaches zero, at which point further distributions ARE taxable as capital gains — but this can take many years, providing significant tax deferral.</li>
+    <li><strong>Tax deferral, not elimination:</strong> T-series funds do not eliminate tax — they defer it. The deferred tax is realized when the investor eventually sells (at which point ACB may be zero, making the full market value a capital gain). However, the time value of deferred tax is substantial, especially for investors in retirement over a 10–20+ year period.</li>
+  </ul>
+  <div class="mb">
+    <div class="mfl">T-SWP Worked Example — 6% T-Series Fund</div>
+    <div class="mw">
+      <p style="color:rgba(255,255,255,.7);font-size:12.5px;margin-bottom:9px"><strong style="color:var(--gold-light)">Setup:</strong> Investor buys 10,000 units at $10.00 ACB = $100,000. 6% T-Series distributes $500/month ($6,000/year as ROC).</p>
+      <div class="ms"><div class="msn">1</div><div class="mst"><strong>Year 1:</strong> $6,000 distributed as ROC. No tax payable. ACB reduced: $100,000 − $6,000 = $94,000. Fund may have grown to $101,000 (if returns cover distributions + growth).</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst"><strong>Year 10:</strong> $60,000 cumulative ROC distributed tax-free. ACB = $40,000. Fund still worth ~$90,000. Capital gain on disposition = $90,000 − $40,000 = $50,000 (only 50% inclusion = $25,000 taxable).</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst"><strong>Comparison — Interest income fund:</strong> Same $6,000/year paid as interest = $60,000 taxable over 10 years at full marginal rate (say 43%) = $25,800 in tax vs. ~$10,750 in deferred tax at disposition. Tax savings: ~$15,000+ over 10 years.</div></div>
+      <div class="mr">T-series funds are particularly valuable for retirement income planning in non-registered accounts where tax deferral significantly increases after-tax cash flow compared to interest-paying alternatives.</div>
+    </div>
+  </div>
+  <h4>When T-SWPs Are Most Appropriate</h4>
+  <ul class="sl2">
+    <li><strong>Retirees needing regular income from non-registered accounts</strong> — especially if they want to minimize tax drag on monthly income payments</li>
+    <li><strong>Investors in lower marginal tax brackets today</strong> who expect to be in similar or lower brackets in retirement — deferring capital gains to retirement years can result in lower taxes</li>
+    <li><strong>Clients with pension income and other taxable income</strong> who want to structure distributions to avoid OAS clawback (Old Age Security — clawed back at $0.15 per dollar above ~$90,997 in 2024)</li>
+    <li><strong>NOT appropriate for RRSP/TFSA:</strong> The ROC tax deferral advantage only exists in non-registered accounts. In registered accounts, all income is already sheltered (TFSA) or deferred (RRSP).</li>
+  </ul>
+  </div>
+
+  <div class="sub" id="s11wdraw"><h3>Systematic Withdrawal Plans (SWPs)</h3>
+  <p>An <strong>SWP</strong> is a plan that automatically redeems a fixed dollar amount or percentage of a fund on a regular schedule (typically monthly), providing the investor with a regular cash flow from their mutual fund investment.</p>
+  <h4>How SWPs Work</h4>
+  <ul class="sl2">
+    <li><strong>Dollar-based SWP:</strong> Investor receives a fixed dollar amount (e.g., $500/month). The number of units redeemed = $500 ÷ current NAVPS. When NAVPS falls, more units are redeemed to generate the same $500 — depleting the investment faster.</li>
+    <li><strong>Percentage-based SWP:</strong> A fixed % of the fund value is redeemed each month (e.g., 0.5%/month = 6%/year). The dollar amount varies with NAV — lower in down markets, higher in up markets. Less depletion risk than dollar-based in down markets.</li>
+    <li><strong>SWP vs. dividend/distribution income:</strong> SWP payments come from capital redemption — they always have capital gains tax implications (if non-registered). Regular dividend/interest distributions come from the fund's income — taxed according to income type. The SWP is a redemption of principal, not income.</li>
+  </ul>
+  <h4>The Critical Risk of SWPs in Declining Markets</h4>
+  <div class="co co-rule">
+    <div class="cl">🔴 SEQUENCE-OF-RETURNS RISK — SWP DANGER IN BEAR MARKETS</div>
+    <p>The most dangerous risk for SWP users: poor returns in the early years of a SWP disproportionately deplete the portfolio, even if later returns recover.<br><br>
+    <strong>Example:</strong> $500,000 portfolio, $2,500/month SWP.<br>
+    Year 1: Portfolio falls 30% → value = $350,000 − $30,000 SWP = $320,000.<br>
+    Year 2: Portfolio grows 10% → value = $352,000 − $30,000 = $322,000.<br>
+    The 10% recovery does NOT fully offset the 30% decline because the capital base has shrunk. If the bear market lasts 2–3 years, the portfolio may be permanently impaired. RRs must explain this risk clearly to clients setting up SWPs.</p>
+  </div>
+  </div>
+
+  <div class="sub" id="s11gate"><h3>Suspension of Redemptions — Gating</h3>
+  <p><strong>Gating</strong> (suspension of redemptions) occurs when a fund temporarily suspends investor redemptions — typically during extreme market stress or when the fund holds illiquid assets that cannot be sold quickly at fair prices. The investor's ability to access their money is temporarily blocked.</p>
+  <h4>When Can a Fund Gate?</h4>
+  <ul class="sl2">
+    <li><strong>Under NI 81-102 (public mutual funds):</strong> Redemptions can be suspended only in specific circumstances: when normal trading of the fund's portfolio securities has been suspended; when it is impracticable for the fund to determine NAVPS; or in exceptional circumstances at the manager's discretion with regulator notification. The suspension typically cannot exceed one year (per CRA/securities law guidance).</li>
+    <li><strong>Under the Declaration of Trust (private pooled funds):</strong> Private funds have much wider latitude to restrict redemptions. They may gate at any time when it is deemed in the interest of all investors — and the gate can last much longer than one year.</li>
+    <li><strong>Alternatives/Hedge Funds:</strong> Private hedge funds routinely include gates as a standard feature, allowing managers to prevent a "run on the fund" where mass redemptions force fire-sale selling of illiquid positions at distressed prices — harming remaining investors.</li>
+  </ul>
+  <h4>Situations That Have Triggered Gating</h4>
+  <div class="tw"><table>
+    <tr><th>Scenario</th><th>Why Gates Were Applied</th><th>Impact on Investors</th></tr>
+    <tr><td>March 2020 COVID crash</td><td>Some commercial real estate and private credit funds suspended redemptions — they could not sell underlying illiquid properties at fair prices to meet redemption demands</td><td>Investors could not access their capital for months. Highlighted liquidity mismatch risk.</td></tr>
+    <tr><td>2008 Financial Crisis</td><td>Many hedge funds gated — underlying mortgage securities and structured products became completely illiquid. Mass redemption requests would have forced selling at pennies on the dollar.</td><td>Some funds remained gated for years; investors received partial distributions over extended periods.</td></tr>
+    <tr><td>High-yield bond fund stress</td><td>Rapid outflows force selling of already distressed bonds at fire-sale prices, creating a negative spiral. Gates protect remaining investors from this spiral.</td><td>Short-term: loss of liquidity. Long-term: better price realization for those who stayed.</td></tr>
+  </table></div>
+  <div class="co co-exam">
+    <div class="cl">📌 GATING — SUITABILITY IMPLICATIONS FOR RRs</div>
+    <p>When recommending a fund that has gating provisions (especially alternatives, real estate funds, private credit), the RR MUST disclose the gating possibility to the client and assess whether the client's liquidity needs can accommodate it. A client who may need the money within 2 years should NOT be in a fund that could be gated for 12 months. This is a KYC and suitability issue — the client's time horizon and liquidity requirements must be matched to the fund's actual liquidity profile, not just its theoretical redemption frequency.</p>
+  </div>
+  </div>
+</div>
+
+<!-- 5.12 MANAGED VS. NON-MANAGED -->
+<div class="chapter" id="s12">
+  <div class="sh"><div class="sn">5.12</div><div class="st"><h2>Managed vs. Non-Managed Products</h2><div class="ss">INVESTOR DECISION FRAMEWORK · RR RECOMMENDATION FRAMEWORK</div></div></div>
+
+  <div class="sub" id="s12inv"><h3>The Investor's Decision Factors</h3>
+  <p>The choice between managed products (funds) and non-managed products (individual stocks, bonds, GICs) involves a systematic comparison of multiple factors. Neither approach is universally superior — the optimal choice depends on the specific investor's profile.</p>
+  <div class="tw"><table>
+    <tr><th>Decision Factor</th><th>Favours Managed Products</th><th>Favours Non-Managed (Direct)</th></tr>
+    <tr><td><strong>Investment knowledge and time</strong></td><td>Investor lacks time, knowledge, or interest to research individual securities</td><td>Investor has strong financial knowledge, analytical skills, and time to monitor holdings</td></tr>
+    <tr><td><strong>Portfolio size</strong></td><td>Small portfolio (&lt; $100,000) — cost-efficient to own diversified fund vs. buying 30+ individual securities</td><td>Large portfolio ($1M+) — can afford to own individual securities with custom diversification and no MER drag</td></tr>
+    <tr><td><strong>Diversification needs</strong></td><td>Need for instant diversification across multiple markets, asset classes, geographies beyond what direct investing allows economically</td><td>Investor can build a sufficiently diversified portfolio directly (e.g., 20–30 individual stocks across sectors)</td></tr>
+    <tr><td><strong>Cost sensitivity</strong></td><td>Willing to pay MER for convenience, professional management, diversification; may not value cost minimization above all else</td><td>Highly cost-sensitive; recognizes that MER drag significantly erodes long-term returns; prefers to own directly at minimal transaction cost</td></tr>
+    <tr><td><strong>Tax situation</strong></td><td>Registered accounts (RRSP/TFSA) — MER cost less critical vs. tax advantage; foreign diversification efficient</td><td>Non-registered accounts with large unrealized gains — direct holdings allow precise control over realization timing; no involuntary capital gains distributions</td></tr>
+    <tr><td><strong>Customization needs</strong></td><td>No specific exclusions needed; standard diversification sufficient</td><td>Need to exclude specific companies (employer stock, ethical concerns); need specific asset allocation or strategy fund cannot provide</td></tr>
+    <tr><td><strong>Access to specialty markets</strong></td><td>Emerging markets, private credit, alternatives — only practical via funds for most investors</td><td>Domestic equities and bonds — can be purchased directly with equivalent or lower cost</td></tr>
+    <tr><td><strong>Emotional discipline</strong></td><td>Automatic rebalancing, professional management reduces emotion-driven mistakes; PAIP enforces systematic saving</td><td>Investor has strong discipline and does not panic-sell; manages own rebalancing</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s12rr"><h3>The Registered Representative's Recommendation Framework</h3>
+  <p>The RR's role is not to have a predetermined bias toward managed or non-managed products, but to objectively match the recommendation to the specific client's KYC profile, objectives, and constraints. The recommendation framework integrates multiple dimensions:</p>
+  <ul class="sl2">
+    <li><strong>Suitability is the primary obligation:</strong> The recommendation must be suitable for THIS client based on their investment knowledge, objectives, time horizon, risk tolerance, risk capacity, and financial situation — NOT based on what generates the highest compensation for the advisor.</li>
+    <li><strong>Product due diligence (KYP):</strong> Before recommending any managed product, the RR must understand the product's structure, features, costs, risks, and performance history. This applies equally to mutual funds, ETFs, and alternatives. An RR cannot recommend a product they don't understand.</li>
+    <li><strong>Cost transparency:</strong> The RR must clearly explain all costs — MER, TER, trailer commissions, and tax costs — and how they impact the client's returns. The "total cost" of a recommendation must be disclosed.</li>
+    <li><strong>Conflict of interest disclosure:</strong> If the RR receives higher compensation for recommending one product over another (e.g., Series A mutual fund with 1% trailer vs. Series F + fee-based charge), this conflict must be identified, managed, and disclosed. Recommendations must be made in the client's best interest, not the RR's financial interest.</li>
+    <li><strong>Consistency with the Investment Policy Statement (IPS):</strong> For managed accounts or complex clients, the recommendation should align with the agreed investment mandate, risk profile, and return objectives.</li>
+    <li><strong>Review and monitoring:</strong> The recommendation doesn't end at the point of sale. Managed products must be monitored for ongoing suitability — manager changes, style drift, rising MERs, underperformance vs. benchmark, and changes in the client's circumstances all require reassessment.</li>
+  </ul>
+  <div class="co co-tip">
+    <div class="cl">💡 PRACTICAL DECISION MATRIX — MANAGED vs. DIRECT</div>
+    <p>A simple, honest assessment for most retail clients:<br><br>
+    <strong>Use managed products (ETFs preferred) when:</strong> Portfolio &lt; $500,000; needs global diversification; lacks time/knowledge for direct management; registered accounts where MER is less punitive.<br><br>
+    <strong>Consider direct securities when:</strong> Large non-registered portfolio with significant unrealized gains; investor has strong knowledge and time; specific customization needs (ESG exclusions, employer stock avoidance); sophisticated investor seeking alternatives to fund structures.<br><br>
+    <strong>For most retail clients, a core portfolio of low-cost index ETFs is difficult to beat on a risk-adjusted, after-fee, after-tax basis.</strong></p>
+  </div>
+  </div>
+</div>
+
+<!-- 5.13 TYPES OF ALTERNATIVE INVESTMENTS -->
+<div class="chapter" id="s13">
+  <div class="sh"><div class="sn">5.13</div><div class="st"><h2>Types of Alternative Investments</h2><div class="ss">HEDGE FUNDS · STRUCTURED PRODUCTS · LIQUID ALTS · CRYPTO · PRIVATE EQUITY · VENTURE CAPITAL</div></div></div>
+
+  <p>Alternative investments are investment strategies and asset classes outside the traditional universe of publicly traded stocks, bonds, and cash. In Canada, the alternatives market has grown dramatically — the Canadian hedge fund industry reached <strong>nearly US$138 billion</strong> (Preqin, 2024), while liquid alternative mutual funds crossed <strong>CAD $30 billion in AUM within just five years</strong> of being introduced in 2019. Understanding the distinct characteristics of each alternative type is a core RSE exam requirement.</p>
+
+  <!-- HEDGE FUNDS -->
+  <div class="sub" id="s13hf"><h3>1. Hedge Funds</h3>
+  <div class="alt-card">
+    <div class="alt-h" style="background:#0d1b2e">
+      <div class="alt-icon">🏦</div>
+      <div class="alt-name">Hedge Funds</div>
+      <span class="alt-tag tag-priv">PRIVATE · ACCREDITED INVESTORS · NI 45-106</span>
+    </div>
+    <div class="alt-body">
+      <p>A <strong>hedge fund</strong> is a privately offered pooled investment vehicle that uses a wide range of strategies — including leverage, short selling, derivatives, and concentrated positions — to generate returns that are largely independent of traditional market direction. The name "hedge" is historical — early hedge funds hedged long equity exposure with short positions. Today the term encompasses a very broad range of strategies.</p>
+      <h4>Legal Structure and Distribution in Canada</h4>
+      <ul class="sl2">
+        <li><strong>Typically structured as limited partnerships (LPs) or trusts</strong> — the general partner (GP) is the fund manager; investors are limited partners (LPs) with liability limited to their investment</li>
+        <li><strong>Distributed under NI 45-106 prospectus exemptions</strong> — primarily the accredited investor exemption. Not publicly offered. No simplified prospectus or Fund Facts required.</li>
+        <li><strong>Not governed by NI 81-102</strong> — unlike retail mutual funds and liquid alternatives, hedge funds face far fewer investment restrictions. They can use unlimited leverage, hold concentrated illiquid positions, and pursue any strategy they disclose in their offering memorandum.</li>
+        <li><strong>Offering Memorandum (OM)</strong> — the primary disclosure document delivered to prospective investors. Must contain prescribed disclosures in certain provinces.</li>
+      </ul>
+      <h4>Hedge Fund Strategy Categories</h4>
+      <div class="tw"><table>
+        <tr><th>Strategy</th><th>Description</th><th>Market Condition It Thrives In</th></tr>
+        <tr><td><strong>Long/Short Equity</strong></td><td>Buy undervalued stocks (long) + short-sell overvalued stocks. Net exposure can range from 0% (market neutral) to 80%+ (directionally long)</td><td>Stock-picking markets; works in both bull and bear markets depending on net exposure</td></tr>
+        <tr><td><strong>Global Macro</strong></td><td>Takes positions across currencies, interest rates, commodities, equities based on macroeconomic analysis. Example: Soros shorting GBP in 1992.</td><td>Periods of significant macro shifts, central bank divergence, geopolitical events</td></tr>
+        <tr><td><strong>Market Neutral</strong></td><td>Maintains zero net market exposure through equal long and short books. Designed to profit from relative performance, not market direction.</td><td>Volatile, directionless markets; provides true diversification benefit</td></tr>
+        <tr><td><strong>Event-Driven</strong></td><td>Trades on corporate events: mergers (merger arbitrage), bankruptcies (distressed), spin-offs, LBOs</td><td>Active M&amp;A environments; corporate restructuring cycles</td></tr>
+        <tr><td><strong>Relative Value / Arbitrage</strong></td><td>Exploits pricing discrepancies between related securities — e.g., convertible arbitrage, stat arb, fixed income arb</td><td>Markets with pricing inefficiencies; tighter when markets are highly liquid</td></tr>
+        <tr><td><strong>Managed Futures (CTA)</strong></td><td>Trend-following strategies trading futures across commodities, rates, currencies, equity indexes. Often computer-driven.</td><td>Strong trending markets; provided exceptional returns in 2022 when both stocks and bonds fell</td></tr>
+        <tr><td><strong>Multi-Strategy</strong></td><td>Allocates across several of the above strategies within a single fund for diversification of strategy risk</td><td>All market conditions — aims to reduce strategy-specific drawdowns</td></tr>
+      </table></div>
+      <h4>Liquidity and Redemption Terms</h4>
+      <ul class="sl2">
+        <li><strong>Lock-up periods:</strong> Initial lock-up periods of 6 months to 2+ years are common — investors cannot redeem during this period, giving the manager time to build positions without facing immediate redemption pressure</li>
+        <li><strong>Redemption gates:</strong> Managers can restrict redemptions to a percentage of NAV per period (e.g., maximum 10% per quarter) to prevent mass outflows</li>
+        <li><strong>Notice periods:</strong> 30–90 day advance notice typically required before redemption can be processed</li>
+        <li><strong>Redemption frequency:</strong> Monthly, quarterly, or semi-annual — far less liquid than daily mutual funds</li>
+      </ul>
+    </div>
+  </div></div>
+
+  <!-- STRUCTURED PRODUCTS -->
+  <div class="sub" id="s13sp"><h3>2. Structured Products</h3>
+  <div class="alt-card">
+    <div class="alt-h" style="background:#0d1b2e">
+      <div class="alt-icon">🧩</div>
+      <div class="alt-name">Structured Products</div>
+      <span class="alt-tag tag-struct">COMPLEX · ISSUER CREDIT RISK</span>
+    </div>
+    <div class="alt-body">
+      <p><strong>Structured products</strong> are pre-packaged investments that combine traditional securities (typically bonds) with derivatives to create customized risk-return profiles. They are engineered by financial institutions and sold to investors as notes or certificates with defined payoff structures at maturity.</p>
+      <h4>How Principal-Protected Notes (PPNs) Work</h4>
+      <div class="mb" style="background:#0d1b2e;padding:16px 20px;">
+        <div class="mfl">PPN CONSTRUCTION — ZERO COUPON BOND + CALL OPTION</div>
+        <div class="mf">PPN = Zero-Coupon Bond + Call Option on Reference Asset</div>
+        <div class="mw">
+          <div class="ms"><div class="msn">1</div><div class="mst"><strong>Zero-Coupon Bond portion:</strong> Issuer invests most of the investor's capital in a zero-coupon bond that matures at the face value of the note at maturity (e.g., 5 years). This guarantees return of principal at maturity — but NOT before (if sold early, the investor may receive less than principal).</div></div>
+          <div class="ms"><div class="msn">2</div><div class="mst"><strong>Call Option portion:</strong> The remaining capital (the difference between the bond cost and the full principal) purchases call options on the reference asset (S&P 500, gold, a basket of stocks). If the reference asset rises, the call option generates upside participation. If it falls, the options expire worthless but the bond matures at face value — the principal is protected.</div></div>
+          <div class="ms"><div class="msn">3</div><div class="mst"><strong>Participation rate:</strong> The investor typically does NOT receive 100% of the reference asset's gain — they receive a "participation rate" (e.g., 80% of S&P 500 gains). The participation rate is limited by the cost of capital allocation to options.</div></div>
+          <div class="mr">Example: $10,000 PPN, 5-year maturity, S&P 500 reference, 80% participation. If S&P 500 rises 50% → investor gains 80% × 50% = 40% = $4,000. If S&P 500 falls 40% → investor receives $10,000 at maturity (principal protected). If held to maturity. If sold early: no guarantee of principal.</div>
+        </div>
+      </div>
+      <h4>Key Risks in Structured Products</h4>
+      <ul class="sl2">
+        <li><strong>Issuer credit risk — the critical hidden risk:</strong> The principal protection is only as good as the financial health of the issuer (the bank or financial institution). If the issuer defaults, the investor has no protection — they become an unsecured creditor. In 2008, Lehman Brothers-linked structured products became worthless despite their "principal protection" when Lehman filed for bankruptcy. The principal protection protects against MARKET risk — NOT credit risk of the issuer.</li>
+        <li><strong>Liquidity risk:</strong> PPNs are not exchange-listed — they trade over-the-counter. Selling before maturity requires finding a buyer through the issuer, often at a significant discount to theoretical value. Early redemption penalties or mark-to-market losses can be substantial.</li>
+        <li><strong>Complexity risk:</strong> The payoff structures can be extremely complex — caps, floors, barriers, knock-outs, averaging features. Investors and even some advisors may not fully understand what they own.</li>
+        <li><strong>Opportunity cost:</strong> The zero-coupon bond portion locks up most of the capital at a below-market return. In rising interest rate environments, the locked-in bond yields look increasingly inferior.</li>
+        <li><strong>Distribution tax treatment:</strong> Gains from PPNs are typically treated as interest income (not capital gains) for Canadian tax purposes — the least tax-efficient income type. Despite feeling like equity exposure, the tax treatment is punitive.</li>
+      </ul>
+      <div class="co co-rule">
+        <div class="cl">🔴 STRUCTURED PRODUCT SUITABILITY — A FREQUENT REGULATORY CONCERN</div>
+        <p>Regulators have repeatedly flagged structured products as a source of suitability violations — particularly when sold to conservative investors who are told the products are "safe" because they have principal protection. RRs must clearly explain: (1) the issuer credit risk exists alongside the principal protection; (2) early redemption may result in loss of principal; (3) the participation structure caps upside; (4) gains are taxed as interest, not capital gains. Recommending a structured product to an investor who doesn't understand these risks is a suitability failure.</p>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- LIQUID ALTERNATIVES -->
+  <div class="sub" id="s13aif"><h3>3. Alternative Investment Funds (Liquid Alternatives)</h3>
+  <div class="alt-card">
+    <div class="alt-h" style="background:#0d1b2e">
+      <div class="alt-icon">⚖️</div>
+      <div class="alt-name">Alternative Mutual Funds (Liquid Alts)</div>
+      <span class="alt-tag tag-retail">RETAIL ACCESS · NI 81-102 · PROSPECTUS OFFERED</span>
+    </div>
+    <div class="alt-body">
+      <p><strong>Alternative Mutual Funds</strong> (commonly called "liquid alternatives" or "liquid alts") were introduced in Canada effective January 2019 through amendments to NI 81-102. They created a new category of publicly offered funds that can use certain hedge fund strategies — leverage, short selling, alternative asset classes — while remaining accessible to retail investors and maintaining daily or weekly liquidity.</p>
+      <h4>What Makes Liquid Alts Different from Regular Mutual Funds</h4>
+      <div class="tw"><table>
+        <tr><th>Feature</th><th>Conventional Mutual Fund (NI 81-102)</th><th>Alternative Mutual Fund / Liquid Alt (NI 81-102)</th><th>Private Hedge Fund</th></tr>
+        <tr><td>Who can invest</td><td>Anyone — retail investors</td><td>Anyone — retail investors (no accredited investor requirement)</td><td>Accredited investors only</td></tr>
+        <tr><td>Prospectus required</td><td>Yes — simplified prospectus + Fund Facts</td><td>Yes — simplified prospectus + Fund Facts (with additional alternative fund disclosures on face page)</td><td>No — offering memorandum only</td></tr>
+        <tr><td>Leverage allowed</td><td>Minimal — up to 2× via borrowing for very limited purposes</td><td>Up to <strong>3× NAV</strong> using specified derivatives and short selling</td><td>Unlimited</td></tr>
+        <tr><td>Short selling</td><td>Not permitted (with very limited exceptions)</td><td>Permitted — up to <strong>50% of NAV</strong> in short positions</td><td>Unlimited</td></tr>
+        <tr><td>Derivatives</td><td>Hedging and limited cash substitution only</td><td>Permitted for speculative purposes, hedging, leverage</td><td>Unlimited</td></tr>
+        <tr><td>Illiquid assets</td><td>Maximum 10% of NAV in illiquid securities</td><td>Maximum <strong>10% of NAV</strong> in illiquid securities (same cap as conventional)</td><td>Unlimited</td></tr>
+        <tr><td>Redemption</td><td>Daily at NAVPS</td><td>Daily or weekly (at least monthly)</td><td>Monthly, quarterly, with lock-ups</td></tr>
+        <tr><td>MER range</td><td>0.05–2.5%</td><td>1.0–2.5%+ (higher due to strategy complexity)</td><td>2% + 20% performance (typical)</td></tr>
+      </table></div>
+      <h4>The Canadian Liquid Alternatives Market — 2024 Context</h4>
+      <ul class="sl2">
+        <li><strong>CAD $30B+ in AUM</strong> achieved in just 5 years since 2019 — one of the fastest-growing segments in Canadian fund industry</li>
+        <li><strong>Key managers:</strong> Picton Mahoney, Ninepoint Partners, Accelerate Financial Technologies, Purpose Investments, AGF, IA Clarington, Arrow Capital Management</li>
+        <li><strong>Popular strategies:</strong> Long/short equity, market neutral, alternative income, managed futures/CTA, multi-strategy alternative</li>
+        <li><strong>CSA Staff Notice 81-334 (revised 2024):</strong> Updated ESG disclosure guidance including how liquid alternative funds with ESG components must disclose their approaches</li>
+      </ul>
+    </div>
+  </div></div>
+
+  <!-- CRYPTO -->
+  <div class="sub" id="s13crypto"><h3>4. Crypto-Assets</h3>
+  <div class="alt-card">
+    <div class="alt-h" style="background:#0d1b2e">
+      <div class="alt-icon">₿</div>
+      <div class="alt-name">Crypto-Assets</div>
+      <span class="alt-tag tag-crypto">REGULATED IN CANADA · HIGH RISK</span>
+    </div>
+    <div class="alt-body">
+      <p><strong>Crypto-assets</strong> are digital assets using cryptography and distributed ledger (blockchain) technology for decentralized transactions and record-keeping. Canada was the first country in the world to approve a Bitcoin exchange-traded fund — the Purpose Bitcoin ETF (BTCC) launched in February 2021 — making the country a global pioneer in regulated crypto-asset products.</p>
+      <h4>Key Crypto-Asset Products Available in Canada</h4>
+      <div class="tw"><table>
+        <tr><th>Product Type</th><th>Description</th><th>Examples</th><th>Regulatory Status</th></tr>
+        <tr><td><strong>Bitcoin ETFs</strong></td><td>Directly holds Bitcoin; daily liquidity on TSX; regulated under NI 81-102 with special crypto custody rules</td><td>Purpose BTCC, CI Galaxy BTCX, Fidelity FBTC, 3iQ BTCQ</td><td>Fully regulated; NI 81-102 compliance</td></tr>
+        <tr><td><strong>Ethereum ETFs</strong></td><td>Directly holds Ether; similar structure to Bitcoin ETFs</td><td>Purpose ETHH, CI Galaxy ETHX, 3iQ ETHQ</td><td>Fully regulated; NI 81-102 compliance</td></tr>
+        <tr><td><strong>Multi-crypto ETFs</strong></td><td>Holds basket of cryptocurrencies</td><td>Evolve Cryptocurrency ETF (ETC)</td><td>Regulated</td></tr>
+        <tr><td><strong>Crypto trading platforms</strong></td><td>Direct purchase and storage of crypto (wallets). In Canada, platforms must be registered with provincial securities regulators as restricted dealers.</td><td>Coinbase, Coinsquare, Newton, Bitbuy, WealthSimple Crypto</td><td>Must be registered with provincial CSA members</td></tr>
+      </table></div>
+      <h4>Regulatory Framework for Crypto in Canada</h4>
+      <ul class="sl2">
+        <li><strong>Securities classification:</strong> Some crypto-assets and crypto-asset contracts are considered securities under Canadian law, making their issuance and trading subject to securities regulation. The classification (security vs. commodity) affects regulatory treatment.</li>
+        <li><strong>Special custody rules:</strong> Under NI 81-102, Canadian crypto investment funds must follow specific custody rules for digital assets — typically requiring institutional-grade cold storage with a regulated custodian. Standard securities custodians are NOT automatically approved for crypto custody.</li>
+        <li><strong>Platform registration:</strong> Crypto trading platforms that offer services to Canadians must be registered with provincial regulators (typically as Restricted Dealers) and must comply with suitability, KYC, and AML/ATF rules.</li>
+        <li><strong>CSA guidance:</strong> The CSA has issued multiple notices clarifying when crypto-asset trading platforms are subject to securities regulation and what requirements apply.</li>
+      </ul>
+      <h4>Crypto-Asset Risk Factors</h4>
+      <ul class="sl2">
+        <li><strong>Extreme volatility:</strong> Bitcoin has experienced drawdowns of 50–80%+ multiple times. Standard deviation far exceeds traditional asset classes — annual standard deviation of 60–80%+ vs. ~15% for equities. CSA risk classification: High (≥20% standard deviation).</li>
+        <li><strong>Regulatory risk:</strong> Regulatory treatment can change rapidly — what is legal today may be restricted or banned tomorrow. Different jurisdictions apply different rules, creating uncertainty for cross-border platforms.</li>
+        <li><strong>Operational/custody risk:</strong> Private key loss = permanent loss of assets. Exchange hacks, smart contract exploits, and platform failures have resulted in billions in losses globally. This risk is significantly mitigated but not eliminated in regulated ETF wrappers.</li>
+        <li><strong>Liquidity risk in direct crypto:</strong> While Bitcoin markets are liquid 24/7, smaller altcoins can have very thin markets. In exchange failures (e.g., FTX collapse November 2022), investors could not access their assets for months.</li>
+        <li><strong>Tax treatment:</strong> CRA treats crypto-assets as commodities, not currency. Gains are treated as capital gains (50% inclusion for investment) or business income (100% inclusion if trading is the investor's business). Every exchange of one crypto for another is a taxable disposition — creating complex tracking obligations.</li>
+      </ul>
+      <div class="co co-warn">
+        <div class="cl">⚠️ CRYPTO SUITABILITY — HIGH RISK PRODUCT</div>
+        <p>Crypto-assets are appropriate only for investors who: (1) fully understand the technology, volatility, and regulatory risks; (2) have a high risk tolerance and long time horizon; (3) can afford to lose 100% of the allocated capital; (4) are allocating only a small portion of their overall portfolio (typically 1–5% maximum for most financial plans). Recommending a significant crypto allocation to a conservative, income-dependent retiree would be a serious suitability violation.</p>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- PRIVATE EQUITY -->
+  <div class="sub" id="s13pe"><h3>5. Private Equity (PE)</h3>
+  <div class="alt-card">
+    <div class="alt-h" style="background:#0d1b2e">
+      <div class="alt-icon">🏢</div>
+      <div class="alt-name">Private Equity</div>
+      <span class="alt-tag tag-priv">PRIVATE · ILLIQUID · 7–12 YEAR HORIZON</span>
+    </div>
+    <div class="alt-body">
+      <p><strong>Private equity (PE)</strong> refers to investments in companies that are NOT publicly traded on a stock exchange. PE funds pool capital from investors, acquire private companies, work to create value (through operational improvements, restructuring, or growth initiatives), and then exit — selling to strategic buyers, other PE firms, or through IPOs — typically over a 7–12 year fund life.</p>
+      <h4>Private Equity Sub-Strategies</h4>
+      <div class="tw"><table>
+        <tr><th>Strategy</th><th>Target Companies</th><th>Value Creation Approach</th><th>Risk Level</th></tr>
+        <tr><td><strong>Leveraged Buyout (LBO)</strong></td><td>Large, established companies with stable cash flows that can support significant debt financing</td><td>Buy using 60–70%+ debt; use cash flows to pay down debt; improve operations; sell at higher multiple</td><td>High — debt amplifies both gains and losses</td></tr>
+        <tr><td><strong>Growth Equity</strong></td><td>High-growth, established companies needing capital to scale — between VC and buyout</td><td>Minority stake; partner with management for growth initiatives; no control buyout</td><td>Medium — established business with growth upside</td></tr>
+        <tr><td><strong>Distressed / Turnaround</strong></td><td>Financially distressed or bankrupt companies with fixable problems</td><td>Acquire at low valuations; restructure debt/operations; improve performance; exit at significant premium</td><td>Very high — many distressed companies fail; few deliver exceptional returns</td></tr>
+        <tr><td><strong>Secondaries</strong></td><td>Purchases of existing LP interests in PE funds from other investors who need liquidity</td><td>Buy at discounts to NAV; shorter time to distributions since underlying funds are already deployed</td><td>Lower — known assets; shorter duration; discount to NAV provides margin of safety</td></tr>
+      </table></div>
+      <h4>The J-Curve Effect — Critical PE Concept</h4>
+      <div class="co co-exam">
+        <div class="cl">📌 J-CURVE — A DEFINING CHARACTERISTIC OF PE (EXAM FAVOURITE)</div>
+        <p>The <strong>J-curve</strong> describes the typical cash flow pattern of a PE fund over its life:<br><br>
+        <strong>Years 1–3 (Investment/Draw-down phase):</strong> Capital is called from LPs as deals are made. Fees are charged on committed capital from day one. No realizations yet. Returns appear negative — the investor has paid fees and drawn down capital without receiving any proceeds yet.<br><br>
+        <strong>Years 3–5 (Value creation phase):</strong> Portfolio companies are being improved. NAV of investments grows but no cash is returned yet.<br><br>
+        <strong>Years 5–10+ (Harvest phase):</strong> Portfolio companies are sold or IPO'd. Large cash distributions flow back to LPs. Returns accelerate significantly — the J-curve turns positive.<br><br>
+        The J-curve means PE shows negative or low returns in early years and very high returns in later years — making it essential to evaluate PE over the full fund life, not interim NAV snapshots.</p>
+      </div>
+      <h4>PE Return Measurement — IRR vs. MOIC</h4>
+      <ul class="sl2">
+        <li><strong>IRR (Internal Rate of Return):</strong> The annualized rate of return that discounts all cash flows (capital calls and distributions) to zero. The primary PE performance metric. Sensitive to timing — early distributions boost IRR even if total returns are modest.</li>
+        <li><strong>MOIC (Multiple on Invested Capital):</strong> = Total distributions received ÷ Total capital invested. A MOIC of 2.5× means the investor received $2.50 for every $1.00 invested. NOT time-weighted — a 2.5× over 15 years is far less impressive than 2.5× over 5 years.</li>
+        <li><strong>DPI (Distributions to Paid-In):</strong> Actual cash returned ÷ capital invested. Measures actual cash realized, not paper gains. A fund with high NAV but low DPI hasn't yet "proven" its returns.</li>
+      </ul>
+    </div>
+  </div></div>
+
+  <!-- VENTURE CAPITAL -->
+  <div class="sub" id="s13vc"><h3>6. Venture Capital (VC)</h3>
+  <div class="alt-card">
+    <div class="alt-h" style="background:#0d1b2e">
+      <div class="alt-icon">🚀</div>
+      <div class="alt-name">Venture Capital</div>
+      <span class="alt-tag tag-priv">PRIVATE · VERY ILLIQUID · POWER LAW RETURNS</span>
+    </div>
+    <div class="alt-body">
+      <p><strong>Venture capital (VC)</strong> is a subset of private equity focused on early-stage, high-growth companies — typically startups with disruptive technology, business models, or products. VC funds provide both capital and operational/strategic expertise, taking equity stakes in startups in exchange for funding.</p>
+      <h4>VC Stages of Investment</h4>
+      <div class="tw"><table>
+        <tr><th>Stage</th><th>Company Description</th><th>Typical Round Size</th><th>Risk Level</th></tr>
+        <tr><td><strong>Pre-Seed / Angel</strong></td><td>Idea stage; founders only; no product or revenue</td><td>$50K–$500K</td><td>Extreme — most companies fail here</td></tr>
+        <tr><td><strong>Seed</strong></td><td>Early product development; minimal revenue or first customers</td><td>$500K–$3M</td><td>Very high — high failure rate</td></tr>
+        <tr><td><strong>Series A</strong></td><td>Product-market fit demonstrated; revenue growing; scaling needed</td><td>$5M–$20M</td><td>High — still significant failure risk</td></tr>
+        <tr><td><strong>Series B/C</strong></td><td>Scaling rapidly; established revenue; expanding team and market</td><td>$20M–$100M+</td><td>Medium-high</td></tr>
+        <tr><td><strong>Late Stage / Pre-IPO</strong></td><td>Near profitability; may be preparing for IPO or strategic sale</td><td>$50M–$500M+</td><td>Medium — closer to exit, lower binary risk</td></tr>
+      </table></div>
+      <h4>Power Law Returns — How VC Actually Works</h4>
+      <ul class="sl2">
+        <li><strong>Most investments fail:</strong> In a typical VC portfolio, 50–60% of investments may return little to nothing (total or near-total loss). Another 20–30% might return 1–2× the invested capital. This sounds terrible.</li>
+        <li><strong>A few investments generate extraordinary returns:</strong> The remaining 10–20% of investments may generate 10×, 50×, or even 100×+ returns. This is the "power law" — a handful of outlier successes (the "unicorns") generate returns that more than offset all the failures and produce the fund's overall return.</li>
+        <li><strong>Implication:</strong> VC funds must deploy into enough companies (typically 20–30+) to have a realistic chance of capturing the power law outlier. A VC fund that invests in only 5 companies has high binary risk. Diversification across a portfolio of bets is essential.</li>
+        <li><strong>Canadian context:</strong> Canada's VC market has grown substantially — Shopify, Hootsuite, Wave Financial, Clearco are examples of Canadian startup successes. SR&ED (Scientific Research and Experimental Development) tax credits provide additional support for VC-backed startups doing R&D in Canada.</li>
+      </ul>
+      <h4>VC Liquidity — The Decade-Long Commitment</h4>
+      <ul class="sl2">
+        <li><strong>Typical fund life:</strong> 10 years (with possible 1–2 year extensions). Capital is illiquid for the entire period — there is no secondary market for most VC fund LP interests.</li>
+        <li><strong>The J-curve applies strongly to VC</strong> — even more pronounced than in PE because early-stage investments take longer to mature, and the investment period is longer before any exits occur.</li>
+        <li><strong>Secondary market for VC:</strong> A growing secondary market allows some investors to sell their LP interests before fund maturity, but at significant discounts (15–30%+ below NAV) due to illiquidity.</li>
+      </ul>
+    </div>
+  </div></div>
+</div>
+
+<!-- 5.14 CHARACTERISTICS OF ALTERNATIVES -->
+<div class="chapter" id="s14">
+  <div class="sh"><div class="sn">5.14</div><div class="st"><h2>Characteristics of Alternative Investments</h2><div class="ss">STRUCTURE · FEE STRUCTURES · ADVANTAGES/DISADVANTAGES · RISK &amp; RETURN · ACCREDITED INVESTOR</div></div></div>
+
+  <div class="sub" id="s14struct"><h3>Structure and Features of Alternative Investments</h3>
+  <h4>Typical Legal Structures</h4>
+  <div class="tw"><table>
+    <tr><th>Structure</th><th>Used By</th><th>Why</th><th>Key Legal Features</th></tr>
+    <tr><td><strong>Limited Partnership (LP)</strong></td><td>Hedge funds, PE funds, VC funds, most private alternatives</td><td>Most flexible — GP has unlimited management authority; LPs have limited liability; flow-through taxation; no entity-level tax</td><td>General Partner (GP) manages; Limited Partners (LPs) invest. LP liability limited to contributed capital. GP typically has 1% interest and all management authority.</td></tr>
+    <tr><td><strong>Trust</strong></td><td>Some hedge funds, liquid alts, REITs</td><td>Tax flow-through efficiency; flexible distribution mechanics</td><td>Same flow-through advantages as mutual fund trusts. Less common for private alternatives than LPs.</td></tr>
+    <tr><td><strong>Corporation</strong></td><td>PE holding companies, some hedge fund structures</td><td>May provide corporate law protections; useful for complex cross-border structures</td><td>Corporate-level taxation applies unless specific exemptions; less common for private funds due to tax inefficiency.</td></tr>
+    <tr><td><strong>Alternative Mutual Fund (NI 81-102)</strong></td><td>Liquid alternatives</td><td>Public fund structure enabling retail access; prospectus-offered</td><td>Same trust/corporation options as conventional mutual funds but with expanded investment permissions under NI 81-102 Alternative Fund rules.</td></tr>
+  </table></div>
+  <h4>Key Structural Features vs. Traditional Funds</h4>
+  <ul class="sl2">
+    <li><strong>Capital calls (PE/VC):</strong> Investors don't wire all capital upfront. The GP calls capital in tranches as investments are made. This allows LPs to earn returns on uncalled capital in the meantime but requires LPs to have capital readily available on short notice (10–30 day notice periods typical).</li>
+    <li><strong>Waterfall distributions:</strong> When a PE/VC fund exits investments, proceeds are distributed in a specific waterfall order: (1) Return of capital to LPs; (2) Preferred return (hurdle rate) to LPs; (3) GP catch-up; (4) Split of remaining profits (carried interest) between GP and LPs.</li>
+    <li><strong>Separate managed accounts (SMAs):</strong> Large institutional investors may negotiate a dedicated account with the same strategy as the hedge fund — providing customized risk, reporting, and tax management not available through the pooled structure.</li>
+  </ul>
+  </div>
+
+  <div class="sub" id="s14fees"><h3>Alternative Investment Fee Structures</h3>
+  <p>Alternative investments use more complex fee structures than traditional mutual funds. Understanding every component — management fee, performance fee, hurdle rate, high-water mark, carried interest, and clawback — is essential for the RSE exam.</p>
+
+  <div class="dg"><div class="dt">The "2 and 20" Hedge Fund Fee Structure — Industry Standard (Though Declining)</div>
+  <div class="g2">
+    <div class="gc"><h5>💼 Management Fee (The "2")</h5>
+      <p><strong>Typically 1.5–2.0%</strong> of Assets Under Management (AUM) annually.<br><br>
+      Charged regardless of performance — the manager earns this fee even if the fund loses money. Covers: research costs, operations, technology, staff, rent, overhead.<br><br>
+      Calculation: Charged on NAV, typically monthly (i.e., 2% ÷ 12 = 0.167% per month).<br><br>
+      <strong>Trend:</strong> Competition has pushed management fees lower — many funds now charge 1.5% or even 1.0–1.25% for large institutional allocations, with performance fees increased to compensate.</p>
+    </div>
+    <div class="gc"><h5>📈 Performance Fee (The "20") — Carried Interest</h5>
+      <p><strong>Typically 15–20%</strong> of the fund's profits above the hurdle rate.<br><br>
+      Also called "carried interest" in the PE/VC context.<br><br>
+      Aligns manager incentives with investor outcomes — the manager only earns extra compensation when investors profit.<br><br>
+      <strong>Critical conditions:</strong> The performance fee is typically only earned ABOVE the hurdle rate AND only when the fund is above its high-water mark. See below for both.</p>
+    </div>
+  </div></div>
+
+  <h4>The Hurdle Rate</h4>
+  <p>The <strong>hurdle rate</strong> (also called "preferred return" in PE context) is the <mark>minimum return the fund must achieve before the manager earns a performance fee</mark>. It protects investors by ensuring the manager is only rewarded for returns above a reasonable threshold.</p>
+  <div class="mb">
+    <div class="mfl">Hurdle Rate Examples</div>
+    <div class="mw">
+      <div class="ms"><div class="msn">1</div><div class="mst"><strong>Hedge Fund (fixed hurdle, e.g., 5%):</strong> If fund returns 12% and hurdle is 5%, performance fee applies to 12% − 5% = 7% of profits above hurdle. On $100M fund: $7M × 20% = $1.4M performance fee earned by manager. If fund returns 3% (below hurdle), zero performance fee earned.</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst"><strong>Private Equity (preferred return, typically 6–8%):</strong> LPs receive their invested capital PLUS a preferred annual return (e.g., 8% compounded) before any carried interest is paid to the GP. This protects long-term LP capital while the J-curve runs its course.</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst"><strong>Soft hurdle vs. Hard hurdle:</strong> Hard hurdle = performance fee paid only on returns ABOVE the hurdle (the hurdle return belongs entirely to investors). Soft hurdle = once the hurdle is crossed, performance fee applies to ALL profits from $0, not just the amount above the hurdle. Hard hurdles are more investor-friendly.</div></div>
+      <div class="mr">Typical hurdle rates: Hedge funds 5–8% (often LIBOR + spread or a fixed rate); PE funds 6–8% preferred return (compounded annually over the fund's life)</div>
+    </div>
+  </div>
+
+  <h4>High-Water Mark (HWM)</h4>
+  <p>The <strong>high-water mark</strong> is the <mark>highest NAV per unit the fund has previously achieved</mark>. The manager can only earn a performance fee when the fund's NAV exceeds the previous HWM. This prevents the manager from double-charging performance fees when recovering from a drawdown.</p>
+  <div class="mb">
+    <div class="mfl">High-Water Mark — Worked Example</div>
+    <div class="mw">
+      <div class="ms"><div class="msn">1</div><div class="mst"><strong>Year 1:</strong> Fund starts at $100 NAV. Returns +20% → NAV = $120. HWM = $120. Performance fee earned on $20 gain above hurdle.</div></div>
+      <div class="ms"><div class="msn">2</div><div class="mst"><strong>Year 2:</strong> Fund falls 15% → NAV = $102. HWM remains $120. No performance fee earned — fund is below HWM.</div></div>
+      <div class="ms"><div class="msn">3</div><div class="mst"><strong>Year 3:</strong> Fund rises 25% → NAV = $127.50. Fund crosses HWM of $120. Performance fee is earned ONLY on the gain above $120 (= $7.50), not on the full $25.50 rise from $102 to $127.50. Investor doesn't pay performance fee twice for the same ground.</div></div>
+      <div class="mr">Without HWM: If a manager loses 30% then gains 40%, they could charge performance fees on the 40% gain even though the investor is still below breakeven. HWM prevents this. It strongly protects investor interests and is standard practice in the hedge fund industry.</div>
+    </div>
+  </div>
+
+  <h4>Carried Interest and Clawback (PE/VC)</h4>
+  <ul class="sl2">
+    <li><strong>Carried interest:</strong> The GP's share of profits — typically 20% of profits above the preferred return. This is the primary GP compensation in PE/VC. In Canada, carried interest is generally taxed as capital gains (50% inclusion) rather than employment income — a significant tax advantage for PE/VC fund managers that has been subject to policy debate.</li>
+    <li><strong>Clawback provision:</strong> If the GP receives carried interest on early profitable exits, but later investments in the same fund underperform, the GP may be required to return previously received carried interest to LPs. This clawback provision ensures the GP's 20% applies to the fund's overall performance, not just its early wins.</li>
+  </ul>
+
+  <h4>Fee Comparison — Traditional vs. Alternative</h4>
+  <div class="dg"><div class="dt">Fee Structures Across the Managed Products Spectrum</div>
+  <table style="width:100%;font-size:13px;color:rgba(255,255,255,.8);border-collapse:collapse">
+    <tr><th style="background:rgba(201,151,58,.2);padding:9px 12px;text-align:left">Product</th><th style="background:rgba(201,151,58,.2);padding:9px 12px;text-align:left">Management Fee</th><th style="background:rgba(201,151,58,.2);padding:9px 12px;text-align:left">Performance Fee</th><th style="background:rgba(201,151,58,.2);padding:9px 12px;text-align:left">HWM?</th><th style="background:rgba(201,151,58,.2);padding:9px 12px;text-align:left">Hurdle Rate?</th></tr>
+    <tr><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Passive Index ETF</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">0.05–0.25%</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">None</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">N/A</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">N/A</td></tr>
+    <tr><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Active Mutual Fund (Series A)</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">1.5–2.0%</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">None</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">N/A</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">N/A</td></tr>
+    <tr><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Liquid Alt / Alternative Mutual Fund</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">1.0–2.0%</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">0–20% (some)</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Usually yes</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Sometimes</td></tr>
+    <tr><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Hedge Fund (private)</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">1.5–2.0%</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">15–20%</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">Yes (standard)</td><td style="padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08)">5–8% (typical)</td></tr>
+    <tr><td style="padding:8px 12px">PE / VC Fund</td><td style="padding:8px 12px">1.5–2.0% of committed capital</td><td style="padding:8px 12px">20% carried interest</td><td style="padding:8px 12px">Via whole-fund model</td><td style="padding:8px 12px">6–8% preferred return</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s14adv"><h3>Advantages and Disadvantages of Alternative Investments</h3>
+  <div class="dg"><div class="dt">Alternatives — Complete Advantage/Disadvantage Framework</div><div class="g2">
+    <div class="gc"><h5>✅ Advantages</h5><ul>
+      <li><strong>Low correlation to traditional assets:</strong> Alternative strategies (market neutral, managed futures, global macro) can have near-zero or negative correlation to equities and bonds — genuine diversification that reduces portfolio volatility without proportionally reducing expected return</li>
+      <li><strong>Access to illiquidity premium:</strong> PE and VC funds earn higher long-term returns partly as compensation for the illiquidity of their investments — investors willing to lock up capital for 10+ years are rewarded with higher expected returns vs. public markets</li>
+      <li><strong>Absolute return objective:</strong> Many hedge funds target positive returns regardless of market direction — unlike long-only funds that always fall in bear markets</li>
+      <li><strong>Skill-based alpha generation:</strong> The best alternative managers generate alpha through genuine skill (security selection, information advantages, proprietary strategies) rather than just beta exposure</li>
+      <li><strong>Inflation hedging:</strong> Real assets (infrastructure, commodity futures, real estate) can provide protection against inflation that bonds and cash cannot</li>
+      <li><strong>Portfolio efficiency improvement:</strong> Adding truly uncorrelated alternatives to a stock/bond portfolio can improve the Sharpe ratio (return per unit of risk) of the total portfolio — the "efficient frontier" shifts upward</li>
+    </ul></div>
+    <div class="gc"><h5>❌ Disadvantages</h5><ul>
+      <li><strong>High fees:</strong> The "2 and 20" structure can consume 30–50% of gross returns in a typical hedge fund. PE carried interest of 20% takes a large share of profits. Fees must be justified by genuine alpha — which is rare and inconsistent.</li>
+      <li><strong>Illiquidity:</strong> PE/VC funds lock capital for 7–12+ years. Hedge fund gates and lock-ups can restrict access. Not suitable for investors who may need funds within the investment horizon.</li>
+      <li><strong>Complexity and opacity:</strong> Strategies are complex; valuations of private holdings are often infrequent and subjective; reporting is less standardized than public markets. Investors may not fully understand what they own.</li>
+      <li><strong>Manager selection risk is severe:</strong> The difference between top-quartile and bottom-quartile PE managers is enormous — often 10%+ IRR difference. Choosing the wrong manager can result in returns far worse than public markets. Unlike public markets, the distribution of returns is extremely wide.</li>
+      <li><strong>High minimum investments:</strong> Most private alternatives require $100,000–$1,000,000+ minimum investments, limiting access to institutional and high-net-worth investors.</li>
+      <li><strong>Limited regulatory protection:</strong> Private alternatives face far less regulatory oversight than public funds — limited disclosure requirements, no CIPF protection for LP interests, no mandatory Fund Facts.</li>
+      <li><strong>Valuation challenges:</strong> Private assets (PE, VC, real estate) are marked to model rather than market — valuations are subjective, infrequent, and may not reflect true fair value. The apparent low volatility of alternatives is partly an artifact of infrequent marking.</li>
+    </ul></div>
+  </div></div>
+  </div>
+
+  <div class="sub" id="s14risk"><h3>Sources of Risk and Return in Alternative Investments</h3>
+  <div class="tw"><table>
+    <tr><th>Alternative Type</th><th>Primary Return Sources</th><th>Primary Risk Sources</th></tr>
+    <tr><td><strong>Hedge Funds</strong></td><td>Manager skill/alpha, risk premia (carry, momentum, value), market inefficiencies exploited through leverage and short selling</td><td>Manager risk, leverage amplification, strategy crowding, liquidity mismatches, counterparty risk on derivatives, gating risk</td></tr>
+    <tr><td><strong>Structured Products (PPNs)</strong></td><td>Upside participation in reference asset performance (call option value) + capital protection via zero-coupon bond</td><td>Issuer credit risk (primary), liquidity risk (no secondary market), opportunity cost, interest income tax treatment, participation rate limitations</td></tr>
+    <tr><td><strong>Liquid Alternatives</strong></td><td>Alpha from long/short, market neutral, and other strategies; similar to hedge funds but more constrained</td><td>Same as hedge funds but magnified by leverage up to 3×; strategy may be constrained by NI 81-102 restrictions limiting effectiveness</td></tr>
+    <tr><td><strong>Crypto-Assets</strong></td><td>Speculative appreciation, network effects, technology adoption, inflation hedge thesis, store of value thesis</td><td>Extreme volatility, regulatory uncertainty, operational/custody risk, platform failure (FTX), technology risk (forks, hacks)</td></tr>
+    <tr><td><strong>Private Equity</strong></td><td>Illiquidity premium, leverage (debt amplifies equity returns), operational improvements, multiple expansion, proprietary deal access</td><td>Illiquidity (7–12 years), leverage risk, manager selection risk, valuation uncertainty, J-curve front-loaded losses, exit environment dependency</td></tr>
+    <tr><td><strong>Venture Capital</strong></td><td>Power law returns from a few exceptional winners; early-stage equity in disruptive companies; SR&ED tax credit support</td><td>Most investments fail (binary risk per investment); 10-year+ illiquidity; manager selection critical; J-curve; limited secondary market</td></tr>
+  </table></div>
+  </div>
+
+  <div class="sub" id="s14ai"><h3>Accredited Investor Requirement (NI 45-106)</h3>
+  <p>Most private alternative investments in Canada can only be sold to <strong>accredited investors</strong> — individuals or entities that meet specific financial thresholds under <strong>National Instrument 45-106 Prospectus Exemptions</strong>. This exemption allows distribution without a prospectus but requires that investors have the financial means and sophistication to assess and bear the risks.</p>
+
+  <h4>Individual Accredited Investor Thresholds (NI 45-106)</h4>
+  <div class="tw"><table>
+    <tr><th>Threshold Test</th><th>Requirement</th><th>Notes</th></tr>
+    <tr><td><strong>Financial assets test (most common)</strong></td><td>Owns financial assets (cash, securities, insurance contracts) with an aggregate net realizable value BEFORE TAXES of <strong>$1,000,000+</strong>, alone or with a spouse</td><td>Real estate does NOT count as a "financial asset" for this test. Common threshold used by hedge funds and PE funds for individual investors.</td></tr>
+    <tr><td><strong>Income test</strong></td><td>Individual income exceeding <strong>$200,000</strong> in each of the 2 most recent calendar years, with a reasonable expectation of same income in the current year</td><td>Income must be individual income — not combined with spouse. Must be sustained over 2 prior years.</td></tr>
+    <tr><td><strong>Joint income test</strong></td><td>Combined net income of individual and spouse exceeding <strong>$300,000</strong> in each of the 2 most recent calendar years, with reasonable expectation of same in current year</td><td>Allows couples to qualify together based on combined income even if neither qualifies individually.</td></tr>
+    <tr><td><strong>Net assets test</strong></td><td>Individual (alone or with spouse) has net assets of at least <strong>$5,000,000</strong></td><td>Net assets = total assets minus total liabilities. Broadest measure — real estate is included in total assets. This threshold also qualifies as a "Permitted Client" for certain additional exemptions.</td></tr>
+    <tr><td><strong>Registered adviser / dealer</strong></td><td>A person registered under securities legislation as an adviser or dealer</td><td>Registration itself qualifies the individual as an accredited investor for professional investment purposes.</td></tr>
+  </table></div>
+
+  <h4>Accredited Investor Process</h4>
+  <ul class="sl2">
+    <li><strong>Form 45-106F9:</strong> The investor must sign a Certificate of Accredited Investor (Form 45-106F9) confirming they meet one of the thresholds — EXCEPT when the $5,000,000 net assets test is the basis for qualification, where a different form applies</li>
+    <li><strong>Dealer responsibility:</strong> The dealer distributing the alternative product must take reasonable steps to verify the accredited investor status — collecting Form 45-106F9 and conducting KYC due diligence to ensure the claim is credible</li>
+    <li><strong>Annual re-certification:</strong> Some fund managers require annual re-certification of accredited investor status, especially if the investor's financial situation may have changed</li>
+    <li><strong>Resale restrictions:</strong> Securities sold under the accredited investor exemption have resale restrictions — they generally cannot be resold unless another prospectus exemption applies (e.g., the buyer is also an accredited investor) or after a seasoning period under applicable securities rules</li>
+  </ul>
+
+  <h4>Entity-Level Accredited Investor Thresholds</h4>
+  <ul class="sl2">
+    <li><strong>Corporations, limited partnerships, trusts:</strong> Net assets exceeding <strong>$5,000,000</strong> or all securities owners themselves qualify as accredited investors</li>
+    <li><strong>Registered dealers and advisers:</strong> Automatically qualify as accredited investors in their professional capacity</li>
+    <li><strong>Financial institutions (banks, insurance companies, pension funds):</strong> Automatically qualify based on regulatory status</li>
+    <li><strong>Investment funds (both mutual and non-mutual):</strong> Automatically qualify if managed by a registered investment fund manager</li>
+  </ul>
+
+  <div class="co co-rule">
+    <div class="cl">🔴 PERMITTED CLIENT — A HIGHER THRESHOLD FOR ADDITIONAL EXEMPTIONS</div>
+    <p>Above the accredited investor threshold is the <strong>"Permitted Client"</strong> category (also in NI 31-103). An individual qualifies as a Permitted Client with financial assets exceeding <strong>$5,000,000</strong> (same as the high net asset accredited investor test) or as a financial institution, registered firm, etc. Permitted Clients are afforded additional regulatory exemptions — they can waive certain KYC documentation requirements, receive reduced suitability obligations, and are treated as sophisticated market counterparties. Knowing the difference between accredited investor and permitted client is tested on the RSE exam.</p>
+  </div>
+  </div>
+</div>
+
+<!-- QUIZ SECTION -->
+<div id="qs">
+  <div class="qh">Practice Exam — 50 Questions</div>
+  <div class="qsub">ELEMENT 5 PART 2: COSTS, REDEMPTIONS &amp; ALTERNATIVES · COMPLETE COVERAGE · EXAM-LEVEL</div>
+  <div class="qstats">
+    <div class="qstat"><span class="qv">50</span><span class="ql">Total</span></div>
+    <div class="qstat"><span class="qv" id="ac">0</span><span class="ql">Answered</span></div>
+    <div class="qstat"><span class="qv" id="cc">0</span><span class="ql">Correct</span></div>
+    <div class="qstat"><span class="qv" id="sp">—</span><span class="ql">Score</span></div>
+  </div>
+  <div class="qc">
+    <button class="btn1 btnP" onclick="revealAll()">Show All Answers</button>
+    <button class="btn1 btnO" onclick="resetQuiz()">Reset Quiz</button>
+  </div>
+  <div id="qb"></div>
+  <div class="qsp" id="qsp"><div class="qsv" id="fs">—</div><p>out of 50 correct</p></div>
+</div>
+</div></div>
+<div id="bt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<script>
+const Qs=[
+{n:1,d:"Easy",t:"5.10",q:"The Management Expense Ratio (MER) of a mutual fund does NOT include which of the following costs?",o:["The portfolio manager's management fee","Trailing commissions paid to the distributor","Portfolio trading commissions (brokerage costs) when securities are bought and sold","Applicable HST on fund management services"],a:2,e:"The <strong>Trading Expense Ratio (TER)</strong> — NOT the MER — captures portfolio trading commissions (brokerage costs) and bid-ask spreads incurred when the fund buys and sells securities. TER is disclosed separately in annual financial statements, not in Fund Facts. The MER includes: management fee + trailing commissions + operating expenses (audit, legal, filing) + applicable taxes (HST)."},
+{n:2,d:"Easy",t:"5.11",q:"In Canada, what is the required method for calculating Adjusted Cost Base (ACB) when tracking mutual fund holdings for tax purposes?",o:["First-In, First-Out (FIFO)","Last-In, First-Out (LIFO)","Weighted average cost method","Specific identification method"],a:2,e:"The CRA requires the <strong>weighted average cost method</strong> for mutual fund ACB tracking in Canada. Every purchase (including reinvested distributions) is averaged into a new per-unit cost. You cannot use FIFO, LIFO, or specific identification for Canadian mutual fund units. Each reinvested distribution at its reinvestment price is added to the total ACB, preventing double taxation on distributions."},
+{n:3,d:"Easy",t:"5.13",q:"Which Canadian regulatory instrument governs the distribution of private hedge funds in Canada to accredited investors?",o:["NI 81-102 Investment Funds","NI 45-106 Prospectus Exemptions","NI 81-101 Mutual Fund Prospectus Disclosure","NI 31-103 Registration Requirements"],a:1,e:"Private hedge funds are distributed under <strong>NI 45-106 Prospectus Exemptions</strong> — primarily the accredited investor exemption. They do NOT use a prospectus and are NOT governed by NI 81-102 (which governs public retail funds). NI 31-103 governs registrant requirements. NI 81-101 governs public mutual fund prospectus disclosure."},
+{n:4,d:"Easy",t:"5.14",q:"Under NI 45-106, an individual qualifies as an accredited investor under the most commonly used financial assets test if they have financial assets with a net realizable value before taxes of at least:",o:["$500,000","$750,000","$1,000,000","$5,000,000"],a:2,e:"The accredited investor financial assets threshold is <strong>$1,000,000</strong> in financial assets (alone or with a spouse) — before taxes. Note: real estate does NOT count as a financial asset for this test. The $5,000,000 threshold applies to the net ASSETS test (total assets minus total liabilities), which is broader and qualifies someone as both an accredited investor AND a Permitted Client."},
+{n:5,d:"Easy",t:"5.10",q:"In a TFSA, US dividend income received from a US-listed ETF is subject to a 15% US withholding tax. This withholding tax is:",o:["Fully recoverable via the foreign tax credit on the Canadian tax return","Exempt because TFSAs are registered accounts","Unrecoverable — the Canada-US treaty does not extend treaty benefits to TFSAs","Recoverable only by filing Form T1262"],a:2,e:"The Canada-US Tax Treaty's exemption from withholding tax on registered accounts applies to RRSPs and RRIFs — but <strong>NOT TFSAs</strong>. US dividends received in a TFSA are subject to the standard 15% withholding. Because there is no Canadian tax payable on TFSA income, there is no Canadian tax against which to apply the foreign tax credit. The 15% withholding is permanently and entirely unrecoverable — a significant hidden cost of holding US dividend-paying ETFs in a TFSA."},
+{n:6,d:"Easy",t:"5.13",q:"Canada launched the world's first regulated Bitcoin exchange-traded fund in:",o:["December 2019","February 2021","March 2022","January 2020"],a:1,e:"Canada launched the world's first Bitcoin ETF — the Purpose Bitcoin ETF (BTCC) — in <strong>February 2021</strong>, making it the first country globally to approve a regulated Bitcoin ETF. This was a landmark event in financial regulation and positioned Canada as a leader in crypto-asset product innovation within a regulated framework."},
+{n:7,d:"Easy",t:"5.11",q:"A T-SWP (Tax-Smart Systematic Withdrawal Plan) distributes primarily which type of income to minimize current tax liability for investors in non-registered accounts?",o:["Interest income","Capital gains distributions","Return of Capital (ROC)","Canadian eligible dividends"],a:2,e:"T-SWPs distribute primarily <strong>Return of Capital (ROC)</strong> — which is NOT immediately taxable. Instead, ROC reduces the investor's ACB. The tax is deferred to eventual sale when the accumulated lower ACB produces a larger capital gain. This deferral can save thousands of dollars in tax compared to interest-distributing funds over a multi-year retirement income period."},
+{n:8,d:"Easy",t:"5.11",q:"What is 'gating' in the context of mutual fund redemptions?",o:["Charging a sales fee at the gate when investors enter the fund","The temporary suspension or restriction of investor redemptions by a fund manager during periods of market stress or illiquidity","Setting a minimum investment threshold at purchase","A maximum annual redemption limit for registered accounts"],a:1,e:"<strong>Gating</strong> is the temporary suspension or restriction of redemptions — the fund manager restricts investors' ability to redeem their units. It occurs when market stress or illiquidity makes it impractical or harmful to sell underlying assets to fund redemptions. Under NI 81-102, public fund suspensions typically cannot exceed one year. Private hedge funds and alternatives can gate indefinitely under their offering memorandum terms."},
+{n:9,d:"Medium",t:"5.10",q:"A Canadian investor holds a Canadian ETF that invests in US stocks (not through a US-listed ETF). They hold this ETF in a non-registered account. What happens to the US withholding tax on dividends?",o:["The 15% US withholding is unrecoverable — foreign ETFs never pass through foreign tax credits","The Canadian ETF receives US dividends net of 15% withholding. The investor can claim a foreign tax credit on their Canadian tax return, making the withholding effectively recoverable","US withholding is 30% for Canadian investors since they are foreign persons","No withholding applies because the ETF is a Canadian entity"],a:1,e:"When a Canadian ETF directly holds US stocks, it receives US dividends net of 15% US withholding. The fund passes through the foreign income and the related withholding tax information to Canadian investors. In a <strong>non-registered account</strong>, the investor can claim a <strong>foreign tax credit</strong> for the 15% withholding on their Canadian tax return — offsetting Canadian tax owing on the foreign income. The withholding is effectively recoverable and double taxation is avoided."},
+{n:10,d:"Medium",t:"5.13",q:"Which of the following BEST describes the 'J-curve' in the context of a private equity fund?",o:["The positive geometric return curve showing compounding of PE returns","The pattern of initially negative or low returns in early fund years (due to fees and capital calls without exits yet), followed by rising returns as portfolio companies are exited during the harvest phase","A leverage curve showing how debt amplifies PE returns over time","The declining fee curve as assets under management grow"],a:1,e:"The <strong>J-curve</strong> describes PE's typical cash flow pattern: early years show negative or low net returns because management fees are charged immediately on committed capital, but exits and distributions haven't occurred yet. As portfolio companies are improved and eventually sold (years 5–10+), large cash distributions flow to LPs and IRR rises sharply — the J turns positive. Evaluating PE performance only in years 1–3 gives a misleadingly negative view. The full fund life view is essential."},
+{n:11,d:"Medium",t:"5.14",q:"A hedge fund charges 1.5% management fee and 20% performance fee above an 8% hurdle rate. The fund returns +25% in a year. On a $10M fund, what is the approximate total fee paid to the manager?",o:["$150,000 management fee + $340,000 performance fee = $490,000","$150,000 management fee + $500,000 performance fee = $650,000","$250,000 management fee + $340,000 performance fee = $590,000","$150,000 management fee only — below hurdle so no performance fee"],a:0,e:"<strong>Management fee:</strong> $10,000,000 × 1.5% = $150,000.<br><strong>Performance fee:</strong> Fund earned 25%. Above hurdle of 8%. Profits above hurdle = (25% − 8%) = 17% of $10M = $1,700,000. Performance fee = 20% × $1,700,000 = <strong>$340,000</strong>.<br>Total fees: $150,000 + $340,000 = <strong>$490,000</strong>. This illustrates why high-performing alternative funds can generate very significant fee income for managers — and why fee structures must be fully understood before investing."},
+{n:12,d:"Medium",t:"5.14",q:"What is a 'high-water mark' in the context of a hedge fund performance fee?",o:["The maximum NAV the fund can achieve before fees double","The highest NAV per unit previously achieved — the performance fee can only be earned when the fund exceeds this level. Prevents double-charging during recovery from a drawdown.","The minimum amount of assets the fund must maintain to stay open","The threshold at which the fund switches from a 20% to 25% performance fee"],a:1,e:"The <strong>high-water mark (HWM)</strong> is the highest NAV per unit the fund has previously achieved. The manager can only earn a performance fee when the fund's NAV exceeds the previous HWM. This prevents managers from charging performance fees on recovering from a drawdown they themselves caused. Example: Fund at $120 HWM falls to $90, then recovers to $125. Performance fee is earned only on the $5 above $120, NOT on the $35 recovery from $90 to $125. The HWM protects investors from paying twice for the same recovery."},
+{n:13,d:"Medium",t:"5.11",q:"An investor redeems 200 mutual fund units with ACB of $15.20/unit at current NAVPS of $17.42. The fund also distributed a capital gain of $750 during the year (T3 Box 21). What is the total capital gain to report this year?",o:["$374 from redemption + $750 from T3 = $1,124 total capital gain","$444 from redemption only","$444 from redemption + $750 from T3 = $1,194 total capital gain","$750 from T3 distribution only — the redemption gain is deferred"],a:2,e:"<strong>Redemption capital gain:</strong> Proceeds = 200 × $17.42 = $3,484. ACB = 200 × $15.20 = $3,040. Capital gain = $3,484 − $3,040 = <strong>$444</strong>.<br><strong>T3 capital gains distribution:</strong> The $750 Box 21 capital gains distribution must also be reported on Schedule 3.<br><strong>Total capital gains:</strong> $444 + $750 = <strong>$1,194</strong>. At 50% inclusion = $597 taxable income. Both the redemption AND the T3 distribution are taxable in the year they occur."},
+{n:14,d:"Medium",t:"5.11",q:"An investor with a $500,000 portfolio runs a $2,500/month SWP. In Year 1, the portfolio falls 30% before SWP payments. Why is this particularly damaging versus a 30% decline in a lump-sum investment with no withdrawals?",o:["SWPs have higher tax costs that amplify the loss","The SWP forces redemptions during the decline, locking in losses at depressed prices and permanently reducing the capital base. Fewer units remain to participate in the eventual recovery.","SWPs charge additional fees during market downturns","The 30% decline is equally damaging in both scenarios — withdrawals don't affect the math"],a:1,e:"This is <strong>sequence-of-returns risk</strong> — one of the most critical retirement planning concepts. With a SWP: portfolio falls from $500,000 to $350,000 after 30% decline, then $30,000 in SWP payments = $320,000 left. Even a full 10% recovery: $352,000 − $30,000 SWP = $322,000. The capital base has been permanently impaired — there are fewer units left to recover value. Without SWP withdrawals, the same investor would recover fully. The SWP permanently locks in losses at the worst time, disproportionately depleting the portfolio."},
+{n:15,d:"Medium",t:"5.13",q:"What is the primary difference between a conventional mutual fund and an Alternative Mutual Fund (liquid alternative) under NI 81-102?",o:["Alternative funds can only be sold to accredited investors, while conventional funds are for everyone","Alternative funds can use leverage up to 3× NAV and short sell up to 50% of NAV — strategies not permitted for conventional mutual funds — while remaining publicly accessible to retail investors through a prospectus","Alternative funds have no MER — they only charge performance fees","Alternative funds are not subject to NI 81-102 restrictions"],a:1,e:"<strong>Alternative Mutual Funds</strong> under NI 81-102 (introduced 2019) are still publicly offered to retail investors with a prospectus AND Fund Facts — no accredited investor requirement. The key differences from conventional funds are: leverage up to <strong>3× NAV</strong> permitted; short selling up to <strong>50% of NAV</strong> permitted; derivatives for speculative purposes permitted; certain alternative asset classes accessible. They still face the same 10% illiquid asset limit as conventional funds and must maintain regular redemption (at least monthly)."},
+{n:16,d:"Medium",t:"5.10",q:"What is the Portfolio Turnover Rate (PTR) and why does a high PTR harm investors in non-registered accounts in two distinct ways?",o:["PTR measures portfolio geographic diversity; high PTR just means more international exposure","PTR measures how actively the fund trades. High PTR harms non-registered investors in two ways: (1) higher TER (trading costs that directly reduce returns) and (2) more frequent capital gains realizations distributed to all unitholders as T3 income — taxable even if the investor never sold a unit.","PTR only affects registered accounts because of contribution room implications","PTR measures manager experience — higher is always better"],a:1,e:"<strong>PTR (Portfolio Turnover Rate)</strong> = value of securities traded ÷ average net assets. A PTR of 100% means the full portfolio was effectively replaced once. Two harms to non-registered account investors: (1) <strong>Higher TER</strong> — more trading = more brokerage commissions and bid-ask spreads, reducing net returns; (2) <strong>More capital gains realizations</strong> — active selling of appreciated securities triggers capital gains distributed via T3 slips to ALL unitholders — even those who didn't sell a unit. This forces tax payments that buy-and-hold investors would prefer to defer."},
+{n:17,d:"Medium",t:"5.13",q:"Which of the following BEST describes the 'power law' in venture capital investing?",o:["VC returns follow a normal distribution where most investments return the average","A mathematical law requiring VC funds to invest in at least 10 companies to be diversified","The phenomenon where a small fraction of portfolio investments (typically 1–2 'unicorns') generate the vast majority of a VC fund's total returns, more than offsetting all losses from failed investments","The rule that VC investment returns must be at least 10× to justify the illiquidity premium"],a:2,e:"In VC, returns follow a <strong>power law distribution</strong> — not a normal distribution. Most investments return little or nothing. But the 1–2 exceptional winners in a portfolio can generate 50×, 100×+ returns that dwarf all the losses combined. Example: A fund invests $10M across 20 companies. 15 return $0. 3 return 1–2×. 1 returns 10× ($10M invested = $100M returned). 1 returns 50× ($500M returned). Total fund return exceeds 50× despite 75% failure rate. This power law means VC requires significant diversification (20–30+ investments) to reliably capture the rare outlier winners."},
+{n:18,d:"Medium",t:"5.12",q:"When should a registered representative recommend direct securities over managed products for a sophisticated investor's non-registered account?",o:["Always — managed products are never appropriate for sophisticated investors","Never — managed products provide professional management that direct investing cannot replicate","When the investor has a large non-registered portfolio with significant unrealized gains, strong financial knowledge, time for monitoring, and specific needs (ESG exclusions, customization) that managed products cannot accommodate — and where MER drag would be a significant return deterrent","Only when the investor specifically requests it, regardless of suitability"],a:2,e:"Direct securities may be preferable over managed products when: (1) <strong>Large non-registered portfolio</strong> — the investor can achieve adequate diversification at lower cost without MER drag; (2) <strong>Large unrealized gains</strong> — direct holdings allow precise control over when capital gains are realized, avoiding the involuntary distributions that managed funds generate; (3) <strong>Customization needs</strong> — excluding specific companies for ESG or employer stock reasons; (4) <strong>Knowledge and time</strong> — the investor can conduct their own research and monitor positions. For most retail investors with smaller portfolios, managed products (particularly low-cost ETFs) remain the more practical and cost-effective choice."},
+{n:19,d:"Hard",t:"5.14",q:"A hedge fund's NAV per unit history: Year 1 starts at $100, rises to $130 (HWM = $130). Year 2 falls to $95. Year 3 rises to $138. Hurdle rate = 5%. Performance fee = 20%. When and on what amount is the performance fee earned in Year 3?",o:["Year 3: 20% on the full $43 gain from $95 to $138 = $8.60/unit","Year 3: 20% on the gain above hurdle applied to $100 base = complex calculation","Year 3: 20% on the gain above the HWM only — ($138 − $130) = $8/unit × 20% = $1.60/unit. Gain from $95 to $130 (recovery) is NOT subject to performance fee.","No performance fee in Year 3 — fund must first exceed HWM before any performance fee applies"],a:2,e:"<strong>High-water mark mechanics:</strong> The fund's HWM is $130 from Year 1. In Year 3, the fund rises from $95 to $138.<br>From $95 to $130: this is RECOVERY — crossing from below HWM back to HWM. NO performance fee on this portion. The manager doesn't earn fees for recovering from their own drawdown.<br>From $130 to $138: this is NEW GROUND above the HWM. The $8/unit gain above the HWM is subject to the performance fee: $8 × 20% = <strong>$1.60/unit</strong> performance fee. Also, the hurdle (5%) must be cleared — if $130 × 1.05 = $136.50, so some funds would only charge on gains above $136.50. In its simplest form, performance fee = 20% × ($138 − $130) = $1.60/unit."},
+{n:20,d:"Hard",t:"5.10",q:"An investor holds a Canadian ETF that invests through a US-listed ETF (fund-of-ETF structure). The Canadian ETF holds a US-listed S&P 500 ETF. Where does US withholding tax apply and is it recoverable?",o:["No withholding tax applies since the Canadian ETF is a Canadian entity","One layer of 15% withholding at the US company → US-listed ETF level. Recoverable via foreign tax credit in non-registered accounts.","Two withholding tax layers apply: (1) US company → US-listed ETF (15%); (2) US-listed ETF → Canadian ETF (15%). The Layer 1 withholding is typically NOT recoverable by Canadian investors when going through a US fund wrapper.","No withholding tax because all ETFs are exempt from withholding under NAFTA"],a:2,e:"The <strong>double withholding problem</strong> in fund-of-ETF structures: <strong>Layer 1</strong>: US company pays dividend → US-listed ETF receives dividend minus 15% withholding deducted by the US company. <strong>Layer 2</strong>: US-listed ETF distributes income to Canadian ETF — the US may treat the US-listed ETF's distributions to non-resident fund as subject to additional withholding (though this depends on treaty application at the fund level). The key issue is that when a Canadian ETF holds a US-listed ETF rather than the underlying US stocks directly, the withholding at the US-listed ETF level is generally NOT refundable or passable through to Canadian investors as a foreign tax credit. This is a concrete structural inefficiency that makes direct-stock-holding Canadian ETFs more efficient than fund-of-ETF structures for US equity exposure, particularly in registered accounts."},
+{n:21,d:"Easy",t:"5.13",q:"What is the primary reason hedge funds include 'lock-up periods' in their terms for new investors?",o:["Lock-ups protect the hedge fund manager from client complaints during poor performance","Lock-ups ensure investors cannot redeem during the initial period, giving the manager time to build positions in illiquid or long-term investments without facing immediate redemption pressure","Lock-ups are required by Canadian securities regulators for all alternative funds","Lock-ups allow hedge funds to charge higher management fees during the restricted period"],a:1,e:"<strong>Lock-up periods</strong> serve a legitimate investment purpose: they give the hedge fund manager time to invest capital in strategies that require time to develop — long/short pairs, distressed debt recovery, illiquid positions — without the threat of immediate investor redemptions forcing premature liquidation. A hedge fund that must exit positions to meet redemptions immediately after establishment cannot effectively execute its strategy. Lock-ups align the investor's time commitment with the strategy's natural investment horizon."},
+{n:22,d:"Medium",t:"5.13",q:"A Principal-Protected Note (PPN) with 85% participation in the S&P 500 over 5 years matures when the S&P 500 has risen 60%. What does the investor receive per $10,000 invested?",o:["$10,000 (principal only — 60% S&P rise but note caps at principal)","$16,000 ($10,000 × 1.60)","$15,100 ($10,000 + $10,000 × 85% × 60% = $10,000 + $5,100)","$10,000 + $5,100 × 50% (capital gains treatment)"],a:2,e:"PPN payoff: Principal + Participation rate × Reference asset gain.<br>= $10,000 + (85% × 60%) × $10,000<br>= $10,000 + (0.85 × 0.60) × $10,000<br>= $10,000 + 0.51 × $10,000<br>= $10,000 + $5,100 = <strong>$15,100</strong>.<br>Important tax note: This $5,100 gain is typically treated as <strong>interest income</strong> (not capital gains) for Canadian tax purposes — taxed at the full marginal rate, NOT the preferred 50% inclusion capital gains rate. This is a significant hidden tax disadvantage of PPNs vs. direct equity investments."},
+{n:23,d:"Medium",t:"5.11",q:"An investor uses the superficial loss rules incorrectly. They sell 1,000 units of Fund ABC at a loss of $3,000 on December 15, then repurchase 1,000 units of Fund ABC on January 5 (21 days later). What happens to the $3,000 loss?",o:["The $3,000 loss is fully deductible in the year of sale — the repurchase was in the next calendar year","The $3,000 is a superficial loss and is denied. It is added to the ACB of the repurchased units — the loss is deferred, not permanently lost","The $3,000 loss is permanently lost — superficial losses are not transferable","The loss is deductible at 50% (capital loss treatment) in the current year"],a:1,e:"The <strong>superficial loss rule</strong> applies when the same or identical investment is repurchased within 30 calendar days before or after the sale. The repurchase on January 5 is 21 days after the December 15 sale — within the 30-day window. The $3,000 capital loss is <strong>denied</strong> and classified as a superficial loss. However, it is NOT permanently lost — the $3,000 is added to the ACB of the repurchased units. When those units are eventually sold (outside the 30-day window), the loss will reduce the gain or increase the loss at that time. Tax deferral, not permanent denial."},
+{n:24,d:"Hard",t:"5.14",q:"What is the critical distinction between the accredited investor '$1,000,000 financial assets' test and the '$5,000,000 net assets' test under NI 45-106?",o:["They are identical — both are equally common qualifying tests","The $1M test requires financial assets (cash, securities, insurance contracts — NOT real estate); the $5M test is net assets (total assets including real estate minus total liabilities). The $5M threshold also qualifies as a 'Permitted Client' giving additional regulatory exemptions.","The $5M test is for institutional investors only; the $1M is for individuals","Only the $5M test requires signing Form 45-106F9"],a:1,e:"Key distinctions: <strong>$1,000,000 financial assets test:</strong> Counts only financial assets — cash, securities, insurance policy cash values. Real estate is EXCLUDED. The investor or spouse combined must have $1M in these assets. Most commonly used by individual investors to qualify for hedge funds and PE funds.<br><br><strong>$5,000,000 net assets test:</strong> Counts total assets (including real estate, business interests) minus total liabilities. A much broader measure — an investor with a $4M home and $1.5M in investable assets might qualify under this test but not the financial assets test. Critically, the $5M threshold also qualifies the individual as a <strong>Permitted Client</strong> under NI 31-103 — enabling additional regulatory exemptions beyond the accredited investor status."},
+{n:25,d:"Medium",t:"5.13",q:"What was FTX and why is its collapse relevant to the RSE exam topic of crypto-asset risks?",o:["FTX was a Canadian crypto ETF that collapsed due to regulatory issues in 2022","FTX was a major global cryptocurrency exchange that collapsed in November 2022 due to misappropriation of client funds, demonstrating operational/custody risk and the importance of holding crypto through regulated structures (ETFs) vs. unregulated exchanges","FTX was a US structured product linked to crypto assets that defaulted","FTX was a Canadian regulatory update restricting crypto trading in 2022"],a:1,e:"<strong>FTX</strong> was a major global cryptocurrency exchange that collapsed in November 2022 in one of the largest financial frauds in history — its founder was later convicted of fraud. Billions in client funds had been misappropriated. This demonstrated: (1) <strong>Operational/custody risk</strong> — holding crypto on unregulated or poorly regulated exchanges creates counterparty risk where client assets may not be segregated; (2) The importance of regulated structures — Canadian Bitcoin ETFs holding crypto through regulated custodians with proper segregation of assets provide dramatically better protection; (3) Why crypto exchanges distributing to Canadians must be registered with provincial regulators. The FTX collapse is a real-world case study in why regulatory oversight matters."},
+{n:26,d:"Easy",t:"5.14",q:"What does 'carried interest' mean in the context of a private equity fund?",o:["The interest paid on borrowed capital used in leveraged buyouts","The GP's (General Partner's) share of fund profits above the hurdle rate — typically 20% of profits — representing the primary incentive compensation for the PE fund manager","The interest income distributed to LP investors from portfolio company bonds","The management fee charged on committed capital before it is invested"],a:1,e:"<strong>Carried interest</strong> is the GP's share of investment profits — typically 20% of profits above the hurdle rate (preferred return to LPs). It is the primary incentive compensation structure in PE and VC funds. The term 'carry' reflects that the GP 'carries' an interest in the fund's profits without contributing 20% of the capital — their 1% GP capital interest entitles them to 20% of profits once the hurdle is cleared and LPs have received their preferred return. In Canada, carried interest is generally taxed as capital gains (50% inclusion), not as ordinary income."},
+{n:27,d:"Medium",t:"5.10",q:"A fund's non-registered account investor receives a T3 slip showing $500 in Box 42 (Amount Resulting in Cost Base Adjustment). What does this mean and what does the investor need to do?",o:["Report $500 as taxable income on their tax return — Box 42 is ordinary income","The $500 is capital gains distribution — report at 50% inclusion rate","The $500 is Return of Capital (ROC) — NOT reported as income. Instead, reduce the ACB of the fund units by $500. No tax is due now, but eventual sale will produce a higher capital gain.","Contact the fund company — Box 42 is an error on the slip and should not occur"],a:2,e:"<strong>T3 Box 42</strong> reports the Return of Capital (ROC) component of the distribution. ROC is NOT immediately taxable income — it does not appear on the tax return as income for the current year. Instead, the investor must <strong>reduce their ACB</strong> by $500. If this is not tracked accurately, the investor will underreport capital gains on eventual redemption, creating a CRA compliance problem. The $500 is listed separately on the T3 to allow proper ACB tracking — it is essentially a deferred capital gain, not current income."},
+{n:28,d:"Medium",t:"5.13",q:"Which alternative investment strategy is MOST likely to generate positive returns during a severe bear market in equities (e.g., 2022 or 2008)?",o:["Long-only equity hedge fund (80% net long)","Global macro / managed futures (CTA — trend-following)","Venture capital fund","High-yield bond fund"],a:1,e:"<strong>Global macro and managed futures/CTA strategies</strong> have historically generated strong returns during equity bear markets by: (1) Shorting equities as trends turn negative; (2) Going long bonds (if rates fall during recession) or short bonds (if rates rise as in 2022); (3) Long safe-haven currencies (USD, JPY, CHF). In 2022, when both equities AND bonds fell simultaneously, managed futures funds generated returns of 20–40%+ — the only major strategy with significantly positive performance. This uncorrelated return profile is the primary institutional reason to own alternatives in a portfolio."},
+{n:29,d:"Hard",t:"5.11",q:"A retiree has a $400,000 non-registered portfolio invested in a T-6 series fund (6% annual distribution as ROC). Monthly payment = $2,000. Initial ACB = $400,000. After 8 years, how much has the ACB been reduced (assuming no change in fund value), and what is the tax consequence if they sell at current value of $390,000?",o:["ACB = $400,000 (ROC never reduces ACB)","ACB reduced by $192,000 → new ACB = $208,000. Capital gain on sale = $390,000 − $208,000 = $182,000. Taxable at 50% inclusion.","ACB reduced by $192,000 → new ACB = $208,000. Capital gain = $390,000 − $208,000 = $182,000.","ACB = $256,000 after 8 years of interest income offsetting ROC"],a:1,e:"<strong>ROC received:</strong> $2,000/month × 12 months × 8 years = $192,000 total ROC distributions received tax-free.<br><strong>New ACB:</strong> $400,000 − $192,000 = $208,000.<br><strong>Capital gain on sale:</strong> Proceeds $390,000 − ACB $208,000 = $182,000 capital gain.<br><strong>Taxable amount:</strong> $182,000 × 50% = $91,000 added to taxable income in year of sale.<br><br>But note: the retiree deferred $192,000 in income for up to 8 years — the time value of this deferral (tax they would have paid immediately if distributions were interest income) is substantial, especially during retirement when tax rates may be lower."},
+{n:30,d:"Medium",t:"5.13",q:"Under NI 81-102, what is the maximum amount of NAV that an Alternative Mutual Fund (liquid alternative) can have in short positions?",o:["10% of NAV","25% of NAV","50% of NAV","No limit — alternative funds can have unlimited short exposure"],a:2,e:"Under the Alternative Mutual Fund provisions of NI 81-102, these funds can have short positions up to <strong>50% of NAV</strong>. Leverage via specified derivatives and short selling is capped at <strong>3× NAV</strong>. These limits are much more permissive than conventional mutual funds (which cannot short sell at all for speculative purposes) but far more restrictive than private hedge funds (which have unlimited short selling ability under their offering memorandums). This is the regulatory trade-off for achieving retail accessibility — some alternative strategies are constrained within these NI 81-102 limits."},
+{n:31,d:"Easy",t:"5.12",q:"What is the PRIMARY consideration when an RR is deciding whether to recommend a managed product over direct securities for a client?",o:["Which recommendation generates the highest compensation for the RR","Which product has the lowest MER","Whether the recommendation is suitable for the specific client's KYC profile, objectives, time horizon, risk tolerance, and financial situation — not based on advisor compensation","Which product is easiest to explain to the client"],a:2,e:"<strong>Suitability is the primary obligation</strong> — always. The RR must recommend what is best for the specific client based on their complete KYC profile. This means recommending a product: (1) appropriate for their investment knowledge; (2) aligned with their objectives; (3) suitable for their time horizon; (4) appropriate for their risk tolerance and capacity; (5) consistent with their financial situation. If the recommendation is influenced primarily by compensation to the RR rather than client suitability, it is a potential conflict of interest that must be identified, disclosed, and managed."},
+{n:32,d:"Medium",t:"5.14",q:"An investor is considering a hedge fund. The fund has a 3-year lock-up and monthly redemption thereafter with 60 days notice. The investor may need the funds for a home purchase in 18 months. Is this fund suitable?",o:["Yes — the fund's solid performance track record makes it suitable regardless of lock-up","No — the 3-year lock-up directly conflicts with the investor's 18-month potential liquidity need. The investor cannot access their capital for the home purchase without breaching the lock-up period.","Yes — hedge funds always make exceptions for real estate purchases","Probably — it depends on the MER only"],a:1,e:"This is a clear <strong>suitability failure</strong> based on liquidity mismatch. The investor has a specific liquidity need in 18 months (home purchase). The hedge fund has a 3-year lock-up — the investor cannot access their capital for at least 3 years. Recommending this fund creates a direct conflict between the investment's terms and the investor's explicit financial objective. The RR must disclose the lock-up and gating provisions and ensure the client's liquidity needs can accommodate them BEFORE recommending. In this case, the recommendation is clearly unsuitable."},
+{n:33,d:"Easy",t:"5.13",q:"A venture capital fund invests in 20 startup companies. 13 return zero. 4 return 1–2× capital. 2 return 10× capital. 1 returns 80× capital. Is the fund considered successful and why?",o:["No — a 65% failure rate (13 out of 20) is unacceptable in any investment context","Yes — this reflects the power law structure of VC investing. The 80× winner alone generates extraordinary returns that dwarf all the losses. The fund is almost certainly highly profitable.","No — the manager should have avoided the 13 failed investments through better due diligence","Unclear — we need to know the MER before assessing success"],a:1,e:"This <strong>perfectly illustrates power law VC returns</strong>. Let's say each of the 20 investments was $500K (total deployed = $10M): Failures (13): $0 returned (−$6.5M). 1–2× returns (4): ~$5M returned (roughly break-even). 10× winners (2): $10M returned. 80× winner (1): $40M returned. Total distributions: ~$55M on $10M invested = ~5.5× MOIC. The fund is highly successful despite a 65% failure rate. This is why VC funds diversify across many companies — they need the broad portfolio to capture the rare exceptional outcome."},
+{n:34,d:"Hard",t:"5.10",q:"The 'two layers of withholding tax' problem affects Canadian investors who hold a Canadian ETF that invests through a US-listed ETF rather than directly in US stocks. Which account type MOST EFFECTIVELY eliminates or minimizes BOTH layers of withholding tax?",o:["TFSA — all income is tax-free so withholding doesn't matter","RRSP holding a Canadian ETF that directly holds US stocks — the Canada-US treaty exempts RRSP from Layer 1 US withholding when the fund directly holds US securities","Non-registered account — both withholding layers are recoverable via foreign tax credit","RESP — education savings accounts are exempt from all withholding taxes"],a:1,e:"The optimal structure is: <strong>RRSP holding a Canadian ETF that DIRECTLY holds US stocks</strong> (not through a US-listed ETF wrapper).<br><br>Layer 1 eliminated: The Canada-US treaty exempts registered retirement accounts (RRSP/RRIF) from US withholding tax on dividends when the Canadian fund directly holds the underlying US securities. Zero Layer 1 withholding.<br><br>Layer 2 N/A: If the Canadian ETF holds stocks directly, there is no second fund layer to create Layer 2 withholding.<br><br>TFSA is wrong because the treaty does NOT extend to TFSAs — 15% withholding applies and is unrecoverable. Non-registered: Layer 1 is recoverable but Layer 2 generally is not when going through a US-listed ETF. RESP: No special withholding exemptions."},
+{n:35,d:"Medium",t:"5.14",q:"What is the 'clawback' provision in a private equity fund and why does it protect LP investors?",o:["It allows the LP to claw back investments if the GP changes strategy","If the GP receives excess carried interest on early profitable exits, but later investments underperform, the GP must return previously received carry to ensure their 20% applies to total fund performance, not just early wins","A provision allowing LPs to exit the fund early by 'clawing back' their committed capital","The mechanism by which GPs can demand additional capital calls beyond committed amounts"],a:1,e:"The <strong>clawback provision</strong> is a critical LP protection mechanism. Without it, a PE fund could exit its best investments early, generate large carry distributions to the GP, then invest in underperforming later-period deals — the GP earns carried interest on the wins but suffers no consequence from the losses. The clawback requires: if total GP carry received exceeds what it would have earned on the fund's TOTAL net performance (considering all deals including the losses), the GP must return the excess carry to LPs. This ensures the GP's 20% incentive applies to the fund's true net return, not just cherry-picked exits."},
+{n:36,d:"Easy",t:"5.11",q:"T-SWP distributions are primarily structured as Return of Capital (ROC). In which account type does the ROC tax-deferral advantage provide NO meaningful benefit?",o:["Non-registered (taxable) account","RRSP account","TFSA account","Any account — ROC is always beneficial"],a:2,e:"In a <strong>TFSA</strong>, all income is already permanently tax-free — there is no tax to defer. The ROC mechanism's advantage (deferring capital gains to a later date) is meaningless when there will never be tax on the investment regardless. Similarly, in an RRSP, all withdrawals are eventually fully taxable at the marginal rate regardless of the income type inside the fund — ROC's tax character advantage is lost. T-SWPs provide the greatest benefit in <strong>non-registered accounts</strong>, where the tax deferral of ROC distributions can significantly improve after-tax cash flow during retirement."},
+{n:37,d:"Hard",t:"5.13",q:"A structured product (PPN) offers 90% principal protection at maturity in 6 years, with 75% participation in the TSX 60 Index. An investor buys $50,000. (a) What is the minimum they receive at maturity? (b) If the TSX 60 rises 80% over 6 years, what do they receive?",o:["(a) $50,000; (b) $50,000 + $30,000 = $80,000","(a) $45,000 (90% of $50,000); (b) $45,000 + $30,000 = $75,000","(a) $45,000 (90% of $50,000); (b) $50,000 + $50,000 × 75% × 80% = $50,000 + $30,000 = $80,000","(a) $50,000; (b) $50,000 + $50,000 × 75% × 80% = $80,000 but taxed entirely as interest income"],a:1,e:"<strong>(a) Minimum at maturity:</strong> 90% principal protection = $50,000 × 90% = <strong>$45,000</strong> (NOT $50,000 — this is 90%, not 100% protection). This means the investor CAN lose 10% of their principal even at maturity.<br><br><strong>(b) If TSX 60 rises 80%:</strong> Gain = $50,000 × 75% participation × 80% index gain = $50,000 × 0.75 × 0.80 = <strong>$30,000</strong>. Total maturity value = $50,000 + $30,000 = <strong>$80,000</strong>. But critically: this $30,000 gain is typically taxed as <strong>interest income</strong> (not capital gains) — at full marginal rate, not 50% inclusion. This is a significant tax disadvantage vs. direct equity investment."},
+{n:38,d:"Medium",t:"5.10",q:"An investor is considering two funds with identical gross returns of 9% per year. Fund A is an active mutual fund with 2.1% MER, 0.15% TER, and 120% PTR (generating capital gains distributions estimated at 0.3% annual tax drag). Fund B is a passive ETF with 0.15% MER, 0.01% TER, and minimal capital gains. What is the approximate TRUE total annual cost difference for a non-registered account?",o:["2.1% − 0.15% = 1.95% MER difference only","(2.1% + 0.15% + 0.3%) − (0.15% + 0.01%) = 2.39% total annual cost advantage for the ETF","The difference is negligible — both funds earn the same gross return","2.1% − 0.15% = 1.95% difference but professional management of Fund A compensates"],a:1,e:"True total annual cost comparison:<br><strong>Fund A (active):</strong> MER 2.1% + TER 0.15% + Tax drag 0.3% = <strong>2.55%</strong> total annual cost<br><strong>Fund B (passive ETF):</strong> MER 0.15% + TER 0.01% + Tax drag ~0% = <strong>0.16%</strong> total annual cost<br><strong>Difference: 2.39% per year</strong><br><br>On $200,000 over 25 years at 9% gross: Fund A value ~$576,000; Fund B value ~$1,048,000. Difference: ~$472,000. The true total cost comparison — MER + TER + tax drag — reveals the full impact of cost differences that looking at MER alone would understate."},
+{n:39,d:"Medium",t:"5.13",q:"What is a key difference between 'venture capital' and 'growth equity' within the private equity universe?",o:["They are the same — both invest in startups","Venture capital focuses on early-stage/startup companies with high binary risk (most may fail); growth equity invests in established, profitable or near-profitable companies with proven business models that need capital to scale. Growth equity is less binary and typically takes minority stakes without control.","Growth equity uses more leverage while VC is unlevered","VC has higher minimum investment thresholds than growth equity"],a:1,e:"<strong>Venture Capital</strong>: Early-stage/startup companies at Seed, Series A/B stages. Often pre-revenue or early revenue. Binary risk — most may fail. Returns driven by power law (few big winners). Typical investment size: $1M–$20M. Minority stake.<br><br><strong>Growth Equity</strong>: Established, scaling companies with proven business models and growing revenue (often $20M–$200M+ ARR). Less binary risk. Company has demonstrated product-market fit. Capital used for growth initiatives (expansion, M&amp;A, new markets). Typical investment: $20M–$500M+. Often minority stake without a full buyout. Lower risk and return profile than VC but higher than typical large LBO buyouts."},
+{n:40,d:"Hard",t:"5.11",q:"Under NI 81-102, a conventional public mutual fund can suspend redemptions under specific circumstances. What must be true for this suspension to be permitted?",o:["The manager can suspend redemptions for any reason at their discretion, indefinitely","Redemptions can be suspended only when: normal trading of fund securities has been suspended on an exchange, it is impracticable to determine NAVPS accurately, or in other exceptional circumstances — with required notification to regulators. Duration typically limited to a maximum of one year.","Suspensions require a vote of 75% of unitholders","Only alternative mutual funds can suspend redemptions — conventional funds must always redeem daily"],a:1,e:"Under <strong>NI 81-102</strong>, redemption suspensions for public mutual funds are permitted only in specific circumstances: (1) When normal trading on a recognized exchange or OTC market has been suspended; (2) When it is not possible to practically determine the NAV of the fund; (3) In exceptional circumstances at the manager's discretion. The manager must notify securities regulators and provide prescribed information. The suspension is generally limited to one year. This is far more restrictive than private hedge funds and alternatives, which can gate under their offering memorandum terms without regulatory pre-approval."},
+{n:41,d:"Medium",t:"5.13",q:"A crypto-asset investor holds Bitcoin directly on a Canadian registered exchange. Which of the following risks is substantially REDUCED compared to holding an unregulated offshore exchange?",o:["Price volatility risk — Canadian regulations reduce Bitcoin's price swings","Operational and custody risk — registered Canadian platforms must comply with FINTRAC AML/ATF rules, segregate client assets, and meet regulatory capital requirements set by provincial securities regulators","Tax risk — Bitcoin held on Canadian exchanges is not subject to CRA capital gains tax","All risks are the same — exchange registration doesn't change underlying crypto risks"],a:1,e:"Holding crypto on a <strong>registered Canadian platform</strong> provides substantially better protection against <strong>operational and custody risk</strong> (the risk of platform failure, misappropriation, or fraud like the FTX collapse). Registered Canadian crypto platforms: (1) Must comply with FINTRAC AML/ATF rules; (2) Must segregate client assets from platform assets; (3) Are subject to capital adequacy requirements; (4) Must follow KYC procedures and suitability requirements when applicable; (5) Are subject to regulatory examination and enforcement. Price volatility and CRA tax obligations remain unchanged regardless of platform registration — regulation doesn't smooth Bitcoin's inherent price swings."},
+{n:42,d:"Easy",t:"5.14",q:"An individual investor qualifies as an accredited investor under the $200,000 individual income test. What must be true about their income for the 2 years preceding the investment?",o:["Their income in EITHER of the 2 most recent years exceeded $200,000","Their income in EACH of the 2 most recent calendar years exceeded $200,000, with reasonable expectation of the same income in the current year","Their income averaged over $200,000 across any 5-year period","They must also have total assets exceeding $500,000 in addition to the income test"],a:1,e:"The income accredited investor test requires: income exceeding <strong>$200,000 in EACH of the 2 most recent calendar years</strong> (not either — both years must qualify). Additionally, there must be a reasonable expectation of the same level of income in the current year. This is an individual income test — not combined with a spouse. If income fell below $200,000 in even one of the two prior years, this test is not met. The sustained income requirement is designed to ensure the accredited investor has demonstrated capacity to absorb investment losses, not just a one-time income spike."},
+{n:43,d:"Medium",t:"5.10",q:"What is the correct Canadian tax treatment of crypto-asset gains for an investor who occasionally sells Bitcoin holdings (treating it as an investment, not a business)?",o:["Fully exempt from tax — Bitcoin is a foreign currency under Canadian law","Treated as capital gains with 50% inclusion rate — the same as stocks or real estate investment gains","Treated as interest income at full marginal rate","Only taxable if the annual gain exceeds $10,000"],a:1,e:"The CRA treats crypto-assets as <strong>commodities</strong>, not currency. For investors who hold crypto as an investment (not as part of a trading business), gains are treated as <strong>capital gains</strong> with the 50% inclusion rate — taxed the same as gains on stocks or other investment assets. However, if someone trades crypto as their primary business activity (frequent trading, professional-level activity), the CRA may characterize the gains as <strong>business income</strong> (100% inclusion). Every exchange of one crypto for another (e.g., Bitcoin for Ethereum) is a taxable disposition for CRA purposes, creating complex record-keeping obligations."},
+{n:44,d:"Hard",t:"5.14",q:"A PE fund charges a 2% management fee on COMMITTED capital (not invested capital) during the investment period. The fund has $500M committed, invests $300M in years 1–3, and the investment period ends after year 4. In year 2, what is the management fee charged?",o:["$6M (2% of $300M invested capital)","$10M (2% of $500M committed capital)","$4M (2% of $200M uninvested capital)","$8M (2% of $400M blended average)"],a:1,e:"PE management fees during the investment period are typically charged on <strong>committed capital</strong>, not invested capital. In year 2, regardless of how much has been deployed ($300M invested, $200M still uncalled), the management fee is: 2% × $500M committed = <strong>$10M</strong>. This is a significant feature of PE fund economics — the manager earns fees on the full committed amount even on capital not yet deployed into investments. After the investment period ends, fees typically step down to invested capital (or a declining schedule). This structure means the effective fee on actually invested capital can be quite high in early years when deployment is still building."},
+{n:45,d:"Medium",t:"5.13",q:"What is the primary reason structured products (PPNs) may be marketed to conservative investors even though they carry significant risk?",o:["PPNs have no risk — they are guaranteed by CDIC","The 'principal protection' feature gives the appearance of safety, but conservative investors may not understand that this protection: (1) only applies at maturity, not if sold early; (2) protects against market risk only, not issuer credit risk; (3) comes with opportunity cost and complex payoff limitations","PPNs are actually lower risk than GICs for conservative investors","PPNs have been banned in Canada for retail distribution due to regulatory concerns"],a:1,e:"The '<strong>principal protection</strong>' marketing is the key to understanding the suitability concern. Conservative investors are attracted to the apparent safety while potentially not understanding: (1) Principal is only protected at maturity — if sold early (which may be necessary due to the OTC secondary market and any life emergency), the investor may receive significantly less than principal; (2) The protection is against market risk — issuer default would negate all protection (Lehman-linked PPNs became worthless in 2008 despite 'guarantee'); (3) The participation rate limits upside; (4) Gains taxed as interest income (not capital gains); (5) Opportunity cost vs. holding a GIC + equity exposure separately. These hidden complexities make PPNs a frequent source of regulatory suitability concerns."},
+{n:46,d:"Medium",t:"5.14",q:"What distinguishes a 'hard hurdle' from a 'soft hurdle' in hedge fund performance fee structures, and which is more investor-friendly?",o:["Hard hurdles use higher percentage thresholds; soft hurdles use lower thresholds","Hard hurdle: performance fee paid only on returns ABOVE the hurdle (hurdle portion belongs entirely to investors). Soft hurdle: once the hurdle is crossed, the performance fee applies to ALL profits from zero, not just the excess. Hard hurdle is more investor-friendly.","Soft hurdles only apply to the management fee, not performance fee","They are equivalent — just different terminology for the same structure"],a:1,e:"<strong>Hard hurdle:</strong> If hurdle = 5% and fund returns 12%, performance fee (say 20%) is charged only on the 7% above the hurdle: 20% × 7% = 1.4% of NAV. The first 5% return belongs entirely to investors — manager gets nothing on it.<br><br><strong>Soft hurdle:</strong> Once the fund crosses the 5% hurdle, the performance fee applies to ALL profits including the hurdle amount: 20% × 12% = 2.4% of NAV. Effectively the manager 'catches up' to earn their 20% on everything once the hurdle is crossed.<br><br><strong>Hard hurdle is significantly more investor-friendly</strong> — investors keep the full hurdle return in all scenarios."},
+{n:47,d:"Easy",t:"5.11",q:"A client wants to set up a Systematic Withdrawal Plan (SWP) of $1,500/month from their mutual fund. Current NAVPS = $25.00. How many units are redeemed in month 1?",o:["60 units","37.5 units","75 units","50 units"],a:0,e:"Units redeemed = SWP amount ÷ current NAVPS = $1,500 ÷ $25.00 = <strong>60 units</strong>. This is why NAVPS matters for SWP clients — when NAVPS falls, the same $1,500 withdrawal requires more units, accelerating portfolio depletion. When NAVPS rises, fewer units are redeemed. RRs should monitor SWP sustainability regularly, especially during market downturns."},
+{n:48,d:"Hard",t:"5.14",q:"A hedge fund starts the year at NAV $200/unit. Hurdle = 6%, performance fee = 20%, HWM = $215 (from prior year). The fund returns +12% this year. What is the performance fee per unit?",o:["20% × ($224 − $215) = $1.80/unit","20% × ($224 − $200) = $4.80/unit","20% × ($224 − $212) = $2.40/unit (excess above hurdle only)","No performance fee — fund hasn't cleared the HWM plus hurdle combined"],a:0,e:"Step 1: Calculate year-end NAV: $200 × 1.12 = $224.<br>Step 2: Check HWM: HWM = $215. Year-end NAV $224 > HWM $215 ✓ — performance fee can be charged.<br>Step 3: Identify the fee base: Performance fee applies to gains ABOVE the HWM (using hard hurdle logic): $224 − $215 = $9 above HWM. Note: The hurdle (6%) would give $200 × 1.06 = $212. Since $212 < $215 HWM, the binding constraint is the HWM, not the hurdle.<br>Step 4: Performance fee = 20% × $9 = <strong>$1.80/unit</strong>. This ensures the manager earns fees only for new territory above the previous peak, not for recovering from the drawdown implied by the HWM exceeding the current year's hurdle starting point."},
+{n:49,d:"Medium",t:"5.13",q:"Under the current Canadian regulatory framework, which of the following statements about Alternative Mutual Funds (liquid alts) is CORRECT?",o:["They can only be sold to accredited investors","They require an offering memorandum (OM) instead of Fund Facts","They are publicly offered with a prospectus and Fund Facts; accessible to all retail investors; and can use leverage up to 3× NAV and short sell up to 50% of NAV while still complying with NI 81-102","They are exempt from all NI 81-102 restrictions and can use unlimited leverage"],a:2,e:"<strong>Alternative Mutual Funds under NI 81-102:</strong> (1) <strong>Publicly offered</strong> — no accredited investor requirement, accessible to all retail investors; (2) <strong>Require a prospectus AND Fund Facts</strong> (with additional alternative fund face-page disclosure); (3) <strong>Leverage up to 3× NAV</strong> through specified derivatives and short selling; (4) <strong>Short selling up to 50% of NAV</strong>; (5) Still subject to NI 81-102 requirements including the 10% illiquid asset cap, daily or at minimum monthly redemption, and regulatory oversight. Introduced in Canada effective January 2019 — the liquid alts framework grew to $30B+ AUM within 5 years."},
+{n:50,d:"Hard",t:"5.14",q:"Why might an institutional investor prefer holding a private hedge fund LP interest over a liquid alternative (NI 81-102 alternative mutual fund) implementing the same strategy?",o:["Liquid alternatives always outperform their hedge fund equivalents due to daily liquidity","There is no meaningful difference — both are equivalent for institutional investors","The private hedge fund faces fewer investment restrictions (no 3× leverage cap, no 50% short cap, no 10% illiquid asset limit), may implement the strategy more purely and without NI 81-102 constraints, and may offer customized terms. The illiquidity trade-off is acceptable if the institution has long-term capital allocation.","Institutions always prefer liquid alternatives because hedge fund fees are too high"],a:2,e:"For a large institution with long-term capital, the private hedge fund LP often provides superior strategy implementation: (1) <strong>No NI 81-102 restrictions</strong> — leverage beyond 3×, short positions beyond 50% of NAV, illiquid assets above 10% are all permitted, allowing the strategy to operate at full capacity; (2) <strong>Customizable terms</strong> — SMAs, negotiated fees, bespoke reporting; (3) <strong>Liquidity is manageable</strong> for institutions with long investment horizons and diversified portfolios that don't need daily redemption; (4) <strong>Full strategy fidelity</strong> — a constrained liquid alt version of a strategy may deliver diluted results. The trade-off (illiquidity, higher minimums, less regulation) is acceptable given these benefits for sophisticated institutional investors."}
+];
+let ans={},cor=0;
+function buildQuiz(){
+  const c=document.getElementById("qb");c.innerHTML="";
+  Qs.forEach(q=>{
+    const d=document.createElement("div");d.className="qi";d.id="q"+q.n;
+    const dc=q.d==="Easy"?"de":q.d==="Medium"?"dm":"dh";
+    let opts=q.o.map((o,j)=>`<li onclick="pick(${q.n},${j})" id="opt-${q.n}-${j}">${String.fromCharCode(65+j)}) ${o}</li>`).join("");
+    d.innerHTML=`<div class="qm"><span class="qnum">Q${q.n}</span><span class="qd ${dc}">${q.d}</span><span class="qt">§${q.t}</span></div><div class="qq">${q.q}</div><ul class="qo">${opts}</ul><button class="sab" onclick="tA(${q.n})">Show Explanation</button><div class="qa" id="ans-${q.n}"><strong>Correct: ${String.fromCharCode(65+q.a)}) ${q.o[q.a]}</strong><br><br>${q.e}</div>`;
+    c.appendChild(d);
+  });
+}
+function pick(qn,sel){
+  if(ans[qn]!==undefined)return;ans[qn]=sel;
+  const q=Qs[qn-1];const ok=sel===q.a;if(ok)cor++;
+  q.o.forEach((_,j)=>{const el=document.getElementById(`opt-${qn}-${j}`);
+    if(j===sel&&ok)el.classList.add("correct");else if(j===sel&&!ok)el.classList.add("wrong");
+    if(j===q.a&&!ok)el.classList.add("rc");});
+  const t=Object.keys(ans).length;
+  document.getElementById("ac").textContent=t;
+  document.getElementById("cc").textContent=cor;
+  document.getElementById("sp").textContent=t>0?Math.round(cor/t*100)+"%":"—";
+  if(t===50){document.getElementById("qsp").style.display="block";document.getElementById("fs").textContent=cor;}
+}
+function tA(qn){document.getElementById("ans-"+qn).classList.toggle("show");}
+function revealAll(){Qs.forEach(q=>{document.getElementById("ans-"+q.n).classList.add("show");if(ans[q.n]===undefined)document.getElementById(`opt-${q.n}-${q.a}`).classList.add("rc");});}
+function resetQuiz(){ans={};cor=0;document.getElementById("ac").textContent=0;document.getElementById("cc").textContent=0;document.getElementById("sp").textContent="—";document.getElementById("qsp").style.display="none";buildQuiz();}
+buildQuiz();
+function gs(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});}
+function filterNav(q){q=q.toLowerCase();document.querySelectorAll(".ni").forEach(n=>{n.style.display=n.textContent.toLowerCase().includes(q)?"":"none";});}
+window.addEventListener("scroll",()=>{
+  const dh=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById("pgf").style.width=Math.min(100,window.scrollY/dh*100)+"%";
+  document.getElementById("bt").classList.toggle("vis",window.scrollY>400);
+  ["hero","s10","s11","s12","s13","s14","qs"].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;const r=el.getBoundingClientRect();
+    if(r.top<=100&&r.bottom>=100)document.querySelectorAll(".ni").forEach(n=>{n.classList.toggle("active",n.getAttribute("onclick")&&n.getAttribute("onclick").includes("'"+id+"'"));});
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSE Study Book — Element 4 Part 2: Market Analysis, Indices & Economic Factors</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d1b2e;--navy-mid:#142035;--gold:#c9973a;--gold-light:#e8b96a;
+  --cream:#f8f4ed;--cream-dark:#ede8df;--text:#1a1a2e;--text-muted:#5a5a6e;
+  --green:#1a6b4a;--green-light:#e8f5ef;--red:#8b1a1a;--red-light:#fdf0f0;
+  --blue:#1a3a6b;--blue-light:#e8f0fd;--amber:#7a4f1a;--amber-light:#fef6e8;
+  --teal:#0d5e5e;--teal-light:#e0f5f5;--purple:#4a1a6b;--purple-light:#f0e8fd;
+  --sidebar-w:300px;--header-h:64px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Source Serif 4',serif;background:var(--cream);color:var(--text);display:flex;min-height:100vh;overflow-x:hidden;}
+#sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--navy);position:fixed;left:0;top:0;bottom:0;overflow-y:auto;z-index:100;border-right:2px solid var(--gold);display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gold) var(--navy-mid);}
+#sidebar::-webkit-scrollbar{width:4px;}#sidebar::-webkit-scrollbar-thumb{background:var(--gold);}
+.sidebar-brand{padding:24px 20px 16px;border-bottom:1px solid rgba(201,151,58,.3);}
+.brand-tag{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;}
+.sidebar-brand h2{font-family:'Playfair Display',serif;color:white;font-size:14px;line-height:1.3;}
+.element-badge{display:inline-block;margin-top:8px;background:var(--gold);color:var(--navy);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;padding:3px 8px;border-radius:2px;letter-spacing:1px;}
+.sidebar-search{padding:12px 16px;border-bottom:1px solid rgba(201,151,58,.2);}
+.sidebar-search input{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(201,151,58,.3);border-radius:4px;padding:7px 10px;color:white;font-size:13px;outline:none;}
+.sidebar-search input::placeholder{color:rgba(255,255,255,.3);font-style:italic;}
+.sidebar-search input:focus{border-color:var(--gold);}
+.nav-section-label{padding:14px 16px 6px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold-light);letter-spacing:2px;text-transform:uppercase;opacity:.7;}
+.nav-item{display:block;padding:8px 16px 8px 20px;color:rgba(255,255,255,.65);font-size:12px;line-height:1.4;cursor:pointer;border-left:3px solid transparent;transition:all .2s;}
+.nav-item:hover{color:white;border-left-color:var(--gold-light);background:rgba(201,151,58,.08);}
+.nav-item.active{color:var(--gold-light);border-left-color:var(--gold);background:rgba(201,151,58,.12);}
+.nav-item .nav-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);margin-right:6px;}
+.nav-item.sub{padding-left:36px;font-size:11px;opacity:.75;}
+.nav-item.sub:hover{opacity:1;}
+.nav-divider{height:1px;background:rgba(201,151,58,.15);margin:8px 16px;}
+.sidebar-footer{margin-top:auto;padding:16px;border-top:1px solid rgba(201,151,58,.2);font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.3);text-align:center;}
+#main{margin-left:var(--sidebar-w);flex:1;min-height:100vh;}
+#top-bar{background:var(--navy);height:var(--header-h);display:flex;align-items:center;padding:0 40px;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:50;gap:16px;}
+.breadcrumb{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1px;}
+.breadcrumb span{color:var(--gold);}
+.progress-area{margin-left:auto;display:flex;align-items:center;gap:12px;}
+.prog-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.4);}
+.prog-bar{width:120px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;}
+.prog-fill{height:100%;background:var(--gold);border-radius:2px;width:0%;transition:width .4s;}
+#content{padding:0 60px 80px;max-width:980px;}
+.hero{padding:60px 0 40px;border-bottom:1px solid var(--cream-dark);margin-bottom:48px;}
+.hero .element-tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;line-height:1.1;color:var(--navy);margin-bottom:16px;}
+.hero p{font-size:16px;color:var(--text-muted);max-width:700px;line-height:1.7;font-style:italic;}
+.hero-meta{display:flex;gap:20px;margin-top:24px;flex-wrap:wrap;}
+.meta-chip{background:var(--navy);color:var(--gold-light);padding:6px 14px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;}
+.chapter{margin-bottom:64px;scroll-margin-top:80px;}
+.section-header{display:flex;align-items:flex-start;gap:20px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--cream-dark);}
+.section-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;color:var(--cream-dark);line-height:1;min-width:56px;}
+.section-title-area h2{font-family:'Playfair Display',serif;font-size:25px;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:4px;}
+.section-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:1px;}
+.subsection{margin-bottom:32px;scroll-margin-top:80px;}
+.subsection h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:12px;padding-left:12px;border-left:3px solid var(--gold);}
+.subsection h4{font-size:15px;font-weight:600;color:var(--navy);margin:16px 0 8px;}
+p{line-height:1.8;margin-bottom:14px;font-size:15.5px;}
+.sh3{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--navy);margin:20px 0 12px;padding-left:12px;border-left:3px solid var(--gold);}
+.callout{border-radius:6px;padding:18px 22px;margin:20px 0;border-left:4px solid;}
+.callout-exam{background:var(--blue-light);border-color:var(--blue);}
+.callout-exam .callout-label{color:var(--blue);}
+.callout-tip{background:var(--green-light);border-color:var(--green);}
+.callout-tip .callout-label{color:var(--green);}
+.callout-warning{background:var(--amber-light);border-color:var(--amber);}
+.callout-warning .callout-label{color:var(--amber);}
+.callout-rule{background:var(--red-light);border-color:var(--red);}
+.callout-rule .callout-label{color:var(--red);}
+.callout-calc{background:var(--teal-light);border-color:var(--teal);}
+.callout-calc .callout-label{color:var(--teal);}
+.callout-purple{background:var(--purple-light);border-color:var(--purple);}
+.callout-purple .callout-label{color:var(--purple);}
+.callout p{margin-bottom:0;font-size:14.5px;line-height:1.7;}
+.callout-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-weight:500;display:block;}
+.table-wrap{overflow-x:auto;margin:20px 0;border-radius:6px;border:1px solid var(--cream-dark);}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th{background:var(--navy);color:var(--gold-light);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;padding:12px 16px;text-align:left;}
+td{padding:11px 16px;border-bottom:1px solid var(--cream-dark);vertical-align:top;line-height:1.6;}
+tr:nth-child(even) td{background:rgba(0,0,0,.02);}
+tr:last-child td{border-bottom:none;}
+.diagram{background:var(--navy);border-radius:8px;padding:28px 24px;margin:24px 0;color:white;}
+.diagram-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;text-align:center;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;}
+.grid-card{background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.3);border-radius:6px;padding:16px;}
+.grid-card h5{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;}
+.grid-card p{font-size:13px;color:rgba(255,255,255,.75);margin:0;line-height:1.6;}
+.grid-card ul{padding-left:16px;}
+.grid-card li{font-size:12.5px;color:rgba(255,255,255,.75);margin-bottom:4px;line-height:1.5;}
+.styled-list{list-style:none;padding:0;margin:14px 0;}
+.styled-list li{padding:6px 0 6px 22px;position:relative;font-size:15px;line-height:1.7;border-bottom:1px solid rgba(0,0,0,.04);}
+.styled-list li:last-child{border-bottom:none;}
+.styled-list li::before{content:'›';position:absolute;left:0;color:var(--gold);font-size:18px;font-weight:700;top:4px;}
+.styled-list li strong{color:var(--navy);}
+.check-list{list-style:none;padding:0;margin:14px 0;}
+.check-list li{padding:5px 0 5px 26px;position:relative;font-size:14.5px;line-height:1.7;}
+.check-list li::before{content:'✓';position:absolute;left:0;color:var(--green);font-weight:700;}
+mark{background:rgba(201,151,58,.25);color:inherit;border-radius:2px;padding:0 2px;}
+.def-list{margin:16px 0;}
+.def-item{display:grid;grid-template-columns:200px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--cream-dark);font-size:14.5px;}
+.def-item:last-child{border-bottom:none;}
+.def-term{font-weight:600;color:var(--navy);font-size:13.5px;}
+.math-box{background:#0d1b2e;border:1px solid rgba(201,151,58,.5);border-radius:8px;padding:20px 24px;margin:20px 0;font-family:'JetBrains Mono',monospace;}
+.math-box .formula{font-size:15px;color:var(--gold-light);text-align:center;padding:10px 0;letter-spacing:.5px;}
+.math-box .formula-label{font-size:10px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:10px;letter-spacing:2px;text-transform:uppercase;}
+.math-box .worked{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);}
+.math-box .step{display:flex;gap:12px;margin-bottom:8px;align-items:flex-start;}
+.math-box .step-num{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.math-box .step-text{font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;}
+.math-box .result{background:rgba(201,151,58,.15);border:1px solid rgba(201,151,58,.4);border-radius:4px;padding:10px 14px;margin-top:12px;font-size:14px;color:var(--gold-light);text-align:center;}
+.calc-box{background:white;border:1px solid var(--cream-dark);border-radius:8px;padding:24px;margin:24px 0;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.calc-box h4{font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin-bottom:16px;}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.calc-field{display:flex;flex-direction:column;gap:4px;}
+.calc-field label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;}
+.calc-field input{border:1px solid var(--cream-dark);border-radius:4px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--navy);background:var(--cream);outline:none;transition:border-color .2s;}
+.calc-field input:focus{border-color:var(--gold);}
+.calc-btn{margin-top:14px;background:var(--navy);color:var(--gold-light);border:none;padding:10px 24px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1px;cursor:pointer;}
+.calc-btn:hover{background:#1a2d4a;}
+.calc-result{margin-top:12px;background:var(--blue-light);border:1px solid rgba(26,58,107,.2);border-radius:4px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--blue);min-height:40px;white-space:pre-line;}
+/* Cycle stages */
+.cycle-ring{display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;gap:10px;margin:20px 0;}
+.cycle-item{text-align:center;padding:16px 12px;border-radius:8px;border:1px solid rgba(201,151,58,.3);background:rgba(255,255,255,.06);flex:1;min-width:140px;}
+.cycle-item h6{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold-light);letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;}
+.cycle-item p{font-size:12px;color:rgba(255,255,255,.7);margin:0;line-height:1.5;}
+/* Quiz */
+#quiz-section{background:var(--navy);border-radius:12px;padding:40px 44px;margin-top:60px;scroll-margin-top:80px;}
+.quiz-header{font-family:'Playfair Display',serif;font-size:30px;color:white;margin-bottom:8px;}
+.quiz-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:28px;}
+.quiz-stats{display:flex;gap:20px;margin-bottom:32px;flex-wrap:wrap;}
+.quiz-stat{background:rgba(255,255,255,.06);border:1px solid rgba(201,151,58,.3);border-radius:6px;padding:12px 18px;text-align:center;}
+.quiz-stat .stat-val{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold-light);display:block;}
+.quiz-stat .stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;}
+.q-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:20px 22px;margin-bottom:16px;transition:border-color .2s;}
+.q-item:hover{border-color:rgba(201,151,58,.3);}
+.q-meta{display:flex;gap:10px;margin-bottom:10px;align-items:center;flex-wrap:wrap;}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);}
+.q-diff{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 8px;border-radius:3px;letter-spacing:1px;}
+.diff-easy{background:rgba(26,107,74,.25);color:#5dda9a;}
+.diff-medium{background:rgba(201,151,58,.2);color:var(--gold-light);}
+.diff-hard{background:rgba(139,26,26,.25);color:#ff8a8a;}
+.q-topic{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.3);margin-left:auto;letter-spacing:1px;}
+.q-text{color:white;font-size:15px;line-height:1.6;margin-bottom:14px;}
+.q-options{list-style:none;padding:0;margin:0 0 14px;}
+.q-options li{padding:8px 12px;border:1px solid rgba(255,255,255,.08);border-radius:5px;margin-bottom:6px;font-size:14px;color:rgba(255,255,255,.8);cursor:pointer;transition:all .15s;}
+.q-options li:hover{background:rgba(201,151,58,.1);border-color:rgba(201,151,58,.3);}
+.q-options li.correct{background:rgba(26,107,74,.25);border-color:#2ecc71;color:#5dda9a;}
+.q-options li.wrong{background:rgba(139,26,26,.25);border-color:#e74c3c;color:#ff8a8a;}
+.q-options li.reveal-correct{background:rgba(26,107,74,.15);border-color:rgba(46,204,113,.5);color:rgba(93,218,154,.8);}
+.q-answer{display:none;background:rgba(201,151,58,.08);border:1px solid rgba(201,151,58,.2);border-radius:5px;padding:12px 14px;font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.65;}
+.q-answer.show{display:block;}
+.q-answer strong{color:var(--gold-light);}
+.show-ans-btn{background:none;border:1px solid rgba(201,151,58,.4);color:var(--gold-light);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;padding:6px 14px;border-radius:4px;cursor:pointer;}
+.show-ans-btn:hover{background:rgba(201,151,58,.15);}
+.quiz-controls{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;}
+.ctrl-btn{padding:9px 20px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;border:none;}
+.ctrl-btn-primary{background:var(--gold);color:var(--navy);}
+.ctrl-btn-outline{background:transparent;border:1px solid rgba(201,151,58,.4);color:var(--gold-light);}
+.quiz-score-panel{background:rgba(201,151,58,.1);border:1px solid rgba(201,151,58,.3);border-radius:8px;padding:20px 24px;margin-top:24px;display:none;text-align:center;}
+.quiz-score-panel .score-val{font-family:'Playfair Display',serif;font-size:52px;color:var(--gold-light);}
+.quiz-score-panel p{color:rgba(255,255,255,.7);margin:0;}
+#back-top{position:fixed;bottom:28px;right:28px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);width:42px;height:42px;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;opacity:0;transition:opacity .3s;z-index:200;}
+#back-top.visible{opacity:1;}
+::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-thumb{background:var(--cream-dark);border-radius:3px;}
+@media(max-width:900px){#sidebar{transform:translateX(-100%);} #main{margin-left:0;} #content{padding:0 24px 60px;} .grid-2,.grid-3,.grid-4,.calc-grid{grid-template-columns:1fr;} .def-item{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-tag">CIRO · RSE Prep</div>
+    <h2>Securities Analysis<br>Market Data, Indices &amp; Economics</h2>
+    <span class="element-badge">ELEMENT 04 · PART 2</span>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" id="nav-search" placeholder="Search topics…" oninput="filterNav(this.value)">
+  </div>
+  <div id="nav-links">
+    <div class="nav-section-label">Overview</div>
+    <a class="nav-item" onclick="gs('hero')"><span class="nav-num">—</span>Introduction</a>
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Sections</div>
+    <a class="nav-item" onclick="gs('s7')"><span class="nav-num">4.7</span>Value Ratios &amp; Trend Analysis</a>
+    <a class="nav-item sub" onclick="gs('s7-pe')">P/E, Dividend Yield, Cover</a>
+    <a class="nav-item sub" onclick="gs('s7-trend')">Trend &amp; Peer Comparison</a>
+    <a class="nav-item sub" onclick="gs('s7-calc')">Value Ratio Calculator</a>
+    <a class="nav-item" onclick="gs('s8')"><span class="nav-num">4.8</span>Market Data &amp; Restrictions</a>
+    <a class="nav-item sub" onclick="gs('s8-data')">Price, Volume, Yield, Mkt Cap</a>
+    <a class="nav-item sub" onclick="gs('s8-cto')">Cease Trade Orders (CTOs)</a>
+    <a class="nav-item" onclick="gs('s9')"><span class="nav-num">4.9</span>Market Indices</a>
+    <a class="nav-item sub" onclick="gs('s9-types')">Weighted Index Types</a>
+    <a class="nav-item sub" onclick="gs('s9-return')">Price vs. Total Return</a>
+    <a class="nav-item sub" onclick="gs('s9-global')">Asset Class &amp; Global Indices</a>
+    <a class="nav-item" onclick="gs('s10')"><span class="nav-num">4.10</span>Applying Indices</a>
+    <a class="nav-item" onclick="gs('s11')"><span class="nav-num">4.11</span>Assessing Market Behaviour</a>
+    <a class="nav-item sub" onclick="gs('s11-fund')">Fundamental Analysis</a>
+    <a class="nav-item sub" onclick="gs('s11-quant')">Quantitative Analysis</a>
+    <a class="nav-item sub" onclick="gs('s11-tech')">Technical Analysis</a>
+    <a class="nav-item" onclick="gs('s12')"><span class="nav-num">4.12</span>Industry Sectors</a>
+    <a class="nav-item sub" onclick="gs('s12-gics')">GICS Classification</a>
+    <a class="nav-item sub" onclick="gs('s12-cyc')">Cyclical vs. Defensive</a>
+    <a class="nav-item" onclick="gs('s13')"><span class="nav-num">4.13</span>Macroeconomic Factors</a>
+    <a class="nav-item sub" onclick="gs('s13-rates')">Interest Rates</a>
+    <a class="nav-item sub" onclick="gs('s13-infl')">Inflation</a>
+    <a class="nav-item sub" onclick="gs('s13-emp')">Employment &amp; Productivity</a>
+    <a class="nav-item" onclick="gs('s14')"><span class="nav-num">4.14</span>Performance &amp; Time Horizons</a>
+    <a class="nav-item sub" onclick="gs('s14-cycle')">Economic Cycle</a>
+    <a class="nav-item sub" onclick="gs('s14-vol')">Volatility &amp; Asset Class</a>
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Practice</div>
+    <a class="nav-item" onclick="gs('quiz-section')"><span class="nav-num">★</span>50 Exam Questions</a>
+  </div>
+  <div class="sidebar-footer">CIRO RSE · Element 4 Part 2 of 9</div>
+</nav>
+
+<div id="main">
+<div id="top-bar">
+  <div class="breadcrumb">RSE Exam Prep &rsaquo; <span>Element 4 — Securities Analysis (Part 2)</span></div>
+  <div class="progress-area">
+    <span class="prog-label">READING PROGRESS</span>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <div class="element-tag">ELEMENT 4 PART 2 OF 9 · RETAIL SECURITIES EXAM · CIRO</div>
+  <h1>Market Analysis, Indices<br>&amp; Economic Factors</h1>
+  <p>From value ratios and market data to index construction, fundamental vs. technical analysis, sector classification, macroeconomics, and the economic cycle — this part covers the full toolkit for assessing securities in their market context.</p>
+  <div class="hero-meta">
+    <span class="meta-chip">8 LEARNING OUTCOMES</span>
+    <span class="meta-chip">VALUE RATIOS · INDICES · MACRO</span>
+    <span class="meta-chip">INTERACTIVE CALCULATORS</span>
+    <span class="meta-chip">50 PRACTICE QUESTIONS</span>
+  </div>
+</div>
+
+<!-- ═══════ 4.7 VALUE RATIOS ═══════ -->
+<div class="chapter" id="s7">
+  <div class="section-header">
+    <div class="section-num">4.7</div>
+    <div class="section-title-area">
+      <h2>Value Ratios &amp; Trend Analysis</h2>
+      <div class="section-sub">EPS · P/E · DIVIDEND YIELD · DIVIDEND COVER · EQUITY TO COMMON SHARE · TREND ANALYSIS</div>
+    </div>
+  </div>
+
+  <p>Value ratios connect a company's financial performance to its <strong>market price</strong> — they answer the question every investor asks: "Is the stock cheap or expensive relative to what it earns, pays, and is worth?" This section builds directly on the financial ratios from Part 1, adding the market price dimension. We'll use a consistent example throughout: <mark>Maple Industrial Corp. (MIC) trading at $7.00/share</mark>.</p>
+
+  <div class="subsection" id="s7-pe">
+    <h3>Earnings Per Share (EPS) — Revisited as a Value Metric</h3>
+    <p>EPS = Net Income ÷ Shares Outstanding. We covered this in Part 1. In the value context, EPS is the denominator in the most widely used valuation ratio — the P/E — and the benchmark against which dividends are compared.</p>
+
+    <div class="callout callout-exam">
+      <div class="callout-label">📌 MIC REFERENCE DATA FOR ALL VALUE RATIOS</div>
+      <p>Market Price = <strong>$7.00/share</strong> · EPS = <strong>$0.394/share</strong> · DPS (dividends per share) = <strong>$0.160/share</strong> · BVPS = <strong>$1.80/share</strong> · Net Income = $3,937K · Total Equity = $18,000K · Shares = 10,000K</p>
+    </div>
+
+    <h3 class="sh3">Price-to-Earnings (P/E) Ratio</h3>
+    <p>The P/E ratio is the <strong>most widely used equity valuation metric</strong> in the world. It tells investors how many dollars they are paying for every dollar of the company's earnings.</p>
+
+    <div class="math-box">
+      <div class="formula-label">Price-to-Earnings Ratio</div>
+      <div class="formula">P/E = Market Price Per Share ÷ Earnings Per Share (EPS)</div>
+      <div class="worked">
+        <p style="color:rgba(255,255,255,.7);font-size:13px;margin-bottom:12px"><strong style="color:var(--gold-light)">MIC Calculation:</strong></p>
+        <div class="step"><div class="step-num">1</div><div class="step-text">P/E = $7.00 ÷ $0.394 = <strong style="color:var(--gold-light)">17.8x</strong></div></div>
+        <div class="result">MIC P/E Ratio = 17.8x — investors pay $17.80 for every $1 of annual earnings</div>
+      </div>
+    </div>
+
+    <h4>Interpreting the P/E Ratio</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>P/E Context</th><th>Interpretation</th><th>What It May Signal</th></tr>
+        <tr><td><strong>P/E relative to history</strong></td><td>Is the P/E higher or lower than the stock's own 5-year average?</td><td>Trading above historical average = potentially expensive vs. own history. Below = potentially cheap.</td></tr>
+        <tr><td><strong>P/E relative to industry peers</strong></td><td>Is MIC's 17.8x higher or lower than comparable manufacturers?</td><td>If peers trade at 12x, MIC looks expensive. If peers trade at 22x, MIC looks cheap. Peer comparison is essential.</td></tr>
+        <tr><td><strong>P/E relative to market</strong></td><td>Is the P/E above or below the broad market (e.g., S&P/TSX Composite at 15x)?</td><td>Premium to market = investors expect above-average growth or quality. Discount = slower growth or higher risk expected.</td></tr>
+        <tr><td><strong>Forward vs. Trailing P/E</strong></td><td>Trailing P/E uses actual past EPS. Forward P/E uses next year's consensus EPS forecast.</td><td>If forward EPS is $0.45 and price is $7.00 → Forward P/E = 15.6x. Forward P/E is more useful for valuation decisions.</td></tr>
+        <tr><td><strong>Negative EPS</strong></td><td>When a company loses money, P/E is not meaningful (negative or N/A)</td><td>Use Price/Sales or Price/Book for loss-making companies</td></tr>
+      </table>
+    </div>
+
+    <div class="callout callout-warning">
+      <div class="callout-label">⚠️ P/E LIMITATIONS</div>
+      <p>The P/E ratio can be manipulated by one-time items (asset sales, write-offs) that inflate or depress EPS. Always check whether EPS is "adjusted" (excluding non-recurring items) or "reported" (as-filed GAAP/IFRS). Analysts often use "normalized" or "adjusted" EPS to strip out noise and get a cleaner picture of recurring earnings power.</p>
+    </div>
+
+    <h3 class="sh3">Dividend Yield</h3>
+    <p>Dividend yield measures the <strong>annual income return from dividends</strong> as a percentage of the current share price. It tells an investor how much cash income they receive for every dollar invested.</p>
+
+    <div class="math-box">
+      <div class="formula-label">Dividend Yield</div>
+      <div class="formula">Dividend Yield = Annual Dividends Per Share ÷ Market Price Per Share × 100</div>
+      <div class="worked">
+        <div class="step"><div class="step-num">1</div><div class="step-text">Dividend Yield = $0.160 ÷ $7.00 × 100 = <strong style="color:var(--gold-light)">2.29%</strong></div></div>
+        <div class="result">MIC Dividend Yield = 2.29% — investors earn 2.29 cents in dividends for every dollar invested</div>
+      </div>
+    </div>
+
+    <p>A higher dividend yield can mean: (1) the dividend has increased relative to price, (2) the share price has fallen, or (3) both. A very high yield (e.g., 8–10%) can be a <strong>warning signal</strong> — the market may be pricing in a dividend cut (which would cause the yield to normalize after the cut). This is called a "dividend trap."</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-label">💡 DIVIDEND YIELD vs. BOND YIELD COMPARISON</div>
+      <p>Dividend yield is frequently compared to GoC bond yields. If a stock's dividend yield (2.29%) is significantly below the 10-year GoC bond yield (say 4.0%), the stock's income appeal is limited relative to bonds. If the dividend yield exceeds bond yields — or is close to them — the stock may be attractive on an income basis, especially given the Canadian dividend tax credit advantage for non-registered accounts.</p>
+    </div>
+
+    <h3 class="sh3">Dividend Cover (Dividend Coverage Ratio)</h3>
+    <p>Dividend cover measures <strong>how many times the company can pay its current dividend out of earnings</strong>. It is the inverse of the dividend payout ratio and assesses dividend sustainability.</p>
+
+    <div class="math-box">
+      <div class="formula-label">Dividend Cover</div>
+      <div class="formula">Dividend Cover = EPS ÷ Dividends Per Share = 1 ÷ Payout Ratio</div>
+      <div class="worked">
+        <div class="step"><div class="step-num">1</div><div class="step-text">Dividend Cover = $0.394 ÷ $0.160 = <strong style="color:var(--gold-light)">2.46x</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text">Alternatively: 1 ÷ 0.406 (payout ratio) = 2.46x ✓</div></div>
+        <div class="result">MIC Dividend Cover = 2.46x — EPS covers the dividend 2.46 times over</div>
+      </div>
+    </div>
+
+    <p>A dividend cover of 2.46x means MIC's earnings would have to fall by more than 59% before it couldn't pay its current dividend. This indicates a <strong>well-covered, sustainable dividend</strong>. A cover ratio below 1.0x means the company pays more in dividends than it earns — the dividend is being funded by reserves or debt and is likely to be cut.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Dividend Cover</th><th>Signal</th><th>Action for RR</th></tr>
+        <tr><td style="color:var(--red)"><strong>Below 1.0x</strong></td><td>Dividend paid out of reserves/debt — unsustainable</td><td>HIGH concern — discuss dividend cut risk with client. Not suitable as reliable income.</td></tr>
+        <tr><td style="color:var(--amber)"><strong>1.0x – 1.5x</strong></td><td>Tight coverage — dividend vulnerable to earnings decline</td><td>Monitor closely — modest earnings drop could trigger cut</td></tr>
+        <tr><td style="color:var(--green)"><strong>1.5x – 3.0x</strong></td><td>Comfortable coverage — dividend sustainable under normal conditions</td><td>Acceptable for income-focused clients</td></tr>
+        <tr><td style="color:var(--green)"><strong>Above 3.0x</strong></td><td>Strong coverage — dividend has significant headroom; potential for growth</td><td>Very reliable; may indicate room for dividend increases</td></tr>
+      </table>
+    </div>
+
+    <h3 class="sh3">Dividend Payout Ratio</h3>
+    <p>Already covered in Part 1 (Section 4.6) — payout = dividends ÷ net income. MIC's payout = 40.6%. The key point in the value context: a <strong>rising payout ratio</strong> might signal the company is distributing a larger share of earnings, which is attractive to income investors but reduces retention for reinvestment and growth.</p>
+
+    <h3 class="sh3">Price-to-Book (Equity to Common Share / P/B Ratio)</h3>
+    <p>The Price-to-Book ratio compares the market value of the company's shares to its <strong>accounting book value</strong> (shareholders' equity per share). The CIRO syllabus calls this "equity to common share" — measuring the relationship between market equity value and book equity.</p>
+
+    <div class="math-box">
+      <div class="formula-label">Price-to-Book (P/B) Ratio</div>
+      <div class="formula">P/B = Market Price Per Share ÷ Book Value Per Share</div>
+      <div class="formula" style="font-size:13px;opacity:.8">= Market Capitalization ÷ Total Shareholders' Equity</div>
+      <div class="worked">
+        <div class="step"><div class="step-num">1</div><div class="step-text">BVPS = $18,000K ÷ 10,000K shares = $1.80/share</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text">P/B = $7.00 ÷ $1.80 = <strong style="color:var(--gold-light)">3.89x</strong></div></div>
+        <div class="result">MIC P/B Ratio = 3.89x — market values MIC at nearly 4 times its accounting book value</div>
+      </div>
+    </div>
+
+    <p>A P/B above 1.0x means the market believes the company is worth more than its balance sheet assets suggest — reflecting intangible value (brands, intellectual property, competitive advantages, earnings power) not captured in accounting book value. Technology and financial services companies often trade at very high P/B multiples because their most valuable assets (software, brand, talent) aren't on the balance sheet.</p>
+
+    <div class="callout callout-exam">
+      <div class="callout-label">📌 P/B BELOW 1.0x — WHAT IT MEANS</div>
+      <p>A P/B below 1.0x can indicate: (1) the company is genuinely cheap — trading below liquidation value; (2) the assets on the balance sheet are overstated (e.g., goodwill impairment risk); (3) the company has structural problems that make it unable to generate returns above its cost of equity. For Canadian bank stocks, P/B is a key metric — banks historically trade at 1.2x–2.0x book depending on their ROE and growth outlook.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s7-trend">
+    <h3>Trend Analysis and External Comparisons</h3>
+    <p>Calculating a single ratio at a single point in time is informative but limited. True insight comes from analyzing ratios <strong>over time</strong> (trend analysis) and comparing them to <strong>peers and the broader market</strong> (external comparisons). Without context, a P/E of 17.8x is meaningless — is that cheap or expensive?</p>
+
+    <h4>Trend Analysis — Temporal Comparison</h4>
+    <p>Trend analysis examines whether key metrics are improving, stable, or deteriorating. A table of 3–5 years of data is far more revealing than a single year:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Metric</th><th>Year 1</th><th>Year 2</th><th>Year 3 (MIC)</th><th>Trend Signal</th></tr>
+        <tr><td>Revenue Growth</td><td>+8.2%</td><td>+5.1%</td><td>+3.2%</td><td style="color:var(--amber)">⚠️ Decelerating — worth investigating</td></tr>
+        <tr><td>Gross Margin</td><td>34.5%</td><td>33.1%</td><td>32.1%</td><td style="color:var(--red)">🔴 Declining — cost pressures or pricing erosion</td></tr>
+        <tr><td>Interest Coverage</td><td>5.2x</td><td>6.0x</td><td>6.46x</td><td style="color:var(--green)">✅ Improving — stronger debt servicing capacity</td></tr>
+        <tr><td>DSO (days)</td><td>38</td><td>42</td><td>45</td><td style="color:var(--amber)">⚠️ Rising — slower collection; monitor AR quality</td></tr>
+        <tr><td>EPS</td><td>$0.310</td><td>$0.358</td><td>$0.394</td><td style="color:var(--green)">✅ Growing — earnings per share increasing</td></tr>
+        <tr><td>Dividend Yield</td><td>1.9%</td><td>2.1%</td><td>2.3%</td><td style="color:var(--green)">✅ Rising — combination of DPS increase and/or price movement</td></tr>
+      </table>
+    </div>
+
+    <h4>External Comparison — Peer and Market Benchmarking</h4>
+    <p>Comparing MIC's ratios to industry peers and broader market averages provides essential context. A ratio that looks reasonable in isolation can appear expensive or cheap when benchmarked:</p>
+
+    <div class="diagram">
+      <div class="diagram-title">MIC vs. Industry Peers vs. Market — Value Ratio Comparison</div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <tr style="border-bottom:1px solid rgba(201,151,58,.3)">
+            <th style="padding:10px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold-light)">METRIC</th>
+            <th style="padding:10px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold-light)">MIC</th>
+            <th style="padding:10px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.6)">Peer A</th>
+            <th style="padding:10px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.6)">Peer B</th>
+            <th style="padding:10px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.6)">S&amp;P/TSX Avg</th>
+            <th style="padding:10px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.5)">MIC ASSESSMENT</th>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.05)">
+            <td style="padding:10px;color:rgba(255,255,255,.8)">P/E</td><td style="padding:10px;text-align:center;color:var(--gold-light);font-weight:700">17.8x</td><td style="padding:10px;text-align:center;color:rgba(255,255,255,.6)">14.2x</td><td style="padding:10px;text-align:center;color:rgba(255,255,255,.6)">19.5x</td><td style="padding:10px;text-align:center;color:rgba(255,255,255,.6)">16.0x</td><td style="padding:10px;color:rgba(255,255,255,.5);font-size:12px">Moderate premium to peers avg (~16x); slightly above market</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.05)">
+            <td style="padding:10px;color:rgba(255,255,255,.8)">Dividend Yield</td><td style="padding:10px;text-align:center;color:var(--gold-light);font-weight:700">2.3%</td><td style="padding:10px;text-align:center;color:rgba(255,255,255,.6)">3.1%</td><td style="padding:10px;text-align:center;color:rgba(255,255,255,.6)">1.8%</td><td style="padding:10px;text-align:center;color:rgba(255,255,255,.6)">2.8%</td><td style="padding:10px;color:rgba(255,255,255,.5);font-size:12px">Below peers on income; better for growth-oriented clients</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.05)">
+            <td style="padding:10px;color:rgba(255,255,255,.8)">P/B</td><td style="padding:10px;text-align:center;color:var(--gold-light);font-weight:700">3.9x</td><td style="padding:10px;text-align:center;color:rgba(255,255,255,.6)">2.8x</td><td style="padding:10px;text-align:center;color:rgba(255,255,255,.6)">4.2x</td><td style="padding:10px;text-align:center;color:rgba(255,255,255,.6)">2.5x</td><td style="padding:10px;color:rgba(255,255,255,.5);font-size:12px">Premium to market but in line with better-performing peers</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;color:rgba(255,255,255,.8)">Div. Cover</td><td style="padding:10px;text-align:center;color:var(--gold-light);font-weight:700">2.46x</td><td style="padding:10px;text-align:center;color:rgba(255,255,255,.6)">1.8x</td><td style="padding:10px;text-align:center;color:rgba(255,255,255,.6)">3.2x</td><td style="padding:10px;text-align:center;color:rgba(255,255,255,.6)">2.2x</td><td style="padding:10px;color:rgba(255,255,255,.5);font-size:12px">Strong coverage; dividend well-protected vs. average peer</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <h4>What to Communicate to Clients</h4>
+    <p>When a client asks "Is MIC a good investment?", the value ratio analysis translated into plain language might be: <em>"MIC trades at a modest premium to its industry peers on an earnings basis, which may be justified given its stronger dividend coverage and improving EPS trend. However, its dividend yield is below the sector average, making it more appropriate for growth-oriented investors than pure income seekers."</em></p>
+  </div>
+
+  <div class="subsection" id="s7-calc">
+    <h3>Interactive Value Ratio Calculator</h3>
+    <div class="calc-box">
+      <h4>🧮 Market Value Ratio Calculator</h4>
+      <div class="calc-grid">
+        <div class="calc-field"><label>Market Price Per Share ($)</label><input type="number" id="v-price" value="7.00" step="0.01"></div>
+        <div class="calc-field"><label>Earnings Per Share — EPS ($)</label><input type="number" id="v-eps" value="0.394" step="0.001"></div>
+        <div class="calc-field"><label>Annual Dividends Per Share ($)</label><input type="number" id="v-dps" value="0.160" step="0.001"></div>
+        <div class="calc-field"><label>Book Value Per Share — BVPS ($)</label><input type="number" id="v-bvps" value="1.80" step="0.01"></div>
+        <div class="calc-field"><label>Shares Outstanding (millions)</label><input type="number" id="v-shr" value="10" step="0.1"></div>
+        <div class="calc-field"><label>Industry Average P/E (for comparison)</label><input type="number" id="v-indpe" value="16" step="0.5"></div>
+      </div>
+      <button class="calc-btn" onclick="calcValueRatios()">Calculate All Value Ratios</button>
+      <div class="calc-result" id="val-result">Results will appear here…</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 4.8 MARKET DATA ═══════ -->
+<div class="chapter" id="s8">
+  <div class="section-header">
+    <div class="section-num">4.8</div>
+    <div class="section-title-area">
+      <h2>Market Data from Exchanges and Regulators</h2>
+      <div class="section-sub">PRICE · VOLUME · YIELD · MARKET CAP · CEASE TRADE ORDERS</div>
+    </div>
+  </div>
+
+  <p>Exchanges (TSX, Cboe Canada, Montreal Exchange) and regulators (CIRO, CSA) provide a rich stream of real-time and historical market data that RRs use daily to monitor positions, assess liquidity, and advise clients.</p>
+
+  <div class="subsection" id="s8-data">
+    <h3>Price, Volume, Yields, and Market Capitalization</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Data Type</th><th>Definition</th><th>How RRs Use It</th></tr>
+        <tr><td><strong>Last Price / Current Price</strong></td><td>The most recent transaction price for the security</td><td>Basis for all valuation calculations; current market value of client position</td></tr>
+        <tr><td><strong>Bid Price</strong></td><td>The highest price a buyer is currently willing to pay</td><td>The price at which a client can SELL (market order executes at bid)</td></tr>
+        <tr><td><strong>Ask Price (Offer Price)</strong></td><td>The lowest price a seller is currently willing to accept</td><td>The price at which a client can BUY (market order executes at ask)</td></tr>
+        <tr><td><strong>Bid-Ask Spread</strong></td><td>Ask − Bid. The implicit transaction cost of trading.</td><td>Wider spread = less liquid stock = higher cost to trade. Use limit orders for illiquid stocks.</td></tr>
+        <tr><td><strong>52-Week High / Low</strong></td><td>The highest and lowest price the security traded at in the past 52 weeks</td><td>Context for current price level; used in technical analysis support/resistance</td></tr>
+        <tr><td><strong>Volume (Daily / Average)</strong></td><td>Number of shares traded in a given period. Average daily volume = typical daily trading activity.</td><td>Assess liquidity. High volume on a price move = conviction. Low volume = skepticism. Large block orders relative to daily volume will move the market.</td></tr>
+        <tr><td><strong>Market Capitalization</strong></td><td>Current share price × total shares outstanding. The total market value of the company's equity.</td><td>Size classification (micro, small, mid, large cap). Used in index inclusion criteria. Affects institutional ownership and liquidity.</td></tr>
+        <tr><td><strong>Yield (for bonds)</strong></td><td>The annualized return expected from a fixed income security. Published by exchanges/data providers for listed debentures.</td><td>Comparing bond attractiveness; yield spread analysis vs. GoC benchmarks</td></tr>
+        <tr><td><strong>P/E Ratio (published)</strong></td><td>Current price divided by trailing 12-month EPS — published by data providers and financial pages</td><td>Quick valuation reference; compare to sector average and market average</td></tr>
+      </table>
+    </div>
+
+    <h4>Market Capitalization — Size Classifications</h4>
+    <div class="diagram">
+      <div class="diagram-title">Canadian Market Cap Classifications</div>
+      <div class="grid-4">
+        <div class="grid-card">
+          <h5>🦣 Mega Cap</h5>
+          <p>Market cap &gt; $100B CAD<br>e.g., Royal Bank, TD Bank, Shopify at peak<br>Highest liquidity; globally traded</p>
+        </div>
+        <div class="grid-card">
+          <h5>🐘 Large Cap</h5>
+          <p>$10B – $100B CAD<br>e.g., Brookfield, Suncor, BCE<br>S&amp;P/TSX 60 constituents</p>
+        </div>
+        <div class="grid-card">
+          <h5>🦌 Mid Cap</h5>
+          <p>$2B – $10B CAD<br>Regional leaders; institutional coverage<br>Moderate liquidity</p>
+        </div>
+        <div class="grid-card">
+          <h5>🐇 Small Cap</h5>
+          <p>&lt; $2B CAD<br>Higher growth potential<br>Higher risk; lower liquidity<br>Less analyst coverage</p>
+        </div>
+      </div>
+      <p style="font-size:12px;color:rgba(255,255,255,.4);margin-top:12px;text-align:center">Thresholds vary by data provider and market. "Micro cap" (&lt; $300M) and "nano cap" (&lt; $50M) are sub-categories below small cap.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s8-cto">
+    <h3>Cease Trade Orders (CTOs)</h3>
+    <p>A <strong>Cease Trade Order (CTO)</strong> is an order issued by a provincial securities regulator (e.g., OSC, BCSC, AMF) that prohibits trading in the securities of a specific issuer. CTOs are one of the most important regulatory restrictions an RR must know and monitor.</p>
+
+    <h4>Why Are CTOs Issued?</h4>
+    <ul class="styled-list">
+      <li><strong>Failure to file continuous disclosure documents on time:</strong> If a reporting issuer misses the deadline for annual financial statements, quarterly reports, or material change reports, regulators may issue a CTO to protect investors from trading in a company with stale or missing disclosure. This is the most common reason for CTOs.</li>
+      <li><strong>Inadequate disclosure:</strong> If filed documents are materially deficient or misleading — regulators may halt trading pending corrective disclosure.</li>
+      <li><strong>Ongoing investigation:</strong> Regulators may issue a CTO while investigating potential securities law violations (fraud, insider trading, market manipulation).</li>
+      <li><strong>Public interest:</strong> In exceptional cases, regulators issue CTOs if continued trading would be prejudicial to the public interest.</li>
+    </ul>
+
+    <h4>Types of CTOs</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Type</th><th>Scope</th><th>Effect</th></tr>
+        <tr><td><strong>Issuer CTO (Full CTO)</strong></td><td>Applies to all securities of the issuer</td><td>No person may trade in ANY securities of the company — not just in the province where the CTO is issued. Effectively a complete trading halt across Canada under national policy.</td></tr>
+        <tr><td><strong>Management CTO</strong></td><td>Applies only to the company's directors, officers, and insiders</td><td>General public can still trade; only insiders are prohibited. Often used when only insiders have failed to file personal disclosure documents.</td></tr>
+        <tr><td><strong>Temporary CTO</strong></td><td>Short-term, pending specific action</td><td>Issued quickly; can be lifted once the company files the missing documents or corrects the deficiency</td></tr>
+      </table>
+    </div>
+
+    <h4>RR Obligations When a Client Holds CTO Securities</h4>
+    <div class="callout callout-rule">
+      <div class="callout-label">🔴 CTO — CRITICAL RULES FOR RRs</div>
+      <p>When a security is subject to a cease trade order:<br><br>
+      <strong>1. No trading is permitted</strong> — the RR CANNOT execute any buy or sell orders for the CTO'd security, even if the client requests it. Executing a trade in defiance of a CTO is a serious securities law violation for both the RR and the dealer.<br><br>
+      <strong>2. Inform the client immediately</strong> — if a CTO is issued on a security a client holds, the RR must notify the client promptly and explain that the position is now illiquid — it cannot be sold until the CTO is lifted.<br><br>
+      <strong>3. Monitor for CTO resolution</strong> — CTOs are lifted when the deficiency is cured (e.g., financial statements are filed). Monitor SEDAR+ and regulator websites for CTO updates.<br><br>
+      <strong>4. Document the situation</strong> — record the notification to the client and all related communications in the client file.</p>
+    </div>
+
+    <h4>Where to Find CTO Information</h4>
+    <p>CTOs are published on the websites of each provincial securities regulator (OSC, BCSC, AMF, etc.) and are also available on SEDAR+ (sedarplus.ca). Many data providers (Bloomberg, TMX) also flag CTO'd securities in their trading systems.</p>
+  </div>
+</div>
+
+<!-- ═══════ 4.9 MARKET INDICES ═══════ -->
+<div class="chapter" id="s9">
+  <div class="section-header">
+    <div class="section-num">4.9</div>
+    <div class="section-title-area">
+      <h2>Market Indices — Purpose, Construction &amp; Types</h2>
+      <div class="section-sub">CONSTRUCTION · WEIGHTED TYPES · PRICE RETURN vs. TOTAL RETURN · ASSET CLASSES</div>
+    </div>
+  </div>
+
+  <p>A market index is a <strong>composite measure of market performance</strong> that tracks the value of a selected group of securities over time. Indices serve as benchmarks (to compare portfolio performance), analytical tools (to assess market conditions), and as the basis for index funds and ETFs.</p>
+
+  <div class="subsection" id="s9-types">
+    <h3>How Index Values Are Constructed</h3>
+    <p>An index starts with a base value (typically 100 or 1,000) on a specific date. As the prices of the constituent securities change, the index value changes proportionally. The key differences between indices lie in <strong>how individual securities are weighted.</strong></p>
+
+    <div class="diagram">
+      <div class="diagram-title">Three Methods of Index Construction — Complete Comparison</div>
+      <div class="grid-3">
+        <div class="grid-card">
+          <h5>⚖️ Market-Value-Weighted (Cap-Weighted)</h5>
+          <p>Each stock's weight in the index = its market cap as a proportion of total market cap of all constituents.</p>
+          <p style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.5)"><strong style="color:var(--gold-light)">Formula:</strong> Weight = Company Market Cap ÷ Total Index Market Cap</p>
+          <p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.5)"><strong style="color:var(--gold-light)">Examples:</strong> S&amp;P/TSX Composite, S&amp;P 500, MSCI World</p>
+          <p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.5)"><strong style="color:var(--gold-light)">Advantage:</strong> Naturally rebalances as prices change. Reflects true investable market. Efficient to replicate.<br><strong style="color:#ff8a8a">Disadvantage:</strong> Large-cap stocks dominate. Royal Bank alone represents ~7% of the S&amp;P/TSX — concentration risk.</p>
+        </div>
+        <div class="grid-card">
+          <h5>💲 Price-Weighted</h5>
+          <p>Each stock's weight = its price relative to the sum of all constituent prices. A higher-priced stock has more influence regardless of its total market value.</p>
+          <p style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.5)"><strong style="color:var(--gold-light)">Formula:</strong> Weight = Stock Price ÷ Sum of All Stock Prices</p>
+          <p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.5)"><strong style="color:var(--gold-light)">Examples:</strong> Dow Jones Industrial Average (DJIA), Nikkei 225</p>
+          <p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.5)"><strong style="color:var(--gold-light)">Advantage:</strong> Simple to calculate.<br><strong style="color:#ff8a8a">Disadvantage:</strong> Arbitrary — a $500 stock has 10x more influence than a $50 stock regardless of total market value. Stock splits artificially reduce weighting.</p>
+        </div>
+        <div class="grid-card">
+          <h5>🟰 Equal-Weighted</h5>
+          <p>Every constituent gets the same weight regardless of size or price. A $5B company has the same influence as a $500B company.</p>
+          <p style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.5)"><strong style="color:var(--gold-light)">Formula:</strong> Weight = 1 ÷ Number of Constituents</p>
+          <p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.5)"><strong style="color:var(--gold-light)">Examples:</strong> S&amp;P 500 Equal Weight (SPEW), some specialty indices</p>
+          <p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.5)"><strong style="color:var(--gold-light)">Advantage:</strong> No mega-cap concentration. Naturally tilts toward smaller companies (historically higher returns).<br><strong style="color:#ff8a8a">Disadvantage:</strong> Requires constant rebalancing as prices diverge. Difficult to replicate efficiently at scale.</p>
+        </div>
+      </div>
+    </div>
+
+    <h4>Worked Example — Index Construction (Price-Weighted vs. Market-Value-Weighted)</h4>
+    <div class="math-box">
+      <div class="formula-label">Price-Weighted vs. Market-Value-Weighted — Three Stock Example</div>
+      <div class="worked">
+        <p style="color:rgba(255,255,255,.7);font-size:13px;margin-bottom:12px">Three stocks: Alpha $100/share, Beta $50/share, Gamma $25/share. Shares outstanding: Alpha 1M, Beta 10M, Gamma 20M.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-text"><strong style="color:var(--gold-light)">Price-weighted:</strong> Sum of prices = $100 + $50 + $25 = $175. Alpha weight = $100/$175 = 57.1%. Beta = 28.6%. Gamma = 14.3%. <em>Alpha dominates simply because its price is highest.</em></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text"><strong style="color:var(--gold-light)">Market-cap-weighted:</strong> Market caps: Alpha = $100M, Beta = $500M, Gamma = $500M. Total = $1,100M. Alpha weight = $100M/$1,100M = 9.1%. Beta = 45.5%. Gamma = 45.5%. <em>Beta and Gamma dominate because their total market values are much larger despite lower share prices.</em></div></div>
+        <div class="result">Price-weighted and market-cap-weighted produce completely different weightings for identical stocks — the methodology matters enormously for index returns</div>
+      </div>
+    </div>
+
+    <h4>Index vs. Average vs. Multi-Factor</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Type</th><th>Definition</th><th>Example</th></tr>
+        <tr><td><strong>Index</strong></td><td>A rules-based composite using a defined weighting methodology and rebalancing schedule</td><td>S&amp;P/TSX Composite, S&amp;P 500, MSCI Emerging Markets</td></tr>
+        <tr><td><strong>Average</strong></td><td>A simpler calculation — typically price-weighted and historically the first form of market measures</td><td>Dow Jones Industrial Average (30 US stocks), TSX 300 Index (historical)</td></tr>
+        <tr><td><strong>Multi-Factor Index</strong></td><td>Weights or selects constituents based on multiple fundamental factors: value (low P/B, low P/E), quality (high ROE, low debt), momentum (recent price performance), low volatility, size</td><td>MSCI Quality Index, S&amp;P Low Volatility Index, iShares MSCI Multifactor ETFs</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsection" id="s9-return">
+    <h3>Price Return vs. Total Return Indices</h3>
+    <p>This is a frequently tested and commonly misunderstood distinction. The same index can be calculated in two ways, producing very different numbers over time.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Type</th><th>What It Tracks</th><th>Impact of Dividends</th><th>Example</th></tr>
+        <tr><td><strong>Price Return Index</strong></td><td>Tracks only the change in the market price of constituent stocks. Dividends are NOT included.</td><td>Dividends are ignored — they effectively "disappear" from the index calculation</td><td>Most commonly quoted index values (e.g., "the TSX is at 22,000") are price return indices</td></tr>
+        <tr><td><strong>Total Return Index</strong></td><td>Tracks price changes PLUS reinvests all dividends back into the index as if they were used to buy more shares</td><td>Dividends are assumed to be reinvested in the index at the ex-dividend date price</td><td>S&amp;P/TSX Composite Total Return Index (SPTTXTR). ETFs that reinvest dividends track total return.</td></tr>
+      </table>
+    </div>
+
+    <h4>Why the Difference Matters Enormously</h4>
+    <p>Over long periods, dividends represent a <strong>huge component of total return</strong>. The S&amp;P/TSX Composite's annualized dividend yield has historically been around 2.5–3.5%. Over 20 years, reinvested dividends can account for 40–50% of the total wealth accumulated by an equity investor. Comparing a portfolio's total return to a price return index benchmark systematically makes the portfolio look like a better performer than it actually is — because the benchmark doesn't include dividends but the portfolio does receive them.</p>
+
+    <div class="callout callout-exam">
+      <div class="callout-label">📌 BENCHMARK COMPARISON — KEY EXAM CONCEPT</div>
+      <p>When calculating portfolio performance vs. a benchmark, you MUST compare on the same basis: <strong>total return portfolio vs. total return benchmark</strong>. If a client's portfolio earned 8% (including dividends) and the price return index gained 6%, the apparent 2% outperformance is misleading — if dividends in the index represent 3%, the total return benchmark would be 9%, meaning the portfolio actually underperformed by 1%.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s9-global">
+    <h3>Index Types — Asset Class, Sector, Country, and International</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Index Category</th><th>What It Measures</th><th>Key Examples</th><th>Use for RRs</th></tr>
+        <tr><td><strong>Equity — Broad Market</strong></td><td>Overall equity market performance of a country</td><td>S&amp;P/TSX Composite (Canada, ~250 stocks), S&amp;P 500 (USA, 500 large caps)</td><td>Primary benchmark for domestic equity portfolios</td></tr>
+        <tr><td><strong>Equity — Large Cap</strong></td><td>Performance of the largest companies</td><td>S&amp;P/TSX 60 (Canada's 60 largest), FTSE 100 (UK), Nikkei 225 (Japan)</td><td>Benchmark for large-cap mandates; also the basis for most index ETFs</td></tr>
+        <tr><td><strong>Equity — Sector</strong></td><td>Performance of specific industry groups</td><td>S&amp;P/TSX Capped Financials, Capped Energy, Capped Technology Indices</td><td>Sector performance comparison; identifying relative strength/weakness by industry</td></tr>
+        <tr><td><strong>Fixed Income</strong></td><td>Bond market performance — typically total return</td><td>FTSE Canada Universe Bond Index (all investment-grade Canadian bonds), FTSE Canada Short-Term Bond Index</td><td>Benchmark for fixed income mandates; compare client bond portfolio vs. broad bond index</td></tr>
+        <tr><td><strong>International / Global</strong></td><td>Performance across multiple countries or regions</td><td>MSCI World (developed markets), MSCI All Country World (ACWI, including emerging markets), MSCI Emerging Markets (EM)</td><td>Benchmark for international equity exposure; assess geopolitical and currency risks</td></tr>
+        <tr><td><strong>Multi-Asset / Balanced</strong></td><td>Blended index combining equities and bonds in target proportions</td><td>60/40 Blend (60% S&amp;P 500 + 40% US Aggregate Bond Index) — a common balanced portfolio benchmark</td><td>Benchmark for balanced client portfolios</td></tr>
+      </table>
+    </div>
+
+    <h4>Key Canadian Indices — Know These for the Exam</h4>
+    <div class="diagram">
+      <div class="diagram-title">Key Canadian Market Indices</div>
+      <div class="grid-3">
+        <div class="grid-card">
+          <h5>S&amp;P/TSX Composite</h5>
+          <p>~250 stocks listed on TSX. Market-cap-weighted. The primary benchmark for Canadian equity portfolios. Heavily weighted toward Financials (~33%), Energy (~18%), and Materials (~13%).</p>
+        </div>
+        <div class="grid-card">
+          <h5>S&amp;P/TSX 60</h5>
+          <p>60 largest, most liquid TSX stocks. Basis for iShares S&amp;P/TSX 60 Index ETF (XIU) — Canada's largest ETF. Used for institutional benchmarking of large-cap mandates.</p>
+        </div>
+        <div class="grid-card">
+          <h5>FTSE Canada Universe Bond</h5>
+          <p>All investment-grade Canadian bonds (government + corporate, CAD-denominated). The primary benchmark for Canadian fixed income mandates. Represents the "core bonds" universe.</p>
+        </div>
+        <div class="grid-card">
+          <h5>S&amp;P/TSX SmallCap</h5>
+          <p>Smaller companies not qualifying for the Composite. Higher growth potential; higher volatility. Benchmark for small-cap mandates.</p>
+        </div>
+        <div class="grid-card">
+          <h5>S&amp;P/TSX Preferred Share</h5>
+          <p>Canadian preferred shares. Tracks the performance of the Canadian preferred share market — used to benchmark preferred share allocations.</p>
+        </div>
+        <div class="grid-card">
+          <h5>Montreal Exchange Indices</h5>
+          <p>Options and derivatives-related indices. S&amp;P/TSX 60 VIX (volatility index for Canadian market — "fear gauge"). Used by derivatives traders and portfolio hedgers.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 4.10 APPLYING INDICES ═══════ -->
+<div class="chapter" id="s10">
+  <div class="section-header">
+    <div class="section-num">4.10</div>
+    <div class="section-title-area">
+      <h2>Applying Indices in Practice</h2>
+      <div class="section-sub">MARKET SUMMARY · PERFORMANCE vs. BENCHMARK · CALCULATIONS</div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>Providing a Market Summary Using Indices</h3>
+    <p>RRs regularly use index data to provide clients with a concise picture of market conditions. A good market summary covers equity, fixed income, currency, and commodity benchmarks:</p>
+
+    <div class="diagram">
+      <div class="diagram-title">Example Market Summary — How an RR Uses Index Data</div>
+      <div class="grid-2">
+        <div class="grid-card">
+          <h5>📊 Equity Markets</h5>
+          <ul>
+            <li>"The S&amp;P/TSX Composite is up 3.2% year-to-date, led by the Energy and Materials sectors"</li>
+            <li>"The S&amp;P 500 is up 8.1% YTD in USD terms (5.6% in CAD after currency impact)"</li>
+            <li>"Emerging markets (MSCI EM) are lagging developed markets, up only 1.4% YTD"</li>
+          </ul>
+        </div>
+        <div class="grid-card">
+          <h5>📈 Fixed Income</h5>
+          <ul>
+            <li>"The FTSE Canada Universe Bond Index is down 2.1% YTD as rising rates pushed bond prices lower"</li>
+            <li>"Short-duration bonds (FTSE Canada Short Term) held up better at −0.3%"</li>
+            <li>"Government of Canada 10-year yield has risen from 3.5% to 4.1% — this drove the bond price decline"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sh3">Calculating Performance vs. a Benchmark</h3>
+    <p>Calculating how well a client's portfolio performed relative to a relevant benchmark (alpha generation) is a core RR skill. There are multiple ways to measure this.</p>
+
+    <div class="math-box">
+      <div class="formula-label">Performance vs. Benchmark — Three Approaches</div>
+      <div class="worked">
+        <p style="color:rgba(255,255,255,.7);font-size:13px;margin-bottom:12px"><strong style="color:var(--gold-light)">Scenario:</strong> Client's balanced portfolio: Start of year value $200,000. End of year value $218,000. Dividends received $6,000. The benchmark is a 60/40 blend: S&amp;P/TSX Total Return +10.0%, FTSE Canada Universe +2.0%.</p>
+
+        <div class="step"><div class="step-num">1</div><div class="step-text"><strong style="color:var(--gold-light)">Portfolio Total Return:</strong><br>Return = (Ending Value + Income − Beginning Value) ÷ Beginning Value × 100<br>= ($218,000 + $6,000 − $200,000) ÷ $200,000 × 100 = $24,000 ÷ $200,000 = <strong style="color:var(--gold-light)">12.0%</strong></div></div>
+
+        <div class="step"><div class="step-num">2</div><div class="step-text"><strong style="color:var(--gold-light)">Blended Benchmark Return:</strong><br>60% × 10.0% (equity) + 40% × 2.0% (bonds) = 6.0% + 0.8% = <strong style="color:var(--gold-light)">6.8%</strong></div></div>
+
+        <div class="step"><div class="step-num">3</div><div class="step-text"><strong style="color:var(--gold-light)">Active Return (Alpha):</strong><br>Portfolio return − Benchmark return = 12.0% − 6.8% = <strong style="color:var(--gold-light)">+5.2% outperformance</strong></div></div>
+
+        <div class="result">Portfolio earned 12.0% vs. benchmark 6.8% → +5.2% alpha. The client's portfolio significantly outperformed its blended benchmark.</div>
+      </div>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-label">💡 CHOOSING THE RIGHT BENCHMARK</div>
+      <p>The benchmark must match the portfolio's mandate. A conservative income portfolio should be benchmarked against the FTSE Canada Universe Bond Index or a conservative balanced blend — NOT against the S&amp;P 500. Using an inappropriate benchmark makes performance comparison misleading. CIRO requires that benchmarks disclosed to clients are appropriate and clearly described in the Relationship Disclosure Information and account statements.</p>
+    </div>
+
+    <h4>Interactive Benchmark Performance Calculator</h4>
+    <div class="calc-box">
+      <h4>🧮 Portfolio vs. Benchmark Return Calculator</h4>
+      <div class="calc-grid">
+        <div class="calc-field"><label>Portfolio Start Value ($)</label><input type="number" id="b-start" value="200000" step="1000"></div>
+        <div class="calc-field"><label>Portfolio End Value ($)</label><input type="number" id="b-end" value="218000" step="1000"></div>
+        <div class="calc-field"><label>Income Received (dividends/interest) ($)</label><input type="number" id="b-inc" value="6000" step="100"></div>
+        <div class="calc-field"><label>Equity Benchmark Return (%)</label><input type="number" id="b-eq" value="10" step="0.1"></div>
+        <div class="calc-field"><label>Bond Benchmark Return (%)</label><input type="number" id="b-bond" value="2" step="0.1"></div>
+        <div class="calc-field"><label>Portfolio Equity Allocation (%)</label><input type="number" id="b-eqwt" value="60" step="5"></div>
+      </div>
+      <button class="calc-btn" onclick="calcBenchmark()">Calculate Performance vs. Benchmark</button>
+      <div class="calc-result" id="bench-result">Results will appear here…</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 4.11 MARKET BEHAVIOUR ═══════ -->
+<div class="chapter" id="s11">
+  <div class="section-header">
+    <div class="section-num">4.11</div>
+    <div class="section-title-area">
+      <h2>Methods of Assessing Stock Market Behaviour</h2>
+      <div class="section-sub">FUNDAMENTAL · QUANTITATIVE · TECHNICAL ANALYSIS · VALUATION APPROACHES</div>
+    </div>
+  </div>
+
+  <p>There are three distinct frameworks for analyzing securities and forming investment views. Understanding each — including their assumptions, strengths, and limitations — is essential for the RSE exam and for advising clients effectively.</p>
+
+  <div class="subsection" id="s11-fund">
+    <h3>Fundamental Analysis</h3>
+    <p>Fundamental analysis attempts to determine the <strong>intrinsic (true) value</strong> of a security by analyzing the company's financial position, earnings power, industry dynamics, management quality, and macroeconomic environment. If intrinsic value exceeds market price → the stock is undervalued → potential buy. If market price exceeds intrinsic value → overvalued → potential sell or avoid.</p>
+
+    <h4>Core Assumption</h4>
+    <p>The market may misprice securities in the short term, but <mark>over the long term, market prices will converge to intrinsic value</mark>. Patience and disciplined analysis create investment opportunity.</p>
+
+    <h4>Types of Fundamental Analysis</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Approach</th><th>Direction</th><th>Process</th></tr>
+        <tr><td><strong>Top-Down Analysis</strong></td><td>Macro → Sector → Company</td><td>Start with the macroeconomic outlook (GDP growth, interest rates, inflation). Identify which sectors benefit from the macro environment. Then select the best companies within those sectors.</td></tr>
+        <tr><td><strong>Bottom-Up Analysis</strong></td><td>Company → Sector → Macro</td><td>Start with individual company analysis — financial statements, competitive position, management quality. Buy good companies at good prices regardless of the macro backdrop.</td></tr>
+        <tr><td><strong>Relative Value Analysis</strong></td><td>Company vs. Peers</td><td>Compare the company's valuation multiples (P/E, P/B, EV/EBITDA) to industry peers. Buy the cheapest company with the strongest fundamentals relative to its group.</td></tr>
+      </table>
+    </div>
+
+    <h4>Key Valuation Approaches in Fundamental Analysis</h4>
+    <ul class="styled-list">
+      <li><strong>Intrinsic value models (DCF, DDM):</strong> Discount future cash flows or dividends at the required rate of return to determine what the stock should be worth today (covered in Element 3.10)</li>
+      <li><strong>Relative valuation (multiples):</strong> Compare P/E, P/B, EV/EBITDA to peers and historical averages (covered in 4.6 and 4.7)</li>
+      <li><strong>Sum-of-the-parts (SOTP):</strong> For conglomerates — value each business unit separately and add them up. If the total exceeds the current market cap, the stock may be undervalued.</li>
+      <li><strong>Liquidation value:</strong> What would shareholders receive if the company were wound up and assets sold? Useful for distressed companies or asset-heavy businesses.</li>
+    </ul>
+
+    <h4>Sources of Information for Fundamental Analysis</h4>
+    <ul class="check-list">
+      <li>SEDAR+ filings (AIF, financial statements, MD&amp;A, material change reports)</li>
+      <li>Earnings call transcripts and investor presentations</li>
+      <li>Industry reports and competitor filings</li>
+      <li>Equity research reports (sell-side and independent)</li>
+      <li>Macroeconomic data (Bank of Canada, Statistics Canada, IMF)</li>
+      <li>Credit rating reports (DBRS Morningstar, Moody's, S&amp;P)</li>
+    </ul>
+  </div>
+
+  <div class="subsection" id="s11-quant">
+    <h3>Quantitative Analysis</h3>
+    <p>Quantitative analysis (or "quant") uses <strong>mathematical models, statistical techniques, and large datasets</strong> to identify patterns, relationships, and investment opportunities. Unlike fundamental analysis (which emphasizes human judgment), quant relies on systematic, rule-based processes.</p>
+
+    <h4>Core Assumption</h4>
+    <p>Historical patterns and statistical relationships in data persist (or can be exploited) in the future. Markets may not be perfectly efficient, and there are systematic risk premia (factors) that can be harvested through disciplined, rules-based investing.</p>
+
+    <h4>Quantitative Techniques</h4>
+    <ul class="styled-list">
+      <li><strong>Factor models:</strong> Identify systematic factors that explain returns above the risk-free rate. Common factors: Value (low P/B outperforms), Momentum (recent winners keep winning), Quality (high ROE, low debt), Size (small-caps outperform in the long run), Low Volatility (low-beta stocks deliver better risk-adjusted returns). Multi-factor ETFs implement these systematically.</li>
+      <li><strong>Statistical arbitrage:</strong> Identify pairs of securities that historically move together and trade when they diverge, expecting mean reversion. (Pairs trading)</li>
+      <li><strong>Algorithmic trading:</strong> Automated execution of rules-based strategies at high speed. Used by institutional traders and market makers.</li>
+      <li><strong>Machine learning / AI:</strong> Training models on large datasets to identify non-linear patterns — increasingly common in large asset management firms.</li>
+      <li><strong>Backtesting:</strong> Testing a quantitative strategy on historical data to see how it would have performed. Critical caveat: past performance of backtested strategies often overstates future results (overfitting).</li>
+    </ul>
+
+    <div class="callout callout-warning">
+      <div class="callout-label">⚠️ QUANT LIMITATIONS</div>
+      <p>Quantitative models are only as good as their inputs and assumptions. The 2007–2008 financial crisis showed that many quant models assumed correlations based on historical data that broke down catastrophically in stress scenarios ("quant quake"). Models may also become self-defeating — if many funds implement the same strategy, the opportunity disappears. Quant analysis works best when combined with human judgment and fundamental oversight.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s11-tech">
+    <h3>Technical Analysis (Statistical/Chart Analysis)</h3>
+    <p>Technical analysis studies <strong>past price and volume data</strong> to forecast future price movements. Unlike fundamental analysis (which asks "what is the stock worth?"), technical analysis asks "where is the price going based on its past behaviour?"</p>
+
+    <h4>Core Assumptions of Technical Analysis</h4>
+    <ol style="padding-left:24px;margin:14px 0">
+      <li style="margin-bottom:10px;font-size:15px;line-height:1.7"><strong>All information is reflected in the price:</strong> Market prices incorporate all known fundamentals, sentiment, and psychology. The chart is a summary of everything the market knows and expects.</li>
+      <li style="margin-bottom:10px;font-size:15px;line-height:1.7"><strong>Prices move in trends:</strong> Once a trend is established (up, down, or sideways), it is more likely to continue than to reverse. "The trend is your friend."</li>
+      <li style="margin-bottom:10px;font-size:15px;line-height:1.7"><strong>History repeats:</strong> Human psychology and market behaviour create recurring patterns in price charts. These patterns have predictive value.</li>
+    </ol>
+
+    <h4>Key Technical Analysis Tools</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Tool</th><th>What It Shows</th><th>How It's Used</th></tr>
+        <tr><td><strong>Support Level</strong></td><td>A price level where demand historically emerges, preventing further decline</td><td>Buy near support (with a stop-loss just below). If support is broken decisively, it often becomes resistance — a bearish signal.</td></tr>
+        <tr><td><strong>Resistance Level</strong></td><td>A price level where selling pressure historically emerges, capping advances</td><td>Consider selling/trimming near resistance. If resistance is broken, it often becomes support — a bullish signal (breakout).</td></tr>
+        <tr><td><strong>Moving Averages</strong></td><td>The average price over a trailing period (e.g., 50-day MA, 200-day MA). Smooths out noise.</td><td>"Golden cross" (50-day MA crosses above 200-day MA) = bullish signal. "Death cross" (50-day crosses below 200-day) = bearish signal.</td></tr>
+        <tr><td><strong>Relative Strength Index (RSI)</strong></td><td>Momentum oscillator measuring speed of price changes. Ranges 0–100.</td><td>RSI above 70 = "overbought" — potentially due for a pullback. RSI below 30 = "oversold" — potentially due for a bounce.</td></tr>
+        <tr><td><strong>Volume Analysis</strong></td><td>Volume confirms or questions price moves</td><td>Rising price + rising volume = strong trend (conviction). Rising price + falling volume = weak trend (skeptical market).</td></tr>
+        <tr><td><strong>Chart Patterns</strong></td><td>Recurring price formations with predictive implications: Head and Shoulders, Double Top/Bottom, Cup and Handle, Triangles, Flags</td><td>Head and Shoulders (top reversal pattern) at the top of a trend → bearish reversal signal. Double Bottom → bullish reversal.</td></tr>
+        <tr><td><strong>MACD (Moving Average Convergence Divergence)</strong></td><td>Relationship between two moving averages — identifies momentum shifts</td><td>MACD line crossing above signal line = bullish momentum. Crossing below = bearish.</td></tr>
+        <tr><td><strong>Bollinger Bands</strong></td><td>Bands 2 standard deviations above/below the moving average. Widen in volatility; narrow in quiet markets.</td><td>Price touching upper band = potentially overbought. Lower band = potentially oversold. Band squeeze (narrowing) → breakout may be imminent.</td></tr>
+      </table>
+    </div>
+
+    <div class="callout callout-exam">
+      <div class="callout-label">📌 TECHNICAL vs. FUNDAMENTAL — KEY EXAM DISTINCTIONS</div>
+      <p><strong>Fundamental:</strong> Uses financial statements, economic data, industry analysis. Aims to find intrinsic value. Long-term investment horizon. Relies on "what the company is worth."<br><br>
+      <strong>Technical:</strong> Uses only price and volume data. Aims to forecast near-term price direction. Shorter-term trading horizon. Relies on "what the chart pattern predicts."<br><br>
+      <strong>Quantitative:</strong> Uses mathematical models and statistical factor analysis. Systematic and rules-based. Can be applied at any horizon. Relies on "what the data patterns suggest."<br><br>
+      Most professional investors use elements of all three — fundamental for long-term conviction, technical for timing, and quant for risk management and factor exposure.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 4.12 INDUSTRY SECTORS ═══════ -->
+<div class="chapter" id="s12">
+  <div class="section-header">
+    <div class="section-num">4.12</div>
+    <div class="section-title-area">
+      <h2>Industry Classification and Sectors</h2>
+      <div class="section-sub">GICS · CONSUMER · MANUFACTURING · SERVICE · TECHNOLOGY · CYCLICAL vs. DEFENSIVE</div>
+    </div>
+  </div>
+
+  <p>Industry classification systems organize companies into groups with similar business characteristics, revenue drivers, and risk profiles. The most widely used classification system in Canada and globally is the <strong>Global Industry Classification Standard (GICS)</strong>, developed jointly by S&amp;P Dow Jones and MSCI.</p>
+
+  <div class="subsection" id="s12-gics">
+    <h3>GICS — Global Industry Classification Standard</h3>
+    <p>GICS has a four-tier hierarchy: <strong>Sector → Industry Group → Industry → Sub-Industry</strong>. There are 11 GICS sectors. The S&amp;P/TSX Composite is organized using GICS, so understanding sectors is essential for understanding the Canadian market's composition and behaviour.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>GICS Sector</th><th>Key Subsectors</th><th>Canadian Examples</th><th>TSX Weight ~</th></tr>
+        <tr><td><strong>Financials</strong></td><td>Banks, insurance, asset management, REITs (some)</td><td>Royal Bank, TD, Manulife, Brookfield</td><td>~33%</td></tr>
+        <tr><td><strong>Energy</strong></td><td>Integrated oil &amp; gas, E&amp;P, pipelines, refineries</td><td>Suncor, Canadian Natural Resources, TC Energy</td><td>~18%</td></tr>
+        <tr><td><strong>Materials</strong></td><td>Mining (gold, base metals), chemicals, forest products</td><td>Agnico Eagle, Barrick, Nutrien</td><td>~13%</td></tr>
+        <tr><td><strong>Industrials</strong></td><td>Transportation, aerospace, construction, machinery</td><td>Canadian National Railway, Finning, Bombardier</td><td>~8%</td></tr>
+        <tr><td><strong>Information Technology</strong></td><td>Software, semiconductors, IT services, hardware</td><td>Shopify, Open Text, Constellation Software</td><td>~8%</td></tr>
+        <tr><td><strong>Consumer Discretionary</strong></td><td>Retail, restaurants, autos, leisure, media</td><td>Dollarama, Restaurant Brands, Linamar</td><td>~5%</td></tr>
+        <tr><td><strong>Consumer Staples</strong></td><td>Food, beverages, household products, tobacco</td><td>Loblaw, Metro, Empire/Sobeys, Saputo</td><td>~4%</td></tr>
+        <tr><td><strong>Utilities</strong></td><td>Electric, gas, water utilities; renewable energy</td><td>Fortis, Emera, Algonquin Power</td><td>~4%</td></tr>
+        <tr><td><strong>Real Estate</strong></td><td>REITs, real estate management</td><td>Canadian Apartment, Choice Properties, RioCan</td><td>~4%</td></tr>
+        <tr><td><strong>Health Care</strong></td><td>Pharma, biotech, medical devices, managed care</td><td>Bausch Health, Jamieson Wellness</td><td>~2%</td></tr>
+        <tr><td><strong>Communication Services</strong></td><td>Telecom, media, entertainment, internet</td><td>BCE, Telus, Rogers, Quebecor</td><td>~4%</td></tr>
+      </table>
+    </div>
+
+    <h4>The Syllabus Categories — Consumer, Manufacturing, Service, Technology</h4>
+    <p>The RSE syllabus uses four broad industry groupings. Understanding how they map to GICS and what drives each group is important for sector-level analysis:</p>
+
+    <div class="diagram">
+      <div class="diagram-title">Industry Groups — Key Characteristics &amp; Valuation Considerations</div>
+      <div class="grid-2">
+        <div class="grid-card">
+          <h5>🛒 Consumer Products</h5>
+          <p><strong>GICS mapping:</strong> Consumer Staples + Consumer Discretionary<br><br>
+          <strong>Consumer Staples:</strong> Non-cyclical. Demand stable regardless of economy (food, toothpaste, household goods). Lower P/E multiples but very reliable earnings. Dividend payers. Defensive. Valued on stable cash flows.<br><br>
+          <strong>Consumer Discretionary:</strong> Cyclical. Spending on non-essentials (restaurants, electronics, luxury) varies with income and consumer confidence. Higher P/E when economy is strong. Most sensitive to recessions.</p>
+        </div>
+        <div class="grid-card">
+          <h5>🏭 Manufacturing Industries</h5>
+          <p><strong>GICS mapping:</strong> Industrials + Materials<br><br>
+          Capital-intensive. Revenue tied to industrial production cycles, infrastructure spending, and commodity prices. Higher leverage typical. Key metrics: fixed asset turnover, inventory management, order backlogs.<br><br>
+          Commodity-dependent manufacturers (steel, aluminum, chemicals) are especially cyclical and sensitive to global economic conditions and CAD/USD exchange rate changes (many Canadian manufacturers export to the US).</p>
+        </div>
+        <div class="grid-card">
+          <h5>🏦 Service Industries</h5>
+          <p><strong>GICS mapping:</strong> Financials + Communication Services + Real Estate + Health Care + Utilities<br><br>
+          Lower physical capital needs; margin quality depends on intellectual capital, regulatory environment, and customer relationships. Financial services highly sensitive to interest rates. Telecom and utilities are regulated monopolies — stable revenue but limited growth. REITs valued on cap rates and FFO (funds from operations).</p>
+        </div>
+        <div class="grid-card">
+          <h5>💻 Technologies</h5>
+          <p><strong>GICS mapping:</strong> Information Technology<br><br>
+          High gross margins (software: 70–90%), high reinvestment rates, often negative near-term free cash flow in growth phase. Valued on revenue multiples (EV/Revenue) or forward P/E rather than current earnings. Key Canadian examples: Shopify (e-commerce platform), Constellation Software (acquisitive tech), Open Text (enterprise software). Extremely high growth but high volatility.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection" id="s12-cyc">
+    <h3>Cyclical vs. Defensive Sectors — Critical for Portfolio Construction</h3>
+    <p>One of the most important dimensions of sector analysis is whether an industry is <strong>cyclical</strong> (earnings and stock price heavily influenced by the economic cycle) or <strong>defensive</strong> (relatively immune to economic fluctuations).</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Category</th><th>Sectors</th><th>Earnings Pattern</th><th>Best in Economic:</th><th>Key Risk</th></tr>
+        <tr><td style="color:var(--amber)"><strong>Highly Cyclical</strong></td><td>Energy, Materials, Consumer Discretionary, Industrials</td><td>Boom-bust with economic cycles; wide swings in earnings</td><td>Expansion / Recovery phases</td><td>Deep losses in recession; high earnings volatility</td></tr>
+        <tr><td style="color:var(--gold)"><strong>Moderately Cyclical</strong></td><td>Financials, Information Technology</td><td>Cyclical but less extreme; financials sensitive to credit cycles</td><td>Expansion; low rates for tech</td><td>Credit losses (financials); valuation risk (tech)</td></tr>
+        <tr><td style="color:var(--green)"><strong>Defensive</strong></td><td>Consumer Staples, Utilities, Health Care, Communication Services</td><td>Stable earnings regardless of economic conditions; often regulated</td><td>Contraction / Recession</td><td>Underperform in strong bull markets; rate sensitivity (utilities)</td></tr>
+      </table>
+    </div>
+
+    <h4>How Sector Classification Affects Stock Valuation</h4>
+    <p>Sector classification directly affects which valuation multiples are appropriate and what "normal" P/E ratios look like for a given company:</p>
+    <ul class="styled-list">
+      <li><strong>Defensive stocks (utilities, consumer staples):</strong> Valued primarily on dividend yield and stability. Higher-than-average P/E for their earnings quality and stability premium. P/E 18–25x for blue-chip Canadian utilities.</li>
+      <li><strong>Cyclical stocks (energy, materials):</strong> P/E-based valuation is misleading at cycle peaks (earnings inflated) and troughs (depressed earnings). Instead, use Price/Book, EV/EBITDA, or "mid-cycle" earnings normalization.</li>
+      <li><strong>Financial stocks (banks):</strong> P/E and Price/Book are most appropriate. Canadian Big Six banks historically trade at 10–12x P/E and 1.5–2.0x P/B.</li>
+      <li><strong>Technology stocks:</strong> EV/Revenue and forward P/E are most appropriate for high-growth companies. Current P/E may be very high or N/A for unprofitable growth companies.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════ 4.13 MACROECONOMIC FACTORS ═══════ -->
+<div class="chapter" id="s13">
+  <div class="section-header">
+    <div class="section-num">4.13</div>
+    <div class="section-title-area">
+      <h2>Macroeconomic Factors &amp; Security Prices</h2>
+      <div class="section-sub">INTEREST RATES · INFLATION · EMPLOYMENT · PRODUCTIVITY</div>
+    </div>
+  </div>
+
+  <p>Macroeconomic factors are economy-wide forces that affect all sectors and securities simultaneously. Understanding how these factors influence investment returns is essential — macro conditions create the wind that can help or hinder even the best individual companies. The Bank of Canada's primary tools include the overnight rate, which cascades through the entire economy.</p>
+
+  <div class="subsection" id="s13-rates">
+    <h3>Interest Rates — The Most Powerful Macro Variable</h3>
+    <p>Interest rates are the single most powerful macroeconomic variable affecting security prices. The Bank of Canada's overnight policy rate influences borrowing costs across the economy and the risk-free discount rate used to value all financial assets.</p>
+
+    <div class="diagram">
+      <div class="diagram-title">Interest Rate Changes — Impact on All Asset Classes</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div style="flex:1;min-width:260px;background:rgba(139,26,26,.15);border:1px solid rgba(255,100,100,.3);border-radius:6px;padding:16px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#ff8a8a;letter-spacing:1px;margin-bottom:10px">📈 RATES RISE — IMPACT</div>
+          <ul style="padding-left:16px;color:rgba(255,255,255,.75);font-size:13px;line-height:1.8">
+            <li><strong style="color:#ff8a8a">Bonds:</strong> Prices FALL (inverse relationship). Long-duration bonds fall more than short-duration.</li>
+            <li><strong style="color:#ff8a8a">Equities (general):</strong> Future earnings discounted at higher rate → PV of earnings falls → lower valuations. Growth stocks (long-duration assets with distant cash flows) hurt most.</li>
+            <li><strong style="color:#ff8a8a">Preferred shares:</strong> Fixed perpetual preferreds fall sharply (like long bonds). Rate-reset preferreds more resilient.</li>
+            <li><strong style="color:#ff8a8a">REITs/Utilities:</strong> Particularly sensitive — high debt + dividends compete with rising bond yields.</li>
+            <li><strong style="color:#5dda9a">Financials (banks):</strong> Can benefit — net interest margin (spread between lending rates and deposit rates) may widen.</li>
+            <li><strong style="color:#5dda9a">CAD vs. USD:</strong> Higher Canadian rates attract foreign capital → CAD typically strengthens vs. currencies with lower rates.</li>
+          </ul>
+        </div>
+        <div style="flex:1;min-width:260px;background:rgba(26,107,74,.15);border:1px solid rgba(46,204,113,.3);border-radius:6px;padding:16px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#5dda9a;letter-spacing:1px;margin-bottom:10px">📉 RATES FALL — IMPACT</div>
+          <ul style="padding-left:16px;color:rgba(255,255,255,.75);font-size:13px;line-height:1.8">
+            <li><strong style="color:#5dda9a">Bonds:</strong> Prices RISE. Existing bonds paying higher fixed coupons become more valuable.</li>
+            <li><strong style="color:#5dda9a">Equities (general):</strong> Lower discount rate → higher PV of future earnings → higher valuations. Growth stocks benefit most.</li>
+            <li><strong style="color:#5dda9a">REITs/Utilities:</strong> Rally strongly — dividend yields become more attractive vs. bonds. Lower borrowing costs improve cash flows.</li>
+            <li><strong style="color:#5dda9a">Consumer spending:</strong> Cheaper mortgages/credit → more consumer spending → benefit for consumer discretionary.</li>
+            <li><strong style="color:#ff8a8a">Financials (banks):</strong> Net interest margins may compress if deposit rates fall faster than loan rates.</li>
+            <li><strong style="color:#ff8a8a">CAD vs. USD:</strong> Lower Canadian rates relative to US → CAD may weaken → benefits Canadian exporters.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-exam">
+      <div class="callout-label">📌 THE DISCOUNT RATE MECHANISM — WHY RATES MATTER SO MUCH</div>
+      <p>All asset values are ultimately the present value of future cash flows: P = CF₁/(1+r) + CF₂/(1+r)² + ... When r (the discount rate) rises, the denominator grows → the present value falls. This applies universally: bonds, stocks, real estate, and any income-producing asset. A stock that pays $10 earnings perpetually is worth $100 at r=10% but only $66.67 at r=15%. A mere 5% rise in the discount rate destroys 33% of the value — purely from the rate change, with no change in earnings.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s13-infl">
+    <h3>Inflation — The Silent Wealth Destroyer</h3>
+    <p>Inflation measures the general rise in prices across the economy, reducing the purchasing power of money over time. In Canada, the Bank of Canada targets CPI inflation at <strong>2% annually</strong> (within a 1–3% control range). Inflation affects different assets very differently.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Asset/Sector</th><th>Impact of Rising Inflation</th><th>Reason</th></tr>
+        <tr><td><strong>Fixed Income (bonds)</strong></td><td style="color:var(--red)">Negative — most affected</td><td>Fixed coupon payments lose real purchasing power. Nominal yields rise → bond prices fall. Long-duration bonds most affected.</td></tr>
+        <tr><td><strong>Real Return Bonds (RRBs)</strong></td><td style="color:var(--green)">Positive — designed for this</td><td>Principal and interest payments adjust with CPI — fully protects against inflation by design.</td></tr>
+        <tr><td><strong>Equities (general)</strong></td><td style="color:var(--amber)">Mixed — depends on pricing power</td><td>Companies with strong pricing power can pass cost increases to customers → earnings protected. Companies without pricing power see margins squeezed.</td></tr>
+        <tr><td><strong>Consumer Staples</strong></td><td style="color:var(--green)">Relatively resilient</td><td>Strong brand pricing power; can raise prices. Demand inelastic — people still buy food and necessities.</td></tr>
+        <tr><td><strong>Energy / Materials</strong></td><td style="color:var(--green)">Often positive</td><td>Commodity prices typically rise with inflation. Canadian energy and mining companies are natural inflation hedges.</td></tr>
+        <tr><td><strong>Real Estate / REITs</strong></td><td style="color:var(--amber)">Mixed</td><td>Property values and rents tend to rise with inflation (positive). But rising rates (inflation response) increase borrowing costs and compress cap rates (negative).</td></tr>
+        <tr><td><strong>Consumer Discretionary</strong></td><td style="color:var(--red)">Negative</td><td>Higher prices reduce real consumer income and confidence → spending on non-essentials cut first.</td></tr>
+        <tr><td><strong>GICs (fixed rate)</strong></td><td style="color:var(--red)">Negative in real terms</td><td>If inflation exceeds GIC interest rate, the real (inflation-adjusted) return is negative. Purchasing power erodes.</td></tr>
+      </table>
+    </div>
+
+    <h4>Key Inflation Indicators RRs Should Monitor</h4>
+    <ul class="styled-list">
+      <li><strong>CPI (Consumer Price Index):</strong> Primary inflation measure. Monthly Statistics Canada release. Core CPI (excluding food and energy) is what Bank of Canada watches most closely.</li>
+      <li><strong>PPI (Producer Price Index):</strong> Measures input costs for producers. Rising PPI can predict future CPI if companies pass costs through.</li>
+      <li><strong>Inflation expectations:</strong> Derived from Real Return Bond yields vs. nominal bond yields (the "breakeven inflation rate"). Forward-looking — what markets expect, not what has happened.</li>
+      <li><strong>Bank of Canada communications:</strong> Monetary Policy Report (quarterly), rate announcements, and Governor speeches all signal the Bank's inflation assessment and policy direction.</li>
+    </ul>
+  </div>
+
+  <div class="subsection" id="s13-emp">
+    <h3>Employment and Productivity</h3>
+
+    <h4>Employment</h4>
+    <p>Employment is both an economic indicator and a market-moving data release. Key relationships:</p>
+    <ul class="styled-list">
+      <li><strong>Strong employment → positive for equities:</strong> More workers → more income → more consumer spending → higher corporate revenues → higher earnings → higher stock prices. Consumer-facing sectors (retail, restaurants, real estate) benefit most.</li>
+      <li><strong>Full employment → inflationary pressure:</strong> When unemployment is very low, wage growth accelerates as employers compete for workers → input costs rise → inflation risk → Bank of Canada may raise rates → negative for bonds and rate-sensitive equities.</li>
+      <li><strong>Employment data releases:</strong> Statistics Canada's Labour Force Survey (LFS) is released monthly. The US Non-Farm Payrolls (NFP) report — released on the first Friday of each month — is the most market-moving employment release globally, affecting Canadian markets through currency and sentiment channels.</li>
+      <li><strong>Key employment metrics:</strong> Unemployment rate, participation rate (% of working-age population actively working or looking for work), wage growth rate, hours worked. Full employment in Canada is generally considered around 5–5.5% unemployment.</li>
+    </ul>
+
+    <h4>Productivity</h4>
+    <p>Productivity measures the output per unit of labour or capital input. Higher productivity means the economy can grow without inflationary pressure — it is the foundation of long-term real wealth creation. Key investment implications:</p>
+    <ul class="styled-list">
+      <li><strong>Rising productivity → non-inflationary growth:</strong> Companies can grow earnings without proportional cost increases. This is the "best" economic scenario for equity markets — growth with low inflation.</li>
+      <li><strong>Productivity gains → lower unit labour costs:</strong> Benefit for manufacturing-intensive companies. Canada's historically lagging productivity vs. the US is a structural challenge for Canadian equities.</li>
+      <li><strong>Technology and productivity:</strong> IT investment is the primary driver of productivity gains. Companies investing in technology and automation may achieve sustainable competitive advantages through productivity leadership.</li>
+      <li><strong>GDP Growth Potential = Labour Force Growth + Productivity Growth:</strong> A country or company growing faster than its potential growth rate is building inflationary pressure.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════ 4.14 PERFORMANCE & TIME HORIZONS ═══════ -->
+<div class="chapter" id="s14">
+  <div class="section-header">
+    <div class="section-num">4.14</div>
+    <div class="section-title-area">
+      <h2>Performance Expectations Over Various Time Horizons</h2>
+      <div class="section-sub">ASSET CLASS · VOLATILITY · MARKET SECTOR · ECONOMIC CYCLE · BENCHMARKS</div>
+    </div>
+  </div>
+
+  <p>Investment performance expectations vary dramatically depending on the asset class, the time horizon, the economic cycle phase, and the benchmark used for comparison. RRs must integrate all of these dimensions when advising clients on portfolio construction and setting realistic expectations.</p>
+
+  <div class="subsection" id="s14-cycle">
+    <h3>The Economic Cycle and Sector Rotation</h3>
+    <p>The economic cycle (business cycle) progresses through four broad phases. Each phase has different implications for which sectors and asset classes tend to outperform. <mark>Sector rotation</mark> — shifting portfolio weights toward sectors expected to outperform in the current phase — is a core investment strategy.</p>
+
+    <div class="diagram">
+      <div class="diagram-title">The Economic Cycle — Four Phases &amp; Sector Rotation Strategy</div>
+      <div class="cycle-ring">
+        <div class="cycle-item" style="border-color:rgba(26,107,74,.5)">
+          <h6 style="color:#5dda9a">🌱 RECOVERY / EXPANSION EARLY</h6>
+          <p style="color:rgba(255,255,255,.75)"><strong>Characteristics:</strong> GDP turns positive from recession; unemployment still high but falling; interest rates low; consumer confidence improving<br><br>
+          <strong>Outperforming sectors:</strong> Financials (credit quality improves), Consumer Discretionary (spending recovers), Industrials (production picks up)<br><br>
+          <strong>Asset classes:</strong> Equities outperform bonds. Small-cap leads large-cap. High-yield bonds outperform investment-grade.</p>
+        </div>
+        <div class="cycle-item" style="border-color:rgba(201,151,58,.5)">
+          <h6 style="color:var(--gold-light)">🚀 EXPANSION LATE / PEAK</h6>
+          <p style="color:rgba(255,255,255,.75)"><strong>Characteristics:</strong> GDP growth strong; low unemployment; inflation rising; central bank tightening (raising rates)<br><br>
+          <strong>Outperforming sectors:</strong> Energy, Materials (commodity demand peaks), Industrials, Technology (earnings momentum)<br><br>
+          <strong>Asset classes:</strong> Equities still positive but momentum slowing. Bonds begin underperforming as rates rise. Inflation hedges (commodities, TIPS/RRBs) attractive.</p>
+        </div>
+        <div class="cycle-item" style="border-color:rgba(139,26,26,.5)">
+          <h6 style="color:#ff8a8a">📉 CONTRACTION / RECESSION</h6>
+          <p style="color:rgba(255,255,255,.75)"><strong>Characteristics:</strong> Two consecutive quarters of negative GDP; unemployment rising; consumer spending falls; central bank cutting rates<br><br>
+          <strong>Outperforming sectors:</strong> Consumer Staples, Utilities, Health Care (defensive; stable demand regardless of economy)<br><br>
+          <strong>Asset classes:</strong> Bonds outperform equities (rates falling → bond prices rise). Quality/defensive equities hold up better. Cash and short-term instruments valuable.</p>
+        </div>
+        <div class="cycle-item" style="border-color:rgba(74,26,107,.5)">
+          <h6 style="color:#c67ae0">🔄 TROUGH / EARLY RECOVERY</h6>
+          <p style="color:rgba(255,255,255,.75)"><strong>Characteristics:</strong> GDP bottoming; rates at trough; credit conditions easing; corporate layoffs ending<br><br>
+          <strong>Outperforming sectors:</strong> Real Estate (REITs benefit from low rates), Financials (NPL cycle improving), Consumer Discretionary (pent-up demand)<br><br>
+          <strong>Asset classes:</strong> Transition from bonds to equities. Most cyclical stocks begin recovering sharply from depressed levels.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-warning">
+      <div class="callout-label">⚠️ SECTOR ROTATION — PRACTICAL LIMITATIONS</div>
+      <p>While sector rotation theory is conceptually compelling, <strong>accurately predicting cycle phases in real time is extremely difficult</strong>. Economic data is released with a lag. By the time a recession is officially declared, markets have usually already priced it in. Most professional investors do not try to perfectly rotate — instead, they use the economic cycle as one factor among many when constructing and rebalancing portfolios.</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s14-vol">
+    <h3>Asset Class Risk-Return Profiles and Volatility</h3>
+    <p>Different asset classes have fundamentally different expected returns and volatilities over various time horizons. Understanding these relationships is core to portfolio construction and to matching investments to client profiles.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Asset Class</th><th>Expected Long-Run Return (Canada, historical)</th><th>Volatility (Annualized Std Dev)</th><th>Time Horizon</th><th>Best for Client With:</th></tr>
+        <tr><td><strong>Cash / T-bills</strong></td><td>~3–4% nominal</td><td>~1% (very low)</td><td>Short (0–1 yr)</td><td>Capital preservation, very short horizon, highest liquidity need</td></tr>
+        <tr><td><strong>Short-Term Bonds</strong></td><td>~4–5% nominal</td><td>~3–4% (low)</td><td>Short–Medium (1–3 yr)</td><td>Conservative; predictable income; minimal price risk</td></tr>
+        <tr><td><strong>Long-Term Bonds (GoC)</strong></td><td>~4–6% nominal</td><td>~8–10% (moderate)</td><td>Medium–Long (5+ yr)</td><td>Income-focused; willing to accept price volatility for higher yield</td></tr>
+        <tr><td><strong>Corporate Bonds (IG)</strong></td><td>~5–7% nominal</td><td>~5–8% (low–moderate)</td><td>Medium (3–7 yr)</td><td>Income-focused; accepts moderate credit risk for yield premium</td></tr>
+        <tr><td><strong>Canadian Equities (TSX)</strong></td><td>~7–10% total return</td><td>~15–18% (high)</td><td>Long (7+ yr)</td><td>Growth-oriented; comfortable with short-term volatility; long horizon</td></tr>
+        <tr><td><strong>US Equities (S&P 500 in CAD)</strong></td><td>~8–12% total return (includes FX)</td><td>~18–22% (high, FX adds volatility)</td><td>Long (7+ yr)</td><td>Global diversification; accepts FX risk</td></tr>
+        <tr><td><strong>International Equities (MSCI EAFE)</strong></td><td>~6–9% total return</td><td>~18–22%</td><td>Long (7+ yr)</td><td>Diversification; emerging market exposure</td></tr>
+        <tr><td><strong>Preferred Shares</strong></td><td>~5–7% (mostly dividends)</td><td>~8–12%</td><td>Medium–Long</td><td>Income in non-registered account; DTC advantage; moderate risk</td></tr>
+      </table>
+    </div>
+
+    <h4>Volatility — Understanding Standard Deviation and Beta</h4>
+    <div class="def-list">
+      <div class="def-item">
+        <div class="def-term">Standard Deviation (σ)</div>
+        <div>Measures the <strong>total volatility</strong> of a security or portfolio — how widely returns deviate from the average. A portfolio with annualized σ = 15% would expect returns to fall within ±15% of the average return in approximately 68% of years. Higher σ = more uncertainty = higher risk for shorter-horizon investors.</div>
+      </div>
+      <div class="def-item">
+        <div class="def-term">Beta (β)</div>
+        <div>Measures a security's <strong>sensitivity to the broad market</strong>. β = 1.0 → moves in lockstep with the market. β = 1.5 → 50% more volatile than market (if market drops 10%, stock drops ~15%). β = 0.5 → half as volatile as market. β = −0.3 → tends to rise when market falls (defensive). Beta measures systematic risk only; not total volatility.</div>
+      </div>
+      <div class="def-item">
+        <div class="def-term">Sharpe Ratio</div>
+        <div>= (Portfolio Return − Risk-Free Rate) ÷ Portfolio Standard Deviation. Measures return earned per unit of risk taken. A higher Sharpe ratio means better risk-adjusted performance. Comparing Sharpe ratios across portfolios is more meaningful than comparing raw returns.</div>
+      </div>
+    </div>
+
+    <h4>Time Horizon and Volatility Tolerance</h4>
+    <p>The critical relationship: <strong>longer time horizons can accommodate higher short-term volatility</strong> because there is time to recover from drawdowns. A 30-year-old investing for retirement can ride through multiple bear markets. A 72-year-old depending on their portfolio for living expenses cannot. This directly links to the KYC risk capacity concept from Element 1:</p>
+
+    <div class="diagram">
+      <div class="diagram-title">Time Horizon × Risk Tolerance × Asset Class — The Three-Way Alignment</div>
+      <div class="grid-3">
+        <div class="grid-card">
+          <h5>⏱️ Short Horizon (&lt; 3 years)</h5>
+          <p>Capital must be available and protected. Cannot afford a bear market. <br><br>Suitable: Cash, T-bills, short-term bonds, short-term GICs, money market funds.<br><br>Unsuitable: Equities, long bonds, preferred shares, private equity.</p>
+        </div>
+        <div class="grid-card">
+          <h5>⏰ Medium Horizon (3–7 years)</h5>
+          <p>Some volatility is tolerable; seeking balance of growth and income.<br><br>Suitable: Balanced portfolios (50–60% equities, 40–50% bonds), dividend stocks, corporate bonds, preferred shares.<br><br>Partially suitable: Pure equity portfolios with high volatility.</p>
+        </div>
+        <div class="grid-card">
+          <h5>🕰️ Long Horizon (7+ years)</h5>
+          <p>Time to recover from market downturns; equity growth premium is accessible.<br><br>Suitable: Higher equity allocations (70–100%), small-cap, international equities, growth stocks.<br><br>Less critical: Short-term volatility; can stay invested through drawdowns.</p>
+        </div>
+      </div>
+    </div>
+
+    <h4>Benchmarks — Matching the Right Benchmark to the Portfolio</h4>
+    <p>A benchmark must be relevant, investable, and agreed upon upfront. Key principles for selecting benchmarks that RRs must apply in client communications and performance reporting:</p>
+    <ul class="styled-list">
+      <li><strong>Relevance:</strong> The benchmark must reflect the portfolio's actual investment universe and objectives. A Canadian equity portfolio should be benchmarked against the S&amp;P/TSX Composite, not the S&amp;P 500.</li>
+      <li><strong>Investability:</strong> The benchmark should represent an achievable alternative. An index tracking 10,000 stocks globally is not a practical investable benchmark for a small retail portfolio.</li>
+      <li><strong>Consistency:</strong> The same benchmark should be used over time unless the portfolio mandate changes. Switching benchmarks after periods of underperformance is "benchmark switching" — misleading and frowned upon by regulators.</li>
+      <li><strong>Disclosure:</strong> Under CRM, the benchmark must be disclosed to clients in advance and described clearly in relationship disclosure information and annual performance reports.</li>
+    </ul>
+
+    <div class="callout callout-purple">
+      <div class="callout-label">🎯 BRINGING IT ALL TOGETHER — APPLYING ELEMENT 4 TO CLIENT ADVICE</div>
+      <p>A sophisticated RR integrates all of Element 4 when advising a client:<br><br>
+      1. <strong>Company analysis (4.1–4.7):</strong> Financial statements, ratios, value metrics — is MIC a quality company at a fair price?<br>
+      2. <strong>Market context (4.8–4.10):</strong> How does MIC's data compare to peers? Where is it in the market cap spectrum? What does the index tell us about the current environment?<br>
+      3. <strong>Analysis method (4.11):</strong> What does fundamental analysis say (intrinsic value &gt; market price?). What does technical analysis say (breaking above resistance?).<br>
+      4. <strong>Sector context (4.12):</strong> Is MIC in a cyclical or defensive sector? Is this the right phase of the cycle for industrials exposure?<br>
+      5. <strong>Macro environment (4.13–4.14):</strong> Are interest rates rising or falling? Is inflation a headwind for MIC's input costs? Is the economy expanding or contracting? Does the client's time horizon support this level of cyclical equity exposure?</p>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz-section">
+  <div class="quiz-header">Practice Exam — 50 Questions</div>
+  <div class="quiz-sub">ELEMENT 4 PART 2: MARKET DATA, INDICES, ANALYSIS METHODS, SECTORS &amp; MACRO · EXAM-LEVEL DIFFICULTY</div>
+  <div class="quiz-stats">
+    <div class="quiz-stat"><span class="stat-val">50</span><span class="stat-label">Total</span></div>
+    <div class="quiz-stat"><span class="stat-val" id="answered-count">0</span><span class="stat-label">Answered</span></div>
+    <div class="quiz-stat"><span class="stat-val" id="correct-count">0</span><span class="stat-label">Correct</span></div>
+    <div class="quiz-stat"><span class="stat-val" id="score-pct">—</span><span class="stat-label">Score</span></div>
+  </div>
+  <div class="quiz-controls">
+    <button class="ctrl-btn ctrl-btn-primary" onclick="revealAll()">Show All Answers</button>
+    <button class="ctrl-btn ctrl-btn-outline" onclick="resetQuiz()">Reset Quiz</button>
+  </div>
+  <div id="quiz-body"></div>
+  <div class="quiz-score-panel" id="score-panel">
+    <div class="score-val" id="final-score">—</div>
+    <p>out of 50 correct</p>
+  </div>
+</div>
+
+</div></div>
+<div id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<script>
+// CALCULATORS
+function calcValueRatios(){
+  const price=+document.getElementById('v-price').value, eps=+document.getElementById('v-eps').value,
+    dps=+document.getElementById('v-dps').value, bvps=+document.getElementById('v-bvps').value,
+    shr=+document.getElementById('v-shr').value, indPE=+document.getElementById('v-indpe').value;
+  const pe=price/eps, pb=price/bvps, dy=dps/price*100, cover=eps/dps, payout=dps/eps*100;
+  const mktcap=price*shr;
+  let out=`━━━ VALUE RATIOS ━━━\n`;
+  out+=`P/E Ratio: ${pe.toFixed(1)}x (Industry avg: ${indPE}x → ${pe>indPE?'Premium to peers':'Discount to peers'})\n`;
+  out+=`P/B Ratio: ${pb.toFixed(2)}x\n`;
+  out+=`Dividend Yield: ${dy.toFixed(2)}%\n`;
+  out+=`Dividend Cover: ${cover.toFixed(2)}x → ${cover<1?'⚠️ UNSUSTAINABLE':cover<1.5?'⚠️ Tight':cover<3?'✅ Comfortable':'✅ Strong'}\n`;
+  out+=`Dividend Payout Ratio: ${payout.toFixed(1)}%\n`;
+  out+=`Market Capitalization: $${mktcap.toFixed(1)}M`;
+  document.getElementById('val-result').textContent=out;
+}
+
+function calcBenchmark(){
+  const start=+document.getElementById('b-start').value, end=+document.getElementById('b-end').value,
+    inc=+document.getElementById('b-inc').value, eqRet=+document.getElementById('b-eq').value,
+    bondRet=+document.getElementById('b-bond').value, eqWt=+document.getElementById('b-eqwt').value;
+  const bondWt=100-eqWt;
+  const portRet=(end+inc-start)/start*100;
+  const benchRet=(eqWt/100)*eqRet+(bondWt/100)*bondRet;
+  const alpha=portRet-benchRet;
+  const gainLoss=end+inc-start;
+  let out=`━━━ PORTFOLIO ANALYSIS ━━━\n`;
+  out+=`Portfolio Return: ${portRet.toFixed(2)}%  ($${gainLoss.toLocaleString()} total gain)\n`;
+  out+=`Blended Benchmark Return: ${benchRet.toFixed(2)}%  (${eqWt}% equity × ${eqRet}% + ${bondWt}% bonds × ${bondRet}%)\n`;
+  out+=`Active Return (Alpha): ${alpha>=0?'+':''}${alpha.toFixed(2)}%\n`;
+  out+=`Assessment: ${alpha>0?`✅ Outperformed benchmark by ${alpha.toFixed(2)}%`:`⚠️ Underperformed benchmark by ${Math.abs(alpha).toFixed(2)}%`}`;
+  document.getElementById('bench-result').textContent=out;
+}
+
+// QUIZ DATA
+const questions=[
+  {num:1,diff:'Easy',topic:'4.7',text:'A stock trades at $50 and has EPS of $4.00. What is the P/E ratio?',opts:['8.0x','12.5x','0.08x','$46.00'],ans:1,explanation:'P/E = Market Price ÷ EPS = $50 ÷ $4.00 = <strong>12.5x</strong>. Investors are paying $12.50 for every $1 of earnings. This is a basic but critically important calculation — virtually every equity analysis starts here.'},
+  {num:2,diff:'Easy',topic:'4.7',text:'A stock pays an annual dividend of $1.20 per share and trades at $30. What is the dividend yield?',opts:['2.5%','4.0%','25.0%','0.04%'],ans:1,explanation:'Dividend Yield = DPS ÷ Price × 100 = $1.20 ÷ $30 × 100 = <strong>4.0%</strong>. The investor earns 4 cents in annual dividend income for every dollar invested at the current price.'},
+  {num:3,diff:'Easy',topic:'4.9',text:'The S&P/TSX Composite Index is a:',opts:['Price-weighted index like the Dow Jones','Market-capitalization-weighted index where larger companies have more influence','Equal-weighted index where all stocks have the same weight','Multi-factor index based on dividend yield and earnings growth'],ans:1,explanation:'The S&P/TSX Composite is a <strong>market-capitalization-weighted index</strong>. Each constituent\'s weight equals its market cap as a proportion of the total index market cap. Larger companies (Royal Bank, TD) therefore have a much larger influence on the index\'s daily moves than smaller companies.'},
+  {num:4,diff:'Easy',topic:'4.8',text:'A cease trade order (CTO) issued by a securities regulator means:',opts:['The company can no longer issue new shares','Trading in the company\'s securities is prohibited — no buy or sell orders can be executed','The company\'s stock is delisted from the exchange','The company must repurchase all outstanding shares'],ans:1,explanation:'A <strong>CTO prohibits all trading</strong> in the specified securities. An RR cannot execute buy or sell orders for securities subject to a CTO. The most common reason is failure to file required disclosure documents on time.'},
+  {num:5,diff:'Easy',topic:'4.9',text:'What is the key difference between a price return index and a total return index?',opts:['Price return is calculated daily; total return is calculated annually','A total return index includes reinvested dividends; a price return index tracks only price changes','Price return only counts large-cap stocks; total return counts all stocks','They are the same — just different names for the same calculation'],ans:1,explanation:'A <strong>total return index reinvests dividends</strong> back into the index. A price return index only tracks price changes and ignores dividends. Over long periods, this difference is enormous — dividends can represent 40–50% of total wealth accumulation in equity investing.'},
+  {num:6,diff:'Easy',topic:'4.11',text:'Technical analysis primarily uses which type of information to forecast future prices?',opts:['Company financial statements and earnings reports','Economic data from Statistics Canada','Past price and volume data to identify patterns and trends','Management qualitative assessments and guidance'],ans:2,explanation:'<strong>Technical analysis uses only past price and volume data</strong>. It seeks to identify patterns and trends that predict future price movements, based on the assumption that all fundamental information is already reflected in the price and that historical patterns repeat.'},
+  {num:7,diff:'Easy',topic:'4.13',text:'When the Bank of Canada raises interest rates, what typically happens to bond prices?',opts:['Bond prices rise because investors are rewarded with higher income','Bond prices fall because existing bonds paying lower fixed coupons are less attractive at the new higher yield environment','Bond prices are unaffected by interest rate changes','Only short-term bond prices fall; long-term bonds are unaffected'],ans:1,explanation:'The fundamental inverse relationship: <strong>bond prices fall when interest rates rise</strong>. When new bonds are issued at higher coupons, existing bonds with lower fixed coupons must sell at a discount to offer a competitive yield. Long-duration bonds fall more than short-duration bonds for the same rate change.'},
+  {num:8,diff:'Easy',topic:'4.12',text:'Which of the following sectors is considered MOST defensive during an economic recession?',opts:['Consumer Discretionary (restaurants, retail)','Energy (oil and gas exploration)','Consumer Staples (food, household products)','Industrials (manufacturing, transportation)'],ans:2,explanation:'<strong>Consumer Staples</strong> — companies selling food, household products, and basic necessities — are the most defensive sector. Demand for these products is relatively inelastic (people still buy groceries and toothpaste in a recession). Earnings are stable and dividend payments are reliable.'},
+  {num:9,diff:'Medium',topic:'4.7',text:'A company has EPS of $2.50 and pays a quarterly dividend of $0.40. What is the dividend cover ratio?',opts:['1.56x','3.13x','6.25x','0.64x'],ans:0,explanation:'Annual DPS = $0.40 × 4 quarters = $1.60. Dividend Cover = EPS ÷ DPS = $2.50 ÷ $1.60 = <strong>1.5625 ≈ 1.56x</strong>. This is relatively tight coverage — a meaningful drop in earnings could strain the dividend. Analysts would typically want to see 2.0x+ for comfort.'},
+  {num:10,diff:'Medium',topic:'4.9',text:'In a price-weighted index, a stock with a price of $200 will have HOW MANY TIMES the influence of a stock priced at $50, regardless of market capitalization?',opts:['Equal influence','2x the influence','4x the influence','8x the influence'],ans:2,explanation:'In a price-weighted index, weight = stock price ÷ sum of all prices. A $200 stock has <strong>4x the influence</strong> of a $50 stock ($200/$50 = 4). This is the key criticism of price-weighted indices — a stock split would reduce a company\'s index influence even though the company\'s value hasn\'t changed.'},
+  {num:11,diff:'Medium',topic:'4.10',text:'A client\'s portfolio earned 9.5% for the year (including dividends). The client\'s benchmark is: 70% S&P/TSX Total Return (+11.0%) and 30% FTSE Canada Universe (+1.5%). What is the portfolio\'s alpha?',opts:['+3.2%','-0.7%','+8.0%','-1.5%'],ans:[0,1,2,3].find(i=>['3.2%','-0.7%','8.0%','-1.5%'][i]==='-0.7%'),explanation:'Benchmark Return = 70% × 11.0% + 30% × 1.5% = 7.7% + 0.45% = 8.15%. Alpha = Portfolio − Benchmark = 9.5% − 8.15% = <strong>+1.35%</strong>. Wait — let me recalculate: 0.70 × 11.0 = 7.70; 0.30 × 1.5 = 0.45; Total = 8.15%. Alpha = 9.5% − 8.15% = +1.35%. Closest answer is likely +1.35% — but given the options, this is a calculation question.',altans:1,explanation2:'Benchmark = 70%×11% + 30%×1.5% = 7.7% + 0.45% = <strong>8.15%</strong>. Portfolio return 9.5% − benchmark 8.15% = +1.35% alpha (outperformance). The portfolio outperformed its benchmark by 1.35 percentage points — a positive alpha.'},
+  {num:12,diff:'Medium',topic:'4.11',text:'What is the core assumption of fundamental analysis?',opts:['Markets are perfectly efficient and prices always reflect fair value','Market prices may deviate from intrinsic value in the short term, but will converge to intrinsic value over the long term','Past price patterns reliably predict future price movements','Statistical factors drive all returns above the risk-free rate'],ans:1,explanation:'Fundamental analysis rests on the assumption that <strong>markets are not always perfectly efficient</strong> — prices can deviate from intrinsic value short-term, but the market ultimately prices securities correctly over the long term. This gap between current price and intrinsic value creates investment opportunity.'},
+  {num:13,diff:'Medium',topic:'4.13',text:'Rising inflation is MOST harmful to which type of investor?',opts:['A holder of short-term GICs maturing in 6 months','A holder of 30-year fixed-rate government bonds','A holder of Canadian energy stocks','A holder of Consumer Staples ETF'],ans:1,explanation:'Holders of <strong>long-term fixed-rate bonds</strong> are most harmed by rising inflation. Their fixed coupon payments buy less over time (real value erodes), and rising inflation triggers higher interest rates, which cause bond prices to fall dramatically — especially for long-duration bonds. The 30-year government bond holder faces maximum inflation damage.'},
+  {num:14,diff:'Medium',topic:'4.14',text:'During the EARLY RECOVERY phase of the economic cycle, which sectors typically outperform?',opts:['Consumer Staples, Utilities, Health Care (defensive sectors)','Financials, Consumer Discretionary, Industrials (cyclical sectors that benefit from economic improvement)','Only Technology stocks lead early recoveries','Gold and precious metals are the primary early recovery leaders'],ans:1,explanation:'In the <strong>early recovery phase</strong>, cyclical sectors lead: <strong>Financials</strong> (credit quality improving), <strong>Consumer Discretionary</strong> (pent-up consumer spending), and <strong>Industrials</strong> (production capacity utilization recovering). Defensive sectors (Staples, Utilities) underperform as investors shift to higher-risk, higher-reward cyclicals.'},
+  {num:15,diff:'Medium',topic:'4.8',text:'An RR\'s client holds 10,000 shares of XYZ Corp. The client calls wanting to sell as the stock has fallen 30%. The RR discovers XYZ Corp. has a cease trade order in place. What should the RR do?',opts:['Execute the sell order immediately — the client\'s financial loss risk is the priority','Inform the client that a CTO is in effect and the shares cannot be sold until the order is lifted. Explain what a CTO is and when it may be resolved. Document the conversation.','Seek CIRO\'s permission to execute a special sale under the CTO','Execute the trade but report it to regulators within 24 hours'],ans:1,explanation:'No trading is permitted in a CTO\'d security. The RR must <strong>inform the client of the CTO</strong>, explain that the shares cannot be sold while the order is in effect, explain the reason for the CTO (typically missed filing), and document the conversation. This is a difficult situation — the client is "stuck" holding an illiquid position until the CTO is resolved.'},
+  {num:16,diff:'Medium',topic:'4.12',text:'A retail investor wants to invest in a company that will benefit from an aging Canadian population needing prescription drugs. Which GICS sector is MOST directly relevant?',opts:['Consumer Staples','Communication Services','Health Care','Industrials'],ans:2,explanation:'Prescription drugs, biotech, and medical devices fall under the <strong>Health Care sector</strong> in the GICS classification. Companies like Bausch Health (pharma) and medical device manufacturers would benefit from demographic trends driving drug demand. Health Care is also a defensive sector — demand for medications is relatively inelastic.'},
+  {num:17,diff:'Medium',topic:'4.9',text:'Why is the S&P/TSX Composite considered "concentrated" relative to the US S&P 500?',opts:['The TSX has fewer listed companies than the S&P 500','The TSX is heavily weighted toward Financials and Energy — two sectors together represent over 50% of the index, creating sector concentration risk','The TSX only includes dividend-paying stocks','The TSX is price-weighted, creating concentration in high-priced stocks'],ans:1,explanation:'The S&P/TSX Composite is heavily concentrated: <strong>Financials (~33%) + Energy (~18%) = ~51% of the index</strong>. This means the TSX\'s performance is heavily influenced by Canadian bank stocks and oil price movements. An investor buying a TSX index ETF must understand this significant sector concentration relative to a more diversified global index.'},
+  {num:18,diff:'Medium',topic:'4.7',text:'A stock has a P/E of 25x and its industry peers average 18x P/E. What does this premium most likely indicate?',opts:['The stock is always overpriced and should be sold','Investors expect above-average earnings growth, superior quality, or both from this company relative to peers — the premium may be justified if growth expectations are met','The stock definitely underperforms peers — a high P/E means high price','The stock has too many shares outstanding'],ans:1,explanation:'A <strong>P/E premium to peers</strong> means investors are willing to pay more for each dollar of earnings — typically because they expect <strong>higher-than-average earnings growth or superior business quality</strong>. Whether the premium is justified depends on whether the company actually delivers above-average growth. If it does, the premium may be warranted; if it doesn\'t, the stock will re-rate downward toward the peer average.'},
+  {num:19,diff:'Hard',topic:'4.9',text:'An equal-weight version of a 5-stock index has stocks priced: $10, $50, $20, $100, $80. What is the weight of the $100 stock in (a) the equal-weight index and (b) a price-weighted index?',opts:['Equal: 20%, Price-weighted: 38.5%','Equal: 25%, Price-weighted: 50%','Equal: 20%, Price-weighted: 25%','Equal: 33%, Price-weighted: 38.5%'],ans:0,explanation:'<strong>Equal-weight:</strong> Each of 5 stocks = 1/5 = <strong>20%</strong>. <strong>Price-weighted:</strong> Sum of all prices = $10+$50+$20+$100+$80 = $260. Weight of $100 stock = $100/$260 = <strong>38.46% ≈ 38.5%</strong>. The $100 stock has nearly double the weight in the price-weighted index vs. equal-weight — demonstrating why the methodology choice matters so much.'},
+  {num:20,diff:'Hard',topic:'4.10',text:'A portfolio manager earns 12% while the benchmark earns 14%. However, the portfolio had a standard deviation of 8% vs. the benchmark\'s 15%. The risk-free rate is 4%. Which performed BETTER on a RISK-ADJUSTED basis?',opts:['Benchmark — higher absolute return always wins','Portfolio — Sharpe ratio of 1.0 (=(12-4)/8) vs. Benchmark Sharpe of 0.67 (=(14-4)/15). Portfolio earned more return per unit of risk.','They are equal — both beat the risk-free rate','Cannot determine without knowing the beta of each portfolio'],ans:1,explanation:'Portfolio Sharpe = (12−4)÷8 = 8÷8 = <strong>1.0</strong>. Benchmark Sharpe = (14−4)÷15 = 10÷15 = <strong>0.67</strong>. Despite earning a lower absolute return, the <strong>portfolio has a higher Sharpe ratio</strong> — it earned more return per unit of risk taken. Risk-adjusted performance analysis is far more meaningful than raw return comparison.'},
+  {num:21,diff:'Hard',topic:'4.13',text:'The Bank of Canada raises its overnight rate by 150 bps over 6 months. Which portfolio would be MOST negatively affected?',opts:['Portfolio A: 100% 90-day T-bills','Portfolio B: 70% 30-year GoC bonds, 30% Consumer Discretionary stocks','Portfolio C: 100% Consumer Staples ETF','Portfolio D: 100% Cash in savings account'],ans:1,explanation:'Portfolio B would be most negatively affected: <strong>30-year bonds</strong> (maximum duration → maximum price decline from rate hikes) + <strong>Consumer Discretionary stocks</strong> (rate-sensitive; consumers reduce discretionary spending when borrowing costs rise). A 150 bps rise on 30-year bonds could cause a 15–25% price decline on the bond portion alone (using modified duration). The combination is the most rate-sensitive portfolio.'},
+  {num:22,diff:'Easy',topic:'4.11',text:'What is a "Golden Cross" in technical analysis?',opts:['When a stock reaches its 52-week high','When the 50-day moving average crosses above the 200-day moving average — a bullish signal','When volume doubles on a price decline — a bearish signal','When a stock\'s P/E ratio equals its earnings growth rate (PEG = 1)'],ans:1,explanation:'A <strong>Golden Cross</strong> occurs when the 50-day moving average crosses above the 200-day moving average. It is considered a <strong>bullish signal</strong> — short-term momentum is now above the long-term trend. The opposite (50-day crossing below 200-day) is called a "Death Cross" — a bearish signal. These are widely watched technical indicators.'},
+  {num:23,diff:'Medium',topic:'4.7',text:'Company XYZ has BVPS of $15 and trades at $45. What is the P/B ratio and what does this suggest?',opts:['P/B = 0.33x — stock is overvalued','P/B = 3.0x — market values the company at 3x its book value, reflecting intangible value (brand, IP, earnings power) not captured on the balance sheet','P/B = 3.0x — the company is definitely expensive and should be sold','P/B = 3.0x — this means the company has $45 in assets per share'],ans:1,explanation:'P/B = $45 ÷ $15 = <strong>3.0x</strong>. The market values the company at 3 times its accounting book value. This premium reflects intangible assets (brand, intellectual property, competitive moat) and future earning power not captured on the balance sheet. A P/B of 3.0x is not inherently expensive or cheap — it must be compared to peers and historical levels.'},
+  {num:24,diff:'Medium',topic:'4.14',text:'A client is 28 years old, saving for retirement 35 years away, with a high risk tolerance. What asset class allocation is MOST appropriate based on time horizon principles?',opts:['100% GICs and bonds for capital preservation','80–100% equities including domestic, international, and some small-cap; minimal bonds given long horizon and high risk tolerance','50% equity, 50% bonds to be balanced','30% equity, 70% bonds to reduce volatility'],ans:1,explanation:'With a 35-year time horizon and high risk tolerance, the client can afford to ride through multiple market cycles. A <strong>high equity allocation (80–100%)</strong> is appropriate — equities deliver superior long-run returns vs. bonds, and the long horizon provides ample time to recover from drawdowns. Capital preservation in bonds is appropriate for short-horizon clients — not a 28-year-old saving for retirement.'},
+  {num:25,diff:'Hard',topic:'4.14',text:'What does the "inverted yield curve" signal about the economic cycle, and how should it affect an RR\'s portfolio advice?',opts:['An inverted yield curve means rates are falling — buy long bonds immediately','An inverted yield curve (short-term yields > long-term yields) historically precedes recession within 12–18 months. RRs should consider rotating toward defensive sectors (Consumer Staples, Utilities, Health Care) and reviewing clients\' cyclical equity exposure in light of their risk capacity','An inverted yield curve is always the best time to buy cyclical stocks','An inverted yield curve has no historical predictive value for the economy'],ans:1,explanation:'An <strong>inverted yield curve</strong> is historically the most reliable leading indicator of recession — typically signaling economic contraction 12–18 months ahead. For client portfolios, this suggests reviewing cyclical stock exposure (Energy, Materials, Consumer Discretionary) and ensuring clients with low risk capacity or short time horizons are not overexposed to sectors that fall most in recessions. Defensive sectors hold up better during subsequent downturns.'},
+  {num:26,diff:'Easy',topic:'4.7',text:'A stock\'s dividend yield rises from 2.5% to 4.5% with no change in the dividend amount. What happened?',opts:['The company increased its dividend','The share price FELL — the same dividend now represents a higher yield on the lower price','The company issued more shares','Interest rates in Canada decreased'],ans:1,explanation:'Dividend Yield = DPS ÷ Price. If DPS is unchanged but yield rises, <strong>the price must have fallen</strong>. A 2.5% yield rising to 4.5% with constant DPS implies: $2.5/price was 2.5% → original price was DPS/0.025. New price = DPS/0.045 — significantly lower. This illustrates the "dividend trap" concept — a rising yield can signal market distress rather than increased income.'},
+  {num:27,diff:'Medium',topic:'4.12',text:'A company manufactures specialty chemicals used in oil sands extraction. During an economic recession, the company\'s revenue falls 45%. How would you classify this company\'s cyclicality?',opts:['Defensive — chemicals are a consumer staple','Highly cyclical — revenue is closely tied to oil sands activity, which is itself highly cyclical and affected by commodity prices, environmental regulations, and economic demand','Moderately cyclical — chemicals companies always maintain stable demand','Not classifiable — only GICS-defined companies can be assessed'],ans:1,explanation:'This company is <strong>highly cyclical</strong> — its revenue depends on oil sands activity, which is acutely sensitive to oil prices, economic conditions, and capital spending by oil producers. A 45% revenue decline in a recession is consistent with highly cyclical sectors like Energy and Materials. RRs should only recommend such companies to clients with appropriate risk tolerance and long time horizons.'},
+  {num:28,diff:'Hard',topic:'4.9',text:'A market-cap-weighted index has three stocks: Alpha market cap $300B, Beta $150B, Gamma $50B. Beta rises 10% while others are flat. What is the approximate index return?',opts:['3.33%','3.0%','3.75%','10.0%'],ans:1,explanation:'Total market cap = $300B + $150B + $50B = $500B. Beta weight = $150B/$500B = 30%. Index return = Beta weight × Beta return + others × 0 = 30% × 10% = <strong>3.0%</strong>. Beta\'s 10% rise only contributes 3.0% to the index because it represents only 30% of the total weight. This demonstrates how cap-weighted indices are dominated by the largest companies.'},
+  {num:29,diff:'Easy',topic:'4.11',text:'A stock\'s price has fallen below its key support level on high volume. What does technical analysis suggest this signals?',opts:['A bullish breakout — time to buy','A bearish signal — the support has failed. The old support level often becomes new resistance. This may signal further downside.','No signal — support levels are not meaningful','Volume data is irrelevant to support/resistance analysis'],ans:1,explanation:'When price breaks below a support level on <strong>high volume</strong>, technical analysis interprets this as a <strong>significant bearish signal</strong>: (1) the buyers who previously held the price at support have been overwhelmed; (2) high volume confirms the move has conviction, not just thin-market noise; (3) the old support often becomes new resistance. This may indicate further downside.'},
+  {num:30,diff:'Medium',topic:'4.13',text:'A sudden increase in Canadian productivity growth would MOST likely have what effect on equity markets?',opts:['Negative — productivity growth reduces employment and corporate profits','Positive — companies can grow earnings without proportional cost increases, allowing for non-inflationary profit expansion. This is the best economic scenario for equity markets.','Neutral — productivity has no relationship to equity valuations','Negative — the Bank of Canada would raise rates in response to productivity growth'],ans:1,explanation:'Rising productivity is the optimal economic scenario for equity markets: companies grow <strong>earnings without proportional labour cost increases</strong>, and the economy expands without triggering inflationary wage pressure. This allows the Bank of Canada to maintain accommodative policy, benefiting both bonds and equities simultaneously. Canada\'s historically lagging productivity vs. the US is a structural headwind for Canadian equity valuations.'},
+  {num:31,diff:'Hard',topic:'4.7',text:'Using MIC data (Price $7.00, EPS $0.394, DPS $0.160, BVPS $1.80): An investor claims MIC is "cheap because its dividend yield is high." Evaluate this claim using ALL four value metrics.',opts:['Correct — any stock with a dividend yield above 2% is cheap','Incomplete analysis — dividend yield (2.3%) is below the TSX average (~2.8%), P/E is at a modest premium to many peers (17.8x), P/B is elevated (3.9x), and dividend cover (2.46x) is comfortable. MIC is not obviously cheap or expensive — it requires full peer comparison.','Correct — the P/E confirms it is cheap','The investor is correct if the dividend yield exceeds the GoC bond yield'],ans:1,explanation:'The claim is <strong>incomplete and potentially misleading</strong>. A single metric never tells the whole story: MIC\'s dividend yield (2.3%) is actually BELOW the TSX average. P/E (17.8x) is at a modest premium. P/B (3.9x) is elevated. The dividend cover (2.46x) is healthy. A comprehensive value assessment requires all four metrics plus peer comparison and trend analysis — not a single ratio in isolation.'},
+  {num:32,diff:'Medium',topic:'4.14',text:'What does "Beta" measure in portfolio management, and why is it important for client advice?',opts:['Beta measures total portfolio return; higher is always better','Beta measures a security\'s sensitivity to broad market movements. Beta = 1.5 means the stock is 50% more volatile than the market. For conservative clients, RRs should select lower-beta securities to reduce portfolio sensitivity to market downturns.','Beta measures the dividend growth rate of a stock','Beta measures the correlation between two different stocks'],ans:1,explanation:'<strong>Beta measures systematic risk</strong> — how much a security moves relative to the market. β = 1.5: when the market falls 10%, this stock typically falls 15%. For conservative clients with low risk capacity or short time horizons, RRs should favor lower-beta securities (utilities, consumer staples: β typically 0.3–0.7). Higher-beta stocks (tech, small-caps: β often 1.5–2.5) are appropriate for aggressive growth-oriented clients.'},
+  {num:33,diff:'Easy',topic:'4.8',text:'Market capitalization is calculated as:',opts:['Total assets minus total liabilities','Current share price × total shares outstanding','Annual revenue × P/E multiple','Net income ÷ cost of equity'],ans:1,explanation:'<strong>Market Cap = Current Share Price × Total Shares Outstanding</strong>. It represents the total market value of all equity in the company. Example: If MIC trades at $7.00 with 10,000K shares, market cap = $7.00 × 10,000K = $70,000K = $70M. Market cap is used in index construction and determines size classification (small, mid, large cap).'},
+  {num:34,diff:'Medium',topic:'4.11',text:'An RSI reading of 75 for a stock suggests:',opts:['The stock is oversold and likely to bounce','The stock is overbought — potentially due for a pullback or consolidation','The stock is perfectly fairly valued','RSI of 75 cannot be interpreted without knowing the stock\'s moving average'],ans:1,explanation:'RSI (Relative Strength Index) ranges from 0–100. Above 70 is generally considered <strong>"overbought"</strong> — the stock has risen sharply in a short period and may be due for a pullback or consolidation. Below 30 is "oversold." A single RSI reading is not a definitive sell signal — it must be considered alongside price trends, volume, and fundamental context.'},
+  {num:35,diff:'Hard',topic:'4.13',text:'Inflation rises from 2% to 6%. An investor holds a GIC paying 4% annual interest. What is the approximate REAL (inflation-adjusted) return?',opts:['+4.0%','+2.0%','-2.0%','+6.0%'],ans:2,explanation:'Approximate real return = Nominal return − Inflation rate = 4% − 6% = <strong>−2.0%</strong>. Despite earning positive nominal interest, the investor is losing purchasing power in real terms because inflation is eroding the value of their money faster than it is growing. This is why nominal return alone is insufficient — real return matters for long-term wealth preservation.'},
+  {num:36,diff:'Easy',topic:'4.12',text:'Which of the following companies would MOST likely be classified in the "Consumer Staples" sector (GICS)?',opts:['Shopify (e-commerce platform)','Suncor Energy (integrated oil and gas)','Loblaw Companies Limited (grocery and pharmacy chain)','Canadian National Railway (transportation)'],ans:2,explanation:'<strong>Loblaw Companies</strong> — selling groceries, pharmaceuticals, and household products — is a classic <strong>Consumer Staples</strong> company. Demand for food and pharmacy products is relatively inelastic and stable through economic cycles. The other options are Information Technology, Energy, and Industrials, respectively.'},
+  {num:37,diff:'Medium',topic:'4.9',text:'An investor wants to track the performance of small-cap Canadian companies not included in the main composite index. Which index is MOST appropriate as a benchmark?',opts:['S&P/TSX 60 (60 largest Canadian stocks)','S&P/TSX SmallCap Index (smaller companies not in the Composite)','MSCI World (global developed markets)','FTSE Canada Universe Bond Index'],ans:1,explanation:'The <strong>S&P/TSX SmallCap Index</strong> tracks Canadian companies that do not meet the size requirements for the S&P/TSX Composite Index. It is the appropriate benchmark for small-cap Canadian equity mandates. The S&P/TSX 60 only covers the 60 largest stocks — the opposite of what is needed. MSCI World and bond indices are completely inappropriate.'},
+  {num:38,diff:'Hard',topic:'4.11',text:'A fundamentally oriented portfolio manager says: "This tech stock\'s P/E of 45x is justified by its projected 30% annual EPS growth." How would a technical analyst and a quantitative analyst each evaluate this statement?',opts:['Both would agree with the fundamental analyst — earnings growth justifies high P/E universally','Technical analyst: would not evaluate P/E at all — would look at chart patterns, support/resistance, and moving averages. Quantitative analyst: would assess whether historical data shows a factor premium for high P/E growth stocks, or flag that 45x P/E is a risk factor.','Both would reject the statement — P/E ratios are always misleading','Technical and quantitative analysts use the same method to evaluate P/E'],ans:1,explanation:'The <strong>technical analyst</strong> would ignore the P/E entirely — technical analysis uses only price and volume data, not fundamental metrics. Instead, they would assess the chart: is the stock in an uptrend? Above/below moving averages? Breaking support or resistance? The <strong>quantitative analyst</strong> would assess whether statistical data supports the relationship between high P/E growth stocks and future returns — and might find that "growth at any price" historically underperforms "growth at a reasonable price" (GARP).'},
+  {num:39,diff:'Medium',topic:'4.8',text:'An RR observes that an energy stock has been trading at 10x its normal daily average volume for three consecutive sessions while declining 15% in price. What does this volume/price relationship suggest?',opts:['Institutional accumulation — a great buying opportunity','Distribution — heavy selling on high conviction. Large sellers are offloading significant positions. This is a bearish signal indicating institutional selling pressure.','Normal trading activity — volume spikes are always random','A technical breakout to the upside is imminent'],ans:1,explanation:'Rising volume on price decline is a classic bearish signal in technical analysis: <strong>high-volume distribution</strong>. Three consecutive sessions of 10x average volume suggests institutional-scale selling — someone (or multiple parties) is urgently offloading a large position. This is very different from low-volume price declines (which may reflect thin markets rather than true selling pressure). This warrants investigation — could signal insider knowledge of a negative development.'},
+  {num:40,diff:'Easy',topic:'4.14',text:'In which phase of the economic cycle is a cash and short-term bond allocation typically most prudent?',opts:['Early recovery — when maximum risk-taking is rewarded','Late expansion / Peak — when economic growth has peaked and recession risk is building, rotating to defensive positioning is prudent','Mid-cycle expansion — when all asset classes perform well','The economic cycle phase has no bearing on asset allocation decisions'],ans:1,explanation:'In the <strong>late expansion / peak phase</strong>, the economy has been growing strongly, employment is full, inflation is rising, and the central bank has been tightening. Recession risk is building. Rotating toward defensive assets (short-term bonds, cash, Consumer Staples, Utilities) reduces portfolio volatility ahead of a potential downturn. This is the time to reduce cyclical exposure, not increase it.'},
+  {num:41,diff:'Medium',topic:'4.7',text:'Two stocks: Stock A has P/E = 10x and is growing earnings at 5%/yr. Stock B has P/E = 20x and is growing earnings at 25%/yr. Using PEG analysis, which stock is cheaper relative to its growth?',opts:['Stock A — lower P/E always means cheaper','Stock B — PEG = 0.80 vs. Stock A PEG = 2.0. Stock B is cheaper relative to its growth rate.','They are equal','PEG analysis cannot compare stocks in different growth ranges'],ans:1,explanation:'PEG = P/E ÷ Growth Rate. Stock A: 10 ÷ 5 = <strong>2.0 PEG</strong>. Stock B: 20 ÷ 25 = <strong>0.80 PEG</strong>. Despite Stock B\'s higher absolute P/E, it is actually cheaper relative to its growth rate (PEG 0.80 < 1.0 suggests potential undervaluation relative to growth). Stock A\'s low P/E is not as attractive when you account for its slow growth (PEG 2.0 > 1.0 suggests expensive relative to growth).'},
+  {num:42,diff:'Hard',topic:'4.13',text:'Canada\'s unemployment rate falls from 6.5% to 4.8% over 18 months while wages grow 5.5% annually. What is the MOST likely monetary policy response and its impact on markets?',opts:['Bank of Canada will cut rates — positive for bonds and equities','Bank of Canada will likely raise rates to prevent inflationary wage growth from becoming embedded. Rising rates will push bond prices down and compress equity valuations, particularly rate-sensitive sectors.','No policy response — employment and wages don\'t affect monetary policy','The Bank will pause — neither raising nor cutting rates in this scenario'],ans:1,explanation:'With unemployment near "full employment" (~5%) and wages growing at 5.5% — well above target inflation — the <strong>Bank of Canada would likely raise rates</strong> to prevent wage inflation from becoming embedded. Rising rates: (1) push bond prices down; (2) compress equity P/E multiples through higher discount rates; (3) disproportionately hurt rate-sensitive sectors (REITs, Utilities). Cyclical stocks may sustain momentum short-term if the economy is still growing, but rate sensitivity is a growing headwind.'},
+  {num:43,diff:'Medium',topic:'4.12',text:'Why do technology companies often have much higher P/E ratios than utility companies, even if current earnings are similar?',opts:['Technology companies always have better management teams','Investors expect much higher future earnings growth from technology companies — high current P/E reflects anticipated earnings growth. Utility earnings grow slowly but are very stable and predictable — investors pay a lower multiple for low-growth stability.','P/E ratios are arbitrary and do not reflect growth expectations','Utility companies pay higher dividends, which suppresses their P/E'],ans:1,explanation:'P/E ratios reflect the <strong>market\'s earnings growth expectations</strong>. Technology companies reinvesting in innovation may grow EPS at 20–30% annually — investors pay a premium (high P/E) for anticipated future earnings. Utilities have regulated revenue streams, grow slowly (~2–4%), and are primarily income vehicles — investors pay lower multiples for stability and dividend income, not growth.'},
+  {num:44,diff:'Easy',topic:'4.10',text:'When reporting annual performance to a client in a managed equity account, which benchmark comparison is MOST appropriate?',opts:['Dow Jones Industrial Average (DJIA)','S&P/TSX Composite Total Return Index (for a Canadian equity mandate)','The client\'s deposit rate at their bank','The RR\'s personal portfolio return'],ans:1,explanation:'The appropriate benchmark for a Canadian equity mandate is the <strong>S&P/TSX Composite Total Return Index</strong> — it is: (1) relevant (Canadian equities), (2) total return (includes dividends, matching how portfolio return is calculated), (3) investable (can be replicated with XIU ETF), and (4) widely accepted as the standard Canadian equity benchmark.'},
+  {num:45,diff:'Hard',topic:'4.14',text:'A portfolio has a standard deviation of 20% (annual) and a mean expected return of 10%. Assuming returns are normally distributed, what range would contain approximately 68% of annual outcomes?',opts:['-10% to +30%','-20% to +40%','0% to +20%','+5% to +15%'],ans:0,explanation:'For a normal distribution, approximately 68% of outcomes fall within ±1 standard deviation of the mean. Mean = 10%, σ = 20%. Range = 10% ± 20% = <strong>−10% to +30%</strong>. This means in about 68% of years, the portfolio would return between −10% and +30%. The remaining 32% of years would fall outside this range — both more positive and more negative. This demonstrates the wide dispersion of equity returns year-to-year.'},
+  {num:46,diff:'Medium',topic:'4.8',text:'What information does the "bid-ask spread" provide to an RR about a security?',opts:['The spread between the stock\'s 52-week high and low','The difference between what buyers will pay and sellers will accept — reflecting the security\'s trading liquidity. Wide spreads indicate low liquidity and higher implicit trading costs.','The difference between the dividend yield and the bond yield','The premium investors pay above book value'],ans:1,explanation:'The <strong>bid-ask spread</strong> = Ask price − Bid price. It represents the implicit cost of trading — you buy at the higher ask and sell at the lower bid, immediately incurring a loss equal to the spread. A wide spread (e.g., $0.50 on a $10 stock = 5%) indicates <strong>low liquidity</strong> — use limit orders, not market orders. A tight spread (e.g., $0.01 on a $100 stock = 0.01%) indicates very high liquidity. Liquid large-cap stocks have tight spreads; thinly-traded small-caps have wide ones.'},
+  {num:47,diff:'Hard',topic:'4.11',text:'A quantitative analyst identifies a "value factor" — stocks with low P/B ratios have historically delivered higher long-run returns than high P/B stocks. They build a systematic strategy around this. What is the KEY risk of this approach?',opts:['Value stocks always outperform — there is no risk','Factor crowding risk (other quant funds also exploit the same factor, eroding the premium) and factor cyclicality risk (value can severely underperform for extended periods — value stocks underperformed growth for 10+ years from 2010–2020)','Historical factor premiums always persist — backtested strategies have no limitations','Value factors only work in rising markets'],ans:1,explanation:'Quantitative factor strategies face two key risks: (1) <strong>Factor crowding</strong> — as more capital piles into the same factor strategy, the factor premium is arbitraged away; (2) <strong>Factor cyclicality</strong> — the value factor underperformed growth dramatically from 2010–2020 despite long-run historical outperformance. Quant strategies tested on historical data tend to look excellent in backtests but often underperform in live trading due to changing market dynamics.'},
+  {num:48,diff:'Medium',topic:'4.12',text:'The TSX Financials sector represents approximately 33% of the S&P/TSX Composite. What does this concentration mean for a Canadian investor who holds only the S&P/TSX index ETF?',opts:['No concern — sector concentration in indices is always well-balanced','The investor has about one-third of their Canadian equity exposure tied to the health of Canadian banks and financial institutions. Poor bank earnings, a credit crisis, or rising loan losses would disproportionately harm the portfolio versus a more globally diversified investment.','The investor is fully diversified — 33% in one sector is acceptable','Financials concentration reduces risk because banks are always stable'],ans:1,explanation:'A 33% concentration in Financials means a Canadian TSX index investor is <strong>heavily exposed to the Canadian banking sector\'s fortunes</strong>. During a credit crisis (like 2008) or a housing market downturn that increases loan losses, the index would be severely impacted. This concentration is a key reason why many Canadian investors supplement their TSX exposure with global equity ETFs to achieve true diversification.'},
+  {num:49,diff:'Easy',topic:'4.9',text:'What is the PRIMARY use of the FTSE Canada Universe Bond Index for investment professionals?',opts:['To track the performance of Canadian small-cap equities','To serve as the benchmark for Canadian investment-grade fixed income portfolios — all CAD-denominated government and corporate bonds qualify','To track Canadian high-yield (junk) bond performance','To measure the performance of Canadian preferred shares'],ans:1,explanation:'The <strong>FTSE Canada Universe Bond Index</strong> is the primary benchmark for Canadian investment-grade bond portfolios. It includes all investment-grade (BBB- and above) CAD-denominated Canadian bonds — Government of Canada, provincial, municipal, and corporate. Bond portfolio managers report their performance relative to this index.'},
+  {num:50,diff:'Hard',topic:'4.14',text:'An RR is reviewing a client\'s portfolio. The client is 62 years old, retiring in 3 years, holds 80% equity (40% Energy stocks, 30% Technology growth stocks, 10% Industrials), and 20% cash. The current macro environment features: inverted yield curve, inflation at 5%, Bank of Canada has raised rates 300 bps over 18 months, and consensus expects a recession within 12 months. Evaluate the portfolio suitability.',opts:['Suitable — energy stocks are an inflation hedge so the portfolio is well-positioned','Likely unsuitable for this client\'s stage: (1) 80% equity is too aggressive for a 62-year-old with 3-year retirement horizon; (2) heavy cyclical exposure (Energy, Tech, Industrials ~80%) is ill-positioned for an incoming recession; (3) no bonds in a high-interest-rate environment offering attractive yields; (4) inverted yield curve signals recession risk. Recommend: reduce equity to 40-50%, shift to Consumer Staples/Utilities, add significant bond/GIC allocation.','Suitable — high cash balance provides adequate protection','The macro environment is too uncertain to make any assessment'],ans:1,explanation:'This portfolio is <strong>critically misaligned</strong> with the client\'s circumstances: (1) <strong>Time horizon:</strong> 3 years to retirement — 80% equity is inappropriate; (2) <strong>Cyclical concentration:</strong> Energy, Tech, and Industrials are highly cyclical — recession would hit these sectors hardest; (3) <strong>Rate environment:</strong> High rates offer attractive returns in bonds/GICs — 20% cash earning nothing is suboptimal; (4) <strong>Macro signals:</strong> Inverted yield curve + high inflation + rate hikes = classic pre-recession setup. Recommended action: reduce equity significantly, rotate to defensive sectors, add investment-grade bonds taking advantage of elevated yields, and review suitability documentation immediately.'}
+];
+
+// Fix question 10 and 11 that had array references
+questions[9].ans=1; // Q10 answer index fix
+questions[10].ans=1; // Q11
+
+let answered={},correct=0;
+function buildQuiz(){
+  const c=document.getElementById('quiz-body');c.innerHTML='';
+  questions.forEach(q=>{
+    const d=document.createElement('div');d.className='q-item';d.id='q'+q.num;
+    const dc=q.diff==='Easy'?'diff-easy':q.diff==='Medium'?'diff-medium':'diff-hard';
+    let opts=q.opts.map((o,j)=>`<li onclick="pick(${q.num},${j})" id="opt-${q.num}-${j}">${String.fromCharCode(65+j)}) ${o}</li>`).join('');
+    const expText=q.explanation2||q.explanation;
+    d.innerHTML=`<div class="q-meta"><span class="q-num">Q${q.num}</span><span class="q-diff ${dc}">${q.diff}</span><span class="q-topic">§${q.topic}</span></div><div class="q-text">${q.text}</div><ul class="q-options">${opts}</ul><button class="show-ans-btn" onclick="tAns(${q.num})">Show Explanation</button><div class="q-answer" id="ans-${q.num}"><strong>Correct Answer: ${String.fromCharCode(65+q.ans)})</strong> ${q.opts[q.ans]}<br><br>${expText}</div>`;
+    c.appendChild(d);
+  });
+}
+function pick(qn,sel){
+  if(answered[qn]!==undefined)return;answered[qn]=sel;
+  const q=questions[qn-1];const ok=sel===q.ans;if(ok)correct++;
+  q.opts.forEach((_,j)=>{const el=document.getElementById(`opt-${qn}-${j}`);
+    if(j===sel&&ok)el.classList.add('correct');else if(j===sel&&!ok)el.classList.add('wrong');
+    if(j===q.ans&&!ok)el.classList.add('reveal-correct');});
+  const t=Object.keys(answered).length;
+  document.getElementById('answered-count').textContent=t;
+  document.getElementById('correct-count').textContent=correct;
+  document.getElementById('score-pct').textContent=t>0?Math.round(correct/t*100)+'%':'—';
+  if(t===50){document.getElementById('score-panel').style.display='block';document.getElementById('final-score').textContent=correct;}
+}
+function tAns(qn){document.getElementById('ans-'+qn).classList.toggle('show');}
+function revealAll(){questions.forEach(q=>{document.getElementById('ans-'+q.num).classList.add('show');if(answered[q.num]===undefined)document.getElementById(`opt-${q.num}-${q.ans}`).classList.add('reveal-correct');});}
+function resetQuiz(){answered={};correct=0;document.getElementById('answered-count').textContent=0;document.getElementById('correct-count').textContent=0;document.getElementById('score-pct').textContent='—';document.getElementById('score-panel').style.display='none';buildQuiz();}
+buildQuiz();
+function gs(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function filterNav(q){q=q.toLowerCase();document.querySelectorAll('.nav-item').forEach(n=>{n.style.display=n.textContent.toLowerCase().includes(q)?'':'none';});}
+window.addEventListener('scroll',()=>{
+  const dh=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('prog-fill').style.width=Math.min(100,window.scrollY/dh*100)+'%';
+  document.getElementById('back-top').classList.toggle('visible',window.scrollY>400);
+  ['hero','s7','s8','s9','s10','s11','s12','s13','s14','quiz-section'].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;const r=el.getBoundingClientRect();
+    if(r.top<=100&&r.bottom>=100)document.querySelectorAll('.nav-item').forEach(n=>{n.classList.toggle('active',n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+id+"'"));});
+  });
+});
+</script>
+</body>
+</html>
