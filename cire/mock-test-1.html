@@ -139,9 +139,9 @@ body{background:var(--bg);font-family:'Sora',sans-serif;color:var(--ink);min-hei
 #results{flex-direction:column;align-items:center;padding:40px 20px;min-height:100vh;}
 .results-inner{max-width:900px;width:100%;}
 .results-header{text-align:center;margin-bottom:36px;}
-.results-badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--green);text-transform:uppercase;background:var(--green-bg);border:1px solid var(--green-bd);padding:4px 14px;border-radius:20px;display:inline-block;margin-bottom:16px;}
+.results-badge{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:3px;color:var(--green);text-transform:uppercase;background:var(--green-bg);border:1px solid var(--green-bd);padding:4px 14px;border-radius:20px;display:inline-block;margin-bottom:16px;}
 .results-badge.fail{color:var(--red);background:var(--red-bg);border-color:var(--red-bd);}
-.results-title{font-size:clamp(28px,4vw,46px);font-weight:800;margin-bottom:8px;}
+.results-title{font-size:clamp(14px,4vw,5px);font-weight:800;margin-bottom:8px;}
 .results-score-ring{margin:20px auto 8px;width:160px;height:160px;position:relative;}
 .ring-svg{width:160px;height:160px;transform:rotate(-90deg);}
 .ring-bg{fill:none;stroke:var(--border);stroke-width:12;}
@@ -219,7 +219,7 @@ body{background:var(--bg);font-family:'Sora',sans-serif;color:var(--ink);min-hei
     <div class="launch-params">
       <div class="lp"><div class="lp-n">110</div><div class="lp-l">Questions</div></div>
       <div class="lp"><div class="lp-n">120</div><div class="lp-l">Minutes</div></div>
-      <div class="lp"><div class="lp-n">60%</div><div class="lp-l">Pass Mark</div></div>
+      
       <div class="lp"><div class="lp-n">MCQ</div><div class="lp-l">Format</div></div>
     </div>
     <div class="wt-grid" id="wtGrid"></div>
@@ -615,26 +615,44 @@ function submitExam(){
   // calculate
   const totalCorrect = QUESTIONS.filter((q,i)=>answers[i]===q.a).length;
   const pct = Math.round(totalCorrect/110*100);
-  const passed = pct>=60;
   const timeTaken = 120*60 - timeLeft;
   const mm = Math.floor(timeTaken/60), ss = timeTaken%60;
+
+  let status, msg, color;
+  if (pct < 60) {
+    status = "Keep Growing – Your Journey is Just Beginning!";
+    msg = "You’ve taken a great first step by identifying where to focus. Use this result as a roadmap to strengthen your core knowledge. With a bit more dedicated study on the fundamental concepts, you’ll see these scores climb. Keep going—persistence is the key to mastery!";
+    color = '#ef4444';
+  } else if (pct <= 70) {
+    status = "Gaining Momentum – You’re Moving in the Right Direction!";
+    msg = "You have a solid grasp of the basics, and your hard work is starting to show. You’re currently in the 'bridge' phase—moving from understanding to application. Focus your next few sessions on the high-weight sections (like KYC and Suitability) to push yourself into the safe zone!";
+    color = '#f59e0b';
+  } else if (pct <= 85) {
+    status = "Fantastic Work – You’re Almost Exam-Ready!";
+    msg = "This is a strong performance! You’ve demonstrated a clear understanding of the CIRE requirements and are consistently hitting the target range. Fine-tune a few minor areas, stay sharp, and you’ll walk into that exam center with total confidence. You’ve got this!";
+    color = '#eab308';
+  } else {
+    status = "Exceptional Performance – You’re Ready to Lead!";
+    msg = "Outstanding! You’ve achieved a mastery-level score. Your understanding of the regulatory landscape is excellent, and you’ve proven you can handle the exam’s complexity. Trust your preparation and your instincts—you are more than ready to conquer the CIRE!";
+    color = '#22c55e';
+  }
 
   // show results screen
   showScreen('results');
 
   // badge & title
-  document.getElementById('resultsBadge').textContent = passed?'✓ PASS':'✗ FAIL';
-  document.getElementById('resultsBadge').className = 'results-badge'+(passed?'':' fail');
-  document.getElementById('resultsTitle').textContent = passed?'Congratulations — Exam Passed!':'Exam Complete — Review Your Results';
+  document.getElementById('resultsBadge').textContent = status;
+  document.getElementById('resultsBadge').className = 'results-badge';
+  document.getElementById('resultsTitle').textContent = msg;
 
   // ring
   const ring = document.getElementById('ringFill');
   const circumference = 402;
   const offset = circumference - (pct/100)*circumference;
-  ring.style.stroke = passed?'#22c55e':'#ef4444';
+  ring.style.stroke = color;
   setTimeout(()=>{ ring.style.strokeDashoffset = offset; }, 100);
   document.getElementById('ringPct').textContent = pct+'%';
-  document.getElementById('ringPct').style.color = passed?'#22c55e':'#ef4444';
+  document.getElementById('ringPct').style.color = color;
 
   // meta
   const meta = document.getElementById('resultsMeta');
@@ -643,7 +661,7 @@ function submitExam(){
     <div class="rmeta"><div class="rmeta-n" style="color:#ef4444">${110-totalCorrect}</div><div class="rmeta-l">Incorrect</div></div>
     <div class="rmeta"><div class="rmeta-n" style="color:#f59e0b">${answers.filter(a=>a===null).length}</div><div class="rmeta-l">Unanswered</div></div>
     <div class="rmeta"><div class="rmeta-n" style="color:#93c5fd">${mm}m ${ss}s</div><div class="rmeta-l">Time Taken</div></div>
-    <div class="rmeta"><div class="rmeta-n" style="color:${passed?'#22c55e':'#ef4444'}">${passed?'PASS':'FAIL'}</div><div class="rmeta-l">Result (60% pass)</div></div>`;
+    <div class="rmeta"><div class="rmeta-n" style="color:${color}">${status}</div><div class="rmeta-l">Status</div></div>`;
 
   // element breakdown
   buildBreakdown();
