@@ -238,6 +238,44 @@
     .btn-cancel { background: #e2e8f0; color: #334155; }
     .loading { text-align: center; padding: 40px; color: #475569; }
     footer { text-align: center; margin-top: 24px; font-size: 0.7rem; color: #94a3b8; }
+    .autocomplete-container {
+      position: relative;
+    }
+    .autocomplete-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1200;
+      display: none;
+      margin-top: 4px;
+    }
+    .autocomplete-dropdown.show {
+      display: block;
+    }
+    .autocomplete-item {
+      padding: 10px 14px;
+      cursor: pointer;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.9rem;
+    }
+    .autocomplete-item:hover {
+      background: #f1f5f9;
+    }
+    .autocomplete-symbol {
+      font-weight: 700;
+      color: #1e3a8a;
+    }
+    .autocomplete-name {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-left: 8px;
+    }
   </style>
 </head>
 <body>
@@ -245,6 +283,7 @@
 <div class="header">
   <h1>📈 Pragati Investment</h1>
   <p>Stock Performance Tracker</p>
+  <p style="font-size:0.75rem; color:#64748b;">Developed by Sahil Bhatt</p>
 </div>
 
 <div class="stats">
@@ -269,7 +308,7 @@
 <div id="modal" class="modal">
   <div class="modal-content">
     <h3>➕ New Stock Tip</h3>
-    <input type="text" id="modalSymbol" placeholder="Symbol (e.g. ITC, RELIANCE)" autocomplete="off">
+    <input type="text" id="modalSymbol" placeholder="Symbol (e.g. ITC, RELIANCE)" autocomplete="on">
     <input type="number" id="modalEntry" placeholder="Entry Price (₹)" step="any">
     <input type="number" id="modalTarget" placeholder="Target (₹)" step="any">
     <input type="number" id="modalStop" placeholder="Stop Loss (optional)" step="any">
@@ -357,7 +396,9 @@
         <div class="tip-card ${cardBorder}" data-timestamp="${tip.timestamp}">
           <div class="card-header">
             <span class="symbol">${symbolClean}</span>
+            
             <span class="days">📅 ${shortDate}, ${days} day${days !== 1 ? 's' : ''} ago</span>
+            <span class="name">${tip.stock_name}</span>
           </div>
           <div class="price-group">
             <div class="left-prices">
@@ -369,7 +410,7 @@
               <div class="price-row"><span class="price-label">Stop Loss</span><span class="price-value">₹${tip.stop_loss || '-'}</span></div>
             </div>
           </div>
-          <div class="performance ${perfClass}">${perfText}</div>
+          <div class="performance ${perfClass}">Performance: ${perfText}</div>
           ${tip.notes ? `<div class="notes">📝 ${tip.notes}</div>` : ''}
           <div class="status-select">
             <span style="font-size:0.75rem;">Status:</span>
@@ -465,6 +506,68 @@
   fab.onclick = openModal;
   cancelModal.onclick = closeModal;
   modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+
+  // Autocomplete logic
+  const symbolInput = document.getElementById('modalSymbol');
+  const autocompleteDropdown = document.createElement('div');
+  autocompleteDropdown.className = 'autocomplete-dropdown';
+
+  // Wrap input in container for positioning
+  const inputWrapper = symbolInput.parentElement;
+  inputWrapper.style.position = 'relative';
+  inputWrapper.appendChild(autocompleteDropdown);
+
+  let debounceTimer;
+  symbolInput.addEventListener('input', async (e) => {
+    clearTimeout(debounceTimer);
+    const query = e.target.value.trim();
+    
+    if (query.length < 1) {
+      autocompleteDropdown.classList.remove('show');
+      return;
+    }
+    
+    // Debounce the search
+    debounceTimer = setTimeout(async () => {
+      try {
+        const res = await fetch(`${API_URL}?action=searchTickers&query=${encodeURIComponent(query)}`);
+        const results = await res.json();
+        
+        if (!Array.isArray(results) || results.length === 0) {
+          autocompleteDropdown.classList.remove('show');
+          return;
+        }
+        
+        autocompleteDropdown.innerHTML = results.map(item => `
+          <div class="autocomplete-item" data-symbol="${item.symbol}">
+            <span class="autocomplete-symbol">${item.symbol}</span>
+            <span class="autocomplete-name">${item.name}</span>
+          </div>
+        `).join('');
+        
+        autocompleteDropdown.classList.add('show');
+        
+        // Click handler for dropdown items
+        autocompleteDropdown.querySelectorAll('.autocomplete-item').forEach(item => {
+          item.addEventListener('click', () => {
+            symbolInput.value = item.dataset.symbol;
+            autocompleteDropdown.classList.remove('show');
+          });
+        });
+      } catch (err) {
+        console.error('Search failed:', err);
+        autocompleteDropdown.classList.remove('show');
+      }
+    }, 300); // 300ms debounce
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (e.target !== symbolInput && !autocompleteDropdown.contains(e.target)) {
+      autocompleteDropdown.classList.remove('show');
+    }
+  });
+
   submitBtn.onclick = async () => {
     const symbol = document.getElementById('modalSymbol').value;
     const entry = document.getElementById('modalEntry').value;
