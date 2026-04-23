@@ -242,18 +242,9 @@
       position: relative;
     }
     .autocomplete-dropdown {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: white;
-      border: 1px solid #cbd5e1;
-      border-radius: 12px;
-      max-height: 200px;
-      overflow-y: auto;
-      z-index: 1200;
-      display: none;
-      margin-top: 4px;
+      width: auto;
+      min-width: 200px;
+      
     }
     .autocomplete-dropdown.show {
       display: block;
@@ -338,7 +329,7 @@
     }
   }
 
-  // Load all counts (or fetch all once for counts – but to be efficient, we can fetch each status)
+  // Load all counts
   async function updateCounts() {
     const active = await fetchTipsByStatus('active');
     const achieved = await fetchTipsByStatus('target achieved');
@@ -349,14 +340,12 @@
     document.getElementById('activeCount').innerText = counts.active;
     document.getElementById('achievedCount').innerText = counts.targetAchieved;
     document.getElementById('archivedCount').innerText = counts.archived;
-    // Cache for current tab if needed
     tipsCache.active = active;
     tipsCache.targetAchieved = achieved;
     tipsCache.archived = archived;
     return { active, achieved, archived };
   }
 
-  // Calculate days passed
   function daysPassed(timestampStr) {
     const tipDate = new Date(timestampStr);
     const today = new Date();
@@ -365,14 +354,12 @@
     return diffDays;
   }
 
-  // Render cards for given status
   function renderTips(tips, status) {
     const container = document.getElementById('tipsContainer');
     if (!tips.length) {
       container.innerHTML = `<div class="loading" style="background:white; border-radius:28px; padding:30px;">✨ No ${status} tips.</div>`;
       return;
     }
-    // Sort by date (newest first) – optional
     const sorted = [...tips].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
     const html = sorted.map(tip => {
       const entry = parseFloat(tip.entry_price);
@@ -396,9 +383,8 @@
         <div class="tip-card ${cardBorder}" data-timestamp="${tip.timestamp}">
           <div class="card-header">
             <span class="symbol">${symbolClean}</span>
-            
             <span class="days">📅 ${shortDate}, ${days} day${days !== 1 ? 's' : ''} ago</span>
-            <span class="name">${tip.stock_name}</span>
+            <span class="name">${tip.stock_name || ''}</span>
           </div>
           <div class="price-group">
             <div class="left-prices">
@@ -425,13 +411,11 @@
     }).join('');
     container.innerHTML = html;
     
-    // Attach event listeners to dropdowns
     document.querySelectorAll('.status-dropdown').forEach(select => {
       select.addEventListener('change', async (e) => {
         const newStatus = e.target.value;
         const timestamp = e.target.dataset.timestamp;
         await updateStatus(timestamp, newStatus);
-        // After update, refresh counts and current tab content
         await updateCounts();
         await loadCurrentTab();
       });
@@ -465,9 +449,7 @@
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
       currentStatus = tab.dataset.status;
-      // Show loading
       document.getElementById('tipsContainer').innerHTML = '<div class="loading">Loading...</div>';
-      // If not cached, fetch; else use cache
       if (!tipsCache[currentStatus]) {
         tipsCache[currentStatus] = await fetchTipsByStatus(currentStatus);
       }
@@ -475,7 +457,6 @@
     });
   });
 
-  // Add tip
   async function addTip(symbol, entry, target, stopLoss, notes) {
     const params = new URLSearchParams({
       action: 'add',
@@ -488,7 +469,6 @@
     const res = await fetch(`${API_URL}?${params.toString()}`);
     const result = await res.json();
     if (result.success) {
-      // Clear caches and refresh counts and current tab
       tipsCache = { active: null, targetAchieved: null, archived: null };
       await updateCounts();
       await loadCurrentTab();
@@ -507,66 +487,96 @@
   cancelModal.onclick = closeModal;
   modal.onclick = (e) => { if (e.target === modal) closeModal(); };
 
-  // Autocomplete logic
+  // ========== FIXED AUTOCOMPLETE (positions on body) ==========
   const symbolInput = document.getElementById('modalSymbol');
-  const autocompleteDropdown = document.createElement('div');
-  autocompleteDropdown.className = 'autocomplete-dropdown';
+  let dropdown = null;
 
-  // Wrap input in container for positioning
-  const inputWrapper = symbolInput.parentElement;
-  inputWrapper.style.position = 'relative';
-  inputWrapper.appendChild(autocompleteDropdown);
+  function createDropdown() {
+    const div = document.createElement('div');
+    div.className = 'autocomplete-dropdown';
+    div.style.position = 'absolute';
+    div.style.background = 'white';
+    div.style.border = '1px solid #cbd5e1';
+    div.style.borderRadius = '12px';
+    div.style.maxHeight = '200px';
+    div.style.overflowY = 'auto';
+    div.style.zIndex = '9999';
+    div.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+    div.style.display = 'none';
+    document.body.appendChild(div);
+    return div;
+  }
+
+  function positionDropdown() {
+    if (!dropdown) return;
+    const rect = symbolInput.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    dropdown.style.top = rect.bottom + scrollTop + 4 + 'px';
+    dropdown.style.left = rect.left + 'px';
+    dropdown.style.width = rect.width + 'px';
+  }
+
+  function showDropdown(results) {
+    if (!dropdown) dropdown = createDropdown();
+    if (!results.length) {
+      dropdown.style.display = 'none';
+      return;
+    }
+    dropdown.innerHTML = results.map(item => `
+      <div class="autocomplete-item" data-symbol="${item.symbol}" style="padding:10px 14px; cursor:pointer; border-bottom:1px solid #f1f5f9;">
+        <span class="autocomplete-symbol" style="font-weight:700; color:#1e3a8a;">${item.symbol}</span>
+        <span class="autocomplete-name" style="font-size:0.8rem; color:#64748b; margin-left:8px;">${item.name}</span>
+      </div>
+    `).join('');
+    dropdown.querySelectorAll('.autocomplete-item').forEach(el => {
+      el.addEventListener('click', () => {
+        symbolInput.value = el.dataset.symbol;
+        dropdown.style.display = 'none';
+      });
+    });
+    positionDropdown();
+    dropdown.style.display = 'block';
+  }
 
   let debounceTimer;
   symbolInput.addEventListener('input', async (e) => {
     clearTimeout(debounceTimer);
     const query = e.target.value.trim();
-    
     if (query.length < 1) {
-      autocompleteDropdown.classList.remove('show');
+      if (dropdown) dropdown.style.display = 'none';
       return;
     }
-    
-    // Debounce the search
     debounceTimer = setTimeout(async () => {
       try {
         const res = await fetch(`${API_URL}?action=searchTickers&query=${encodeURIComponent(query)}`);
         const results = await res.json();
-        
         if (!Array.isArray(results) || results.length === 0) {
-          autocompleteDropdown.classList.remove('show');
+          if (dropdown) dropdown.style.display = 'none';
           return;
         }
-        
-        autocompleteDropdown.innerHTML = results.map(item => `
-          <div class="autocomplete-item" data-symbol="${item.symbol}">
-            <span class="autocomplete-symbol">${item.symbol}</span>
-            <span class="autocomplete-name">${item.name}</span>
-          </div>
-        `).join('');
-        
-        autocompleteDropdown.classList.add('show');
-        
-        // Click handler for dropdown items
-        autocompleteDropdown.querySelectorAll('.autocomplete-item').forEach(item => {
-          item.addEventListener('click', () => {
-            symbolInput.value = item.dataset.symbol;
-            autocompleteDropdown.classList.remove('show');
-          });
-        });
+        showDropdown(results);
       } catch (err) {
-        console.error('Search failed:', err);
-        autocompleteDropdown.classList.remove('show');
+        console.error(err);
+        if (dropdown) dropdown.style.display = 'none';
       }
-    }, 300); // 300ms debounce
+    }, 300);
   });
 
-  // Close dropdown when clicking outside
+  // Reposition on scroll/resize
+  window.addEventListener('scroll', () => { if (dropdown && dropdown.style.display === 'block') positionDropdown(); });
+  window.addEventListener('resize', () => { if (dropdown && dropdown.style.display === 'block') positionDropdown(); });
+  // Close when clicking outside
   document.addEventListener('click', (e) => {
-    if (e.target !== symbolInput && !autocompleteDropdown.contains(e.target)) {
-      autocompleteDropdown.classList.remove('show');
+    if (e.target !== symbolInput && (!dropdown || !dropdown.contains(e.target))) {
+      if (dropdown) dropdown.style.display = 'none';
     }
   });
+  // Also close when modal closes
+  const observer = new MutationObserver(() => {
+    if (modal.style.display !== 'flex' && dropdown) dropdown.style.display = 'none';
+  });
+  observer.observe(modal, { attributes: true, attributeFilter: ['style'] });
+  // ========== END AUTOCOMPLETE FIX ==========
 
   submitBtn.onclick = async () => {
     const symbol = document.getElementById('modalSymbol').value;
@@ -583,6 +593,7 @@
       document.getElementById('modalTarget').value = '';
       document.getElementById('modalStop').value = '';
       document.getElementById('modalNotes').value = '';
+      if (dropdown) dropdown.style.display = 'none';
     } catch (err) {
       alert('Error: ' + err.message);
     } finally {
@@ -591,16 +602,13 @@
     }
   };
 
-  // Initial load
   (async () => {
     await updateCounts();
     await loadCurrentTab();
   })();
-  // Auto refresh counts every 60 sec (optional)
   setInterval(async () => {
     await updateCounts();
     if (currentStatus === 'active' || currentStatus === 'target achieved' || currentStatus === 'archived') {
-      // Refresh current tab content from server
       tipsCache[currentStatus] = await fetchTipsByStatus(currentStatus);
       renderTips(tipsCache[currentStatus], currentStatus);
     }
