@@ -40,7 +40,7 @@
       background: white;
       padding: 12px 16px;
       border-radius: 28px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     .stat-card {
@@ -55,6 +55,25 @@
     .stat-value {
       font-size: 1.4rem;
       font-weight: 700;
+    }
+    /* Search bar */
+    .search-container {
+      margin-bottom: 16px;
+    }
+    .search-box {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 40px;
+      border: 1px solid #cbd5e1;
+      background: white;
+      font-size: 1rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      transition: all 0.2s;
+    }
+    .search-box:focus {
+      outline: none;
+      border-color: #1e3a8a;
+      box-shadow: 0 0 0 3px rgba(30,58,138,0.1);
     }
     /* Tabs */
     .tabs {
@@ -108,8 +127,8 @@
       margin-bottom: 12px;
     }
     .symbol {
-      font-size: 1.6rem;
-      font-weight: 800;
+      font-size: 1.2rem;
+      font-weight: 600;
       letter-spacing: -0.5px;
     }
     .days {
@@ -123,7 +142,7 @@
       display: flex;
       justify-content: space-between;
       margin: 12px 0;
-      gap: 12px;
+      gap: 30px;
     }
     .left-prices, .right-prices {
       flex: 1;
@@ -148,7 +167,7 @@
     }
     .performance {
       margin-top: 12px;
-      text-align: right;
+      text-align: center;
       font-size: 1.2rem;
       font-weight: 700;
     }
@@ -238,22 +257,20 @@
     .btn-cancel { background: #e2e8f0; color: #334155; }
     .loading { text-align: center; padding: 40px; color: #475569; }
     footer { text-align: center; margin-top: 24px; font-size: 0.7rem; color: #94a3b8; }
-    .autocomplete-container {
-      position: relative;
-    }
     .autocomplete-dropdown {
-      width: auto;
-      min-width: 200px;
-      
-    }
-    .autocomplete-dropdown.show {
-      display: block;
+      position: absolute;
+      background: white;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 9999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     .autocomplete-item {
       padding: 10px 14px;
       cursor: pointer;
       border-bottom: 1px solid #f1f5f9;
-      font-size: 0.9rem;
     }
     .autocomplete-item:hover {
       background: #f1f5f9;
@@ -283,6 +300,11 @@
   <div class="stat-card"><div class="stat-label">Archived</div><div class="stat-value" id="archivedCount">0</div></div>
 </div>
 
+<!-- Search Bar -->
+<div class="search-container">
+  <input type="text" id="searchInput" class="search-box" placeholder="🔍 Search by symbol or notes...">
+</div>
+
 <div class="tabs">
   <div class="tab active" data-status="active">📌 Active</div>
   <div class="tab" data-status="target achieved">🎯 Achieved</div>
@@ -299,7 +321,7 @@
 <div id="modal" class="modal">
   <div class="modal-content">
     <h3>➕ New Stock Tip</h3>
-    <input type="text" id="modalSymbol" placeholder="Symbol (e.g. ITC, RELIANCE)" autocomplete="on">
+    <input type="text" id="modalSymbol" placeholder="Symbol (e.g. ITC, RELIANCE)" autocomplete="off">
     <input type="number" id="modalEntry" placeholder="Entry Price (₹)" step="any">
     <input type="number" id="modalTarget" placeholder="Target (₹)" step="any">
     <input type="number" id="modalStop" placeholder="Stop Loss (optional)" step="any">
@@ -316,6 +338,7 @@
   let currentStatus = 'active';
   let tipsCache = { active: [], targetAchieved: [], archived: [] };
   let counts = { active: 0, targetAchieved: 0, archived: 0 };
+  let currentSearchTerm = '';
 
   // Helper: fetch tips by status
   async function fetchTipsByStatus(status) {
@@ -354,13 +377,26 @@
     return diffDays;
   }
 
-  function renderTips(tips, status) {
+  // Filter tips based on search term (symbol or notes)
+  function filterTips(tips, term) {
+    if (!term.trim()) return tips;
+    const lowerTerm = term.toLowerCase();
+    return tips.filter(tip => {
+      const symbol = (tip.stock_symbol || '').replace('NSE:', '').toLowerCase();
+      const notes = (tip.notes || '').toLowerCase();
+      return symbol.includes(lowerTerm) || notes.includes(lowerTerm);
+    });
+  }
+
+  // Render cards for given status, with optional search filter
+  function renderTips(tips, status, searchTerm = '') {
     const container = document.getElementById('tipsContainer');
-    if (!tips.length) {
-      container.innerHTML = `<div class="loading" style="background:white; border-radius:28px; padding:30px;">✨ No ${status} tips.</div>`;
+    let filteredTips = filterTips(tips, searchTerm);
+    if (!filteredTips.length) {
+      container.innerHTML = `<div class="loading" style="background:white; border-radius:28px; padding:30px;">🔍 No matching tips found for "${searchTerm}".</div>`;
       return;
     }
-    const sorted = [...tips].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+    const sorted = [...filteredTips].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
     const html = sorted.map(tip => {
       const entry = parseFloat(tip.entry_price);
       const cmpRaw = tip.cmp;
@@ -384,7 +420,7 @@
           <div class="card-header">
             <span class="symbol">${symbolClean}</span>
             <span class="days">📅 ${shortDate}, ${days} day${days !== 1 ? 's' : ''} ago</span>
-            <span class="name">${tip.stock_name || ''}</span>
+            <div> <span class="name">${tip.stock_name || ''}</span></div>
           </div>
           <div class="price-group">
             <div class="left-prices">
@@ -440,7 +476,7 @@
       else if (currentStatus === 'target achieved') tipsCache.targetAchieved = tips;
       else tipsCache.archived = tips;
     }
-    renderTips(tips, currentStatus);
+    renderTips(tips, currentStatus, currentSearchTerm);
   }
 
   // Tab switching
@@ -453,8 +489,20 @@
       if (!tipsCache[currentStatus]) {
         tipsCache[currentStatus] = await fetchTipsByStatus(currentStatus);
       }
-      renderTips(tipsCache[currentStatus], currentStatus);
+      renderTips(tipsCache[currentStatus], currentStatus, currentSearchTerm);
     });
+  });
+
+  // Search input handler
+  const searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', (e) => {
+    currentSearchTerm = e.target.value;
+    // Re-render current tab with search filter
+    if (tipsCache[currentStatus]) {
+      renderTips(tipsCache[currentStatus], currentStatus, currentSearchTerm);
+    } else {
+      loadCurrentTab(); // fallback
+    }
   });
 
   async function addTip(symbol, entry, target, stopLoss, notes) {
@@ -487,21 +535,13 @@
   cancelModal.onclick = closeModal;
   modal.onclick = (e) => { if (e.target === modal) closeModal(); };
 
-  // ========== FIXED AUTOCOMPLETE (positions on body) ==========
+  // Autocomplete logic (fixed, attaches to body)
   const symbolInput = document.getElementById('modalSymbol');
   let dropdown = null;
 
   function createDropdown() {
     const div = document.createElement('div');
     div.className = 'autocomplete-dropdown';
-    div.style.position = 'absolute';
-    div.style.background = 'white';
-    div.style.border = '1px solid #cbd5e1';
-    div.style.borderRadius = '12px';
-    div.style.maxHeight = '200px';
-    div.style.overflowY = 'auto';
-    div.style.zIndex = '9999';
-    div.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
     div.style.display = 'none';
     document.body.appendChild(div);
     return div;
@@ -523,9 +563,9 @@
       return;
     }
     dropdown.innerHTML = results.map(item => `
-      <div class="autocomplete-item" data-symbol="${item.symbol}" style="padding:10px 14px; cursor:pointer; border-bottom:1px solid #f1f5f9;">
-        <span class="autocomplete-symbol" style="font-weight:700; color:#1e3a8a;">${item.symbol}</span>
-        <span class="autocomplete-name" style="font-size:0.8rem; color:#64748b; margin-left:8px;">${item.name}</span>
+      <div class="autocomplete-item" data-symbol="${item.symbol}">
+        <span class="autocomplete-symbol">${item.symbol}</span>
+        <span class="autocomplete-name">${item.name}</span>
       </div>
     `).join('');
     dropdown.querySelectorAll('.autocomplete-item').forEach(el => {
@@ -562,21 +602,17 @@
     }, 300);
   });
 
-  // Reposition on scroll/resize
   window.addEventListener('scroll', () => { if (dropdown && dropdown.style.display === 'block') positionDropdown(); });
   window.addEventListener('resize', () => { if (dropdown && dropdown.style.display === 'block') positionDropdown(); });
-  // Close when clicking outside
   document.addEventListener('click', (e) => {
     if (e.target !== symbolInput && (!dropdown || !dropdown.contains(e.target))) {
       if (dropdown) dropdown.style.display = 'none';
     }
   });
-  // Also close when modal closes
   const observer = new MutationObserver(() => {
     if (modal.style.display !== 'flex' && dropdown) dropdown.style.display = 'none';
   });
   observer.observe(modal, { attributes: true, attributeFilter: ['style'] });
-  // ========== END AUTOCOMPLETE FIX ==========
 
   submitBtn.onclick = async () => {
     const symbol = document.getElementById('modalSymbol').value;
@@ -608,9 +644,10 @@
   })();
   setInterval(async () => {
     await updateCounts();
-    if (currentStatus === 'active' || currentStatus === 'target achieved' || currentStatus === 'archived') {
+    if (tipsCache[currentStatus]) {
+      // Refresh current tab content from server (preserve search)
       tipsCache[currentStatus] = await fetchTipsByStatus(currentStatus);
-      renderTips(tipsCache[currentStatus], currentStatus);
+      renderTips(tipsCache[currentStatus], currentStatus, currentSearchTerm);
     }
   }, 60000);
 </script>
