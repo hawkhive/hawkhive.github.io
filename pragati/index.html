@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Pragati Investment – Stock Tracker</title>
+  <!-- PWA manifest -->
+  <link rel="manifest" href="manifest.json">
+  <!-- Theme color for mobile browsers -->
+  <meta name="theme-color" content="#1e3a8a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Pragati Stocks">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f1f5f9;
+      padding: 20px 16px 90px 16px;
+      color: #0f172a;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .header h1 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+    }
+    .header p {
+      font-size: 0.85rem;
+      color: #475569;
+      margin-top: 4px;
+    }
+
+    /* Stats row */
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      background: white;
+      padding: 12px 20px;
+      border-radius: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .stat-card {
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    /* Tip Cards */
+    .tips-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .tip-card {
+      background: white;
+      border-radius: 28px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.1s ease;
+      border-left: 5px solid #3b82f6;
+    }
+    .tip-card.positive {
+      border-left-color: #10b981;
+    }
+    .tip-card.negative {
+      border-left-color: #ef4444;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .symbol {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .date {
+      font-size: 0.7rem;
+      color: #64748b;
+    }
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .price-item {
+      background: #f8fafc;
+      padding: 6px 12px;
+      border-radius: 40px;
+      font-size: 0.85rem;
+    }
+    .price-item strong {
+      font-weight: 600;
+      color: #334155;
+    }
+    .performance {
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-align: right;
+    }
+    .positive-text {
+      color: #10b981;
+    }
+    .negative-text {
+      color: #ef4444;
+    }
+    .status-badge {
+      display: inline-block;
+      background: #e2e8f0;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+
+    /* Floating Action Button */
+    .fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1e3a8a;
+      width: 60px;
+      height: 60px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+      z-index: 1000;
+      border: none;
+    }
+    .fab:hover {
+      transform: scale(1.05);
+      background: #2563eb;
+    }
+    .fab span {
+      color: white;
+      font-size: 32px;
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    /* Modal overlay */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      z-index: 1100;
+    }
+    .modal-content {
+      background: white;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 32px;
+      padding: 24px 20px;
+      animation: fadeInUp 0.2s ease;
+    }
+    .modal-content h3 {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+      color: #0f172a;
+    }
+    .modal-content input {
+      width: 100%;
+      padding: 14px;
+      margin: 8px 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 60px;
+      font-size: 1rem;
+      background: #f9fafb;
+    }
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .modal-buttons button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 60px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-submit {
+      background: #1e3a8a;
+      color: white;
+    }
+    .btn-cancel {
+      background: #e2e8f0;
+      color: #334155;
+    }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #475569;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    footer {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 0.7rem;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📈 Pragati Investment</h1>
+  <p>Stock Performance Tracker</p>
+</div>
+
+<div class="stats" id="statsPanel">
+  <div class="stat-card"><div class="stat-label">Total Tips</div><div class="stat-value" id="totalTips">0</div></div>
+  <div class="stat-card"><div class="stat-label">Active</div><div class="stat-value" id="activeTips">0</div></div>
+  <div class="stat-card"><div class="stat-label">Winners</div><div class="stat-value" id="winnersCount">0</div></div>
+</div>
+
+<div id="tipsList" class="tips-container">
+  <div class="loading">Loading your stock tips...</div>
+</div>
+<footer>Data refreshes automatically • CMP from Google Finance</footer>
+
+<!-- Floating Add Button -->
+<button class="fab" id="fabBtn"><span>+</span></button>
+
+<!-- Modal Form -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <h3>➕ New Stock Tip</h3>
+    <input type="text" id="modalSymbol" placeholder="Symbol (e.g. ITC, RELIANCE)" autocomplete="off">
+    <input type="number" id="modalEntry" placeholder="Entry Price (₹)" step="any">
+    <input type="number" id="modalTarget" placeholder="Target Price (₹)" step="any">
+    <input type="number" id="modalStop" placeholder="Stop Loss (optional)" step="any">
+    <input type="text" id="modalNotes" placeholder="Notes (optional)">
+    <div class="modal-buttons">
+      <button class="btn-cancel" id="cancelModalBtn">Cancel</button>
+      <button class="btn-submit" id="submitTipBtn">Add Tip</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ================= CONFIG ==================
+  const API_URL = 'https://script.google.com/macros/s/AKfycbyvgkZZXXYj0azEpqu_keo4hPdFjW2awVGrL2a6JBdho4tmdO42hX8DNedV-f3dSEev6w/exec'; // REPLACE WITH YOUR APPS SCRIPT URL
+
+  // ================= DOM elements =================
+  const tipsContainer = document.getElementById('tipsList');
+  const fab = document.getElementById('fabBtn');
+  const modal = document.getElementById('modal');
+  const cancelModal = document.getElementById('cancelModalBtn');
+  const submitBtn = document.getElementById('submitTipBtn');
+
+  // Stats elements
+  const totalTipsSpan = document.getElementById('totalTips');
+  const activeTipsSpan = document.getElementById('activeTips');
+  const winnersSpan = document.getElementById('winnersCount');
+
+  // ================= Helper: fetch all tips =================
+  async function fetchTips() {
+    try {
+      const res = await fetch(`${API_URL}?action=fetch`);
+      if (!res.ok) throw new Error('Network error');
+      const data = await res.json();
+      return Array.isArray(data) ? data : [];
+    } catch (err) {
+      console.error(err);
+      return [];
+    }
+  }
+
+  // ================= Render cards =================
+  function renderTips(tips) {
+    if (!tips.length) {
+      tipsContainer.innerHTML = `<div class="loading" style="background:white; border-radius:28px; padding:30px;">✨ No tips yet. Tap the + button to add your first stock tip.</div>`;
+      totalTipsSpan.innerText = '0';
+      activeTipsSpan.innerText = '0';
+      winnersSpan.innerText = '0';
+      return;
+    }
+
+    let activeCount = 0;
+    let winners = 0;
+
+    const cardsHtml = tips.map(tip => {
+      const entry = parseFloat(tip.entry_price);
+      const cmpRaw = tip.cmp;
+      let cmp = null;
+      if (cmpRaw && !isNaN(parseFloat(cmpRaw))) cmp = parseFloat(cmpRaw);
+      
+      let perf = null;
+      let perfClass = '';
+      let perfText = '—';
+      if (cmp !== null && !isNaN(entry)) {
+        perf = ((cmp - entry) / entry) * 100;
+        perfClass = perf >= 0 ? 'positive-text' : 'negative-text';
+        perfText = perf.toFixed(2) + '%';
+        if (perf > 0) winners++;
+      }
+      
+      const status = tip.status || 'active';
+      if (status === 'active') activeCount++;
+      
+      const dateObj = new Date(tip.timestamp);
+      const formattedDate = dateObj.toLocaleDateString(undefined, { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+      const symbolClean = tip.stock_symbol.replace('NSE:', '');
+      
+      let cardBorderClass = '';
+      if (perf !== null) cardBorderClass = perf >= 0 ? 'positive' : 'negative';
+      
+      return `
+        <div class="tip-card ${cardBorderClass}">
+          <div class="card-header">
+            <span class="symbol">${symbolClean}</span>
+            <span class="date">${formattedDate}</span>
+          </div>
+          <div class="price-row">
+            <span class="price-item"><strong>Entry:</strong> ₹${entry}</span>
+            <span class="price-item"><strong>Target:</strong> ₹${tip.target || '-'}</span>
+            <span class="price-item"><strong>Stop:</strong> ₹${tip.stop_loss || '-'}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span class="price-item"><strong>CMP:</strong> ${cmp !== null ? '₹'+cmp : 'Fetching...'}</span>
+            <div class="performance ${perfClass}">${perfText}</div>
+          </div>
+          ${tip.notes ? `<div style="font-size:0.75rem; color:#475569; margin-top:8px;">📝 ${tip.notes}</div>` : ''}
+          <div style="margin-top: 12px;"><span class="status-badge">${status}</span></div>
+        </div>
+      `;
+    }).join('');
+    
+    tipsContainer.innerHTML = cardsHtml;
+    totalTipsSpan.innerText = tips.length;
+    activeTipsSpan.innerText = activeCount;
+    winnersSpan.innerText = winners;
+  }
+
+  // ================= Load & refresh =================
+  async function refreshDisplay() {
+    const tips = await fetchTips();
+    renderTips(tips);
+  }
+
+  // ================= Add new tip =================
+  async function addTip(symbol, entry, target, stopLoss, notes) {
+    const params = new URLSearchParams({
+      action: 'add',
+      stock_symbol: symbol.trim(),
+      entry_price: entry,
+      target: target,
+      stop_loss: stopLoss || '',
+      notes: notes || ''
+    });
+    const response = await fetch(`${API_URL}?${params.toString()}`);
+    const result = await response.json();
+    if (result.success) {
+      await refreshDisplay();  // auto refresh after adding
+      return true;
+    } else {
+      throw new Error(result.error || 'Unknown error');
+    }
+  }
+
+  // ================= Modal logic =================
+  function openModal() {
+    modal.style.display = 'flex';
+    document.getElementById('modalSymbol').value = '';
+    document.getElementById('modalEntry').value = '';
+    document.getElementById('modalTarget').value = '';
+    document.getElementById('modalStop').value = '';
+    document.getElementById('modalNotes').value = '';
+    document.getElementById('modalSymbol').focus();
+  }
+  function closeModal() {
+    modal.style.display = 'none';
+  }
+
+  submitBtn.onclick = async () => {
+    const symbol = document.getElementById('modalSymbol').value;
+    const entry = document.getElementById('modalEntry').value;
+    const target = document.getElementById('modalTarget').value;
+    if (!symbol || !entry || !target) {
+      alert('Please fill Symbol, Entry Price and Target');
+      return;
+    }
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Adding...';
+    try {
+      await addTip(symbol, entry, target, document.getElementById('modalStop').value, document.getElementById('modalNotes').value);
+      closeModal();
+    } catch (err) {
+      alert('Failed to add tip: ' + err.message);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = 'Add Tip';
+    }
+  };
+
+  fab.onclick = openModal;
+  cancelModal.onclick = closeModal;
+  modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+
+  // Initial load
+  refreshDisplay();
+  // Auto-refresh every 45 seconds
+  setInterval(refreshDisplay, 45000);
+</script>
+</body>
+</html>
