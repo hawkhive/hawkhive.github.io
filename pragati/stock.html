@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Stock Advisory | Pragati Financial Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #0f172a;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        .pragati-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Sticky Navbar */
+        .pragati-navbar-sticky {
+            margin-left: 2rem;
+            margin-right: 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #eef2ff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        }
+        .pragati-navbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 1rem 0;
+        }
+        .pragati-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+      .pragati-logo-icon-img {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+
+        .pragati-logo-icon {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+        .pragati-logo-text h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .pragati-logo-text span { color: #2563eb; }
+        .pragati-logo-text p {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: -0.1rem;
+        }
+        .pragati-nav-links {
+            display: flex;
+            gap: 1.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .pragati-nav-link {
+            text-decoration: none;
+            font-weight: 500;
+            color: #1e293b;
+            transition: color 0.2s;
+        }
+        .pragati-nav-link:hover { color: #2563eb; }
+        .pragati-cta-button-nav {
+            background: #2563eb;
+            color: white;
+            padding: 0.55rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .pragati-mobile-toggle {
+            display: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: #1e293b;
+        }
+        .pragati-mobile-menu {
+            display: none;
+            flex-direction: column;
+            background: white;
+            padding: 1rem 1.5rem 1.5rem;
+            border-top: 1px solid #eef2ff;
+            width: 100%;
+        }
+
+        /* Hero */
+        .pragati-hero {
+            background: linear-gradient(115deg, #eef2ff, #ffffff);
+            padding: 4rem 0;
+        }
+        .pragati-hero .pragati-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        .pragati-hero-badge {
+            background: #2563eb20;
+            color: #1e3a8a;
+            display: inline-block;
+            padding: 0.25rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .pragati-hero-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        .pragati-hero-sub {
+            font-size: 1.1rem;
+            color: #475569;
+            margin-bottom: 1.5rem;
+        }
+        .pragati-hero-visual {
+            background: white;
+            border-radius: 2rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 20px 35px -15px rgba(0,0,0,0.05);
+        }
+        .pragati-hero-visual i { font-size: 5rem; color: #2563eb; }
+
+        /* Sections */
+        .pragati-section { padding: 4rem 0; }
+        .pragati-section-alt { background: #f8fafc; }
+        .pragati-section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+        .pragati-section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        .pragati-section-sub { color: #64748b; }
+        .pragati-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+        .pragati-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .pragati-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.8rem;
+            border: 1px solid #eef2ff;
+            transition: 0.25s;
+        }
+        .pragati-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.08);
+            border-color: #bfdbfe;
+        }
+        .pragati-card-icon {
+            width: 56px;
+            height: 56px;
+            background: #eef2ff;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+        }
+        .pragati-card-icon i { font-size: 1.6rem; color: #2563eb; }
+        .pragati-card-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .pragati-card-text { color: #475569; font-size: 0.9rem; line-height: 1.6; }
+
+        /* Experience highlight */
+        .pragati-experience-box {
+            background: linear-gradient(115deg, #1e3a8a, #2563eb);
+            color: white;
+            border-radius: 2rem;
+            padding: 2rem;
+            text-align: center;
+        }
+        .pragati-stat-number { font-size: 3rem; font-weight: 800; }
+
+        /* Risk & Methodology */
+        .pragati-methodology {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            border-left: 6px solid #2563eb;
+        }
+
+        /* Buttons */
+        .pragati-btn-primary {
+            background: #2563eb;
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+        }
+        .pragati-btn-outline {
+            border: 1px solid #2563eb;
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: 700;
+        }
+        .pragati-cta-section {
+            background: linear-gradient(115deg, #1e3a8a, #2563eb);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 2rem;
+            margin: 2rem 0;
+        }
+        .pragati-footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 3rem 0 2rem;
+            margin-top: 2rem;
+        }
+        .pragati-footer-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr;
+            gap: 2rem;
+        }
+        .pragati-footer-compliance {
+            font-size: 0.8rem;
+            border-top: 1px solid #334155;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            text-align: center;
+        }
+        .pragati-wa-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #25d366;
+            color: white;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-decoration: none;
+        }
+        @media (max-width: 1024px) {
+            .pragati-grid-2, .pragati-grid-3 { grid-template-columns: 1fr; }
+            .pragati-hero .pragati-container { grid-template-columns: 1fr; text-align: center; }
+            .pragati-nav-links { display: none; }
+            .pragati-mobile-toggle { display: block; }
+            .pragati-footer-container { grid-template-columns: 1fr; text-align: center; }
+        }
+        @media (max-width: 768px) {
+            .pragati-hero-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="pragati-navbar-sticky">
+    <div class="pragati-container pragati-navbar-inner">
+        <div class="pragati-logo">
+            <div><img class="pragati-logo-icon-img" src="image/prg.jpeg" alt="Pragati Financial logo" /></div>
+            <div class="pragati-logo-text">
+                <h1>PRAGATI<span> FINANCIAL</span></h1>
+                <p>Since 2005 | Trust & Transparency</p>
+            </div>
+        </div>
+        <div class="pragati-nav-links">
+            <a href="index.html" class="pragati-nav-link">Home</a>
+            <a href="mf.html" class="pragati-nav-link">Mutual Funds</a>
+            <a href="stock.html" class="pragati-nav-link" style="color:#2563eb; font-weight:700;">Stock Advisory</a>
+            <a href="tools.html" class="pragati-nav-link">Tools</a>
+            <a href="about.html" class="pragati-nav-link">About</a>
+            <a href="#contact" class="pragati-nav-link">Contact</a>
+            <a href="#contact" class="pragati-cta-button-nav">Start Investing</a>
+        </div>
+        <div class="pragati-mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></div>
+    </div>
+    <div class="pragati-mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="mf.html">Mutual Funds</a>
+        <a href="stock.html">Stock Advisory</a>
+        <a href="tools.html">Tools</a>
+        <a href="about.html">About</a>
+        <a href="#contact">Contact</a>
+        <a href="#contact" style="background:#2563eb; color:white; text-align:center; border-radius:50px;">Start Investing</a>
+    </div>
+</div>
+
+<main>
+    <!-- Hero Section -->
+    <section class="pragati-hero">
+        <div class="pragati-container">
+            <div>
+                <div class="pragati-hero-badge"><i class="fas fa-chart-line"></i> 25+ Years of Stock Market Excellence</div>
+                <h1 class="pragati-hero-title">Expert Stock Advisory <span style="color:#2563eb;">by F S Bhatt</span></h1>
+                <p class="pragati-hero-sub">SEBI Registered Sub‑Broker | 2 Decades of Market Experience | Precision Research & Risk Management</p>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <a href="#contact" class="pragati-btn-primary"><i class="fas fa-chart-simple"></i> Get Advisory</a>
+                    <a href="#services" class="pragati-btn-outline"><i class="fas fa-info-circle"></i> Know More</a>
+                </div>
+            </div>
+            <div class="pragati-hero-visual">
+                <i class="fas fa-chart-line"></i>
+                <p style="margin-top:0.5rem; font-weight:600;">Track Record of Trust</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience & Credibility (specific, not generic) -->
+    <section class="pragati-section">
+        <div class="pragati-container">
+            <div class="pragati-grid-2">
+                <div class="pragati-experience-box">
+                    <i class="fas fa-user-tie" style="font-size:2.5rem;"></i>
+                    <div class="pragati-stat-number">25+ Years</div>
+                    <p>of hands‑on experience in Equity, Derivatives & Intraday Trading</p>
+                    <hr style="margin:1rem 0; opacity:0.3;">
+                    <p><i class="fas fa-check-circle"></i> SEBI Registered Sub‑Broker</p>
+                    <p><i class="fas fa-check-circle"></i> NISM Certified</p>
+                    <p><i class="fas fa-check-circle"></i> Trusted by 300+ Clients</p>
+                </div>
+                <div>
+                    <h2 class="pragati-section-title" style="text-align:left;">Founded on Real Market Wisdom</h2>
+                    <p style="margin-bottom:1rem;">F S Bhatt has navigated multiple market cycles – from the 2008 crisis to the 2020 pandemic and the recent bull runs. His approach combines technical analysis, fundamentals, and risk-first discipline.</p>
+                    <p><strong>Specialities:</strong> Equity Cash, Futures & Options, Bank Nifty strategies, Swing Trading, and Long‑Term Portfolio Building.</p>
+                    <div style="margin-top:1rem; background:#eef2ff; padding:1rem; border-radius:1rem;">
+                        <i class="fas fa-quote-left"></i> "I don't just give tips – I educate clients on why a trade makes sense. Risk management is my first priority." - F S Bhatt
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Offered (Detailed) -->
+    <section id="services" class="pragati-section-alt">
+        <div class="pragati-container">
+            <div class="pragati-section-header">
+                <h2 class="pragati-section-title">What You Get with Our Stock Advisory</h2>
+                <p class="pragati-section-sub">Tailored for traders & investors at every level</p>
+            </div>
+            <div class="pragati-grid-3">
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-building"></i></div>
+                    <h3 class="pragati-card-title">Delivery & Long‑Term</h3>
+                    <p class="pragati-card-text">Fundamental research for wealth creation. Recommended multibagger ideas with rationale.</p>
+                </div>
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-file-alt"></i></div>
+                    <h3 class="pragati-card-title">Daily Research Reports</h3>
+                    <p class="pragati-card-text">Morning market outlook, top picks, economic calendar, and sector updates.</p>
+                </div>
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-headset"></i></div>
+                    <h3 class="pragati-card-title">Dedicated RM Support</h3>
+                    <p class="pragati-card-text">One‑on‑one relationship manager for trade execution, portfolio review, and doubt solving.</p>
+                </div>
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-clock"></i></div>
+                    <h3 class="pragati-card-title">Intraday & BTST Calls</h3>
+                    <p class="pragati-card-text">Pre‑market research, actionable calls with entry, target & stop loss. Focus on high‑probability setups.</p>
+                </div>
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3 class="pragati-card-title">Swing & Positional</h3>
+                    <p class="pragati-card-text">Multi‑day to multi‑week trades based on technical patterns & momentum indicators.</p>
+                </div>
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-cogs"></i></div>
+                    <h3 class="pragati-card-title">F&O Strategies</h3>
+                    <p class="pragati-card-text">Index & stock options – hedged strategies, option selling/ buying with defined risk.</p>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Methodology & Risk Framework -->
+    <section class="pragati-section">
+        <div class="pragati-container">
+            <div class="pragati-section-header">
+                <h2 class="pragati-section-title">Our Research Edge & Risk Framework</h2>
+                <p class="pragati-section-sub">How we generate calls and protect your capital</p>
+            </div>
+            <div class="pragati-grid-2">
+                <div class="pragati-methodology">
+                    <i class="fas fa-chart-bar" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3>Technical + Fundamental Blend</h3>
+                    <p>We combine price action, RSI, moving averages, and support/resistance with key financial ratios. For long‑term picks, we analyze balance sheets, management quality, and industry outlook.</p>
+                </div>
+                <div class="pragati-methodology">
+                    <i class="fas fa-shield-alt" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3>Strict Risk Management</h3>
+                    <p>Every call comes with a predefined stop loss. Position sizing guidance. We never recommend over‑leveraging. Maximum risk per trade is capped at 1‑2% of capital.</p>
+                </div>
+                <div class="pragati-methodology">
+                    <i class="fas fa-users" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3>Transparent Performance</h3>
+                    <p>Monthly performance reports shared with all subscribed clients. No hidden claims – we show wins & losses honestly.</p>
+                </div>
+                <div class="pragati-methodology">
+                    <i class="fas fa-mobile-alt" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3>Real‑time Alerts</h3>
+                    <p>Calls delivered via WhatsApp, Telegram, or SMS. Immediate updates on market volatility and exit signals.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Pragati for Stock Advisory (difference) -->
+    <section class="pragati-section-alt">
+        <div class="pragati-container">
+            <div class="pragati-section-header">
+                <h2 class="pragati-section-title">Why Pragati Financial for Stock Advisory?</h2>
+            </div>
+            <div class="pragati-grid-3">
+                <div class="pragati-card">
+                    <i class="fas fa-history" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3>Proven Longevity</h3>
+                    <p>Since 2005 – survived multiple crashes & bull runs. Experience you can trust.</p>
+                </div>
+                <div class="pragati-card">
+                    <i class="fas fa-user-circle" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3>Founder Led</h3>
+                    <p>F S Bhatt personally reviews all major calls. No junior analysts.</p>
+                </div>
+                <div class="pragati-card">
+                    <i class="fas fa-hand-holding-heart" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3>Education First</h3>
+                    <p>We explain why a trade is taken – empowering you to learn & grow.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sub‑Broking & Execution Support -->
+    <section class="pragati-section">
+        <div class="pragati-container">
+            <div class="pragati-grid-2">
+                <div>
+                    <h2 class="pragati-section-title" style="text-align:left;">Sub‑Broking & Trade Execution</h2>
+                    <p>We are associated with Manashvi Securities Limited to provide seamless execution. You can trade through your existing demat account or we can help you open a new <strong>Zero AMC</strong> account with us.</p>
+                    <ul style="margin-top:1rem; list-style:none;">
+                        <li><i class="fas fa-check-circle" style="color:#2563eb;"></i> Instant account opening support</li>
+                        <li><i class="fas fa-check-circle" style="color:#2563eb;"></i> Lowest brokerage rates</li>
+                        <li><i class="fas fa-check-circle" style="color:#2563eb;"></i> Dedicated dealer for order placement (optional)</li>
+                    </ul>
+                </div>
+                <div class="pragati-card" style="text-align: center; background-color: #bfdbfe;">
+                    <i class="fas fa-charging-station" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3>Get Started in 3 Steps</h3>
+                    <p>1. Consultation & onboarding<br>2. Receive daily research & calls<br>3. Execute with full support</p>
+                    <a href="#contact" class="pragati-btn-primary" style="margin-top:1rem; display:inline-block;">Start Advisory →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section (calculators for trading) -->
+    <section id="tools" class="pragati-section-alt">
+        <div class="pragati-container">
+            <div class="pragati-section-header">
+                <h2 class="pragati-section-title">Trading & Investment Tools</h2>
+                <p class="pragati-section-sub">Plan your trades & analyze returns</p>
+            </div>
+            <div class="pragati-grid-3">
+                <div class="pragati-card">
+                    <i class="fas fa-calculator" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3>SIP Calculator</h3>
+                    <p>For long‑term equity investments.</p>
+                    <a href="#" style="color:#2563eb;">Calculate →</a>
+                </div>
+                <div class="pragati-card">
+                    <i class="fas fa-chart-line" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3>Margin Calculator</h3>
+                    <p>F&O margin requirement & exposure.</p>
+                    <a href="#" style="color:#2563eb;">Calculate →</a>
+                </div>
+                <div class="pragati-card">
+                    <i class="fas fa-rupee-sign" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3>Profit / Loss Calculator</h3>
+                    <p>Plan risk reward for each trade.</p>
+                    <a href="#" style="color:#2563eb;">Calculate →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strong CTA -->
+    <section id="contact" class="pragati-cta-section" style="margin:2rem 2rem;">
+        <h2>Ready to Trade with Expert Guidance?</h2>
+        <p>Get personalized stock advisory from F S Bhatt – 25+ years of market wisdom.</p>
+        <div class="pragati-cta-buttons" style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
+            <a href="tel:+918160102725" style="background:white; color:#1e3a8a; padding:0.7rem 1.8rem; border-radius:60px; text-decoration:none; font-weight:700;"><i class="fas fa-phone-alt"></i> Call Now</a>
+            <a href="https://wa.me/918160102725?text=I%20want%20stock%20advisory%20from%20Pragati%20Financial" target="_blank" style="background:#25d366; color:#0f172a; padding:0.7rem 1.8rem; border-radius:60px; text-decoration:none; font-weight:700; display:inline-flex; gap:0.5rem;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        </div>
+    </section>
+</main>
+
+<footer class="pragati-footer">
+    <div class="pragati-footer-container">
+        <div>
+            <h3 style="color:white;">PRAGATI FINANCIAL</h3>
+            <p>Stock Advisory | Sub‑Broking | Mutual Funds</p>
+            <p><i class="fas fa-envelope"></i> pragatifinser@gmail.com</p>
+            <p><i class="fas fa-phone-alt"></i> +91 96018 80654</p>
+        </div>
+        <div>
+            <h4>Quick Links</h4>
+            <a href="index.html" style="color:#cbd5e1; display:block;">Home</a>
+            <a href="mf.html" style="color:#cbd5e1; display:block;">Mutual Funds</a>
+            <a href="stock.html" style="color:#cbd5e1; display:block;">Stock Advisory</a>
+            <a href="tools.html" style="color:#cbd5e1; display:block;">Tools</a>
+        </div>
+        <div>
+            <h4>Compliance</h4>
+            <p>SEBI Registered Sub‑Broker</p>
+            <p>NISM Certified</p>
+            <p>ARN: 123456 (Example)</p>
+        </div>
+    </div>
+    <div class="pragati-footer-compliance">
+        <p> Investments in securities and mutual funds are subject to market risks. Please read all documents carefully. Past performance does not guarantee future returns. </p>
+        <p>© 2026 Pragati Financial Services — Empowering Wealth with Integrity</p>
+    </div>
+</footer>
+
+<a href="https://wa.me/919601880654?text=I%20need%20stock%20advisory" target="_blank" class="pragati-wa-float">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<script>
+    const toggleBtn = document.getElementById('mobileToggle');
+    const mobilePanel = document.getElementById('mobileMenu');
+    if(toggleBtn && mobilePanel) {
+        toggleBtn.addEventListener('click', () => {
+            if(mobilePanel.style.display === 'flex') mobilePanel.style.display = 'none';
+            else mobilePanel.style.display = 'flex';
+        });
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if(href === '#') return;
+            const target = document.querySelector(href);
+            if(target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
+                if(mobilePanel.style.display === 'flex') mobilePanel.style.display = 'none';
+            }
+        });
+    });
+</script>
+</body>
+</html>

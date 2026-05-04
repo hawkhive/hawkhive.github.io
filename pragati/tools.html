@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Tools & Calculators | Pragati Financial Services</title>
+    <link rel="manifest" id="manifest-link">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        .pragati-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navbar (same style as previous pages) */
+        .pragati-navbar-sticky {
+            position: sticky;
+            margin-left: 2rem;
+            margin-right: 2rem;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #eef2ff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        }
+        .pragati-navbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 1rem 0;
+        }
+        .pragati-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .pragati-logo-icon {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+      .pragati-logo-icon-img {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+        .pragati-logo-text h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .pragati-logo-text span {
+            color: #2563eb;
+        }
+        .pragati-logo-text p {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: -0.1rem;
+        }
+        .pragati-nav-links {
+            display: flex;
+            gap: 1.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .pragati-nav-link {
+            text-decoration: none;
+            font-weight: 500;
+            color: #1e293b;
+            transition: color 0.2s;
+        }
+        .pragati-nav-link:hover {
+            color: #2563eb;
+        }
+        .pragati-cta-button-nav {
+            background: #2563eb;
+            color: white;
+            padding: 0.55rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .pragati-mobile-toggle {
+            display: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: #1e293b;
+        }
+        .pragati-mobile-menu {
+            display: none;
+            flex-direction: column;
+            background: white;
+            padding: 1rem 1.5rem 1.5rem;
+            border-top: 1px solid #eef2ff;
+            width: 100%;
+        }
+
+        /* Hero */
+        .pragati-hero {
+            background: linear-gradient(115deg, #eef2ff, #ffffff);
+            padding: 3rem 0;
+            text-align: center;
+        }
+        .pragati-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        .pragati-hero p {
+            color: #475569;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Category styles */
+        .pragati-category {
+            margin: 3rem 0;
+            align-items: center;
+            text-align: center;
+        }
+        .pragati-category-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-left: 0.5rem;
+            border-left: 5px solid #2563eb;
+        }
+        .pragati-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Flip card container */
+        .pragati-flip-card {
+            background-color: transparent;
+            width: 100%;
+            height: 320px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .pragati-flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 1.5rem;
+            box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.1);
+        }
+        .pragati-flip-card.flipped .pragati-flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        /* Front & Back */
+        .pragati-flip-front, .pragati-flip-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+            border: 1px solid #eef2ff;
+        }
+        .pragati-flip-front {
+            background: white;
+        }
+        .pragati-flip-back {
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            transform: rotateY(180deg);
+            text-align: center;
+            gap: 1rem;
+        }
+        .pragati-flip-front i {
+            font-size: 3rem;
+            color: #2563eb;
+            margin-bottom: 1rem;
+        }
+        .pragati-flip-front h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .pragati-flip-front p {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        .pragati-flip-back p {
+            font-size: 0.9rem;
+            color: #334155;
+            margin-bottom: 1rem;
+        }
+        .pragati-tool-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .pragati-tool-btn:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .pragati-footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 3rem 0 2rem;
+            margin-top: 3rem;
+        }
+        .pragati-footer-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr;
+            gap: 2rem;
+        }
+        .pragati-footer-compliance {
+            font-size: 0.8rem;
+            border-top: 1px solid #334155;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            text-align: center;
+        }
+        .pragati-wa-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #25d366;
+            color: white;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        @media (max-width: 1024px) {
+            .pragati-nav-links {
+                display: none;
+            }
+            .pragati-mobile-toggle {
+                display: block;
+            }
+            .pragati-footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .pragati-hero h1 {
+                font-size: 1.8rem;
+            }
+            .pragati-cards-grid {
+                grid-template-columns: 1fr;
+            }
+            .pragati-flip-card {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar (consistent with brand) -->
+<div class="pragati-navbar-sticky">
+    <div class="pragati-container pragati-navbar-inner">
+        <div class="pragati-logo">
+            <div><img class="pragati-logo-icon-img" src="image/prg.jpeg" alt="Pragati Financial logo" /></div>
+            <div class="pragati-logo-text">
+                <h1>PRAGATI<span> FINANCIAL</span></h1>
+                <p>Since 2005 | Trust & Transparency</p>
+            </div>
+        </div>
+        <div class="pragati-nav-links">
+            <a href="index.html" class="pragati-nav-link">Home</a>
+            <a href="mf.html" class="pragati-nav-link">Mutual Funds</a>
+            <a href="stock.html" class="pragati-nav-link">Stock Advisory</a>
+            <a href="tools.html" class="pragati-nav-link" style="color:#2563eb; font-weight:700;">Tools</a>
+            <a href="#contact" class="pragati-nav-link">Contact</a>
+            <a href="#contact" class="pragati-cta-button-nav">Start Investing</a>
+        </div>
+        <div class="pragati-mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></div>
+    </div>
+    <div class="pragati-mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="mf.html">Mutual Funds</a>
+        <a href="stock.html">Stock Advisory</a>
+        <a href="tools.html">Tools</a>
+        <a href="#contact">Contact</a>
+        <a href="#contact" style="background:#2563eb; color:white; text-align:center; border-radius:50px;">Start Investing</a>
+    </div>
+</div>
+
+<main>
+    <div class="pragati-hero">
+        <div class="pragati-container">
+            <h1>📊 Financial Tools & Calculators</h1>
+            <p>Smart, interactive tools to help you plan, analyze, and grow your wealth — all in one place.</p>
+        </div>
+    </div>
+
+    <div class="pragati-container">
+        <!-- Category 1: Investment Calculators -->
+        <div class="pragati-category">
+            <h2 class="pragati-category-title">📈 Investment Calculators</h2>
+            <div class="pragati-cards-grid">
+                <!-- SIP Calculator -->
+                <div class="pragati-flip-card" data-tool="sip">
+                    <div class="pragati-flip-card-inner">
+                        <div class="pragati-flip-front">
+                            <i class="fas fa-coins"></i>
+                            <h3>SIP Calculator</h3>
+                            <p>Plan monthly investments & see future wealth</p>
+                        </div>
+                        <div class="pragati-flip-back">
+                            <i class="fas fa-chart-line" style="font-size:2rem; color:#2563eb;"></i>
+                            <p>Estimate the maturity value of your monthly SIPs based on expected returns and investment duration. Great for goal planning.</p>
+                            <a href="sip.html" class="pragati-tool-btn" data-tool-link="sip">💡 Use Tool →</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Lump Sum Calculator -->
+                <div class="pragati-flip-card" data-tool="lumpsum">
+                    <div class="pragati-flip-card-inner">
+                        <div class="pragati-flip-front">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <h3>Lump Sum Calculator</h3>
+                            <p>Growth of one-time investment</p>
+                        </div>
+                        <div class="pragati-flip-back">
+                            <i class="fas fa-chart-simple" style="font-size:2rem; color:#2563eb;"></i>
+                            <p>Calculate how a single investment grows over time with compounding. Perfect for bonus or inheritance planning.</p>
+                            <a href="lumpsum.html" class="pragati-tool-btn" data-tool-link="lumpsum">💡 Use Tool →</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- SWP Calculator -->
+                <div class="pragati-flip-card" data-tool="swp">
+                    <div class="pragati-flip-card-inner">
+                        <div class="pragati-flip-front">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            <h3>SWP Calculator</h3>
+                            <p>Systematic Withdrawal Plan</p>
+                        </div>
+                        <div class="pragati-flip-back">
+                            <i class="fas fa-calendar-week" style="font-size:2rem; color:#2563eb;"></i>
+                            <p>Plan regular withdrawals from your mutual fund corpus. Check how long your money lasts with monthly SWP.</p>
+                            <a href="#" class="pragati-tool-btn" data-tool-link="swp">💡 Use Tool →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category 2: Retirement & Goal Planning -->
+        <div class="pragati-category">
+            <h2 class="pragati-category-title">🎯 Retirement & Goal Planning</h2>
+            <div class="pragati-cards-grid">
+                <!-- Retirement Corpus -->
+                <div class="pragati-flip-card" data-tool="retirement">
+                    <div class="pragati-flip-card-inner">
+                        <div class="pragati-flip-front">
+                            <i class="fas fa-umbrella-beach"></i>
+                            <h3>Retirement Planner</h3>
+                            <p>Calculate your retirement corpus</p>
+                        </div>
+                        <div class="pragati-flip-back">
+                            <i class="fas fa-chart-line" style="font-size:2rem; color:#2563eb;"></i>
+                            <p>Estimate the monthly savings needed to achieve your desired retirement corpus considering inflation & returns.</p>
+                            <a href="#" class="pragati-tool-btn" data-tool-link="retirement">💡 Use Tool →</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Children Education Planner -->
+                <div class="pragati-flip-card" data-tool="education">
+                    <div class="pragati-flip-card-inner">
+                        <div class="pragati-flip-front">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h3>Education Planner</h3>
+                            <p>Save for child's future</p>
+                        </div>
+                        <div class="pragati-flip-back">
+                            <i class="fas fa-chalkboard-user" style="font-size:2rem; color:#2563eb;"></i>
+                            <p>Plan for rising education costs. Input current cost, years left, and expected inflation to get required monthly savings.</p>
+                            <a href="#" class="pragati-tool-btn" data-tool-link="education">💡 Use Tool →</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Goal Based Planner -->
+                <div class="pragati-flip-card" data-tool="goal">
+                    <div class="pragati-flip-card-inner">
+                        <div class="pragati-flip-front">
+                            <i class="fas fa-bullseye"></i>
+                            <h3>Goal Planner</h3>
+                            <p>Any financial goal (house, car, vacation)</p>
+                        </div>
+                        <div class="pragati-flip-back">
+                            <i class="fas fa-calculator" style="font-size:2rem; color:#2563eb;"></i>
+                            <p>Set any target amount & timeline, and find out how much to invest monthly. Flexible for any aspiration.</p>
+                            <a href="#" class="pragati-tool-btn" data-tool-link="goal">💡 Use Tool →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category 3: Tax & Compliance Tools -->
+        <div class="pragati-category">
+            <h2 class="pragati-category-title">📋 Tax & Compliance Tools</h2>
+            <div class="pragati-cards-grid">
+                <!-- Capital Gains Tax -->
+                <div class="pragati-flip-card" data-tool="capitalgains">
+                    <div class="pragati-flip-card-inner">
+                        <div class="pragati-flip-front">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <h3>Capital Gains Tax</h3>
+                            <p>Equity / Debt / Property</p>
+                        </div>
+                        <div class="pragati-flip-back">
+                            <i class="fas fa-chart-simple" style="font-size:2rem; color:#2563eb;"></i>
+                            <p>Calculate LTCG/STCG tax on stocks, mutual funds, or property. Know your exact tax liability before selling.</p>
+                            <a href="#" class="pragati-tool-btn" data-tool-link="capitalgains">💡 Use Tool →</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- ELSS Tax Saving -->
+                <div class="pragati-flip-card" data-tool="elss">
+                    <div class="pragati-flip-card-inner">
+                        <div class="pragati-flip-front">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>80C Tax Saver</h3>
+                            <p>ELSS & other 80C options</p>
+                        </div>
+                        <div class="pragati-flip-back">
+                            <i class="fas fa-hand-holding-heart" style="font-size:2rem; color:#2563eb;"></i>
+                            <p>Estimate tax saved by investing in ELSS, PPF, etc. Compare post-tax returns of different sections.</p>
+                            <a href="#" class="pragati-tool-btn" data-tool-link="elss">💡 Use Tool →</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- NPS Calculator -->
+                <div class="pragati-flip-card" data-tool="nps">
+                    <div class="pragati-flip-card-inner">
+                        <div class="pragati-flip-front">
+                            <i class="fas fa-building"></i>
+                            <h3>NPS Calculator</h3>
+                            <p>National Pension System</p>
+                        </div>
+                        <div class="pragati-flip-back">
+                            <i class="fas fa-chart-line" style="font-size:2rem; color:#2563eb;"></i>
+                            <p>Project maturity amount & monthly pension from NPS contributions including tax benefits under 80CCD.</p>
+                            <a href="#" class="pragati-tool-btn" data-tool-link="nps">💡 Use Tool →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category 4: Trading & Stock Tools -->
+        <div class="pragati-category">
+            <h2 class="pragati-category-title">📉 Trading & Stock Analysis</h2>
+            <div class="pragati-cards-grid">
+                <!-- Margin Calculator -->
+                <div class="pragati-flip-card" data-tool="margin">
+                    <div class="pragati-flip-card-inner">
+                        <div class="pragati-flip-front">
+                            <i class="fas fa-calculator"></i>
+                            <h3>Margin Calculator</h3>
+                            <p>F&O / Equity Margin</p>
+                        </div>
+                        <div class="pragati-flip-back">
+                            <i class="fas fa-chart-line" style="font-size:2rem; color:#2563eb;"></i>
+                            <p>Calculate required margin for futures & options trades, or equity delivery leverage. Plan your trades effectively.</p>
+                            <a href="#" class="pragati-tool-btn" data-tool-link="margin">💡 Use Tool →</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Profit / Loss Calculator -->
+                <div class="pragati-flip-card" data-tool="pnl">
+                    <div class="pragati-flip-card-inner">
+                        <div class="pragati-flip-front">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>P&L Calculator</h3>
+                            <p>Risk / Reward Ratio</p>
+                        </div>
+                        <div class="pragati-flip-back">
+                            <i class="fas fa-chart-simple" style="font-size:2rem; color:#2563eb;"></i>
+                            <p>Determine your net profit/loss for a trade, including brokerage and taxes. Set stop loss & target levels.</p>
+                            <a href="#" class="pragati-tool-btn" data-tool-link="pnl">💡 Use Tool →</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- CAGR Calculator -->
+                <div class="pragati-flip-card" data-tool="cagr">
+                    <div class="pragati-flip-card-inner">
+                        <div class="pragati-flip-front">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>CAGR Calculator</h3>
+                            <p>Compounded Annual Growth</p>
+                        </div>
+                        <div class="pragati-flip-back">
+                            <i class="fas fa-chart-line" style="font-size:2rem; color:#2563eb;"></i>
+                            <p>Find the effective annual growth rate of your investments over multiple years. Compare performance easily.</p>
+                            <a href="#" class="pragati-tool-btn" data-tool-link="cagr">💡 Use Tool →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin: 2rem 0; padding: 1rem; background: #eef2ff; border-radius: 1rem;">
+            <i class="fas fa-info-circle"></i> More tools coming soon. Click on any card to flip and then click "Use Tool" (separate pages for each calculator will be added later).
+        </div>
+    </div>
+</main>
+
+<footer class="pragati-footer">
+    <div class="pragati-footer-container">
+        <div>
+            <h3 style="color:white;">PRAGATI FINANCIAL</h3>
+            <p>Stock Advisory | Sub‑Broking | Mutual Funds</p>
+            <p><i class="fas fa-envelope"></i> pragatifinser@gmail.com</p>
+            <p><i class="fas fa-phone-alt"></i> +91 96018 80654</p>
+        </div>
+        <div>
+            <h4>Quick Links</h4>
+            <a href="index.html" style="color:#cbd5e1; display:block;">Home</a>
+            <a href="mf.html" style="color:#cbd5e1; display:block;">Mutual Funds</a>
+            <a href="stock.html" style="color:#cbd5e1; display:block;">Stock Advisory</a>
+            <a href="tools.html" style="color:#cbd5e1; display:block;">Tools</a>
+        </div>
+        <div>
+            <h4>Compliance</h4>
+            <p>SEBI Registered Sub‑Broker</p>
+            <p>NISM Certified</p>
+            <p>ARN: 123456 (Example)</p>
+        </div>
+    </div>
+    <div class="pragati-footer-compliance">
+        <p> Investments in securities and mutual funds are subject to market risks. Please read all documents carefully. Past performance does not guarantee future returns. </p>
+        <p>© 2026 Pragati Financial Services — Empowering Wealth with Integrity</p>
+    </div>
+</footer>
+
+<a href="https://wa.me/919601880654?text=I%20want%20to%20use%20financial%20tools" target="_blank" class="pragati-wa-float">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<script>
+    // Flip card functionality: click on card toggles 'flipped' class
+    const flipCards = document.querySelectorAll('.pragati-flip-card');
+    flipCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Stop propagation if the click target is the button or inside the button on the back side
+            if (e.target.closest('.pragati-tool-btn')) {
+                e.stopPropagation();  // prevent card flip when clicking button
+                return;
+            }
+            this.classList.toggle('flipped');
+        });
+    });
+
+    // For all "Use Tool" buttons: prevent card flip and redirect (placeholder)
+    const toolButtons = document.querySelectorAll('.pragati-tool-btn');
+    toolButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();  // avoid card flip
+            const toolLink = this.getAttribute('data-tool-link');
+            // Currently all href="#", later we will replace with actual pages
+            console.log(`Opening tool page for: ${toolLink}`);
+            // For now, show a message that tool is under construction
+            alert(`The "${toolLink}" tool page will be available soon. We are building dedicated calculators for each.`);
+            // Optional: in future, redirect to actual tool page
+            // window.location.href = `tool-${toolLink}.html`;
+        });
+    });
+
+    // Mobile menu toggle
+    const toggleBtn = document.getElementById('mobileToggle');
+    const mobilePanel = document.getElementById('mobileMenu');
+    if(toggleBtn && mobilePanel) {
+        toggleBtn.addEventListener('click', () => {
+            if(mobilePanel.style.display === 'flex') mobilePanel.style.display = 'none';
+            else mobilePanel.style.display = 'flex';
+        });
+    }
+
+    // Smooth scroll for anchor links (if any)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
+            const target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
+                if (mobilePanel.style.display === 'flex') mobilePanel.style.display = 'none';
+            }
+        });
+    });
+</script>
+</body>
+</html>

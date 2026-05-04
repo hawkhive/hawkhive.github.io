@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Step-Up SIP Calculator | Pragati Financial Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        .pragati-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navbar */
+        .pragati-navbar-sticky {
+            position: sticky;
+            margin-left: 2rem;
+            margin-right: 2rem;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #eef2ff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        }
+        .pragati-navbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 1rem 0;
+        }
+        .pragati-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .pragati-logo-icon {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+        .pragati-logo-icon-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .pragati-logo-text h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .pragati-logo-text span { color: #2563eb; }
+        .pragati-logo-text p {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: -0.1rem;
+        }
+        .pragati-nav-links {
+            display: flex;
+            gap: 1.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .pragati-nav-link {
+            text-decoration: none;
+            font-weight: 500;
+            color: #1e293b;
+            transition: color 0.2s;
+        }
+        .pragati-nav-link:hover { color: #2563eb; }
+        .pragati-cta-button-nav {
+            background: #2563eb;
+            color: white;
+            padding: 0.55rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .pragati-mobile-toggle {
+            display: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: #1e293b;
+        }
+        .pragati-mobile-menu {
+            display: none;
+            flex-direction: column;
+            background: white;
+            padding: 1rem 1.5rem 1.5rem;
+            border-top: 1px solid #eef2ff;
+            width: 100%;
+        }
+
+        /* Calculator Main */
+        .pragati-calc-hero {
+            background: linear-gradient(115deg, #eef2ff, #ffffff);
+            padding: 2.5rem 0 2rem;
+            text-align: center;
+        }
+        .pragati-calc-hero h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .pragati-calc-card {
+            background: white;
+            border-radius: 2rem;
+            padding: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.08);
+            margin: 2rem 0;
+        }
+        .pragati-input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .pragati-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .pragati-field label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .pragati-field input, .pragati-field select {
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+        .pragati-field input:focus, .pragati-field select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+        .pragati-stepup-options {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .pragati-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+        .pragati-btn {
+            padding: 0.8rem 2rem;
+            border-radius: 60px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .pragati-btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+        .pragati-btn-primary:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+        }
+        .pragati-btn-secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+        .pragati-btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        /* Results Cards */
+        .pragati-results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .pragati-result-card {
+            background: #f8fafc;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .pragati-result-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #2563eb;
+        }
+        .pragati-chart-container {
+            margin: 2rem 0;
+            height: 400px;
+        }
+        .pragati-table-container {
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+        .pragati-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .pragati-table th, .pragati-table td {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            text-align: right;
+        }
+        .pragati-table th {
+            background: #eef2ff;
+            font-weight: 700;
+            text-align: center;
+        }
+        .pragati-table td:first-child {
+            font-weight: 600;
+            background: #f9fafb;
+        }
+
+        /* Footer */
+        .pragati-footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 3rem 0 2rem;
+            margin-top: 3rem;
+        }
+        .pragati-footer-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr;
+            gap: 2rem;
+        }
+        .pragati-footer-compliance {
+            font-size: 0.8rem;
+            border-top: 1px solid #334155;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            text-align: center;
+        }
+        .pragati-wa-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #25d366;
+            color: white;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        @media (max-width: 1024px) {
+            .pragati-nav-links { display: none; }
+            .pragati-mobile-toggle { display: block; }
+            .pragati-results-grid { grid-template-columns: 1fr; }
+            .pragati-footer-container { grid-template-columns: 1fr; text-align: center; }
+        }
+        @media (max-width: 768px) {
+            .pragati-calc-hero h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="pragati-navbar-sticky">
+    <div class="pragati-container pragati-navbar-inner">
+        <div class="pragati-logo">
+            <div><img class="pragati-logo-icon-img" src="image/prg.jpeg" alt="Pragati Financial logo" /></div>
+            <div class="pragati-logo-text">
+                <h1>PRAGATI<span> FINANCIAL</span></h1>
+                <p>Since 2005 | Trust & Transparency</p>
+            </div>
+        </div>
+        <div class="pragati-nav-links">
+            <a href="index.html" class="pragati-nav-link">Home</a>
+            <a href="mf.html" class="pragati-nav-link">Mutual Funds</a>
+            <a href="stock.html" class="pragati-nav-link">Stock Advisory</a>
+            <a href="tools.html" class="pragati-nav-link">Tools</a>
+            <a href="about.html" class="pragati-nav-link">About</a>
+            <a href="#contact" class="pragati-nav-link">Contact</a>
+            <a href="#contact" class="pragati-cta-button-nav">Start Investing</a>
+        </div>
+        <div class="pragati-mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></div>
+    </div>
+    <div class="pragati-mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="mf.html">Mutual Funds</a>
+        <a href="stock.html">Stock Advisory</a>
+        <a href="tools.html">Tools</a>
+        <a href="about.html">About</a>
+        <a href="#contact">Contact</a>
+        <a href="#contact" style="background:#2563eb; color:white; text-align:center; border-radius:50px;">Start Investing</a>
+    </div>
+</div>
+
+<main>
+    <div class="pragati-calc-hero">
+        <div class="pragati-container">
+            <h1>📈 Step-Up SIP Calculator</h1>
+            <p>Plan your wealth with increasing SIP amounts, lumpsum, and step‑up options</p>
+        </div>
+    </div>
+
+    <div class="pragati-container">
+        <div class="pragati-calc-card">
+            <div class="pragati-input-group">
+                <div class="pragati-field">
+                    <label>💰 Initial Lumpsum (₹)</label>
+                    <input type="number" id="lumpsum" value="50000" step="5000" placeholder="Optional">
+                </div>
+                <div class="pragati-field">
+                    <label>📅 Monthly SIP (₹)</label>
+                    <input type="number" id="sipAmount" value="3000" step="500">
+                </div>
+                <div class="pragati-field">
+                    <label>📊 Expected Return (% p.a)</label>
+                    <input type="number" id="returnRate" value="12" step="0.5">
+                </div>
+                <div class="pragati-field">
+                    <label>⏱️ Tenure (Years)</label>
+                    <input type="number" id="years" value="10" step="1">
+                </div>
+            </div>
+
+            <div class="pragati-input-group">
+                <div class="pragati-field">
+                    <label>📈 Step-Up Type</label>
+                    <select id="stepType">
+                        <option value="none">No Step-Up</option>
+                        <option value="percent" selected>Percentage (%) per year</option>
+                        <option value="fixed">Fixed INR per year</option>
+                    </select>
+                </div>
+                <div class="pragati-field" id="stepValueField">
+                    <label>Step-Up Value</label>
+                    <input type="number" id="stepValue" value="10" step="1" placeholder="% or ₹">
+                </div>
+            </div>
+
+            <div class="pragati-buttons">
+                <button class="pragati-btn pragati-btn-primary" id="calculateBtn">📊 Calculate</button>
+                <button class="pragati-btn pragati-btn-secondary" id="resetBtn">🔄 Reset</button>
+            </div>
+
+            <!-- Results summary -->
+            <div id="resultsBlock" style="display: none;">
+                <div class="pragati-results-grid">
+                    <div class="pragati-result-card">
+                        <h3>💰 Total Invested</h3>
+                        <div class="pragati-result-value" id="totalInvested">₹0</div>
+                    </div>
+                    <div class="pragati-result-card">
+                        <h3>📈 Total Returns</h3>
+                        <div class="pragati-result-value" id="totalReturns">₹0</div>
+                        <small id="returnsPercent">(0%)</small>
+                    </div>
+                    <div class="pragati-result-card">
+                        <h3>🏦 Final Value</h3>
+                        <div class="pragati-result-value" id="finalValue">₹0</div>
+                    </div>
+                </div>
+
+                <div class="pragati-chart-container">
+                    <canvas id="growthChart" width="400" height="200"></canvas>
+                </div>
+
+                <div class="pragati-table-container">
+                    <table class="pragati-table" id="yearlyTable">
+                        <thead>
+                            <tr><th>Year</th><th>Start Balance (₹)</th><th>Monthly SIP (₹)</th><th>Invested This Year (₹)</th><th>End Balance (₹)</th><th>Yearly Returns (₹)</th></tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Footer CTA -->
+    <section id="contact" class="pragati-cta-section" style="background: linear-gradient(115deg, #1e3a8a, #2563eb); color:white; padding:2rem; text-align:center; border-radius:2rem; margin:2rem;">
+        <h2>Need personalized financial planning?</h2>
+        <p>Connect with Sahil Bhatt for expert advice on SIPs, Mutual Funds & Wealth Creation.</p>
+        <div style="display:flex; gap:1rem; justify-content:center; margin-top:1rem;">
+            <a href="tel:+919601880654" style="background:white; color:#1e3a8a; padding:0.6rem 1.5rem; border-radius:60px; text-decoration:none;">Call Now</a>
+            <a href="https://wa.me/919601880654?text=I%20want%20to%20plan%20my%20SIP%20with%20step-up" target="_blank" style="background:#25d366; color:#0f172a; padding:0.6rem 1.5rem; border-radius:60px; text-decoration:none;">WhatsApp Us</a>
+        </div>
+    </section>
+</main>
+
+<footer class="pragati-footer">
+    <div class="pragati-footer-container">
+        <div><h3 style="color:white;">PRAGATI FINANCIAL</h3><p>Stock Advisory | Sub‑Broking | Mutual Funds</p><p><i class="fas fa-envelope"></i> pragatifinser@gmail.com</p><p><i class="fas fa-phone-alt"></i> +91 96018 80654</p></div>
+        <div><h4>Quick Links</h4><a href="index.html" style="color:#cbd5e1; display:block;">Home</a><a href="mf.html" style="color:#cbd5e1; display:block;">Mutual Funds</a><a href="stock.html" style="color:#cbd5e1; display:block;">Stock Advisory</a><a href="tools.html" style="color:#cbd5e1; display:block;">Tools</a><a href="about.html" style="color:#cbd5e1; display:block;">About</a></div>
+        <div><h4>Office</h4><p>Himatnagar, Gujarat</p><p>Mon–Sat: 10 AM – 6 PM</p></div>
+    </div>
+    <div class="pragati-footer-compliance"><p>Calculations are for illustrative purposes only. Actual returns may vary. Past performance does not guarantee future returns.</p><p>© 2026 Pragati Financial Services</p></div>
+</footer>
+<a href="https://wa.me/919601880654?text=I%20am%20using%20the%20Step-Up%20SIP%20calculator" target="_blank" class="pragati-wa-float"><i class="fab fa-whatsapp"></i></a>
+
+<script>
+    // DOM elements
+    const lumpsumInput = document.getElementById('lumpsum');
+    const sipInput = document.getElementById('sipAmount');
+    const returnInput = document.getElementById('returnRate');
+    const yearsInput = document.getElementById('years');
+    const stepType = document.getElementById('stepType');
+    const stepValue = document.getElementById('stepValue');
+    const calculateBtn = document.getElementById('calculateBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const resultsBlock = document.getElementById('resultsBlock');
+    const totalInvestedSpan = document.getElementById('totalInvested');
+    const totalReturnsSpan = document.getElementById('totalReturns');
+    const finalValueSpan = document.getElementById('finalValue');
+    const returnsPercentSpan = document.getElementById('returnsPercent');
+    const yearlyTableBody = document.querySelector('#yearlyTable tbody');
+    let chartInstance = null;
+
+    // Helper: format currency
+    function formatINR(value) {
+        return '₹' + value.toLocaleString('en-IN', { maximumFractionDigits: 0, minimumFractionDigits: 0 });
+    }
+
+    // Calculation logic
+    function calculateStepUpSIP() {
+        let lumpsum = parseFloat(lumpsumInput.value) || 0;
+        let baseSIP = parseFloat(sipInput.value);
+        let annualReturn = parseFloat(returnInput.value);
+        let years = parseInt(yearsInput.value);
+        let stepTypeVal = stepType.value;
+        let stepVal = parseFloat(stepValue.value) || 0;
+
+        if (isNaN(baseSIP) || baseSIP <= 0) { alert('Please enter a valid monthly SIP amount'); return null; }
+        if (isNaN(annualReturn) || annualReturn < 0) { alert('Enter valid return rate'); return null; }
+        if (isNaN(years) || years < 1) { alert('Enter valid tenure (>=1 year)'); return null; }
+
+        const monthlyRate = annualReturn / 12 / 100;
+        const months = years * 12;
+        let currentBalance = lumpsum;  // lumpsum grows separately with compounding, we'll treat initial lumpsum as start balance
+        // We'll compute per year timeline
+        let yearlyData = [];
+        let totalInvestedOverall = lumpsum;
+        let currentSIP = baseSIP;
+
+        let startBalanceYear = lumpsum; // lumpsum invested at beginning
+
+        for (let y = 1; y <= years; y++) {
+            let sipForYear = currentSIP;
+            let investedThisYear = 0;
+            // For each month in the year, add SIP and compound
+            let yearStartBalance = startBalanceYear;
+            let balance = yearStartBalance;
+            for (let m = 1; m <= 12; m++) {
+                balance += sipForYear;
+                balance *= (1 + monthlyRate);
+                investedThisYear += sipForYear;
+            }
+            totalInvestedOverall += investedThisYear;
+            let endBalance = balance;
+            let yearlyReturns = endBalance - (yearStartBalance + investedThisYear);
+            yearlyData.push({
+                year: y,
+                startBalance: yearStartBalance,
+                monthlySIP: sipForYear,
+                investedYear: investedThisYear,
+                endBalance: endBalance,
+                yearlyReturns: yearlyReturns
+            });
+            startBalanceYear = endBalance;
+            // apply step-up for next year
+            if (stepTypeVal !== 'none' && y < years) {
+                if (stepTypeVal === 'percent') {
+                    currentSIP = currentSIP * (1 + stepVal / 100);
+                } else if (stepTypeVal === 'fixed') {
+                    currentSIP = currentSIP + stepVal;
+                }
+                if (currentSIP < 0) currentSIP = 0;
+            }
+        }
+
+        const finalValue = yearlyData[yearlyData.length-1].endBalance;
+        const totalReturns = finalValue - totalInvestedOverall;
+        const returnsPercentVal = (totalReturns / totalInvestedOverall) * 100;
+
+        // Build chart data: cumulative invested (principal over years) and total value line
+        let cumulativeInvested = [];
+        let cumulativeValues = [];
+        let runningInvested = lumpsum;
+        for (let i = 0; i < yearlyData.length; i++) {
+            runningInvested += yearlyData[i].investedYear;
+            cumulativeInvested.push(runningInvested);
+            cumulativeValues.push(yearlyData[i].endBalance);
+        }
+        const yearsLabels = yearlyData.map(d => `Year ${d.year}`);
+
+        return {
+            totalInvested: totalInvestedOverall,
+            totalReturns: totalReturns,
+            finalValue: finalValue,
+            returnsPercent: returnsPercentVal,
+            yearlyData: yearlyData,
+            cumulativeInvested: cumulativeInvested,
+            cumulativeValues: cumulativeValues,
+            yearsLabels: yearsLabels
+        };
+    }
+
+    function renderResults(data) {
+        totalInvestedSpan.innerText = formatINR(data.totalInvested);
+        totalReturnsSpan.innerText = formatINR(data.totalReturns);
+        finalValueSpan.innerText = formatINR(data.finalValue);
+        returnsPercentSpan.innerText = `(${data.returnsPercent.toFixed(2)}%)`;
+
+        // Render table
+        yearlyTableBody.innerHTML = '';
+        data.yearlyData.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${row.year}</td>
+                <td>${formatINR(row.startBalance)}</td>
+                <td>${formatINR(row.monthlySIP)}</td>
+                <td>${formatINR(row.investedYear)}</td>
+                <td>${formatINR(row.endBalance)}</td>
+                <td>${formatINR(row.yearlyReturns)}</td>
+            `;
+            yearlyTableBody.appendChild(tr);
+        });
+
+        // Render chart
+        if (chartInstance) chartInstance.destroy();
+        const ctx = document.getElementById('growthChart').getContext('2d');
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.yearsLabels,
+                datasets: [
+                    {
+                        label: 'Total Invested (Principal)',
+                        data: data.cumulativeInvested,
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'transparent',
+                        tension: 0.2,
+                        fill: false,
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Total Value (Corpus)',
+                        data: data.cumulativeValues,
+                        borderColor: '#2563eb',
+                        backgroundColor: 'transparent',
+                        tension: 0.2,
+                        fill: false,
+                        borderWidth: 3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${formatINR(ctx.raw)}` } },
+                    legend: { position: 'top' }
+                },
+                scales: {
+                    y: { ticks: { callback: (val) => formatINR(val) }, title: { display: true, text: 'Amount (₹)' } },
+                    x: { title: { display: true, text: 'Investment Year' } }
+                }
+            }
+        });
+    }
+
+    function handleCalculate() {
+        const result = calculateStepUpSIP();
+        if (result) {
+            renderResults(result);
+            resultsBlock.style.display = 'block';
+            window.scrollTo({ top: resultsBlock.offsetTop - 20, behavior: 'smooth' });
+        }
+    }
+
+    function handleReset() {
+        lumpsumInput.value = '50000';
+        sipInput.value = '3000';
+        returnInput.value = '12';
+        yearsInput.value = '10';
+        stepType.value = 'percent';
+        stepValue.value = '10';
+        resultsBlock.style.display = 'none';
+        if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+        yearlyTableBody.innerHTML = '';
+    }
+
+    // Dynamic step value label
+    function updateStepPlaceholder() {
+        const type = stepType.value;
+        const stepField = document.getElementById('stepValue');
+        if (type === 'percent') {
+            stepField.placeholder = 'Percentage increase per year (e.g., 10)';
+            stepField.step = '1';
+        } else if (type === 'fixed') {
+            stepField.placeholder = 'Fixed INR increase per year (e.g., 500)';
+            stepField.step = '100';
+        } else {
+            stepField.placeholder = 'Step-up disabled';
+            stepField.disabled = (type === 'none');
+        }
+        stepField.disabled = (type === 'none');
+    }
+    stepType.addEventListener('change', updateStepPlaceholder);
+    updateStepPlaceholder();
+
+    calculateBtn.addEventListener('click', handleCalculate);
+    resetBtn.addEventListener('click', handleReset);
+
+    // initial dummy load to show demo? optionally show on page load
+    window.addEventListener('load', () => {
+        handleCalculate();
+    });
+
+    // Mobile menu
+    const toggleBtn = document.getElementById('mobileToggle');
+    const mobilePanel = document.getElementById('mobileMenu');
+    if(toggleBtn && mobilePanel) {
+        toggleBtn.addEventListener('click', () => {
+            if(mobilePanel.style.display === 'flex') mobilePanel.style.display = 'none';
+            else mobilePanel.style.display = 'flex';
+        });
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if(href === '#') return;
+            const target = document.querySelector(href);
+            if(target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
+                if(mobilePanel.style.display === 'flex') mobilePanel.style.display = 'none';
+            }
+        });
+    });
+</script>
+</body>
+</html>
