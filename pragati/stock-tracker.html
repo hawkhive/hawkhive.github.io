@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Pragati Investment – Stock Tracker</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1e3a8a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Pragati Stocks">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f1f5f9;
+      padding: 20px 16px 80px 16px;
+      color: #0f172a;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      background: white;
+      padding: 12px 16px;
+      border-radius: 28px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .stat-card {
+      text-align: center;
+      flex: 1;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+    /* Search bar */
+    .search-container {
+      margin-bottom: 16px;
+    }
+    .search-box {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 40px;
+      border: 1px solid #cbd5e1;
+      background: white;
+      font-size: 1rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      transition: all 0.2s;
+    }
+    .search-box:focus {
+      outline: none;
+      border-color: #1e3a8a;
+      box-shadow: 0 0 0 3px rgba(30,58,138,0.1);
+    }
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: white;
+      padding: 6px;
+      border-radius: 60px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px 0;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #475569;
+    }
+    .tab.active {
+      background: #1e3a8a;
+      color: white;
+    }
+    /* Cards */
+    .tips-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .tip-card {
+      background: white;
+      border-radius: 28px;
+      padding: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border-left: 5px solid #3b82f6;
+      transition: 0.1s;
+    }
+    .tip-card.positive {
+      border-left-color: #10b981;
+    }
+    .tip-card.negative {
+      border-left-color: #ef4444;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .symbol {
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+    .days {
+      font-size: 0.75rem;
+      background: #e2e8f0;
+      padding: 4px 10px;
+      border-radius: 40px;
+      color: #334155;
+    }
+    .price-group {
+      display: flex;
+      justify-content: space-between;
+      margin: 12px 0;
+      gap: 30px;
+    }
+    .left-prices, .right-prices {
+      flex: 1;
+    }
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+    .price-label {
+      font-weight: 500;
+      color: #475569;
+    }
+    .price-value {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .cmp-value {
+      font-size: 1.2rem;
+      color: #0f172a;
+    }
+    .performance {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .positive-text { color: #10b981; }
+    .negative-text { color: #ef4444; }
+    .status-select {
+      margin-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 12px;
+    }
+    .status-select select {
+      padding: 8px 12px;
+      border-radius: 40px;
+      border: 1px solid #cbd5e1;
+      background: white;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .notes {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 8px;
+    }
+    .fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1e3a8a;
+      width: 60px;
+      height: 60px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+      cursor: pointer;
+      border: none;
+      z-index: 1000;
+    }
+    .fab span {
+      color: white;
+      font-size: 32px;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      z-index: 1100;
+    }
+    .modal-content {
+      background: white;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 32px;
+      padding: 24px;
+    }
+    .modal-content input {
+      width: 100%;
+      padding: 14px;
+      margin: 8px 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 60px;
+      font-size: 1rem;
+    }
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .modal-buttons button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 60px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-submit { background: #1e3a8a; color: white; }
+    .btn-cancel { background: #e2e8f0; color: #334155; }
+    .loading { text-align: center; padding: 40px; color: #475569; }
+    footer { text-align: center; margin-top: 24px; font-size: 0.7rem; color: #94a3b8; }
+    .autocomplete-dropdown {
+      position: absolute;
+      background: white;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 9999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .autocomplete-item {
+      padding: 10px 14px;
+      cursor: pointer;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .autocomplete-item:hover {
+      background: #f1f5f9;
+    }
+    .autocomplete-symbol {
+      font-weight: 700;
+      color: #1e3a8a;
+    }
+    .autocomplete-name {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📈 Pragati Investment</h1>
+  <p>Stock Performance Tracker</p>
+  <p style="font-size:0.75rem; color:#64748b;">Developed by Sahil Bhatt</p>
+</div>
+
+<div class="stats">
+  <div class="stat-card"><div class="stat-label">Active</div><div class="stat-value" id="activeCount">0</div></div>
+  <div class="stat-card"><div class="stat-label">Achieved</div><div class="stat-value" id="achievedCount">0</div></div>
+  <div class="stat-card"><div class="stat-label">Archived</div><div class="stat-value" id="archivedCount">0</div></div>
+</div>
+
+<!-- Search Bar -->
+<div class="search-container">
+  <input type="text" id="searchInput" class="search-box" placeholder="🔍 Search by symbol or notes...">
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-status="active">📌 Active</div>
+  <div class="tab" data-status="target achieved">🎯 Achieved</div>
+  <div class="tab" data-status="archived">📦 Archived</div>
+</div>
+
+<div id="tipsContainer" class="tips-container">
+  <div class="loading">Loading active tips...</div>
+</div>
+<footer>Tap + to add • Status changes update instantly</footer>
+
+<button class="fab" id="fabBtn"><span>+</span></button>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <h3>➕ New Stock Tip</h3>
+    <input type="text" id="modalSymbol" placeholder="Symbol (e.g. ITC, RELIANCE)" autocomplete="off">
+    <input type="number" id="modalEntry" placeholder="Entry Price (₹)" step="any">
+    <input type="number" id="modalTarget" placeholder="Target (₹)" step="any">
+    <input type="number" id="modalStop" placeholder="Stop Loss (optional)" step="any">
+    <input type="text" id="modalNotes" placeholder="Notes">
+    <div class="modal-buttons">
+      <button class="btn-cancel" id="cancelModalBtn">Cancel</button>
+      <button class="btn-submit" id="submitTipBtn">Add Tip</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwiHJrEo3CqIaYAAw5CYYBTR_AjI79jw5SAyS1Ewe7inCxTJBglIqHteDiBBXRVsPEo4g/exec'; // REPLACE!
+  let currentStatus = 'active';
+  let tipsCache = { active: [], targetAchieved: [], archived: [] };
+  let counts = { active: 0, targetAchieved: 0, archived: 0 };
+  let currentSearchTerm = '';
+
+  // Helper: fetch tips by status
+  async function fetchTipsByStatus(status) {
+    try {
+      const res = await fetch(`${API_URL}?action=fetch&status=${encodeURIComponent(status)}`);
+      const data = await res.json();
+      return Array.isArray(data) ? data : [];
+    } catch (err) {
+      console.error(err);
+      return [];
+    }
+  }
+
+  // Load all counts
+  async function updateCounts() {
+    const active = await fetchTipsByStatus('active');
+    const achieved = await fetchTipsByStatus('target achieved');
+    const archived = await fetchTipsByStatus('archived');
+    counts.active = active.length;
+    counts.targetAchieved = achieved.length;
+    counts.archived = archived.length;
+    document.getElementById('activeCount').innerText = counts.active;
+    document.getElementById('achievedCount').innerText = counts.targetAchieved;
+    document.getElementById('archivedCount').innerText = counts.archived;
+    tipsCache.active = active;
+    tipsCache.targetAchieved = achieved;
+    tipsCache.archived = archived;
+    return { active, achieved, archived };
+  }
+
+  function daysPassed(timestampStr) {
+    const tipDate = new Date(timestampStr);
+    const today = new Date();
+    const diffTime = today - tipDate;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
+
+  // Filter tips based on search term (symbol or notes)
+  function filterTips(tips, term) {
+    if (!term.trim()) return tips;
+    const lowerTerm = term.toLowerCase();
+    return tips.filter(tip => {
+      const symbol = (tip.stock_symbol || '').replace('NSE:', '').toLowerCase();
+      const notes = (tip.notes || '').toLowerCase();
+      return symbol.includes(lowerTerm) || notes.includes(lowerTerm);
+    });
+  }
+
+  // Render cards for given status, with optional search filter
+  function renderTips(tips, status, searchTerm = '') {
+    const container = document.getElementById('tipsContainer');
+    let filteredTips = filterTips(tips, searchTerm);
+    if (!filteredTips.length) {
+      container.innerHTML = `<div class="loading" style="background:white; border-radius:28px; padding:30px;">🔍 No matching tips found for "${searchTerm}".</div>`;
+      return;
+    }
+    const sorted = [...filteredTips].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+    const html = sorted.map(tip => {
+      const entry = parseFloat(tip.entry_price);
+      const cmpRaw = tip.cmp;
+      let cmp = null;
+      if (cmpRaw && !isNaN(parseFloat(cmpRaw))) cmp = parseFloat(cmpRaw);
+      let perf = null;
+      let perfClass = '';
+      let perfText = '—';
+      if (cmp !== null && !isNaN(entry)) {
+        perf = ((cmp - entry) / entry) * 100;
+        perfClass = perf >= 0 ? 'positive-text' : 'negative-text';
+        perfText = perf.toFixed(2) + '%';
+      }
+      const days = daysPassed(tip.timestamp);
+      const tipDate = new Date(tip.timestamp);
+      const shortDate = tipDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+      const symbolClean = tip.stock_symbol.replace('NSE:', '');
+      const cardBorder = (perf !== null) ? (perf >= 0 ? 'positive' : 'negative') : '';
+      return `
+        <div class="tip-card ${cardBorder}" data-timestamp="${tip.timestamp}">
+          <div class="card-header">
+            <span class="symbol">${symbolClean}</span>
+            <span class="days">📅 ${shortDate}, ${days} day${days !== 1 ? 's' : ''} ago</span>
+            <div> <span class="name">${tip.stock_name || ''}</span></div>
+          </div>
+          <div class="price-group">
+            <div class="left-prices">
+              <div class="price-row"><span class="price-label">Entry</span><span class="price-value">₹${entry}</span></div>
+              <div class="price-row"><span class="price-label">CMP</span><span class="price-value cmp-value">${cmp !== null ? '₹'+cmp : '...'}</span></div>
+            </div>
+            <div class="right-prices">
+              <div class="price-row"><span class="price-label">Target</span><span class="price-value">₹${tip.target || '-'}</span></div>
+              <div class="price-row"><span class="price-label">Stop Loss</span><span class="price-value">₹${tip.stop_loss || '-'}</span></div>
+            </div>
+          </div>
+          <div class="performance ${perfClass}">Performance: ${perfText}</div>
+          ${tip.notes ? `<div class="notes">📝 ${tip.notes}</div>` : ''}
+          <div class="status-select">
+            <span style="font-size:0.75rem;">Status:</span>
+            <select data-timestamp="${tip.timestamp}" class="status-dropdown">
+              <option value="active" ${tip.status === 'active' ? 'selected' : ''}>Active</option>
+              <option value="target achieved" ${tip.status === 'target achieved' ? 'selected' : ''}>Target achieved</option>
+              <option value="archived" ${tip.status === 'archived' ? 'selected' : ''}>Archived</option>
+            </select>
+          </div>
+        </div>
+      `;
+    }).join('');
+    container.innerHTML = html;
+    
+    document.querySelectorAll('.status-dropdown').forEach(select => {
+      select.addEventListener('change', async (e) => {
+        const newStatus = e.target.value;
+        const timestamp = e.target.dataset.timestamp;
+        await updateStatus(timestamp, newStatus);
+        await updateCounts();
+        await loadCurrentTab();
+      });
+    });
+  }
+
+  async function updateStatus(timestamp, newStatus) {
+    const url = `${API_URL}?action=updateStatus&timestamp=${encodeURIComponent(timestamp)}&status=${encodeURIComponent(newStatus)}`;
+    const res = await fetch(url);
+    const result = await res.json();
+    if (!result.success) alert('Status update failed');
+  }
+
+  async function loadCurrentTab() {
+    let tips;
+    if (currentStatus === 'active') tips = tipsCache.active;
+    else if (currentStatus === 'target achieved') tips = tipsCache.targetAchieved;
+    else tips = tipsCache.archived;
+    if (!tips) {
+      tips = await fetchTipsByStatus(currentStatus);
+      if (currentStatus === 'active') tipsCache.active = tips;
+      else if (currentStatus === 'target achieved') tipsCache.targetAchieved = tips;
+      else tipsCache.archived = tips;
+    }
+    renderTips(tips, currentStatus, currentSearchTerm);
+  }
+
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', async () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentStatus = tab.dataset.status;
+      document.getElementById('tipsContainer').innerHTML = '<div class="loading">Loading...</div>';
+      if (!tipsCache[currentStatus]) {
+        tipsCache[currentStatus] = await fetchTipsByStatus(currentStatus);
+      }
+      renderTips(tipsCache[currentStatus], currentStatus, currentSearchTerm);
+    });
+  });
+
+  // Search input handler
+  const searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', (e) => {
+    currentSearchTerm = e.target.value;
+    // Re-render current tab with search filter
+    if (tipsCache[currentStatus]) {
+      renderTips(tipsCache[currentStatus], currentStatus, currentSearchTerm);
+    } else {
+      loadCurrentTab(); // fallback
+    }
+  });
+
+  async function addTip(symbol, entry, target, stopLoss, notes) {
+    const params = new URLSearchParams({
+      action: 'add',
+      stock_symbol: symbol.trim(),
+      entry_price: entry,
+      target: target,
+      stop_loss: stopLoss || '',
+      notes: notes || ''
+    });
+    const res = await fetch(`${API_URL}?${params.toString()}`);
+    const result = await res.json();
+    if (result.success) {
+      tipsCache = { active: null, targetAchieved: null, archived: null };
+      await updateCounts();
+      await loadCurrentTab();
+      return true;
+    } else throw new Error(result.error);
+  }
+
+  // Modal logic
+  const modal = document.getElementById('modal');
+  const fab = document.getElementById('fabBtn');
+  const cancelModal = document.getElementById('cancelModalBtn');
+  const submitBtn = document.getElementById('submitTipBtn');
+  function openModal() { modal.style.display = 'flex'; }
+  function closeModal() { modal.style.display = 'none'; }
+  fab.onclick = openModal;
+  cancelModal.onclick = closeModal;
+  modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+
+  // Autocomplete logic (fixed, attaches to body)
+  const symbolInput = document.getElementById('modalSymbol');
+  let dropdown = null;
+
+  function createDropdown() {
+    const div = document.createElement('div');
+    div.className = 'autocomplete-dropdown';
+    div.style.display = 'none';
+    document.body.appendChild(div);
+    return div;
+  }
+
+  function positionDropdown() {
+    if (!dropdown) return;
+    const rect = symbolInput.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    dropdown.style.top = rect.bottom + scrollTop + 4 + 'px';
+    dropdown.style.left = rect.left + 'px';
+    dropdown.style.width = rect.width + 'px';
+  }
+
+  function showDropdown(results) {
+    if (!dropdown) dropdown = createDropdown();
+    if (!results.length) {
+      dropdown.style.display = 'none';
+      return;
+    }
+    dropdown.innerHTML = results.map(item => `
+      <div class="autocomplete-item" data-symbol="${item.symbol}">
+        <span class="autocomplete-symbol">${item.symbol}</span>
+        <span class="autocomplete-name">${item.name}</span>
+      </div>
+    `).join('');
+    dropdown.querySelectorAll('.autocomplete-item').forEach(el => {
+      el.addEventListener('click', () => {
+        symbolInput.value = el.dataset.symbol;
+        dropdown.style.display = 'none';
+      });
+    });
+    positionDropdown();
+    dropdown.style.display = 'block';
+  }
+
+  let debounceTimer;
+  symbolInput.addEventListener('input', async (e) => {
+    clearTimeout(debounceTimer);
+    const query = e.target.value.trim();
+    if (query.length < 1) {
+      if (dropdown) dropdown.style.display = 'none';
+      return;
+    }
+    debounceTimer = setTimeout(async () => {
+      try {
+        const res = await fetch(`${API_URL}?action=searchTickers&query=${encodeURIComponent(query)}`);
+        const results = await res.json();
+        if (!Array.isArray(results) || results.length === 0) {
+          if (dropdown) dropdown.style.display = 'none';
+          return;
+        }
+        showDropdown(results);
+      } catch (err) {
+        console.error(err);
+        if (dropdown) dropdown.style.display = 'none';
+      }
+    }, 300);
+  });
+
+  window.addEventListener('scroll', () => { if (dropdown && dropdown.style.display === 'block') positionDropdown(); });
+  window.addEventListener('resize', () => { if (dropdown && dropdown.style.display === 'block') positionDropdown(); });
+  document.addEventListener('click', (e) => {
+    if (e.target !== symbolInput && (!dropdown || !dropdown.contains(e.target))) {
+      if (dropdown) dropdown.style.display = 'none';
+    }
+  });
+  const observer = new MutationObserver(() => {
+    if (modal.style.display !== 'flex' && dropdown) dropdown.style.display = 'none';
+  });
+  observer.observe(modal, { attributes: true, attributeFilter: ['style'] });
+
+  submitBtn.onclick = async () => {
+    const symbol = document.getElementById('modalSymbol').value;
+    const entry = document.getElementById('modalEntry').value;
+    const target = document.getElementById('modalTarget').value;
+    if (!symbol || !entry || !target) return alert('Fill Symbol, Entry & Target');
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Adding...';
+    try {
+      await addTip(symbol, entry, target, document.getElementById('modalStop').value, document.getElementById('modalNotes').value);
+      closeModal();
+      document.getElementById('modalSymbol').value = '';
+      document.getElementById('modalEntry').value = '';
+      document.getElementById('modalTarget').value = '';
+      document.getElementById('modalStop').value = '';
+      document.getElementById('modalNotes').value = '';
+      if (dropdown) dropdown.style.display = 'none';
+    } catch (err) {
+      alert('Error: ' + err.message);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = 'Add Tip';
+    }
+  };
+
+  (async () => {
+    await updateCounts();
+    await loadCurrentTab();
+  })();
+  setInterval(async () => {
+    await updateCounts();
+    if (tipsCache[currentStatus]) {
+      // Refresh current tab content from server (preserve search)
+      tipsCache[currentStatus] = await fetchTipsByStatus(currentStatus);
+      renderTips(tipsCache[currentStatus], currentStatus, currentSearchTerm);
+    }
+  }, 60000);
+</script>
+</body>
+</html>

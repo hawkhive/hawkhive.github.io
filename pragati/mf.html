@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Mutual Funds | Pragati Financial Services</title>
+    <!-- Google Fonts + Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #0f172a;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* Container */
+        .pragati-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* ---------- STICKY NAVBAR (same as homepage) ---------- */
+        .pragati-navbar-sticky {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #eef2ff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        }
+        .pragati-navbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 1rem 0;
+        }
+        .pragati-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .pragati-logo-icon {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+        .pragati-logo-text h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .pragati-logo-text span {
+            color: #2563eb;
+        }
+        .pragati-logo-text p {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: -0.1rem;
+        }
+        .pragati-nav-links {
+            display: flex;
+            gap: 1.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .pragati-nav-link {
+            text-decoration: none;
+            font-weight: 500;
+            color: #1e293b;
+            transition: color 0.2s;
+        }
+        .pragati-nav-link:hover {
+            color: #2563eb;
+        }
+        .pragati-cta-button-nav {
+            background: #2563eb;
+            color: white;
+            padding: 0.55rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.2);
+        }
+        .pragati-mobile-toggle {
+            display: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: #1e293b;
+        }
+        .pragati-mobile-menu {
+            display: none;
+            flex-direction: column;
+            background: white;
+            padding: 1rem 1.5rem 1.5rem;
+            border-top: 1px solid #eef2ff;
+            width: 100%;
+        }
+
+        /* ---------- HERO (Mutual Funds) ---------- */
+        .pragati-mf-hero {
+            background: linear-gradient(115deg, #eef2ff, #ffffff);
+            padding: 4rem 0;
+        }
+        .pragati-mf-hero .pragati-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        .pragati-mf-badge {
+            background: #2563eb20;
+            color: #1e3a8a;
+            display: inline-block;
+            padding: 0.25rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .pragati-mf-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        .pragati-mf-sub {
+            font-size: 1.1rem;
+            color: #475569;
+            margin-bottom: 1.5rem;
+        }
+        .pragati-mf-visual {
+            background: white;
+            border-radius: 2rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 20px 35px -15px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .pragati-mf-visual i {
+            font-size: 5rem;
+            color: #2563eb;
+        }
+
+        /* Sections common */
+        .pragati-section {
+            padding: 4rem 0;
+        }
+        .pragati-section-alt {
+            background: #f8fafc;
+        }
+        .pragati-section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+        .pragati-section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        .pragati-section-sub {
+            color: #64748b;
+        }
+
+        /* Cards grid */
+        .pragati-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        .pragati-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+        .pragati-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.8rem;
+            border: 1px solid #eef2ff;
+            transition: 0.25s;
+        }
+        .pragati-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.08);
+            border-color: #bfdbfe;
+        }
+        .pragati-card-icon {
+            width: 56px;
+            height: 56px;
+            background: #eef2ff;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+        }
+        .pragati-card-icon i {
+            font-size: 1.6rem;
+            color: #2563eb;
+        }
+        .pragati-card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .pragati-card-text {
+            color: #475569;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Riskometer */
+        .pragati-riskometer {
+            background: white;
+            border-radius: 2rem;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .risk-levels {
+            display: flex;
+            justify-content: space-between;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+        .risk-item {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .risk-low { background: #22c55e20; color: #166534; }
+        .risk-moderate { background: #eab30820; color: #854d0e; }
+        .risk-high { background: #ef444420; color: #991b1b; }
+
+        /* CTA */
+        .pragati-cta-section {
+            background: linear-gradient(115deg, #1e3a8a, #2563eb);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 2rem;
+            margin: 2rem 0;
+        }
+        .pragati-cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .pragati-btn-white {
+            background: white;
+            color: #1e3a8a;
+            padding: 0.7rem 1.6rem;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .pragati-btn-wa {
+            background: #25d366;
+            color: #0f172a;
+            padding: 0.7rem 1.6rem;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Footer */
+        .pragati-footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 3rem 0 2rem;
+            margin-top: 2rem;
+        }
+        .pragati-footer-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr;
+            gap: 2rem;
+        }
+        .pragati-footer-compliance {
+            font-size: 0.8rem;
+            border-top: 1px solid #334155;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            text-align: center;
+        }
+
+        /* Floating WhatsApp */
+        .pragati-wa-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #25d366;
+            color: white;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        @media (max-width: 1024px) {
+            .pragati-grid-3, .pragati-grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .pragati-mf-hero .pragati-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .pragati-nav-links {
+                display: none;
+            }
+            .pragati-mobile-toggle {
+                display: block;
+            }
+            .pragati-footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+        @media (max-width: 768px) {
+            .pragati-mf-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sticky Navbar (identical to homepage) -->
+<div class="pragati-navbar-sticky">
+    <div class="pragati-container pragati-navbar-inner">
+        <div class="pragati-logo">
+            <div class="pragati-logo-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="pragati-logo-text">
+                <h1>PRAGATI<span> FINANCIAL</span></h1>
+                <p>Since 2005 | Trust & Transparency</p>
+            </div>
+        </div>
+        <div class="pragati-nav-links">
+            <a href="index.html" class="pragati-nav-link">Home</a>
+            <a href="mutual-funds.html" class="pragati-nav-link" style="color:#2563eb; font-weight:700;">Mutual Funds</a>
+            <a href="#tools" class="pragati-nav-link">Tools</a>
+            <a href="#learn" class="pragati-nav-link">Learn</a>
+            <a href="#contact" class="pragati-nav-link">Contact</a>
+            <a href="#contact" class="pragati-cta-button-nav">Start Investing</a>
+        </div>
+        <div class="pragati-mobile-toggle" id="mobileToggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+    <div class="pragati-mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="mutual-funds.html">Mutual Funds</a>
+        <a href="#tools">Tools</a>
+        <a href="#learn">Learn</a>
+        <a href="#contact">Contact</a>
+        <a href="#contact" style="background:#2563eb; color:white; text-align:center; border-radius:50px;">Start Investing</a>
+    </div>
+</div>
+
+<main>
+    <!-- Hero Section for Mutual Funds -->
+    <section class="pragati-mf-hero">
+        <div class="pragati-container">
+            <div>
+                <div class="pragati-mf-badge"><i class="fas fa-chart-pie"></i> Mutual Funds Simplified</div>
+                <h1 class="pragati-mf-title">Grow Your Wealth with <span style="color:#2563eb;">Systematic Investing</span></h1>
+                <p class="pragati-mf-sub">Start your SIP with just ₹500. Expert-curated mutual fund portfolios for every goal — whether it's retirement, children's education, or tax saving.</p>
+                <div class="pragati-hero-buttons" style="display:flex; gap:1rem;">
+                    <a href="#contact" class="pragati-btn-primary" style="background:#2563eb; color:white; padding:0.7rem 1.5rem; border-radius:60px; text-decoration:none;"><i class="fas fa-rupee-sign"></i> Start SIP</a>
+                    <a href="#types" class="pragati-btn-secondary" style="border:1px solid #2563eb; padding:0.7rem 1.5rem; border-radius:60px; text-decoration:none; color:#2563eb;">Explore Funds</a>
+                </div>
+            </div>
+            <div class="pragati-mf-visual">
+                <i class="fas fa-chart-line"></i>
+                <p style="margin-top:0.5rem; font-weight:600;">Power of Compounding</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Types of Mutual Funds -->
+    <section id="types" class="pragati-section">
+        <div class="pragati-container">
+            <div class="pragati-section-header">
+                <h2 class="pragati-section-title">Types of Mutual Funds</h2>
+                <p class="pragati-section-sub">Choose based on your risk appetite and investment horizon</p>
+            </div>
+            <div class="pragati-grid-3">
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3 class="pragati-card-title">Equity Funds</h3>
+                    <p class="pragati-card-text">Invest primarily in stocks. High return potential with higher risk. Ideal for long-term wealth creation (5+ years).</p>
+                </div>
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                    <h3 class="pragati-card-title">Debt Funds</h3>
+                    <p class="pragati-card-text">Invest in bonds, treasury bills. Lower risk, stable returns. Suitable for short to medium term (1-3 years).</p>
+                </div>
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-balance-scale"></i></div>
+                    <h3 class="pragati-card-title">Hybrid Funds</h3>
+                    <p class="pragati-card-text">Mix of equity and debt. Balanced risk-return profile. Great for moderate risk takers.</p>
+                </div>
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-chart-simple"></i></div>
+                    <h3 class="pragati-card-title">ELSS (Tax Saving)</h3>
+                    <p class="pragati-card-text">Section 80C deduction up to ₹1.5 lakh. Lock-in period of 3 years. Equity-oriented.</p>
+                </div>
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-city"></i></div>
+                    <h3 class="pragati-card-title">Sectoral/Thematic</h3>
+                    <p class="pragati-card-text">Focus on specific sectors like IT, Pharma, Banking. High risk, high reward potential.</p>
+                </div>
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-chart-pie"></i></div>
+                    <h3 class="pragati-card-title">Index Funds</h3>
+                    <p class="pragati-card-text">Passive funds tracking Nifty 50, Sensex. Low expense ratio, good for long term.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SIP vs Lumpsum + Benefits -->
+    <section class="pragati-section-alt">
+        <div class="pragati-container">
+            <div class="pragati-grid-2" style="gap:3rem;">
+                <div>
+                    <div class="pragati-section-header" style="text-align:left; margin-bottom:1rem;">
+                        <h2 class="pragati-section-title">SIP vs Lump Sum</h2>
+                    </div>
+                    <div class="pragati-card" style="margin-bottom:1rem;">
+                        <h3><i class="fas fa-calendar-week"></i> Systematic Investment Plan (SIP)</h3>
+                        <p>Invest fixed amount monthly. Rupee cost averaging, disciplined approach. Ideal for salaried individuals. Start from ₹500.</p>
+                    </div>
+                    <div class="pragati-card">
+                        <h3><i class="fas fa-money-bill-wave"></i> Lump Sum</h3>
+                        <p>One-time investment of larger amount. Suitable when you have surplus cash. Market timing matters more.</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="pragati-section-header" style="text-align:left; margin-bottom:1rem;">
+                        <h2 class="pragati-section-title">Key Benefits</h2>
+                    </div>
+                    <ul style="list-style:none;">
+                        <li style="margin-bottom:0.8rem;"><i class="fas fa-check-circle" style="color:#2563eb;"></i> <strong>Professional Management</strong> – Expert fund managers handle your money.</li>
+                        <li style="margin-bottom:0.8rem;"><i class="fas fa-check-circle" style="color:#2563eb;"></i> <strong>Diversification</strong> – Spread across sectors & companies.</li>
+                        <li style="margin-bottom:0.8rem;"><i class="fas fa-check-circle" style="color:#2563eb;"></i> <strong>Liquidity</strong> – Easy redemption (except ELSS lock-in).</li>
+                        <li style="margin-bottom:0.8rem;"><i class="fas fa-check-circle" style="color:#2563eb;"></i> <strong>Tax Efficiency</strong> – ELSS saves tax, LTCG taxed at 12.5% above ₹1.25L.</li>
+                        <li style="margin-bottom:0.8rem;"><i class="fas fa-check-circle" style="color:#2563eb;"></i> <strong>Affordability</strong> – Start with as low as ₹500 via SIP.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Riskometer & Taxation -->
+    <section class="pragati-section">
+        <div class="pragati-container">
+            <div class="pragati-section-header">
+                <h2 class="pragati-section-title">Understand the Risk & Taxation</h2>
+            </div>
+            <div class="pragati-grid-2" style="gap:2rem;">
+                <div class="pragati-riskometer">
+                    <h3><i class="fas fa-chart-line"></i> Riskometer (SEBI)</h3>
+                    <div class="risk-levels">
+                        <div class="risk-item risk-low">Low Risk<br>(Debt/Liquid)</div>
+                        <div class="risk-item risk-moderate">Moderate<br>(Hybrid)</div>
+                        <div class="risk-item risk-high">High Risk<br>(Equity)</div>
+                    </div>
+                    <p class="pragati-card-text">Higher the risk, higher the potential returns. Choose funds aligned with your risk profile.</p>
+                </div>
+                <div class="pragati-riskometer">
+                    <h3><i class="fas fa-file-invoice-dollar"></i> Taxation on Mutual Funds</h3>
+                    <ul style="text-align:left; list-style:none;">
+                        <li>✔ Equity Funds: LTCG (>1 year) 12.5% above ₹1.25L; STCG 20%.</li>
+                        <li>✔ Debt Funds: LTCG (>3 years) 20% with indexation; STCG as per income slab.</li>
+                        <li>✔ ELSS: Tax deduction u/s 80C up to ₹1.5L (3 years lock-in).</li>
+                        <li>✔ Dividends are added to income and taxed as per slab.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Invest with Pragati -->
+    <section class="pragati-section-alt">
+        <div class="pragati-container">
+            <div class="pragati-section-header">
+                <h2 class="pragati-section-title">How to Invest with Pragati Financial</h2>
+                <p class="pragati-section-sub">Simple, transparent, paperless process</p>
+            </div>
+            <div class="pragati-grid-3">
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-user-check"></i></div>
+                    <h3 class="pragati-card-title">1. KYC Registration</h3>
+                    <p class="pragati-card-text">Complete your KYC online (PAN, Aadhaar). We assist you step-by-step.</p>
+                </div>
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-clipboard-list"></i></div>
+                    <h3 class="pragati-card-title">2. Risk Profiling</h3>
+                    <p class="pragati-card-text">We assess your financial goals, risk appetite & suggest suitable funds.</p>
+                </div>
+                <div class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-chart-simple"></i></div>
+                    <h3 class="pragati-card-title">3. Start Investing</h3>
+                    <p class="pragati-card-text">Start SIP or lump sum directly through our platform. Regular portfolio reviews.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section (calculators) -->
+    <section id="tools" class="pragati-section">
+        <div class="pragati-container">
+            <div class="pragati-section-header">
+                <h2 class="pragati-section-title">Mutual Fund Calculators</h2>
+                <p class="pragati-section-sub">Plan your SIP, SWP, and goal projections</p>
+            </div>
+            <div class="pragati-grid-3">
+                <div class="pragati-card">
+                    <i class="fas fa-calculator" style="font-size:2rem; color:#2563eb; margin-bottom:1rem;"></i>
+                    <h3>SIP Calculator</h3>
+                    <p>Estimate future value of monthly investments.</p>
+                    <a href="#" class="pragati-tool-btn" style="display:inline-block; margin-top:1rem;">Calculate →</a>
+                </div>
+                <div class="pragati-card">
+                    <i class="fas fa-hand-holding-usd" style="font-size:2rem; color:#2563eb; margin-bottom:1rem;"></i>
+                    <h3>SWP Calculator</h3>
+                    <p>Plan systematic withdrawals from your corpus.</p>
+                    <a href="#" class="pragati-tool-btn" style="display:inline-block; margin-top:1rem;">Calculate →</a>
+                </div>
+                <div class="pragati-card">
+                    <i class="fas fa-chart-line" style="font-size:2rem; color:#2563eb; margin-bottom:1rem;"></i>
+                    <h3>Lumpsum Calculator</h3>
+                    <p>Growth of one-time investment over time.</p>
+                    <a href="#" class="pragati-tool-btn" style="display:inline-block; margin-top:1rem;">Calculate →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learn Section (additional articles) -->
+    <section id="learn" class="pragati-section-alt">
+        <div class="pragati-container">
+            <div class="pragati-section-header">
+                <h2 class="pragati-section-title">Learn Mutual Funds</h2>
+                <p class="pragati-section-sub">Free resources to build your knowledge</p>
+            </div>
+            <div class="pragati-grid-3">
+                <div class="pragati-card">
+                    <i class="fas fa-graduation-cap" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3>What is NAV?</h3>
+                    <p>Net Asset Value explained – how mutual fund units are priced.</p>
+                    <a href="#" class="pragati-readmore">Read →</a>
+                </div>
+                <div class="pragati-card">
+                    <i class="fas fa-chart-simple" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3>Expense Ratio</h3>
+                    <p>Understand charges and how they affect your returns.</p>
+                    <a href="#" class="pragati-readmore">Read →</a>
+                </div>
+                <div class="pragati-card">
+                    <i class="fas fa-calendar-alt" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3>Power of Compounding</h3>
+                    <p>Why starting early with SIP makes a huge difference.</p>
+                    <a href="#" class="pragati-readmore">Read →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="contact" class="pragati-cta-section" style="margin:2rem 2rem;">
+        <h2>Ready to start your Mutual Fund journey?</h2>
+        <p>Get expert advice and personalized portfolio from Sahil Bhatt (MF Distributor).</p>
+        <div class="pragati-cta-buttons">
+            <a href="tel:+919601880654" class="pragati-btn-white"><i class="fas fa-phone-alt"></i> Call Now</a>
+            <a href="https://wa.me/919601880654?text=I%20want%20to%20start%20SIP%20in%20mutual%20funds" target="_blank" class="pragati-btn-wa"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="pragati-footer">
+    <div class="pragati-footer-container">
+        <div>
+            <h3 style="color:white;">PRAGATI FINANCIAL</h3>
+            <p>Stock Advisory | Mutual Funds | Financial Planning</p>
+            <p><i class="fas fa-envelope"></i> pragatifinser@gmail.com</p>
+            <p><i class="fas fa-phone-alt"></i> +91 96018 80654</p>
+        </div>
+        <div>
+            <h4>Quick Links</h4>
+            <a href="index.html" style="color:#cbd5e1; display:block;">Home</a>
+            <a href="mutual-funds.html" style="color:#cbd5e1; display:block;">Mutual Funds</a>
+            <a href="#tools" style="color:#cbd5e1; display:block;">Tools</a>
+            <a href="#learn" style="color:#cbd5e1; display:block;">Learn</a>
+        </div>
+        <div>
+            <h4>Compliance</h4>
+            <p>ARN: 123456 (Example)</p>
+            <p>AMFI Registered Mutual Fund Distributor</p>
+            <p>SEBI Registered Sub-Broker</p>
+        </div>
+    </div>
+    <div class="pragati-footer-compliance">
+        <p>Mutual fund investments are subject to market risks. Read all scheme related documents carefully. Past performance is not indicative of future returns.</p>
+        <p>© 2026 Pragati Financial Services</p>
+    </div>
+</footer>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/919601880654?text=I%20want%20to%20invest%20in%20mutual%20funds" target="_blank" class="pragati-wa-float">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<script>
+    const toggleBtn = document.getElementById('mobileToggle');
+    const mobilePanel = document.getElementById('mobileMenu');
+    if(toggleBtn && mobilePanel) {
+        toggleBtn.addEventListener('click', () => {
+            if(mobilePanel.style.display === 'flex') mobilePanel.style.display = 'none';
+            else mobilePanel.style.display = 'flex';
+        });
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if(href === '#') return;
+            const target = document.querySelector(href);
+            if(target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
+                if(mobilePanel.style.display === 'flex') mobilePanel.style.display = 'none';
+            }
+        });
+    });
+</script>
+</body>
+</html>

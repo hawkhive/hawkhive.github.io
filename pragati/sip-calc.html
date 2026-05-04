@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>FinCal - SIP & MF Calculators</title>
+  <link rel="manifest" id="manifest-link">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+    body {
+      background: #f5f7fb;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    .app-container {
+      max-width: 1200px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 20px 35px rgba(0,0,0,0.08);
+      overflow: hidden;
+      position: relative;
+      min-height: 90vh;
+    }
+    .header {
+      background: linear-gradient(135deg, #0f4c5c, #1a6b7a);
+      color: white;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-radius: 0 0 24px 24px;
+    }
+    @media (min-width: 768px) {
+      .header {
+        padding: 28px 32px;
+      }
+    }
+    .header h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+    @media (min-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+    }
+    .header .logo {
+      font-size: 2rem;
+    }
+    .page {
+      display: block;
+      flex-direction: column;
+    }
+    .page.active {
+      display: flex;
+    }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding: 24px 20px;
+    }
+    .card {
+      background: #f0f4fa;
+      border-radius: 20px;
+      padding: 20px 12px;
+      text-align: center;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    }
+    .card:active {
+      transform: scale(0.96);
+      background: #e3eaf2;
+    }
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+    .card-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #1a2e3f;
+    }
+    .back-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      margin-right: 4px;
+      cursor: pointer;
+    }
+    .calc-content {
+      padding: 20px 22px 30px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    @media (min-width: 768px) {
+      .calc-content {
+        padding: 32px 40px 40px;
+      }
+    }
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+    @media (min-width: 768px) {
+      .input-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .input-grid .input-group:nth-child(4) {
+        grid-column: span 2;
+      }
+    }
+    .input-group {
+      margin-bottom: 18px;
+    }
+    @media (min-width: 768px) {
+      .input-group {
+        margin-bottom: 24px;
+      }
+    }
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #3a4b5c;
+      margin-bottom: 6px;
+    }
+    @media (min-width: 768px) {
+      .input-group label {
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+      }
+    }
+    .input-field {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #dce3eb;
+      border-radius: 14px;
+      font-size: 1rem;
+      background: #f9fbfd;
+      outline: none;
+      transition: border 0.2s;
+      -webkit-appearance: none;
+    }
+    @media (min-width: 768px) {
+      .input-field {
+        padding: 14px 16px;
+        font-size: 1rem;
+      }
+    }
+    .input-field:focus {
+      border-color: #1a6b7a;
+    }
+    .stepup-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    @media (min-width: 768px) {
+      .stepup-toggle {
+        gap: 12px;
+      }
+    }
+    .toggle-option {
+      flex: 1;
+      text-align: center;
+      padding: 12px 8px;
+      background: #f0f4fa;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #3a4b5c;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    @media (min-width: 768px) {
+      .toggle-option {
+        padding: 14px 12px;
+        font-size: 0.95rem;
+      }
+    }
+    .toggle-option.active {
+      background: #0f4c5c;
+      color: white;
+      border-color: #0f4c5c;
+    }
+    .stepup-value {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    @media (min-width: 768px) {
+      .stepup-value {
+        gap: 12px;
+      }
+    }
+    .stepup-value span {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    @media (min-width: 768px) {
+      .stepup-value span {
+        font-size: 1.4rem;
+      }
+    }
+    .button-row {
+      display: flex;
+      gap: 12px;
+      margin: 24px 0 20px;
+    }
+    @media (min-width: 768px) {
+      .button-row {
+        gap: 16px;
+        margin: 32px 0 28px;
+      }
+    }
+    .btn {
+      flex: 1;
+      padding: 16px;
+      border-radius: 16px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    @media (min-width: 768px) {
+      .btn {
+        padding: 18px 24px;
+      }
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+    .btn-calculate {
+      background: #0f4c5c;
+      color: white;
+    }
+    .btn-reset {
+      background: #e9eef3;
+      color: #1a2e3f;
+    }
+    .result-overview {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .result-card {
+      flex: 1;
+      min-width: 140px;
+      background: #f8faff;
+      border-radius: 18px;
+      padding: 16px 8px;
+      text-align: center;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.03);
+    }
+    @media (min-width: 768px) {
+      .result-card {
+        min-width: auto;
+        flex: 1;
+      }
+    }
+    .result-card .label {
+      font-size: 0.75rem;
+      color: #5e6f82;
+      margin-bottom: 6px;
+    }
+    .result-card .value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #0f4c5c;
+    }
+    @media (min-width: 768px) {
+      .result-card .label {
+        font-size: 0.85rem;
+      }
+      .result-card .value {
+        font-size: 1.4rem;
+      }
+    }
+    .table-container {
+      max-height: 320px;
+      overflow-y: auto;
+      border-radius: 16px;
+      border: 1px solid #eef2f7;
+    }
+    @media (min-width: 768px) {
+      .table-container {
+        max-height: 500px;
+      }
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.75rem;
+    }
+    @media (min-width: 768px) {
+      table {
+        font-size: 0.9rem;
+      }
+    }
+    th {
+      background: #f0f4fa;
+      padding: 12px 6px;
+      font-weight: 600;
+      color: #1a2e3f;
+      position: sticky;
+      top: 0;
+    }
+    td {
+      padding: 10px 6px;
+      text-align: right;
+      border-bottom: 1px solid #f0f2f7;
+    }
+    td:first-child, th:first-child { text-align: left; }
+    .note {
+      font-size: 0.7rem;
+      color: #7b8a9c;
+      margin-top: 8px;
+      text-align: center;
+    }
+    @media (min-width: 768px) {
+      .note {
+        font-size: 0.85rem;
+        margin-top: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+
+    <!-- SIP Calculator Page -->
+    <div class="page" id="sip-calc-page">
+      <div class="header">
+        <button class="back-btn" onclick="window.location.href='/pragati'">←</button>
+        <h1 style="font-size:1.3rem;">SIP Calculator</h1>
+      </div>
+      <div class="calc-content">
+        <div class="input-grid">
+          <div class="input-group">
+            <label>Lump Sum Amount (₹) <span style="font-weight:300;color:#8a9aa8;">optional</span></label>
+            <input type="number" id="lumpsum" class="input-field" placeholder="e.g. 50000" value="0" min="0">
+          </div>
+          <div class="input-group">
+            <label>Monthly SIP (₹)</label>
+            <input type="number" id="monthlySip" class="input-field" placeholder="e.g. 5000" value="5000" min="500">
+          </div>
+          <div class="input-group">
+            <label>Expected Return (% per year)</label>
+            <input type="number" id="returnRate" class="input-field" placeholder="12" value="12" step="0.1" min="0.1">
+          </div>
+          <div class="input-group">
+            <label>Investment Period (Years)</label>
+            <input type="number" id="years" class="input-field" placeholder="10" value="10" min="1" max="40">
+          </div>
+          <div class="input-group" style="grid-column: span 1;">
+            <label id="stepup-label">Increase SIP by each year</label>
+            <div class="stepup-value">
+              <input type="number" id="stepupValue" class="input-field" placeholder="10" value="10" min="0" step="0.1">
+              <span id="stepup-unit">%</span>
+            </div>
+            <br>
+            <div class="stepup-toggle" id="stepup-toggle">
+              <div class="toggle-option active" id="toggle-percent" onclick="setStepupType('percent')">📊 Percentage (%)</div>
+              <div class="toggle-option" id="toggle-fixed" onclick="setStepupType('fixed')">💵 Fixed Amount (₹)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button class="btn btn-calculate" onclick="calculateSIP()">Calculate</button>
+          <button class="btn btn-reset" onclick="resetForm()">Reset</button>
+        </div>
+
+        <!-- Results (hidden until calculated) -->
+        <div id="result-section" style="display: none;">
+          <div class="result-overview">
+            <div class="result-card">
+              <div class="label">Total Invested</div>
+              <div class="value" id="total-invested">-</div>
+            </div>
+            <div class="result-card">
+              <div class="label">Total Profit</div>
+              <div class="value" id="total-profit">-</div>
+            </div>
+            <div class="result-card">
+              <div class="label">Maturity Value</div>
+              <div class="value" id="total-value">-</div>
+            </div>
+          </div>
+          <div class="table-container" id="table-container">
+            <table id="yearly-table">
+              <thead>
+                <tr><th>Year</th><th>Invested</th><th>Profit</th><th>Total</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="note">📱 Tap “Add to Home Screen” to install as an app.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State for step-up type: 'percent' or 'fixed'
+    let stepupType = 'percent';
+
+    function navigateTo(page) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      if (page === 'dashboard') {
+        document.getElementById('dashboard-page').classList.add('active');
+      } else if (page === 'sip-calc') {
+        document.getElementById('sip-calc-page').classList.add('active');
+      }
+    }
+
+    function setStepupType(type) {
+      stepupType = type;
+      document.getElementById('toggle-percent').classList.toggle('active', type === 'percent');
+      document.getElementById('toggle-fixed').classList.toggle('active', type === 'fixed');
+      document.getElementById('stepup-unit').innerText = type === 'percent' ? '%' : '₹';
+      document.getElementById('stepup-label').innerText = 
+        type === 'percent' ? 'Increase SIP by each year (%)' : 'Increase SIP by each year (₹)';
+    }
+
+    function resetForm() {
+      document.getElementById('lumpsum').value = '0';
+      document.getElementById('monthlySip').value = '5000';
+      document.getElementById('returnRate').value = '12';
+      document.getElementById('stepupValue').value = '10';
+      document.getElementById('years').value = '10';
+      setStepupType('percent');
+      document.getElementById('result-section').style.display = 'none';
+    }
+
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(amount);
+    }
+
+    function calculateSIP() {
+      const lumpsum = parseFloat(document.getElementById('lumpsum').value) || 0;
+      const monthlySipStart = parseFloat(document.getElementById('monthlySip').value) || 0;
+      const annualReturn = parseFloat(document.getElementById('returnRate').value) || 12;
+      const stepupVal = parseFloat(document.getElementById('stepupValue').value) || 0;
+      const years = parseInt(document.getElementById('years').value) || 10;
+      
+      if (monthlySipStart <= 0) {
+        alert('Please enter a valid monthly SIP amount.');
+        return;
+      }
+
+      const monthlyRate = (annualReturn / 100) / 12;
+      let portfolio = lumpsum;
+      let currentMonthlySip = monthlySipStart;
+      let totalInvested = lumpsum;
+      
+      const yearlyData = [];
+      
+      for (let y = 1; y <= years; y++) {
+        // Determine this year's monthly SIP
+        if (y > 1) {
+          if (stepupType === 'percent') {
+            currentMonthlySip *= (1 + stepupVal / 100);
+          } else {
+            currentMonthlySip += stepupVal;
+          }
+          if (currentMonthlySip < 0) currentMonthlySip = 0;
+        }
+        
+        // Simulate 12 months
+        for (let m = 0; m < 12; m++) {
+          portfolio = (portfolio + currentMonthlySip) * (1 + monthlyRate);
+          totalInvested += currentMonthlySip;
+        }
+        
+        const profit = portfolio - totalInvested;
+        yearlyData.push({
+          year: y,
+          invested: totalInvested,
+          profit: profit,
+          total: portfolio
+        });
+      }
+
+      // Display overview
+      document.getElementById('total-invested').innerText = formatCurrency(totalInvested);
+      document.getElementById('total-profit').innerText = formatCurrency(portfolio - totalInvested);
+      document.getElementById('total-value').innerText = formatCurrency(portfolio);
+
+      // Build table
+      const tbody = document.querySelector('#yearly-table tbody');
+      tbody.innerHTML = '';
+      yearlyData.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${row.year}</td>
+          <td>${formatCurrency(row.invested)}</td>
+          <td>${formatCurrency(row.profit)}</td>
+          <td>${formatCurrency(row.total)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('result-section').style.display = 'block';
+    }
+
+    // ---------- PWA: dynamic manifest with icon (made installable) ----------
+    function generatePwaResources() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 192;
+      canvas.height = 192;
+      const ctx = canvas.getContext('2d');
+      // Background
+      ctx.fillStyle = '#0f4c5c';
+      ctx.beginPath();
+      ctx.arc(96, 96, 96, 0, 2*Math.PI);
+      ctx.fill();
+      // White ₹ symbol
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 80px -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('₹', 96, 100);
+      const iconDataUrl = canvas.toDataURL('image/png');
+
+      const manifest = {
+        name: 'FinCal - SIP Calculator',
+        short_name: 'FinCal',
+        description: 'SIP & Mutual Fund calculators with step-up',
+        start_url: '.',
+        display: 'standalone',
+        background_color: '#ffffff',
+        theme_color: '#0f4c5c',
+        icons: [
+          { src: iconDataUrl, sizes: '192x192', type: 'image/png' },
+          { src: iconDataUrl, sizes: '512x512', type: 'image/png' }
+        ]
+      };
+      
+      const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+      const manifestUrl = URL.createObjectURL(blob);
+      document.getElementById('manifest-link').href = manifestUrl;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      generatePwaResources();
+    });
+  </script>
+</body>
+</html>
