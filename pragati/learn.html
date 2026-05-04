@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Learn & Grow | Pragati Financial Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #0f172a;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        .pragati-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navbar */
+        .pragati-navbar-sticky {
+            position: sticky;
+            margin-left: 2rem;
+            margin-right: 2rem;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #eef2ff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        }
+        .pragati-navbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 1rem 0;
+        }
+        .pragati-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .pragati-logo-icon {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+
+            .pragati-logo-icon-img {
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+        .pragati-logo-text h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .pragati-logo-text span { color: #2563eb; }
+        .pragati-logo-text p {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: -0.1rem;
+        }
+        .pragati-nav-links {
+            display: flex;
+            gap: 1.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .pragati-nav-link {
+            text-decoration: none;
+            font-weight: 500;
+            color: #1e293b;
+            transition: color 0.2s;
+        }
+        .pragati-nav-link:hover { color: #2563eb; }
+        .pragati-cta-button-nav {
+            background: #2563eb;
+            color: white;
+            padding: 0.55rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .pragati-mobile-toggle {
+            display: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: #1e293b;
+        }
+        .pragati-mobile-menu {
+            display: none;
+            flex-direction: column;
+            background: white;
+            padding: 1rem 1.5rem 1.5rem;
+            border-top: 1px solid #eef2ff;
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .pragati-learn-hero {
+            background: linear-gradient(115deg, #eef2ff, #ffffff);
+            padding: 3rem 0 2.5rem;
+            text-align: center;
+        }
+        .pragati-learn-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        .pragati-learn-hero p {
+            font-size: 1.1rem;
+            color: #475569;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Section styles */
+        .pragati-section {
+            padding: 3rem 0;
+        }
+        .pragati-section-alt {
+            background: #f8fafc;
+        }
+        .pragati-section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .pragati-section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .pragati-section-sub {
+            color: #64748b;
+        }
+
+        /* Grid cards */
+        .pragati-grid-3, .pragati-grid-4 {
+            display: grid;
+            gap: 1.8rem;
+        }
+        .pragati-grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .pragati-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+        .pragati-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            border: 1px solid #eef2ff;
+            transition: 0.25s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .pragati-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.08);
+            border-color: #bfdbfe;
+        }
+        .pragati-card-icon {
+            width: 56px;
+            height: 56px;
+            background: #eef2ff;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .pragati-card-icon i {
+            font-size: 1.6rem;
+            color: #2563eb;
+        }
+        .pragati-card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+        .pragati-card-desc {
+            font-size: 0.85rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* Featured article large card */
+        .pragati-featured-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        .pragati-featured-card {
+            background: white;
+            border-radius: 1.8rem;
+            padding: 2rem;
+            border: 1px solid #eef2ff;
+        }
+        .pragati-badge {
+            background: #2563eb10;
+            color: #2563eb;
+            padding: 0.2rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0.8rem;
+        }
+
+        /* Video / resource card */
+        .pragati-resource-card {
+            background: #f1f5f9;
+            border-radius: 1rem;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .pragati-resource-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Workshop card */
+        .pragati-workshop-card {
+            background: linear-gradient(115deg, #1e3a8a, #2563eb);
+            color: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        /* CTA */
+        .pragati-cta-learn {
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 3rem;
+            border-radius: 2rem;
+            margin: 2rem 0;
+        }
+
+        /* Footer */
+        .pragati-footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 3rem 0 2rem;
+            margin-top: 2rem;
+        }
+        .pragati-footer-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr;
+            gap: 2rem;
+        }
+        .pragati-footer-compliance {
+            font-size: 0.8rem;
+            border-top: 1px solid #334155;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            text-align: center;
+        }
+        .pragati-wa-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #25d366;
+            color: white;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        @media (max-width: 1024px) {
+            .pragati-nav-links { display: none; }
+            .pragati-mobile-toggle { display: block; }
+            .pragati-grid-3, .pragati-grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .pragati-featured-grid { grid-template-columns: 1fr; }
+            .pragati-footer-container { grid-template-columns: 1fr; text-align: center; }
+        }
+        @media (max-width: 768px) {
+            .pragati-learn-hero h1 { font-size: 1.8rem; }
+            .pragati-grid-3, .pragati-grid-4 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="pragati-navbar-sticky">
+    <div class="pragati-container pragati-navbar-inner">
+        <div class="pragati-logo">
+            <div><img class="pragati-logo-icon-img" src="image/prg.jpeg" alt="Pragati Financial logo" /></div>
+            <div class="pragati-logo-text">
+                <h1>PRAGATI<span> FINANCIAL</span></h1>
+                <p>Since 2005 | Trust & Transparency</p>
+            </div>
+        </div>
+        <div class="pragati-nav-links">
+            <a href="index.html" class="pragati-nav-link">Home</a>
+            <a href="mf.html" class="pragati-nav-link">Mutual Funds</a>
+            <a href="stock.html" class="pragati-nav-link">Stock Advisory</a>
+            <a href="tools.html" class="pragati-nav-link">Tools</a>
+            <a href="learn.html" class="pragati-nav-link" style="color:#2563eb; font-weight:700;">Learn</a>
+            <a href="about.html" class="pragati-nav-link">About</a>
+            <a href="#contact" class="pragati-nav-link">Contact</a>
+            <a href="#contact" class="pragati-cta-button-nav">Start Investing</a>
+        </div>
+        <div class="pragati-mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></div>
+    </div>
+    <div class="pragati-mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="mf.html">Mutual Funds</a>
+        <a href="stock.html">Stock Advisory</a>
+        <a href="tools.html">Tools</a>
+        <a href="learn.html">Learn</a>
+        <a href="about.html">About</a>
+        <a href="#contact">Contact</a>
+        <a href="#contact" style="background:#2563eb; color:white; text-align:center; border-radius:50px;">Start Investing</a>
+    </div>
+</div>
+
+<main>
+    <div class="pragati-learn-hero">
+        <div class="pragati-container">
+            <h1>📚 Learn & Grow Your Finances</h1>
+            <p>Free resources, articles, and workshops to help you master stock market, mutual funds, and wealth creation.</p>
+        </div>
+    </div>
+
+    <div class="pragati-container">
+        <!-- Categories Grid -->
+        <div class="pragati-section">
+            <div class="pragati-section-header">
+                <h2 class="pragati-section-title">Explore Topics</h2>
+                <p class="pragati-section-sub">Start your financial education journey</p>
+            </div>
+            <div class="pragati-grid-4">
+                <a href="#" class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3 class="pragati-card-title">Stock Market Basics</h3>
+                    <p class="pragati-card-desc">Learn how markets work, trading vs investing, and key terms.</p>
+                </a>
+                <a href="#" class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-chart-pie"></i></div>
+                    <h3 class="pragati-card-title">Mutual Funds</h3>
+                    <p class="pragati-card-desc">Types of funds, NAV, expense ratio, and how to choose the right fund.</p>
+                </a>
+                <a href="#" class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-coins"></i></div>
+                    <h3 class="pragati-card-title">SIP & Compounding</h3>
+                    <p class="pragati-card-desc">Power of regular investing and how to start SIP with small amounts.</p>
+                </a>
+                <a href="#" class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3 class="pragati-card-title">Goal Planning</h3>
+                    <p class="pragati-card-desc">Retirement, children's education, buying a home – plan your goals.</p>
+                </a>
+                <a href="#" class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <h3 class="pragati-card-title">Tax Planning</h3>
+                    <p class="pragati-card-desc">Save tax with ELSS, 80C, and smart investment strategies.</p>
+                </a>
+                <a href="#" class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3 class="pragati-card-title">Risk Management</h3>
+                    <p class="pragati-card-desc">Understand risk appetite, diversification, and asset allocation.</p>
+                </a>
+                <a href="#" class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3 class="pragati-card-title">Financial Literacy for Youth</h3>
+                    <p class="pragati-card-desc">Specially designed content for students and young earners.</p>
+                </a>
+                <a href="#" class="pragati-card">
+                    <div class="pragati-card-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h3 class="pragati-card-title">Technical Analysis</h3>
+                    <p class="pragati-card-desc">Charts, indicators, and patterns for better trading decisions.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Featured Article -->
+        <div class="pragati-section-alt" style="border-radius: 2rem; padding: 2rem;">
+            <div class="pragati-featured-grid">
+                <div class="pragati-featured-card">
+                    <span class="pragati-badge">Featured Article</span>
+                    <h2 style="font-size:1.6rem; margin-bottom:0.5rem;">The Power of Starting Early: Why 25 is Better Than 35</h2>
+                    <p style="color:#475569; margin-bottom:1rem;">How a 10-year head start can double your retirement corpus. Real examples with SIP calculations.</p>
+                    <a href="#" style="color:#2563eb; font-weight:600;">Read Full Article →</a>
+                </div>
+                <div class="pragati-featured-card">
+                    <span class="pragati-badge">Popular</span>
+                    <h3 style="font-size:1.3rem;">SIP vs Lumpsum: Which One is Right for You?</h3>
+                    <p style="margin:0.5rem 0;">Understand the pros, cons, and when to choose each approach based on your income and goals.</p>
+                    <a href="#" style="color:#2563eb; font-weight:600;">Read More →</a>
+                    <hr style="margin:1rem 0;">
+                    <h3 style="font-size:1.3rem;">What is Expense Ratio? Hidden Costs in Mutual Funds</h3>
+                    <p style="margin:0.5rem 0;">How expense ratios impact your returns and what to look for in fund selection.</p>
+                    <a href="#" style="color:#2563eb; font-weight:600;">Read More →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Tutorials / Resources -->
+        <div class="pragati-section">
+            <div class="pragati-section-header">
+                <h2 class="pragati-section-title">🎥 Video Tutorials & Guides</h2>
+                <p class="pragati-section-sub">Watch and learn at your own pace</p>
+            </div>
+            <div class="pragati-grid-3">
+                <div class="pragati-resource-card">
+                    <div class="pragati-resource-icon"><i class="fas fa-play-circle" style="font-size:1.8rem; color:#2563eb;"></i></div>
+                    <div><h4>How to Start Your First SIP</h4><p style="font-size:0.8rem;">Step-by-step walkthrough</p></div>
+                </div>
+                <div class="pragati-resource-card">
+                    <div class="pragati-resource-icon"><i class="fas fa-chart-line" style="font-size:1.8rem; color:#2563eb;"></i></div>
+                    <div><h4>Basics of Stock Market</h4><p style="font-size:0.8rem;">Equity, indices, and trading explained</p></div>
+                </div>
+                <div class="pragati-resource-card">
+                    <div class="pragati-resource-icon"><i class="fas fa-calculator" style="font-size:1.8rem; color:#2563eb;"></i></div>
+                    <div><h4>Using Financial Calculators</h4><p style="font-size:0.8rem;">SIP, SWP, retirement planning tools</p></div>
+                </div>
+                <div class="pragati-resource-card">
+                    <div class="pragati-resource-icon"><i class="fas fa-file-invoice" style="font-size:1.8rem; color:#2563eb;"></i></div>
+                    <div><h4>Tax Saving via ELSS</h4><p style="font-size:0.8rem;">Save up to ₹46,800 in taxes</p></div>
+                </div>
+                <div class="pragati-resource-card">
+                    <div class="pragati-resource-icon"><i class="fas fa-chart-pie" style="font-size:1.8rem; color:#2563eb;"></i></div>
+                    <div><h4>Asset Allocation Strategy</h4><p style="font-size:0.8rem;">Balance equity, debt, and gold</p></div>
+                </div>
+                <div class="pragati-resource-card">
+                    <div class="pragati-resource-icon"><i class="fas fa-graduation-cap" style="font-size:1.8rem; color:#2563eb;"></i></div>
+                    <div><h4>Financial Planning for Students</h4><p style="font-size:0.8rem;">Start investing with pocket money</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Downloadable Resources -->
+        <div class="pragati-section-alt" style="border-radius: 2rem; padding: 2rem;">
+            <div class="pragati-section-header">
+                <h2 class="pragati-section-title">📥 Free Downloadable Resources</h2>
+                <p class="pragati-section-sub">PDF guides, checklists, and templates</p>
+            </div>
+            <div class="pragati-grid-3">
+                <div class="pragati-card" style="text-align:center;">
+                    <i class="fas fa-file-pdf" style="font-size:2rem; color:#ef4444;"></i>
+                    <h3 style="margin-top:0.5rem;">Beginner's Guide to Mutual Funds</h3>
+                    <p style="font-size:0.8rem;">40+ pages of easy-to-understand content</p>
+                    <button style="margin-top:1rem; background:#2563eb; color:white; border:none; padding:0.4rem 1rem; border-radius:50px;">Download PDF</button>
+                </div>
+                <div class="pragati-card" style="text-align:center;">
+                    <i class="fas fa-file-excel" style="font-size:2rem; color:#10b981;"></i>
+                    <h3 style="margin-top:0.5rem;">SIP Goal Tracker (Excel)</h3>
+                    <p style="font-size:0.8rem;">Track your investments & future projections</p>
+                    <button style="margin-top:1rem; background:#2563eb; color:white; border:none; padding:0.4rem 1rem; border-radius:50px;">Download Excel</button>
+                </div>
+                <div class="pragati-card" style="text-align:center;">
+                    <i class="fas fa-check-circle" style="font-size:2rem; color:#2563eb;"></i>
+                    <h3 style="margin-top:0.5rem;">Financial Health Checklist</h3>
+                    <p style="font-size:0.8rem;">Assess your current financial status</p>
+                    <button style="margin-top:1rem; background:#2563eb; color:white; border:none; padding:0.4rem 1rem; border-radius:50px;">Download PDF</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Workshops / Webinars -->
+        <div class="pragati-section">
+            <div class="pragati-section-header">
+                <h2 class="pragati-section-title">🎤 Upcoming Live Workshops</h2>
+                <p class="pragati-section-sub">Join our free financial literacy sessions (limited seats)</p>
+            </div>
+            <div class="pragati-grid-3">
+                <div class="pragati-workshop-card">
+                    <i class="fas fa-calendar-alt" style="font-size:1.5rem;"></i>
+                    <h3 style="margin:0.5rem 0;">SIP Masterclass</h3>
+                    <p>18th June 2025 | 7:00 PM (Online)</p>
+                    <button style="background:white; color:#1e3a8a; border:none; padding:0.4rem 1rem; border-radius:50px; margin-top:1rem;">Register Free →</button>
+                </div>
+                <div class="pragati-workshop-card">
+                    <i class="fas fa-calendar-alt" style="font-size:1.5rem;"></i>
+                    <h3 style="margin:0.5rem 0;">Stock Market 101</h3>
+                    <p>25th June 2025 | 6:30 PM (Online)</p>
+                    <button style="background:white; color:#1e3a8a; border:none; padding:0.4rem 1rem; border-radius:50px; margin-top:1rem;">Register Free →</button>
+                </div>
+                <div class="pragati-workshop-card">
+                    <i class="fas fa-calendar-alt" style="font-size:1.5rem;"></i>
+                    <h3 style="margin:0.5rem 0;">Tax Planning with ELSS</h3>
+                    <p>2nd July 2025 | 5:00 PM (Online)</p>
+                    <button style="background:white; color:#1e3a8a; border:none; padding:0.4rem 1rem; border-radius:50px; margin-top:1rem;">Register Free →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz / Interactive -->
+        <div class="pragati-cta-learn">
+            <i class="fas fa-lightbulb" style="font-size:2.5rem;"></i>
+            <h2 style="margin:0.5rem 0;">Test Your Financial Knowledge</h2>
+            <p>Take our 10-minute quiz and get personalized learning recommendations.</p>
+            <button style="background:white; color:#0f172a; border:none; padding:0.7rem 1.5rem; border-radius:50px; margin-top:1rem; font-weight:700;">Start Quiz →</button>
+        </div>
+    </div>
+</main>
+
+<footer class="pragati-footer">
+    <div class="pragati-footer-container">
+        <div>
+            <h3 style="color:white;">PRAGATI FINANCIAL</h3>
+            <p>Stock Advisory | Sub‑Broking | Mutual Funds</p>
+            <p><i class="fas fa-envelope"></i> pragatifinser@gmail.com</p>
+            <p><i class="fas fa-phone-alt"></i> +91 96018 80654</p>
+        </div>
+        <div>
+            <h4>Quick Links</h4>
+            <a href="index.html" style="color:#cbd5e1; display:block;">Home</a>
+            <a href="mutual-funds.html" style="color:#cbd5e1; display:block;">Mutual Funds</a>
+            <a href="stock-advisory.html" style="color:#cbd5e1; display:block;">Stock Advisory</a>
+            <a href="tools.html" style="color:#cbd5e1; display:block;">Tools</a>
+            <a href="learn.html" style="color:#cbd5e1; display:block;">Learn</a>
+        </div>
+        <div>
+            <h4>Office</h4>
+            <p>Himatnagar, Gujarat</p>
+            <p>Mon–Sat: 10 AM – 6 PM</p>
+        </div>
+    </div>
+    <div class="pragati-footer-compliance">
+        <p>Educational content is for informational purposes only. Please consult your advisor before investing.</p>
+        <p>© 2026 Pragati Financial Services — Empowering Wealth with Integrity</p>
+    </div>
+</footer>
+
+<a href="https://wa.me/919601880654?text=I%20want%20to%20learn%20about%20investing" target="_blank" class="pragati-wa-float">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<script>
+    const toggleBtn = document.getElementById('mobileToggle');
+    const mobilePanel = document.getElementById('mobileMenu');
+    if(toggleBtn && mobilePanel) {
+        toggleBtn.addEventListener('click', () => {
+            if(mobilePanel.style.display === 'flex') mobilePanel.style.display = 'none';
+            else mobilePanel.style.display = 'flex';
+        });
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if(href === '#') return;
+            const target = document.querySelector(href);
+            if(target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
+                if(mobilePanel.style.display === 'flex') mobilePanel.style.display = 'none';
+            }
+        });
+    });
+    // For demo buttons (downloads, register) just alerts
+    const demoButtons = document.querySelectorAll('button:not(#calculateBtn):not(#resetBtn)');
+    demoButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('This feature will be available soon. Stay tuned for updates!');
+        });
+    });
+</script>
+</body>
+</html>
