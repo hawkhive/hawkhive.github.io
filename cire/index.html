@@ -550,6 +550,7 @@
         <a href="#" class="nav-logo">🪶 HawkHive</a>
         <ul class="nav-menu">
         <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#donation" class="nav-link">Donate</a></li>
         <li><a href="#elements" class="nav-link">Elements</a></li>
         <li><a href="#mocktests" class="nav-link">Mock Tests</a></li>
         <li><a href="/rse/index.html" class="nav-link">RSE Study Guide</a></li>
@@ -563,7 +564,7 @@
 
 <div class="container">
   <!-- NEW HERO SECTION -->
-  <div class="hero">
+  <div class="hero" id="home">
     <div class="hero-content">
       <div class="hero-text">
         <div class="brand">🪶 HAWKHIVE STUDY PREP</div>
@@ -593,7 +594,7 @@
   </div>
 
   <!-- donation & personal note (unchanged) -->
-  <div class="donation-note">
+  <div class="donation-note" id="donation">
     <h3>✨ From a candidate to you — no expensive prep needed</h3>
     <p>After successfully preparing for the CIRE exam, I realized how costly commercial prep courses can be. That’s why I built these <strong>9 complete study elements</strong> from the official CIRO syllabus — to help motivated learners like you access high‑quality, structured material <strong>completely free</strong>. No subscriptions, no hidden fees, just clear notes that focus on what really matters for the exam.</p>
     <p>📖 <strong>What you'll find inside each element:</strong> key definitions, regulatory highlights, practical examples, and exam practice questions at the end of each element to reinforce your learning. Whether you're changing careers, a new graduate, or an industry professional refreshing knowledge, these pages are designed for focused, self-paced learning.</p>
@@ -697,6 +698,209 @@
       }
     });
   });
+</script>
+
+<!-- Donation Request Modal (Polite Popup) -->
+<style>
+  .donation-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(13, 27, 46, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Source Serif 4', serif;
+  }
+  .donation-modal.active {
+    display: flex;
+  }
+  .modal-content {
+    background: white;
+    max-width: 480px;
+    width: 90%;
+    border-radius: 2rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(201, 151, 58, 0.3);
+    overflow: hidden;
+    animation: modalFadeIn 0.3s ease-out;
+  }
+  @keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.96) translateY(-10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .modal-header {
+    background: var(--navy, #0d1b2e);
+    padding: 1.2rem 1.5rem;
+    border-bottom: 2px solid var(--gold, #c9973a);
+  }
+  .modal-header h3 {
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.3px;
+  }
+  .modal-body {
+    padding: 1.8rem 1.5rem;
+    color: var(--text, #1b2331);
+  }
+  .modal-body p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+  .modal-body .highlight {
+    background: rgba(201, 151, 58, 0.12);
+    padding: 0.2rem 0.4rem;
+    border-radius: 12px;
+    font-weight: 600;
+    color: var(--navy, #0d1b2e);
+  }
+  .modal-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1.2rem;
+    justify-content: flex-end;
+  }
+  .modal-btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 40px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    font-family: inherit;
+  }
+  .modal-btn-primary {
+    background: var(--gold, #c9973a);
+    color: var(--navy, #0d1b2e);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  .modal-btn-primary:hover {
+    background: #b8802a;
+    transform: translateY(-1px);
+  }
+  .modal-btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(13, 27, 46, 0.2);
+    color: var(--text-muted, #5b6476);
+  }
+  .modal-btn-secondary:hover {
+    background: rgba(13, 27, 46, 0.04);
+    border-color: rgba(13, 27, 46, 0.4);
+  }
+  .modal-close-x {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--gold, #c9973a);
+    width: 28px;
+    height: 28px;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .modal-close-x:hover {
+    background: rgba(255,255,255,0.35);
+  }
+  @media (max-width: 640px) {
+    .modal-content { width: 92%; }
+    .modal-body { padding: 1.4rem; }
+  }
+</style>
+
+<div id="donationModal" class="donation-modal" role="dialog" aria-modal="true" aria-label="Support request">
+  <div class="modal-content">
+    <button class="modal-close-x" id="modalCloseX" aria-label="Close">✕</button>
+    <div class="modal-header">
+      <h3>📘 Keep these resources free</h3>
+    </div>
+    <div class="modal-body">
+      <p>Hello candidate — this study guide is completely <span class="highlight">self-funded and volunteer-built</span> to help you pass the CIRE exam without expensive prep courses. Your small donation, whatever you can afford, will help a lot in keeping this resource alive.</p>
+      <p>Most CIRE/RSE prep materials and courses cost between <strong>$500–$1,500 CAD</strong> — while this guide remains completely free thanks to community support. If you find it valuable, please consider making a donation, any amount makes a difference.</p>
+      <p>🙏 Thank you for being part of a fairer learning community. Together we make exam prep accessible for everyone.</p>
+      <div class="modal-buttons">
+        <button class="modal-btn modal-btn-secondary" id="modalLaterBtn">Remind me later</button>
+        <button class="modal-btn modal-btn-primary" id="modalDonateBtn">💛 Donate now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // Show modal only once per session (tab session)
+    const alreadyShown = sessionStorage.getItem('donationModalShown');
+    if (alreadyShown) return;
+
+    const modal = document.getElementById('donationModal');
+    if (!modal) return;
+
+    function closeModal() {
+      modal.classList.remove('active');
+      sessionStorage.setItem('donationModalShown', 'true');
+    }
+
+    // Show modal after a slight delay (1.2 seconds) - non-intrusive
+    setTimeout(() => {
+      modal.classList.add('active');
+    }, 1200);
+
+    // Close handlers
+    const closeX = document.getElementById('modalCloseX');
+    const laterBtn = document.getElementById('modalLaterBtn');
+    const donateBtn = document.getElementById('modalDonateBtn');
+
+    if (closeX) closeX.addEventListener('click', closeModal);
+    if (laterBtn) laterBtn.addEventListener('click', closeModal);
+
+    // Donate button: scroll to donation section and close modal
+    if (donateBtn) {
+      donateBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        // Find the donation section (the .donation-note container)
+        const donateSection = document.querySelector('.donation-note');
+        if (donateSection) {
+          donateSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Highlight gently
+          donateSection.style.transition = 'box-shadow 0.3s';
+          donateSection.style.boxShadow = '0 0 0 3px rgba(201, 151, 58, 0.4)';
+          setTimeout(() => { donateSection.style.boxShadow = ''; }, 1500);
+        } else {
+          // fallback: open paypal form in new tab if section not found
+          const paypalForm = document.querySelector('.paypal form');
+          if (paypalForm) paypalForm.submit();
+        }
+        closeModal();
+      });
+    }
+
+    // Click outside to close
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) closeModal();
+    });
+
+    // Escape key closes
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+  })();
 </script>
 </body>
 </html>
